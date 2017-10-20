@@ -152,6 +152,7 @@
                             </div><!-- /.modal-content -->
                         </div>
                     </div><!-- /.modal -->
+                    <!-- 设备列表 -->
                     <div class="TSBManage_main_bottom">
                         <el-table
                             ref="multipleTable"
@@ -217,14 +218,12 @@
                             <el-table-column
                             prop="startTime"
                             label="启动时间"
-                            align='center'
-                            width="180">
+                            align='center'>
                             </el-table-column>
                             <el-table-column
                             label="操作"
-                            fixed="right"
                             width="90">
-                                <template scope="scope" style="height:100%;">
+                                <template scope="scope">
                                     <el-button @click="tsbgmanage(scope.row)" type="text" size="small">管理设备</el-button>
                                 </template>
                             </el-table-column>
@@ -241,6 +240,338 @@
                             </el-pagination>
                         </div>
                     </div>
+                    <!-- tsbgs设备管理模态框 -->
+                    <div class="modal fade" id="tsbgManageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body" style="padding:0;width:600px;">
+                                    <el-tabs type="border-card" style="padding:0;">
+                                        <el-tab-pane label="运行状态" style="background:white;">
+                                            <div class="basicstatus">
+                                                <div class="basicstatus_top">
+                                                    基本状态
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>硬件版本:</td>
+                                                                <td>TSBA721</td>
+                                                                <td>Bootrom版本</td>
+                                                                <td>v1.1.1.0 </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>软件版本:</td>
+                                                                <td>V1.3.0b</td>
+                                                                <td>链路数量:</td>
+                                                                <td>1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>运行时间:</td>
+                                                                <td style="width: 75%;">2天20小时48分54秒06 </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="basicstatus">
+                                                <div class="basicstatus_top">
+                                                    wan网口
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>连接方式:</td>
+                                                                <td>static</td>
+                                                                <td>链路状态</td>
+                                                                <td>up</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>MAC地址:</td>
+                                                                <td>a4:fb:8d:02:0e:f4</td>
+                                                                <td>IP地址</td>
+                                                                <td>192.168.70.211 </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>子网掩码:</td>
+                                                                <td>255.255.255.0</td>
+                                                                <td>网关地址</td>
+                                                                <td>192.168.70.1</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>主DNS服务器:</td>
+                                                                <td>114.114.114.114 </td>
+                                                                <td>辅DNS服务器</td>
+                                                                <td>8.8.8.8</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="basicstatus">
+                                                <div class="basicstatus_top">
+                                                    WIFI接口状态(2,4G)
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>工作模式:</td>
+                                                                <td>ap</td>
+                                                                <td>ESSID</td>
+                                                                <td>lpf_2g</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>功 率:</td>
+                                                                <td>23</td>
+                                                                <td>MAC</td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>信 道:</td>
+                                                                <td>1</td>
+                                                                <td>流量统计:</td>
+                                                                <td>/</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>频段带宽:</td>
+                                                                <td>ht20</td>
+                                                                <!-- <td>链路状态</td>
+                                                                <td>up</td> -->
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="basicstatus" style="padding-bottom:1px">
+                                                <div class="basicstatus_top">
+                                                    WIFI接口状态(5G)
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>工作模式:</td>
+                                                                <td>ap</td>
+                                                                <td>ESSID</td>
+                                                                <td>lpf_5g</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>功 率:</td>
+                                                                <td>23</td>
+                                                                <td>MAC</td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>信 道:</td>
+                                                                <td>161</td>
+                                                                <td>流量统计:</td>
+                                                                <td>/</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>频段带宽:</td>
+                                                                <td>ht20</td>
+                                                                <!-- <td>链路状态</td>
+                                                                <td>up</td> -->
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="设备信息" style="background:white;">
+                                            <div class="basicstatus" style="padding-bottom:1px">
+                                                <div class="basicstatus_top">
+                                                    设备信息
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>昵称:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入昵称" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                                <td>MAC:</td>
+                                                                <td><input type="text" class="inputType"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>位置:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入位置" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                                <td>所属域:</td>
+                                                                <td><input type="text" class="inputType"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>设备类型:</td>
+                                                                <td>
+                                                                    <select name="" id="">
+                                                                        <option value="0">tsbc</option>
+                                                                        <option value="1">tsba</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>用户管理员:</td>
+                                                                <td><input type="text" class="inputType"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>备注:</td>
+                                                                <td style="width:75%;height:80px;"><textarea class="inputType" name="" id="" cols="30" rows="10"></textarea></td>
+                                                                <!-- <td>链路状态</td>
+                                                                <td>up</td> -->
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <el-button type="primary">保存</el-button>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="WIFI设置(2,4G)" style="background:white;">
+                                            <div class="basicstatus" style="padding-bottom:1px">
+                                                <div class="basicstatus_top">
+                                                    基本信息
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>SSID:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入昵称" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                                <td>认证密码:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>信道设置:</td>
+                                                                <td><el-input-number size='small' style="width:124px;" :min="1" :max="10"></el-input-number></td>
+                                                                <td>频段带宽:</td>
+                                                                <td><el-select v-model="value" size='small' placeholder="请选择">
+                                                                    <el-option
+                                                                        v-for="item in tsbgoptions"
+                                                                        :key="item.value"
+                                                                        :label="item.label"
+                                                                        :value="item.value">
+                                                                        </el-option>
+                                                                    </el-select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>允许终端最大个数:</td>
+                                                                <td>
+                                                                   <input type="text" class="inputType" placeholder="请输入密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                                                </td>
+                                                                <td>最低的RSSI:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>功率设定:</td>
+                                                                <td><el-input-number size='small' style="width:124px;" :min="1" :max="10"></el-input-number></td>
+                                                                <td>加密方式</td>
+                                                                <td>
+                                                                    <el-select size='small' v-model="value" placeholder="请选择">
+                                                                        <el-option
+                                                                        v-for="item in tsbgoptionstwo"
+                                                                        :key="item.value"
+                                                                        :label="item.label"
+                                                                        :value="item.value">
+                                                                        </el-option>
+                                                                    </el-select>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <el-button type="primary">保存</el-button>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="WIFI设置(5G)" style="background:white;">
+                                            <div class="basicstatus" style="padding-bottom:1px">
+                                                <div class="basicstatus_top">
+                                                    基本信息
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>SSID:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入昵称" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                                <td>认证密码:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>信道设置:</td>
+                                                                <td><el-input-number size='small' style="width:124px;" :min="1" :max="10"></el-input-number></td>
+                                                                <td>频段带宽:</td>
+                                                                <td><el-select v-model="value" size='small' placeholder="请选择">
+                                                                    <el-option
+                                                                        v-for="item in tsbgoptions"
+                                                                        :key="item.value"
+                                                                        :label="item.label"
+                                                                        :value="item.value">
+                                                                        </el-option>
+                                                                    </el-select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>允许终端最大个数:</td>
+                                                                <td>
+                                                                   <input type="text" class="inputType" placeholder="请输入密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                                                </td>
+                                                                <td>最低的RSSI:</td>
+                                                                <td><input type="text" class="inputType" placeholder="请输入密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>功率设定:</td>
+                                                                <td><el-input-number size='small' style="width:124px;" :min="1" :max="10"></el-input-number></td>
+                                                                <td>加密方式</td>
+                                                                <td>
+                                                                    <el-select size='small' v-model="value" placeholder="请选择">
+                                                                        <el-option
+                                                                        v-for="item in tsbgoptionstwo"
+                                                                        :key="item.value"
+                                                                        :label="item.label"
+                                                                        :value="item.value">
+                                                                        </el-option>
+                                                                    </el-select>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <el-button type="primary">保存</el-button>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="黑白名单设置" style="background:white;">
+                                            <div class="basicstatus" style="padding-bottom:1px">
+                                                <div class="basicstatus_top">
+                                                    基本信息
+                                                </div>
+                                                <div class="basicstatus_center"></div>
+                                                <div class="basicstatus_bottom">
+                                                    <div class="tsbgchecked">
+                                                        <el-checkbox v-model="checked" @change='tsbgchecked' style="color: #555555;">启用黑白名单限制</el-checkbox>
+                                                    </div>
+                                                    <div class="tsbgradio">
+                                                        <el-radio-group v-model="radio" @change='tsbgradio'>
+                                                            <el-radio :label="1" style="color: #555555;">仅允许MAC地址列表中的MAC访问网络（白名单）</el-radio>
+                                                            <el-radio :label="2" style="margin-left:0;color: #555555;">仅禁止MAC地址列表中的MAC访问网络（黑名单）</el-radio>
+                                                        </el-radio-group>
+                                                    </div>
+                                                    <el-button type="primary">保存</el-button>
+                                                </div>
+                                            </div>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="软件升级" style="background:white;">软件升级</el-tab-pane>
+                                        <el-tab-pane label="存为模板" style="background:white;">存为模板</el-tab-pane>
+                                        <el-tab-pane label="设备重启" style="background:white;">设备重启</el-tab-pane>
+                                    </el-tabs> 
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div>
+                    </div><!-- /.modal -->
                 </el-tab-pane>
                 <el-tab-pane label="TSBC" name='3'>
                     <div class="TSBManage_main_top">
@@ -336,8 +667,14 @@
                             <el-table-column
                             prop="startTime"
                             label="启动时间"
-                            align='center'
-                            show-overflow-tooltip>
+                            align='center'>
+                            </el-table-column>
+                            <el-table-column
+                            label="操作"
+                            width="90">
+                                <template scope="scope">
+                                    <el-button @click="tsbgmanage(scope.row)" type="text" size="small">管理设备</el-button>
+                                </template>
                             </el-table-column>
                         </el-table>
                         <div class="block">
@@ -441,8 +778,14 @@
                             <el-table-column
                             prop="startTime"
                             label="启动时间"
-                            align='center'
-                            show-overflow-tooltip>
+                            align='center'>
+                            </el-table-column>
+                            <el-table-column
+                            label="操作"
+                            width="90">
+                                <template scope="scope">
+                                    <el-button @click="tsbgmanage(scope.row)" type="text" size="small">管理设备</el-button>
+                                </template>
                             </el-table-column>
                         </el-table>
                         <div class="block">
@@ -489,6 +832,10 @@
                 userIPone:'',
                 valueone:'',
                 optionsone:[{value:'0',label:'离线'},{value:'1',label:'在线'}],
+                tsbgoptions:[{value:'0',label:'ht20'},{value:'1',label:'ht40'}],
+                tsbgoptionstwo:[{value:'0',label:'NONE'},{value:'1',label:'WPA/WPA2'}],
+                checked:false,
+                radio:'2',
 
                 tsbcdata:[],
                 tsbcpagechange:1,
@@ -557,7 +904,7 @@
             search(){
                 this.ready()
             },
-
+            /********tsbg设备**********/ 
             //tsbg条数事件
             tsbgsizechange(val){
                 this.tsbgpageSize = val
@@ -601,6 +948,22 @@
             //tsbg管理设备点击事件
             tsbgmanage(value){
                 console.log(value)
+                $('#tsbgManageModal').modal('show');
+            },
+            //黑白名单多选按钮事件 
+            tsbgchecked(e){
+                if(e.target.checked==true){
+                    console.log(11111)
+                    this.radio = 1 
+                }else{
+                    this.radio = ''                
+                }
+            },
+            //黑白名单单选按钮变化事件
+            tsbgradio(val){
+                if(val!=''){
+                    this.checked = true
+                }
             },
 
             //tsbc条数事件
@@ -718,5 +1081,16 @@
 .TSBManage_main_top>div>span{width: 30%;line-height: 30px;}
 .TSBManage_main_top>div>input{height: 30px;width: 130px;}
 .TSBManage_main_top>div>div{height: 30px;width: 140px;}
+.basicstatus{padding: 0px 20px 0px 20px;}
+.basicstatus:nth-of-type(1){padding-top:15px;}
+.basicstatus_top{text-align: left;font-size: 15px;font-weight: bold;}
+.basicstatus_center{width: 100%;background: #C1D9F3;height: 2px;margin-top: 8px;margin-bottom: 5px;}
+.basicstatus_bottom{margin-bottom: 10px;}
+.basicstatus_bottom>table{width:100%;}
+.basicstatus_bottom>table tr{display: flex;}
+.basicstatus_bottom>table tr>td{width: 25%;text-align: center;line-height: 25px !important;}
+.inputType{width: 100%;height: 100%;}
+.tsbgchecked{text-align: left;padding-left: 20px;}
+.tsbgradio{text-align: left;padding-left: 40px;}
 </style>
 

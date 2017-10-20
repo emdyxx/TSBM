@@ -10,8 +10,8 @@
               </div>
               <div class="login_popur_yzm_two">
                   <div>
-                    <img id="codeimg" src="http://192.168.70.83:8010/TSBM-Manager/getVerifyToken?rnd=0.3809647994555081" 
-                     onclick="javascript:this.src='http://192.168.70.83:8010/TSBM-Manager/getVerifyToken?rnd=' + Math.random();" alt="">
+                    <img id="codeimg" src="http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=0.3809647994555081" 
+                     onclick="javascript:this.src='http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random();" alt="">
                   </div>
                   <div>
                     <i @click="verification" class="iconfont icon-shuaxin1"></i>
@@ -83,13 +83,14 @@ export default {
             verification:that.verificationcode
           },
           success:function(data){
+            console.log(data)
             if(data.errorCode=='1005'){
               that.$message({
                 message: '验证码错误',
                 type: 'error',
                 showClose: true,
               });
-              $('#codeimg').attr('src','http://192.168.70.83:8010/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
+              $('#codeimg').attr('src','http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
               return;
             }
             if(data.errorCode=='1010'){
@@ -98,7 +99,7 @@ export default {
                   type: 'error',
                   showClose: true,
                 });
-              $('#codeimg').attr('src','http://192.168.70.83:8010/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
+              $('#codeimg').attr('src','http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
               return;
             }
             if(data.errorCode=='0'){
@@ -114,7 +115,6 @@ export default {
           }
         })
     },
-    
   },
   created(){
     var that = this

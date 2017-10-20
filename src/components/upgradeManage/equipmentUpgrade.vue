@@ -11,48 +11,56 @@
             </div>
             <!--上传模态框-->
             <div class="modal fade" id="upgrademyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog" style="width:500px;">
+                <div class="modal-dialog" style="width:600px;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="myModalLabel">上传升级包</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="upload_div">
+                            <div class="upload_div" v-if="uploadtype===false">
+                                <div>
+                                    <span>选择分组:</span>
+                                    <el-cascader
+                                        v-if='selected'
+                                        :options="optionsvalue"
+                                        v-model="selectedOptions"
+                                        size='small'
+                                        style="width:150px;">
+                                    </el-cascader>
+                                </div> 
                                 <div>
                                     <span>文件名称:</span>
-                                    <input type="file">
+                                    <input type="file" ref="imgs" name="file" id="file_name">
+                                </div> 
+                                <div v-if="percentageType" style="padding-left:30px">
+                                    <el-progress :percentage='percentage'></el-progress>
                                 </div>
-                                <!-- <div>
-                                    <span>MD5:</span>
-                                    <el-input v-model="input" size="small" placeholder="请输入内容"></el-input>
-                                </div> -->
+                            </div>
+                            <div class="upload_div" v-if="uploadtype">
                                 <div>
-                                    <span>升级包状态:</span>
-                                    <el-select size="small" v-model="value" placeholder="请选择">
-                                        <el-option
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </div>
-                                <!-- 不可以修改  文本类型 -->
-                                <!-- <div>
+                                    <span>文件名称:</span>
+                                    <input type="text" v-model="fileName" disabled>
+                                </div> 
+                                <div>
+                                    <span>软件版本号:</span>
+                                    <input type="text" v-model="softwareVer" disabled>
+                                </div> 
+                                <div>
+                                    <span>硬件版本号:</span>
+                                    <input type="text" v-model="hardwareVer" disabled>
+                                </div> 
+                                <div>
+                                    <span>MD5:</span>
+                                    <input type="text" v-model="md5" disabled>
+                                </div> 
+                                <div>
                                     <span>升级包类型:</span>
-                                    <el-select size="small" v-model="valuetwo" @change="uploadmold" placeholder="请选择">
-                                        <el-option
-                                        v-for="item in optionstwo"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </div> -->
+                                    <input type="text" v-model="upgradeType" disabled>
+                                </div> 
                                 <div>
                                     <span>适用范围</span>
-                                    <el-select size="small" v-model="valuethree" @change="uploadscope" placeholder="请选择">
+                                    <el-select size="small" style="width:150px;" v-model="valuethree" @change="uploadscope" placeholder="请选择">
                                         <el-option
                                         v-for="item in optionsthree"
                                         :key="item.value"
@@ -76,20 +84,20 @@
                                         width="55">
                                         </el-table-column>
                                         <el-table-column
+                                        prop="nickname"
+                                        align='center'
+                                        label="设备昵称"
+                                        width="100">
+                                        </el-table-column>
+                                        <el-table-column
                                         prop="MAC"
-                                        align='center'
-                                        label="设备MAC"
-                                        width="100">
-                                        </el-table-column>
-                                        <el-table-column
-                                        prop="model"
-                                        label="设备组"
+                                        label="MAC"
                                         align='center'
                                         width="100">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="model"
-                                        label="型号"
+                                        prop="hardwareVersion"
+                                        label="硬件版本"
                                         align='center'
                                         show-overflow-tooltip>
                                         </el-table-column>
@@ -107,19 +115,30 @@
                                     </div>
                                 </div>
                                 <div>
+                                    <span>升级包状态:</span>
+                                    <el-select size="small" v-model="value" style="width:150px;" placeholder="请选择">
+                                        <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div>
                                     <span>描述:</span>
                                     <el-input
                                     type="textarea"
                                     :rows="2"
-                                    placeholder="请输入内容"
+                                    placeholder="请输入描述内容"
                                     v-model="textarea">
                                     </el-input>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary">保存</button>
+                            <button v-if="uploadtype===false" @click="nextstep" type="button" class="btn btn-primary">下一步</button>
+                            <button v-if="uploadtype" @click="uploadsave" type="button" class="btn btn-primary">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -145,16 +164,34 @@
                         width="55">
                         </el-table-column>
                         <el-table-column
-                        prop="code"
+                        prop="fileName"
                         align='center'
-                        label="组织代号"
+                        label="升级包名称"
+                        width="180">
+                        </el-table-column>
+                        <el-table-column
+                        prop="softwareVer"
+                        label="软件版本号"
+                        align='center'
+                        width="120">
+                        </el-table-column>
+                        <el-table-column
+                        prop="md5"
+                        label="MD5"
+                        align='center'
                         width="200">
                         </el-table-column>
                         <el-table-column
-                        prop="departmentName"
-                        label="组织名称"
+                        prop="hardwareVer"
+                        label="硬件版本号"
                         align='center'
-                        width="200">
+                        width="120">
+                        </el-table-column>
+                        <el-table-column
+                        prop="summary"
+                        label="描述"
+                        align='center'
+                        width="120">
                         </el-table-column>
                         <el-table-column
                         prop="email"
@@ -205,14 +242,26 @@
                 currentPage5:1,
                 sizesTwo:10,
                 totalTwo:50,
+                selected:false, //上传升级包管理员选择分组
+                optionsvalue:[],//分组数据
+                selectedOptions:[],//选中分组数据
                 type:'', //升级包类型
                 typetwo:'', //升级包适用范围
                 textarea:'',
-                typedata:false, 
+                typedata:false, //升级包适用范围是否显示
+                percentageType:false, //进度条显示
+                percentage:0, //进度条,
+                uploadtype:false,  //上传成功跳转下一页
+                fileName:'',  //文件名称
+                softwareVer:'',  //软件版本号
+                hardwareVer:'',  //硬件版本号
+                md5:'',  //md5
+                upgradeType:'',  //升级包类型
+                filePath:'',  //文件存放路径
+                fileUrl:'',  //文件下载url
             }
         },
         methods:{
-            
             //选中行的change事件
             handleSelectionChange(val){
                 this.sites = val
@@ -228,36 +277,44 @@
                 sessionStorage.pageIndex = val
                 this.ready()
             },
-            //升级包类型change事件
-            uploadmold(val){
-                this.type = val
-                this.uploadscope()
-            },
             //升级包适用范围change事件
             uploadscope(val){
                 var that = this
                 this.typetwo = val
-                if(this.type=='0'||this.type=='1'||this.type=='2'){//tsbg
-                    if(this.typetwo=='0'){
-                        this.typedata = true
+                var url='';
+                this.typedata = false;
+                console.log(val,that.upgradeType)
+                if(val=='0'){
+                    this.typedata = true;
+                    if(that.upgradeType=='tsbg'){
+                        //tsbg
+                        url = 'Equipment/getTsbgList'
                     }
-                }
-                if(this.type!=''&&this.typetwo!=''){
-                    // $.ajax({
-                    //     type:'post',
-                    //     async:true,
-                    //     url:that.serverurl+'login',
-                    //     dataType:'json',
-                    //     xhrFields:{withCredentials:true},
-                    //     data:{
-                    //         type:that.type,
-                    //         typetwo:that.typetwo,
-                    //     },
-                    //     success:function(data){
-                    //         console.log(data)
-                    //     }
-                    // })
-                } 
+                    if(that.upgradeType=='tsbc'){
+                        //tsbc
+                        url = 'Equipment/getTsbcList'
+                    }
+                    if(that.upgradeType=='tsba'){
+                        //tsba
+                        url = 'Equipment/getTsbaList'
+                    }
+                    console.log(url)
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        url:that.serverurl+url,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        data:{
+                            pageIndex:1,
+                            pageSize:10
+                        },
+                        success:function(data){
+                            that.tableData5 = data.rows
+                            that.totalTwo = data.total
+                        }
+                    })
+                }  
             },
             //模态框选中行的change事件
             handleSelectionChangeTwo(val){
@@ -272,19 +329,169 @@
             handleCurrentChangeTwo(val){
                 this.pageIndex = val
             },
-            
-            //点击上传升级包
+            //点击升级包上传
             upload(){
+                var that = this
                 $('#upgrademyModal').modal('show')
-                this.input='';
-                this.value = '';
-                this.valuetwo = '';
-                this.valuethree = '';
+                if(sessionStorage.departmentId=='1'){
+                    this.selected = true
+                    //管理员登录请求selected下拉框数据
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'department/getTopDepartment',
+                        data:{},
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.optionsvalue = data.result
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
+                }else{
+                    this.selected = false
+                }
+            },
+            //升级包上传点击下一步
+            nextstep(){
+                var that = this
+                if(sessionStorage.departmentId=='1'){
+                    if(this.selectedOptions.length<2){
+                        that.$message({
+                            type: 'error',
+                            message: '管理员需要选择分组才能进行上传!'
+                        });
+                        return;
+                    }
+                }
+                var xhr = new XMLHttpRequest();
+                var fd = new FormData();
+                fd.append("file", that.$refs.imgs.files[0]);
+                if(sessionStorage.departmentId=='1'){
+                    fd.append("departmentId", that.selectedOptions[1]);
+                }
+                $.ajax({
+                    url: that.serverurl+'upgrade/uploadUpgradeFile',
+                    type: 'POST',
+                    cache: false,
+                    data: fd,
+                    dataType:'json',
+                    processData: false,
+                    xhrFields:{withCredentials:true},
+                    contentType: false
+                }).done(function(data) {
+                    if(data.errorCode=='0'){
+                        that.$message({
+                            message: '上传成功',
+                            type:'success',
+                            showClose: true,
+                        });
+                        that.uploadtype = data.result;
+                        that.uploadtype = true;
+                        that.fileName = data.result.fileName;
+                        that.softwareVer = data.result.softwareVer;
+                        that.hardwareVer = data.result.hardwareVer;
+                        that.md5 = data.result.md5;
+                        that.filePath = data.result.filePath;
+                        that.fileUrl = data.result.fileUrl;
+                        if(data.result.upgradeType=='0'){
+                            that.upgradeType = 'tsbg'
+                        }
+                        if(data.result.upgradeType=='1'){
+                            that.upgradeType = 'tsbc'
+                        }
+                        if(data.result.upgradeType=='2'){
+                            that.upgradeType = 'tsba'
+                        }
+                    }else{
+                        that.errorCode(res.errorCode)
+                    }
+                }).fail(function(res) {
+                    console.log(res)
+                });
+            },
+            //升级包上传点击保存
+            uploadsave(){
+                var that = this;
+                var upgradeType;
+                var equipmentIds=[];
+                if(that.upgradeType=='tsbg'){
+                    upgradeType='0'
+                }
+                if(that.upgradeType=='tsbc'){
+                    upgradeType='1'
+                }
+                if(that.upgradeType=='tsba'){
+                    upgradeType='2'
+                }
+                for(var i=0;i<that.sitesTwo.length;i++){
+                    equipmentIds.push(that.sitesTwo[i].id)
+                }
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/saveUpgradeFile',
+                    data:{
+                        fileName:that.fileName,
+                        filePath:that.filePath,
+                        fileUrl:that.fileUrl,
+                        upgradeType:upgradeType,
+                        upgradeOrder:that.typetwo,
+                        md5:that.md5,
+                        softwareVer:that.softwareVer,
+                        hardwareVer:that.hardwareVer,
+                        status:that.value,
+                        summary:that.textarea,
+                        equipmentIds:equipmentIds.join(',')
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '保存成功',
+                                type:'success',
+                            })
+                            $('#upgrademyModal').modal('hide');
+                            that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
             },
             //页面数据渲染
-            ready(){},
+            ready(){
+                var that = this;
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/upgradeFileList',
+                    data:{
+                        pageIndex:sessionStorage.pageIndex,
+                        pageSize:sessionStorage.pageSize,
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.tableData4 = data.rows
+                            that.total = data.total
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
         },
-        created(){}
+        created(){
+            sessionStorage.pageIndex = 1
+            sessionStorage.pageSize = 10
+            this.ready();
+        }
     }
 </script>
 <style scoped>
@@ -296,8 +503,9 @@
 .equipmentUpgrade_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;border-radius: 0 0 4px 4px;}
 .equipmentUpgrade_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}
 .equipmentUpgrade_bottom_bottom{position: absolute;top:40px;bottom: 0;width: 100%;padding: 10px;}
-.upload_div{width: 350px;margin:0 auto;}
+.upload_div{width: 450px;margin:0 auto;}
 .upload_div>div{display: flex;margin-bottom: 5px;}
 .upload_div>div>span{display:inline-block;line-height: 30px;width:35%;}
 .upload_div>div>div{width: 75%;}
+.upload_div>div>input{height: 26px;}
 </style>          
