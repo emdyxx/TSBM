@@ -12,7 +12,8 @@ import TSBManage from '@/components/equipmentManage/TSBManage'  //设备管理--
 import equipmentLocation from '@/components/equipmentManage/equipmentLocation' //设备管理-->设备定位
 import imgcoordinate from '@/components/equipmentManage/imgcoordinate'  //设备管理-->设备定位单张图片路由页面
 import equipmentUpgrade from '@/components/upgradeManage/equipmentUpgrade'  //升级管理-->设备升级
-
+import alarm from '@/components/eventManage/alarm'  //事件管理-->告警信息
+import event from '@/components/eventManage/event'  //事件管理-->事件信息
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -173,7 +174,17 @@ export default new Router({
           path: '/equipmentUpgrade',
           name: 'equipmentUpgrade',
           component: equipmentUpgrade,
-        }
+        },
+        {//事件管理-->告警信息
+          path: '/alarm',
+          name: 'alarm',
+          component: alarm,
+        },
+        {//事件管理-->事件信息
+          path: '/event',
+          name: 'event',
+          component: event,
+        },
       ]
     },
     

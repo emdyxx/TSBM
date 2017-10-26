@@ -85,7 +85,6 @@
                 </div><!-- /.modal-content -->
             </div>
         </div><!-- /.modal -->
-        
     </div>   
 </template>
 <script>

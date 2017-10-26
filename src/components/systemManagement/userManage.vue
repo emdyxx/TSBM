@@ -191,9 +191,9 @@
                 selectedOptions3:[], //分组默认值
                 selectedOptions4:[], //角色默认值
                 opinion:'',
-                add:false,
-                remove:false,
-                delate:false,
+                add:true,
+                remove:true,
+                delate:true,
                 props: {
                     value:'id',
                     label:'roleName'
@@ -581,33 +581,33 @@
             this.tree()
             var that = this;
             //请求用户操作权限
-            $.ajax({
-                type:'post',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'system/getUserPrivilege',
-                data:{
-                    menuId:sessionStorage.menuId
-                },
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        for(var i=0;i<data.result.length;i++){
-                            if(data.result[i].id==1){
-                                that.add = true
-                            }
-                            if(data.result[i].id==2){
-                                that.remove = true
-                            }
-                            if(data.result[i].id==3){
-                                that.delate = true
-                            }
-                        }
-                    }else{
-                        that.errorCode(data.errorCode)
-                    }
-                }
-            })
+            // $.ajax({
+            //     type:'post',
+            //     async:true,
+            //     dataType:'json',
+            //     xhrFields:{withCredentials:true},
+            //     url:that.serverurl+'system/getUserPrivilege',
+            //     data:{
+            //         menuId:sessionStorage.menuId
+            //     },
+            //     success:function(data){
+            //         if(data.errorCode=='0'){
+            //             for(var i=0;i<data.result.length;i++){
+            //                 if(data.result[i].id==1){
+            //                     that.add = true
+            //                 }
+            //                 if(data.result[i].id==2){
+            //                     that.remove = true
+            //                 }
+            //                 if(data.result[i].id==3){
+            //                     that.delate = true
+            //                 }
+            //             }
+            //         }else{
+            //             that.errorCode(data.errorCode)
+            //         }
+            //     }
+            // })
             this.ready()
         }
     }

@@ -23,6 +23,7 @@
               <i v-else-if="site.menuName==='系统管理'" style="left:-3px;" class="left_i iconfont icon-xitongguanli"></i>
               <i v-else-if="site.menuName==='设备管理'" style='left:-1px;font-size:20px;' class="left_i iconfont icon-shebei"></i>
               <i v-else-if="site.menuName==='升级管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
+              <i v-else-if="site.menuName==='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
               {{site.menuName}}
               <i id="left_i_JT" class="iconfont icon-icon left_i_JT"></i>
             </a>
@@ -107,6 +108,7 @@ export default {
       systemManage:false,
       equipmentManage:false,
       upgradeManage:false,
+      eventManage:false,
       sites:{},
       activeName2: 'first',
       bagcolor:'',
@@ -137,6 +139,7 @@ export default {
         this.systemManage = false
         this.equipmentManage = false
         this.upgradeManage = false
+        this.eventManage = false
       }
       //systemManage 系统管理
       if(data=='systemManage'){
@@ -144,6 +147,7 @@ export default {
         this.frequentlyUsedMenu = false
         this.equipmentManage = false
         this.upgradeManage = false
+        this.eventManage = false
       }
       //equipmentManage  设备管理
       if(data=='equipmentManage'){
@@ -151,6 +155,7 @@ export default {
         this.frequentlyUsedMenu = false
         this.systemManage = false
         this.upgradeManage = false
+        this.eventManage = false
       }
       //upgradeManage  升级管理
       if(data=='upgradeManage'){
@@ -158,6 +163,15 @@ export default {
         this.frequentlyUsedMenu = false
         this.systemManage = false
         this.equipmentManage = false
+        this.eventManage = false
+      }
+      //eventManage  事件管理
+      if(data=='eventManage'){
+        this.eventManage = !this.eventManage
+        this.frequentlyUsedMenu = false
+        this.systemManage = false
+        this.equipmentManage = false
+        this.upgradeManage = false
       }
     },
     fun(site){
@@ -172,6 +186,9 @@ export default {
       }
       if(site=='upgradeManage'){
         return this.upgradeManage;
+      }
+      if(site=='eventManage'){
+        return this.eventManage;
       }
     },
     bgcolor(name,id){

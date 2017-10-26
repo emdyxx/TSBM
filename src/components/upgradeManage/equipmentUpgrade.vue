@@ -6,7 +6,7 @@
         <div class="equipmentUpgrade_main">
             <div class="equipmentUpgrade_top">
                 <el-button type="primary" icon="upload2" size="small" @click="upload">升级包上传</el-button>
-                <el-button type="primary" icon='edit' size="small" >升级包分组修改</el-button>
+                <el-button type="primary" icon='edit' size="small" @click="upgradepatchamend">升级包分组修改</el-button>
                 <el-button type="primary" icon='delete2' size="small" >删除升级包</el-button>
             </div>
             <!--上传模态框-->
@@ -147,7 +147,30 @@
             v-loading.body='loading'
             element-loading-text="拼命加载中">
                 <div class="equipmentUpgrade_bottom_top">
-                    检索条件
+                    <div class="equipmentUpgrade_formtwo">
+                        <span>文件名称:</span>
+                        <input type="text" v-model="searchfilename" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                    </div>
+                    <div class="equipmentUpgrade_formtwo">
+                        <span>软件版本号:</span>
+                        <input type="text" v-model="softwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                    </div>
+                    <div class="equipmentUpgrade_formtwo">
+                        <span>硬件版本号:</span>
+                        <input type="text" v-model="hardwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                    </div>
+                    <div class="equipmentUpgrade_formtwo">
+                        <span>升级包状态:</span>
+                        <el-select v-model="value4" size='small' clearable placeholder="请选择">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                 </div>
                 <div class="equipmentUpgrade_bottom_bottom">
                     <el-table
@@ -194,10 +217,17 @@
                         width="120">
                         </el-table-column>
                         <el-table-column
-                        prop="email"
-                        label="邮箱"
+                        label="操作"
                         align='center'
                         show-overflow-tooltip>
+                            <template scope="scope">
+                                <span v-if="scope.row.status==0">
+                                    <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
+                                </span>
+                                <span v-if="scope.row.status==1">
+                                    <el-button type="primary" @click="startusing(scope.row)" size="small">启用</el-button>
+                                </span>   
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div class="block">
@@ -247,7 +277,7 @@
                 selectedOptions:[],//选中分组数据
                 type:'', //升级包类型
                 typetwo:'', //升级包适用范围
-                textarea:'',
+                textarea:'', //描述
                 typedata:false, //升级包适用范围是否显示
                 percentageType:false, //进度条显示
                 percentage:0, //进度条,
@@ -259,10 +289,14 @@
                 upgradeType:'',  //升级包类型
                 filePath:'',  //文件存放路径
                 fileUrl:'',  //文件下载url
+                searchfilename:'', //检索条件
+                softwareversion:'',
+                hardwareversion:'',
+                value4:'',
             }
         },
         methods:{
-            //选中行的change事件
+            //列表选中行的change事件
             handleSelectionChange(val){
                 this.sites = val
             },
@@ -333,6 +367,7 @@
             upload(){
                 var that = this
                 $('#upgrademyModal').modal('show')
+                that.uploadtype = false;
                 if(sessionStorage.departmentId=='1'){
                     this.selected = true
                     //管理员登录请求selected下拉框数据
@@ -463,6 +498,98 @@
                     }
                 })
             },
+            //点击升级包分组修改
+            upgradepatchamend(){
+                var that = this
+                if(this.sites.length=='0'){
+                    that.$message({
+                        message: '请选择升级包进行修改',
+                        type:'error',
+                    })
+                    return;
+                }
+                if(this.sites.length>1){
+                    that.$message({
+                        message: '请选择单个升级包进行修改',
+                        type:'error',
+                    })
+                    return;
+                }
+                if(this.sites.length=='1'){
+                    $('#upgrademyModal').modal('show')
+                    that.uploadtype = true;
+                    that.fileName = that.sites[0].fileName
+                    that.softwareVer = that.sites[0].softwareVer
+                    that.hardwareVer = that.sites[0].hardwareVer
+                    that.md5 = that.sites[0].md5
+                    that.textarea = that.sites[0].summary
+                    if(that.sites[0].upgradeType=='0'){
+                        that.upgradeType = 'tsbg'
+                    }
+                    if(that.sites[0].upgradeType=='1'){
+                        that.upgradeType = 'tsbc'
+                    }
+                    if(that.sites[0].upgradeType=='2'){
+                        that.upgradeType = 'tsba'
+                    }
+                }
+            },
+
+            //列表状态操作
+            startusing(val){
+                var that = this
+                //启用
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/setUpgradeFileStatus',
+                    data:{
+                        upgradeFileId:val.id,
+                        status:0
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '设备启用成功',
+                                type:'success',
+                                showClose: true,
+                            });
+                            that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
+            forbidden(val){
+                var that = this
+                //禁用
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/setUpgradeFileStatus',
+                    data:{
+                        upgradeFileId:val.id,
+                        status:1
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '设备禁用成功',
+                                type:'success',
+                                showClose: true,
+                            });
+                            that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
             //页面数据渲染
             ready(){
                 var that = this;
@@ -475,6 +602,10 @@
                     data:{
                         pageIndex:sessionStorage.pageIndex,
                         pageSize:sessionStorage.pageSize,
+                        fileName:that.searchfilename,
+                        softwareVer:that.softwareversion,
+                        hardwareVer:that.hardwareversion,
+                        status:that.value4
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -486,6 +617,10 @@
                     }
                 })
             },
+            //页面数据搜索
+            search(){
+                this.ready()
+            }
         },
         created(){
             sessionStorage.pageIndex = 1
@@ -502,6 +637,10 @@
 .equipmentUpgrade_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
 .equipmentUpgrade_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;border-radius: 0 0 4px 4px;}
 .equipmentUpgrade_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}
+.equipmentUpgrade_bottom_top>div{display: flex;margin-top: 4px;}
+.equipmentUpgrade_bottom_top>div>span{width: 40%;line-height: 30px;}
+.equipmentUpgrade_bottom_top>div>input{height: 30px;width: 121px;}
+.equipmentUpgrade_bottom_top>div>div{height: 30px;width: 140px;}
 .equipmentUpgrade_bottom_bottom{position: absolute;top:40px;bottom: 0;width: 100%;padding: 10px;}
 .upload_div{width: 450px;margin:0 auto;}
 .upload_div>div{display: flex;margin-bottom: 5px;}
