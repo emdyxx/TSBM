@@ -30,10 +30,10 @@
                                     </el-cascader>
                                 </div>
                             </div>
-                            <div class="departmentManage_form">
+                            <!-- <div class="departmentManage_form">
                                 <span>组织代码:</span>
                                 <input type="text" v-model='departmentManageCode' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织代码">
-                            </div>
+                            </div> -->
                             <div class="departmentManage_form">
                                 <span>组织名称:</span>
                                 <input type="text" v-model='departmentManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
@@ -98,12 +98,12 @@
                         align='center'
                         width="55">
                         </el-table-column>
-                        <el-table-column
+                        <!-- <el-table-column
                         prop="code"
                         align='center'
                         label="组织代号"
                         width="100">
-                        </el-table-column>
+                        </el-table-column> -->
                         <el-table-column
                         prop="departmentName"
                         label="组织名称"

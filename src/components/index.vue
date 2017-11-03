@@ -3,7 +3,8 @@
     <div class="index_nav">
       <div class="index_nav_top">
         <div>
-          <i class="iconfont icon-baidu"></i>
+          <!-- <i class="iconfont icon-baidu"></i> -->
+          <img class="logo" src="../ASSETS/logo.jpg" alt="">
         </div>
         <span>TSBM-管理系统</span>
       </div>
@@ -11,7 +12,7 @@
         <div class="index_nav_bottom_top">
           <img src="../assets/index.jpg" alt="">
           <div>
-            <p>Welcome,</p>
+            <p>您好,</p>
             <p>超级管理员</p>
           </div>
         </div>
@@ -38,6 +39,15 @@
     </div>
     <div class="index_main">
       <div class="index_main_top">
+        <div class="index_main_top_left">
+          <span>版本号:1.0.1</span>
+        </div>
+        <div class="index_main_top_center">
+          <el-button @click="shortcut(1)">设备概览</el-button>
+          <el-button @click="shortcut(2)">设备列表</el-button>
+          <el-button @click="shortcut(3)">地图定位</el-button>
+          <el-button @click="shortcut(4)">数据统计</el-button>
+        </div>
         <div class="index_main_top_right">
           <el-badge :value="12" class="item" style="line-height:0;margin-right:30px;">
             <i class="iconfont icon-jinggao"></i>
@@ -126,8 +136,20 @@ export default {
       }
       // 退出登录
       if(command=='c'){
-        localStorage.username = ''
-        this.$router.push({'path':'/login'})
+        var that = this
+        $.ajax({
+          type:'post',
+          async:true,
+          xhrFields:{withCredentials:true},
+          url:that.serverurl+'loginout',
+          dataType:'json',
+          success:function(data){
+            if(data.errorCode=='0'){
+              localStorage.username = ''
+              that.$router.push({'path':'/login'})
+            }
+          }
+        })
       }
     },
     listclick(data,key){
@@ -234,7 +256,12 @@ export default {
           }
         }
       })
-    }
+    },
+    //快捷方式点击跳转
+    shortcut(val){
+      console.log(val)
+    },
+
     //WebSocket 警告信息
     // WebSocket(){
     //   var ws = new WebSocket(url);
@@ -262,6 +289,8 @@ export default {
       success:function(data){
         if(data.errorCode=='0'){
           that.sites = data.result
+        }else{
+          that.errorCode(data.errorCode)
         }
       },
     })
@@ -269,6 +298,7 @@ export default {
 }
 </script>
 <style scoped>
+.logo{width:25px;height: 25px;}
 #bgcolor{background: #99A9BF !important;border-right: 4px solid #20A0FF !important;color: white !important;}
 
 .index{width: 100%;height: 100%;min-width: 800px;}
@@ -279,6 +309,9 @@ export default {
 .index_nav_top i{font-size: 25px;line-height: 32px;}
 .index_nav_top>span{position: relative;left: -15px;top:20px;}
 .icon-jinggao{display: inline-block;line-height: 25px;font-size:25px;color: #486d93;text-shadow: 0.5px 0.5px #b4c7da, -0.5px -0.5px #375471;}
+.index_main_top_left{width: 100px;position: absolute;height: 70px;line-height: 70px;color: white;font-size: 16px;right: 170px;}
+.index_main_top_center{position: absolute;height: 70px;line-height: 70px;left: 10px;}
+
 .index_main_top_right{position: absolute;right: 2%;height: 70px;line-height: 70px;}
 .index_nav_top,.index_main_top{height: 70px;}
 .index_main_top{background:rgb(94, 135, 176);}

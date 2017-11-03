@@ -608,7 +608,7 @@
 .equipmentLocation_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .equipmentLocation_nav>i{font-size: 23px;}
 .equipmentLocation_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
-.flex-item{ padding: 5px;flex-grow: 1;width: 322px;height: 250px;position: relative;}
+.flex-item{ padding: 5px;width: 25%;height: 250px;position: relative;}
 .flex-item>img{width: 100%;height: 100%;}
 .images{text-align: center;}
 .images>label{width: 300px;height: 200px;border: 1px dashed #d9d9d9;border-radius: 6px; cursor: pointer;text-align: center;line-height: 65px;position: relative;}

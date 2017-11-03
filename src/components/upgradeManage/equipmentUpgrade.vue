@@ -7,7 +7,7 @@
             <div class="equipmentUpgrade_top">
                 <el-button type="primary" icon="upload2" size="small" @click="upload">升级包上传</el-button>
                 <el-button type="primary" icon='edit' size="small" @click="upgradepatchamend">升级包分组修改</el-button>
-                <el-button type="primary" icon='delete2' size="small" >删除升级包</el-button>
+                <el-button type="primary" icon='delete2' size="small" @click="upgradepatchdelete">删除升级包</el-button>
             </div>
             <!--上传模态框-->
             <div class="modal fade" id="upgrademyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -69,7 +69,7 @@
                                         </el-option>
                                     </el-select>
                                 </div>
-                                <div v-if="typedata" style="width:100%;height:200px;flex-direction: column;">
+                                <div v-if="typedata=='0'" style="width:100%;height:220px;flex-direction: column;">
                                     <el-table
                                         ref="multipleTable"
                                         :data="tableData5"
@@ -113,6 +113,40 @@
                                         :total="totalTwo">
                                         </el-pagination>
                                     </div>
+                                </div>
+                                <div v-if="typedata=='1'" style="width:100%;height:220px;flex-direction: column;">
+                                    <el-table
+                                        ref="multipleTable"
+                                        :data="tableData6"
+                                        border
+                                        stripe
+                                        tooltip-effect="dark"
+                                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                        @selection-change="handleSelectionChangethree">
+                                        <el-table-column
+                                        type="selection"
+                                        align='center'
+                                        width="55">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="name"
+                                        align='center'
+                                        label="分组名称"
+                                        width="100">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="softwareVersion"
+                                        label="软件版本"
+                                        align='center'
+                                        width="100">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="hardwareVersion"
+                                        label="硬件版本"
+                                        align='center'
+                                        show-overflow-tooltip>
+                                        </el-table-column>
+                                    </el-table>
                                 </div>
                                 <div>
                                     <span>升级包状态:</span>
@@ -263,7 +297,7 @@
                 value:'',
                 optionstwo:[{value:'0',label:'tsbg'},{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
                 valuetwo:'',
-                optionsthree:[{value:'0',label:'指定设备'},{value:'1',label:'指定分组'},{value:'2',label:'指定型号'}],
+                optionsthree:[{value:0,label:'指定设备'},{value:1,label:'指定分组'},{value:2,label:'指定型号'}],
                 valuethree:'',
                 tableData5:[],
                 sitesTwo:[],
@@ -278,7 +312,7 @@
                 type:'', //升级包类型
                 typetwo:'', //升级包适用范围
                 textarea:'', //描述
-                typedata:false, //升级包适用范围是否显示
+                typedata:'', //升级包适用范围是否显示
                 percentageType:false, //进度条显示
                 percentage:0, //进度条,
                 uploadtype:false,  //上传成功跳转下一页
@@ -293,6 +327,9 @@
                 softwareversion:'',
                 hardwareversion:'',
                 value4:'',
+                tableData6:[],
+                sitesthr:[],
+                opctions:'',
             }
         },
         methods:{
@@ -311,15 +348,27 @@
                 sessionStorage.pageIndex = val
                 this.ready()
             },
+            //分组升级列表选择数据
+            handleSelectionChangethree(val){
+                if(val.length>=2){
+                    this.$message({
+                        message:'只能选取一个分组',
+                        type:'error'
+                    })
+                    return;
+                }
+                this.sitesthr = val
+            },
             //升级包适用范围change事件
             uploadscope(val){
                 var that = this
                 this.typetwo = val
                 var url='';
-                this.typedata = false;
+                this.typedata = '';
                 console.log(val,that.upgradeType)
                 if(val=='0'){
-                    this.typedata = true;
+                    this.sitesthr = []
+                    this.typedata = '0';
                     if(that.upgradeType=='tsbg'){
                         //tsbg
                         url = 'Equipment/getTsbgList'
@@ -349,6 +398,37 @@
                         }
                     })
                 }  
+                if(val=='1'){
+                    that.sitesTwo = []
+                    this.typedata = '1';
+                    var type=''
+                    if(that.upgradeType=='tsbg'){
+                        type = 't_tsbg_group'
+                    }
+                    if(that.upgradeType=='tsbc'){
+                        type = 't_tsbc_group'
+                    }
+                    if(that.upgradeType=='tsba'){
+                        type = 't_tsba_group'
+                    }
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        url:that.serverurl+'Equipment/getDeviceGroup',
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        data:{
+                            table:type
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.tableData6 = data.rows
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
+                }
             },
             //模态框选中行的change事件
             handleSelectionChangeTwo(val){
@@ -367,6 +447,7 @@
             upload(){
                 var that = this
                 $('#upgrademyModal').modal('show')
+                this.opctions = '0'
                 that.uploadtype = false;
                 if(sessionStorage.departmentId=='1'){
                     this.selected = true
@@ -451,8 +532,9 @@
             //升级包上传点击保存
             uploadsave(){
                 var that = this;
-                var upgradeType;
+                var upgradeType='';
                 var equipmentIds=[];
+                var url = ''
                 if(that.upgradeType=='tsbg'){
                     upgradeType='0'
                 }
@@ -462,6 +544,12 @@
                 if(that.upgradeType=='tsba'){
                     upgradeType='2'
                 }
+                if(this.opctions=='0'){
+                    url='upgrade/saveUpgradeFile'
+                }
+                if(this.opctions=='1'){
+                    url='upgrade/editUpgradeFileInfo'
+                }
                 for(var i=0;i<that.sitesTwo.length;i++){
                     equipmentIds.push(that.sitesTwo[i].id)
                 }
@@ -470,8 +558,9 @@
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+'upgrade/saveUpgradeFile',
+                    url:that.serverurl+url,
                     data:{
+                        editUpgradeFileInfo:that.sites[0].id,
                         fileName:that.fileName,
                         filePath:that.filePath,
                         fileUrl:that.fileUrl,
@@ -482,7 +571,8 @@
                         hardwareVer:that.hardwareVer,
                         status:that.value,
                         summary:that.textarea,
-                        equipmentIds:equipmentIds.join(',')
+                        equipmentIds:equipmentIds.join(','),
+                        groupids:that.sitesthr[0].id
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -517,11 +607,13 @@
                 }
                 if(this.sites.length=='1'){
                     $('#upgrademyModal').modal('show')
+                    this.opctions = '1'
                     that.uploadtype = true;
                     that.fileName = that.sites[0].fileName
                     that.softwareVer = that.sites[0].softwareVer
                     that.hardwareVer = that.sites[0].hardwareVer
                     that.md5 = that.sites[0].md5
+                    that.value = that.sites[0].status
                     that.textarea = that.sites[0].summary
                     if(that.sites[0].upgradeType=='0'){
                         that.upgradeType = 'tsbg'
@@ -532,6 +624,48 @@
                     if(that.sites[0].upgradeType=='2'){
                         that.upgradeType = 'tsba'
                     }
+                    that.valuethree = that.sites[0].upgradeOrder
+                }
+            },
+            //删除升级包
+            upgradepatchdelete(){
+                var that = this
+                if(this.sites.length=='0'){
+                    that.$message({
+                        message: '请选择升级包进行删除',
+                        type:'error',
+                    })
+                    return;
+                }
+                if(this.sites.length>1){
+                    that.$message({
+                        message: '请选择单个升级包进行删除',
+                        type:'error',
+                    })
+                    return;
+                }
+                if(this.sites.length=='1'){
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'upgrade/delUpgradeFile',
+                        data:{
+                            upgradeFileId:that.sites[0].id
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.$message({
+                                    message:'删除成功',
+                                    type:'success'
+                                })
+                                that.ready()
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
                 }
             },
 

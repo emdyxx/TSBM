@@ -33,8 +33,10 @@
                             </div>
                             <div class="userManage_form">
                                 <span>性别:</span>
-                                <el-radio class="radio" v-model="radios" :label="0" style="width:30%;">男</el-radio>
-                                <el-radio class="radio" v-model="radios" :label="1" style="margin-top:10px;width:30%;">女</el-radio>
+                                <el-radio-group v-model="radios">
+                                    <el-radio class="radio" :label="0" style="width:30%;">男</el-radio>
+                                    <el-radio class="radio" :label="1" style="margin-top:10px;width:30%;">女</el-radio>
+                                </el-radio-group>
                             </div>
                             <div class="userManage_form">
                                 <span>电话:</span>
@@ -58,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="userManage_form">
-                                <span style="width:56px;">角色</span>
+                                <!-- <span style="width:56px;">角色</span>
                                 <div>
                                     <el-cascader
                                         :options="optionstwo"
@@ -68,7 +70,12 @@
                                         v-model="selectedOptions4"
                                         size='small'>
                                     </el-cascader>
-                                </div>
+                                </div> -->
+                                <span style="width:56px;">权限</span>
+                                <el-radio-group v-model="radio2">
+                                    <el-radio class="radio" :label="0">全部权限</el-radio>
+                                    <el-radio class="radio" :label="1">只读权限</el-radio>
+                                </el-radio-group>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -183,13 +190,14 @@
                 userManageUsername:'',
                 userManagePassword:'',
                 userManageName:'',
-                radios: '0',
+                radios: 0,
                 userManagePhone:'',
                 userManageEmail:'',
                 options: [], //分组数据
                 optionstwo:[], //角色数据
                 selectedOptions3:[], //分组默认值
-                selectedOptions4:[], //角色默认值
+                radio2:0,//权限
+                // selectedOptions4:[], //角色默认值
                 opinion:'',
                 add:true,
                 remove:true,
@@ -390,7 +398,8 @@
                             mobile:that.userManagePhone,
                             email:that.userManageEmail,
                             departmentId:departmentId,
-                            roleId:that.selectedOptions4[0]
+                            // roleId:that.selectedOptions4[0]
+                            privilegeType:that.radio2
                         },
                         success:function(data){
                             console.log(data.errorCode)
@@ -428,7 +437,8 @@
                             mobile:that.userManagePhone,
                             email:that.userManageEmail,
                             departmentId:departmentId,
-                            roleId:that.selectedOptions4[0]
+                            // roleId:that.selectedOptions4[0]
+                            privilegeType:that.radio2
                         },
                         success:function(data){
                             console.log(data.errorCode)
@@ -556,26 +566,27 @@
                 if(value.length=='3'){
                     data = {departmentId:value[2]};                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    a = {departmentId:value[2]}
                 }
-                $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'role/getRoleByDepartmnet',
-                    data:data,
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.optionstwo = data.result
-                        }else{
-                            that.errorCode(data.errorCode)
-                        }
-                    }
-                })
+                //角色请求
+                // $.ajax({
+                //     type:'get',
+                //     async:true,
+                //     dataType:'json',
+                //     xhrFields:{withCredentials:true},
+                //     url:that.serverurl+'role/getRoleByDepartmnet',
+                //     data:data,
+                //     success:function(data){
+                //         if(data.errorCode=='0'){
+                //             that.optionstwo = data.result
+                //         }else{
+                //             that.errorCode(data.errorCode)
+                //         }
+                //     }
+                // })
             },
             //角色弹出疼下拉框change事件
-            handletwoChange(value){
-                this.selectedOptions4=value
-            }
+            // handletwoChange(value){
+            //     this.selectedOptions4=value
+            // }
         },
         created(){
             this.tree()

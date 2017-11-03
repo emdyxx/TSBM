@@ -1,91 +1,102 @@
 <template>
-    <div class="imgcoordinate" @mouseup="uplift" @mousedown="press">
-        <img :src=imgUrl alt="">
-        <template v-for="(item,key) in imgdata">
-            <i v-if='item.equipmentType==="0"' :style="`left:${item.x}px;top:${item.y}px;color:#F4EA2A;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
-            <i v-if='item.equipmentType==="1"' :style="`left:${item.x}px;top:${item.y}px;color:#1986F2;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
-            <i v-if='item.equipmentType==="2"' :style="`left:${item.x}px;top:${item.y}px;color:#1AFA29;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
-        </template>
-        
-        <div class="contextmenu" :style="styleObject" v-if="opction">
-            <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加WIFI</el-button>
-            <el-button @click="Goback" type="primary" size="small" icon="arrow-left">返回上一页</el-button>
-            <el-button @click="cancel" type="primary" size="small" icon="circle-cross">取消</el-button>
+    <div class="imgcoordinate_A">
+        <div class="imgcoordinate_nav">
+            设备管理<i class="iconfont icon-icon"></i>设备定位
         </div>
-        <!-- 模态框（Modal） -->
-        <div class="modal fade" id="myModalWIFI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog" style="width:650px;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">添加WIFI</h4>
-                    </div>
-                    <div class="modal-body">
-                        <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
-                        <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#f4ea2a;margin-right:20px;">tsbg</i>
-                        <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1afa29;">tsba</i>
-                        <div style="margin-top:30px;">
-                            <el-radio-group v-model="radio2" @change="selected">
-                                <el-radio :label="1">tsbc</el-radio>
-                                <el-radio :label="0">tsbg</el-radio>
-                                <el-radio :label="2">tsba</el-radio>
-                            </el-radio-group>
-                        </div>
-                        <div class="equipment">
-                           <el-table
-                                ref="multipleTable"
-                                :data="opctionsdata"
-                                border
-                                stripe
-                                tooltip-effect="dark"
-                                highlight-current-row
-                                @selection-change="handleCurrentChange"
-                                style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
-                                <el-table-column
-                                type="selection"
-                                align='center'
-                                width="55">  
-                                </el-table-column>
-                                <el-table-column
-                                prop="nickname"
-                                align='center'
-                                label="设备名称"
-                                width="160">
-                                </el-table-column>
-                                <el-table-column
-                                prop="lanIPX"
-                                label="ip地址"
-                                align='center'
-                                width="180">
-                                </el-table-column>
-                                <el-table-column
-                                prop="hardwardVersion"
-                                label="硬件型号"
-                                align='center'
-                                show-overflow-tooltip>
-                                </el-table-column>
-                            </el-table>
-                            <div class="block">
-                                <el-pagination
-                                @size-change="sizechange"
-                                @current-change="currentchange"
-                                :current-page="pagechange"
-                                :page-sizes="[10, 20, 30, 50]"
-                                :page-size="sizes"
-                                layout="total, sizes, prev, pager, next, jumper"
-                                :total="total">
-                                </el-pagination>
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" @click="ZBsubmit" class="btn btn-primary">保存</button>
-                    </div>
-                </div><!-- /.modal-content -->
+        <div class="imgcoordinate_main">
+            <div class="imgcoordinate_A_top">
+                <el-button @click="Goback" type="primary" size='small' icon="arrow-left">返回上一级</el-button>
             </div>
-        </div><!-- /.modal -->
-    </div>   
+            <div class="imgcoordinate_A_bottom">
+                <div class="imgcoordinate" @mouseup="uplift" @mousedown="press">
+                    <img :src=imgUrl alt="">
+                    <template v-for="(item,key) in imgdata">
+                        <i v-if='item.equipmentType==="0"' :style="`left:${item.x}px;top:${item.y}px;color:#F4EA2A;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
+                        <i v-if='item.equipmentType==="1"' :style="`left:${item.x}px;top:${item.y}px;color:#1986F2;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
+                        <i v-if='item.equipmentType==="2"' :style="`left:${item.x}px;top:${item.y}px;color:#1AFA29;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
+                    </template>
+                    
+                    <div class="contextmenu" :style="styleObject" v-if="opction">
+                        <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加WIFI</el-button>
+                        <el-button @click="cancel" type="primary" size="small" icon="circle-cross">取消</el-button>
+                    </div>
+                    <!-- 模态框（Modal） -->
+                    <div class="modal fade" id="myModalWIFI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" style="width:650px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">添加WIFI</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
+                                    <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#f4ea2a;margin-right:20px;">tsbg</i>
+                                    <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1afa29;">tsba</i>
+                                    <div style="margin-top:30px;">
+                                        <el-radio-group v-model="radio2" @change="selected">
+                                            <el-radio :label="1">tsbc</el-radio>
+                                            <el-radio :label="0">tsbg</el-radio>
+                                            <el-radio :label="2">tsba</el-radio>
+                                        </el-radio-group>
+                                    </div>
+                                    <div class="equipment">
+                                    <el-table
+                                            ref="multipleTable"
+                                            :data="opctionsdata"
+                                            border
+                                            stripe
+                                            tooltip-effect="dark"
+                                            highlight-current-row
+                                            @selection-change="handleCurrentChange"
+                                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                                            <el-table-column
+                                            type="selection"
+                                            align='center'
+                                            width="55">  
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="nickname"
+                                            align='center'
+                                            label="设备名称"
+                                            width="160">
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="lanIPX"
+                                            label="ip地址"
+                                            align='center'
+                                            width="180">
+                                            </el-table-column>
+                                            <el-table-column
+                                            prop="hardwardVersion"
+                                            label="硬件型号"
+                                            align='center'
+                                            show-overflow-tooltip>
+                                            </el-table-column>
+                                        </el-table>
+                                        <div class="block">
+                                            <el-pagination
+                                            @size-change="sizechange"
+                                            @current-change="currentchange"
+                                            :current-page="pagechange"
+                                            :page-sizes="[10, 20, 30, 50]"
+                                            :page-size="sizes"
+                                            layout="total, sizes, prev, pager, next, jumper"
+                                            :total="total">
+                                            </el-pagination>
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" @click="ZBsubmit" class="btn btn-primary">保存</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div>
+                    </div><!-- /.modal -->
+                </div>   
+            </div>
+        </div>
+    </div>
 </template>
 <script>
     export default{
@@ -336,8 +347,15 @@
     }
 </script>
 <style scoped>
-.imgcoordinate{width: 100%;height: 100%;padding: 10px;position: relative;overflow: auto;}
-.imgcoordinate>img{width: 1600px;height: 850px;opacity: 0.6;}
+.imgcoordinate_A{width: 100%;height: 100%;padding: 15px;position: relative;}
+.imgcoordinate_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
+.imgcoordinate_nav>i{font-size: 23px;}
+.imgcoordinate_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.imgcoordinate_A_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
+.imgcoordinate_A_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;}
+
+.imgcoordinate{width: 100%;height: 100%;position: relative;overflow: auto;}
+.imgcoordinate>img{width: 100%;height: 100%;opacity: 0.6;}
 .contextmenu{width: 110px;background: #D3DCE6;box-shadow: 1px 1px 10px;border-radius:3px;position: absolute;}
 .contextmenu>button{margin:0;margin-bottom: 5px;width: 100%;}
 .img-i{position: absolute;font-size: 30px;}

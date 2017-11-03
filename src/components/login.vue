@@ -21,7 +21,8 @@
           <el-button type="info" @click="login">登录</el-button>
           <hr>
           <h1>
-            <i class="iconfont icon-baidu"></i>
+            <!-- <i class="iconfont icon-baidu"></i> -->
+            <img class="logo" src="../ASSETS/logo.jpg" alt="">
             <span>快越科技</span>
           </h1>
           <div>©2017 All Rights Reserved.</div>
@@ -103,11 +104,11 @@ export default {
               return;
             }
             if(data.errorCode=='0'){
-              that.$message({
-                message: '登陆成功',
-                type: 'success',
-                showClose: true,
-              });
+              // that.$message({
+              //   message: '登陆成功',
+              //   type: 'success',
+              //   showClose: true,
+              // });
               sessionStorage.userName = data.result[0].userName
               sessionStorage.departmentId = data.result[0].departmentId
               that.$router.push({'path':'/index'})
@@ -174,4 +175,5 @@ export default {
 .login_popur>h1:nth-of-type(2){font-size: 27px;color: #73879C;margin: 35px 0 30px 0;font: normal 25px Helvetica, Arial, sans-serif;}
 .login_popur>h1:nth-of-type(2)>i{font-size: 30px;display: inline-block;position: relative;top:3px;font-weight: 0;}
 .login_popur>div:last-child{margin:0;color: #73879C;font-size: 14px;}
+.logo{width: 30px;height: 30px;margin-top: -4px;}
 </style>
