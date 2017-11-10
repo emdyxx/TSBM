@@ -85,7 +85,7 @@ export default {
           },
           success:function(data){
             console.log(data)
-            if(data.errorCode=='1005'){
+            if(data.errorCode=='2001'){
               that.$message({
                 message: '验证码错误',
                 type: 'error',
@@ -94,7 +94,7 @@ export default {
               $('#codeimg').attr('src','http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
               return;
             }
-            if(data.errorCode=='1010'){
+            if(data.errorCode=='2004'){
                 that.$message({
                   message: '账号密码错误',
                   type: 'error',

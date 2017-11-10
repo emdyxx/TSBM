@@ -5,30 +5,11 @@
         </div>
         <div class="event_main">
             <div class="event_top">
-                <input type="checkbox" v-model="checked">
-                <span>显示历史告警信息</span>
-                <span style="padding-left:30px;">
-                    <span>告警级别:</span>
-                    <el-select v-model="value" size='small' style="width:110px;" placeholder="请选择">
-                        <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
+                <span style="padding-left:15px;">
+                    <span>事件内容:</span>
+                    <el-input v-model="content" size='small' style="width:110px;" placeholder="请输入事件内容"></el-input>
                 </span>
-                <span style="padding-left:30px;">
-                    <span>设备类型:</span>
-                    <el-select v-model="value2" size='small' style="width:110px;" placeholder="请选择">
-                        <el-option
-                        v-for="item in options2"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
-                </span>
+                <el-button @click="eventsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
             </div>
             <div class="event_bottom"
             v-loading.body='loading'
@@ -47,40 +28,20 @@
                     width="55">
                     </el-table-column>
                     <el-table-column
-                    prop="username"
+                    prop="MAC"
                     align='center'
-                    label="设备名称"
-                    width="180">
+                    label="MAC"
+                    width="200">
                     </el-table-column>
                     <el-table-column
-                    prop="fullName"
-                    label="告警内容"
-                    align='center'
-                    width="180">
-                    </el-table-column>
-                    <el-table-column
-                    prop="departmentName"
-                    label="告警级别"
-                    align='center'
-                    width="180">
-                    </el-table-column>
-                    <el-table-column
-                    prop="mobile"
-                    label="设备类型"
-                    align='center'
-                    width="180">
-                    </el-table-column>
-                    <el-table-column
-                    prop="mobile"
-                    label="告警时间"
+                    prop="content"
+                    label="事件内容"
                     align='center'>
                     </el-table-column>
                     <el-table-column
-                    label="操作"
-                    width="90">
-                        <template scope="scope">
-                            <el-button @click="event(scope.row)" type="text" size="small">管理设备</el-button>
-                        </template>
+                    prop='ts'
+                    label="时间"
+                    width="200">
                     </el-table-column>
                 </el-table>
                 <div class="block">
@@ -103,6 +64,7 @@
         name: 'index',
         data () {
             return {
+                serverurl:localStorage.serverurl,
                 loading:false,
                 sites:[],
                 checked:false,
@@ -114,6 +76,7 @@
                 pageSize:10,
                 pageIndex:1,
                 total:10,
+                content:'',
             }
         },
         methods:{
@@ -131,14 +94,37 @@
                 this.pageIndex = val
                 this.ready()
             },
-            //操作点击事件
-            event(val){
-                console.log(val)
+            //搜索
+            eventsearch(){
+                this.ready()
             },
             //页面渲染
-            ready(){}
+            ready(){
+                var that = this;
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'event/getEventList',
+                    data:{
+                        pageIndex:that.pageIndex,
+                        pageSize:that.pageSize,
+                        content:that.content
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.tableData3 = data.rows
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            }
         },
-        created(){}
+        created(){
+            this.ready()
+        }
     }
 </script>
 <style scoped>

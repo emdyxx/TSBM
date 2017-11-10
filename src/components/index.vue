@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div class="index_nav">
-      <div class="index_nav_top">
+      <div class="index_nav_top" @click="echart">
         <div>
           <!-- <i class="iconfont icon-baidu"></i> -->
           <img class="logo" src="../ASSETS/logo.jpg" alt="">
@@ -25,6 +25,7 @@
               <i v-else-if="site.menuName==='设备管理'" style='left:-1px;font-size:20px;' class="left_i iconfont icon-shebei"></i>
               <i v-else-if="site.menuName==='升级管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
               <i v-else-if="site.menuName==='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
+              <i v-else-if="site.menuName==='统计信息'" style="font-size:19px;left:-4px;" class="left_i iconfont icon-gailan"></i>
               {{site.menuName}}
               <i id="left_i_JT" class="iconfont icon-icon left_i_JT"></i>
             </a>
@@ -49,9 +50,8 @@
           <el-button @click="shortcut(4)">数据统计</el-button>
         </div>
         <div class="index_main_top_right">
-          <el-badge :value="12" class="item" style="line-height:0;margin-right:30px;">
-            <i class="iconfont icon-jinggao"></i>
-            <!-- <el-button size="small">评论</el-button> -->
+          <el-badge :value=value class="item" style="line-height:0;margin-right:30px;">
+            <i @click="shortcut(5)" class="iconfont icon-jinggao"></i>
           </el-badge>
           <el-dropdown trigger="click" @command="handleCommand">
             <span class="el-dropdown-link" style="color: white;font-size:16px;">
@@ -73,10 +73,10 @@
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       <h4 class="modal-title" id="myModalLabel">个人设置</h4>
                   </div>
-                  <div class="modal-body" style="height:190px;">
-                    <el-tabs v-model="activeName2" type="card" style="position:relative;">
-                      <el-tab-pane label="用户管理" name="first">
-                         <form class="systemsettingspsd">
+                  <div class="modal-body">
+                    <el-collapse v-model="activeName" accordion>
+                      <el-collapse-item title="密码修改" name="1">
+                        <form class="systemsettingspsd">
                             <label for="" style="margin-top:8px;">
                               原始密码:
                               <input type="password" v-model="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
@@ -90,13 +90,21 @@
                               <input type="password" v-model="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
                             </label> 
                          </form>
-                      </el-tab-pane>
-                      <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-                    </el-tabs>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                      <button type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
+                         <button style="margin-left:150px;" type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
+                      </el-collapse-item>
+                      <el-collapse-item title="常用菜单设置" name="2">
+                        <el-tree
+                          :data="data2"
+                          show-checkbox
+                          node-key="id"
+                          accordion
+                          :default-checked-keys=checked
+                          :props="defaultProps"
+                          ref="tree">
+                        </el-tree>
+                        <button style="margin-left:150px;margin-top:5px;" type="button" @click="revampPasswordtwo" class="btn btn-primary">提交更改</button>
+                      </el-collapse-item>
+                    </el-collapse>
                   </div>
               </div><!-- /.modal-content -->
           </div>
@@ -119,6 +127,7 @@ export default {
       equipmentManage:false,
       upgradeManage:false,
       eventManage:false,
+      statisticsInfo:false,
       sites:{},
       activeName2: 'first',
       bagcolor:'',
@@ -126,13 +135,41 @@ export default {
       oldPassword:'',
       newPassword:'',
       newPasswordTwo:'',
+      activeName: '1',
+      checked:[],
+      data2:[],
+      defaultProps:{
+        children: 'sonMenu',
+        label: 'menuName'
+      },
+      value:'8',
     }
   },
   methods:{
     handleCommand(command){
+      var that = this
       //个人设置
       if(command=='a'){
         $('#systemsettings').modal('show')
+        $.ajax({
+          type:'post',
+          async:true,
+          url:that.serverurl+'system/getMenu',
+          dataType:'json',
+          xhrFields:{withCredentials:true},
+          data:{},
+          success:function(data){
+            if(data.errorCode=='0'){
+              for(var i=0;i<data.result[0].sonMenu.length;i++){
+                that.checked.push(data.result[0].sonMenu[i].id)
+              }
+              that.data2 = data.result
+              that.data2.splice(0,1)
+            }else{
+              that.error_code(data.errorCode)
+            }
+          }
+        })
       }
       // 退出登录
       if(command=='c'){
@@ -162,6 +199,7 @@ export default {
         this.equipmentManage = false
         this.upgradeManage = false
         this.eventManage = false
+        this.statisticsInfo = false
       }
       //systemManage 系统管理
       if(data=='systemManage'){
@@ -170,6 +208,7 @@ export default {
         this.equipmentManage = false
         this.upgradeManage = false
         this.eventManage = false
+        this.statisticsInfo = false
       }
       //equipmentManage  设备管理
       if(data=='equipmentManage'){
@@ -178,6 +217,7 @@ export default {
         this.systemManage = false
         this.upgradeManage = false
         this.eventManage = false
+        this.statisticsInfo = false
       }
       //upgradeManage  升级管理
       if(data=='upgradeManage'){
@@ -186,6 +226,7 @@ export default {
         this.systemManage = false
         this.equipmentManage = false
         this.eventManage = false
+        this.statisticsInfo = false
       }
       //eventManage  事件管理
       if(data=='eventManage'){
@@ -194,6 +235,16 @@ export default {
         this.systemManage = false
         this.equipmentManage = false
         this.upgradeManage = false
+        this.statisticsInfo = false
+      }
+      //statisticsInfo 统计信息
+      if(data=='statisticsInfo'){
+        this.statisticsInfo = !this.statisticsInfo
+        this.frequentlyUsedMenu = false
+        this.systemManage = false
+        this.equipmentManage = false
+        this.upgradeManage = false
+        this.eventManage = false
       }
     },
     fun(site){
@@ -211,6 +262,9 @@ export default {
       }
       if(site=='eventManage'){
         return this.eventManage;
+      }
+      if(site=='statisticsInfo'){
+        return this.statisticsInfo
       }
     },
     bgcolor(name,id){
@@ -239,43 +293,70 @@ export default {
           newPwd:that.newPassword
         },
         success:function(data){
-          if(data.error_code==0){
-            this.$message({
+          if(data.errorCode==0){
+            that.$message({
               message: '密码修改成功',
               type: 'success',
               showClose: true,
             });
             that.$router.push({'path':'/login'})
+          }else{
+            that.error_code(data.errorCode)
           }
-          if(data.error_code=='1006'){
-            this.$message({
-              message: '原密码错误',
-              type: 'error',
+        }
+      })
+    },
+    //常用菜单修改
+    revampPasswordtwo(){
+      var that = this
+      var array = []
+      var check = this.$refs.tree.getCheckedKeys()
+      for(var i=0;i<this.data2.length;i++){
+        array.push(this.data2[i].id)
+      }
+      for(var i = 0;i<array.length;i++){
+        for(var j=0;j<check.length;j++){
+          if(array[i]==check[j]){
+            check.splice(j,1)
+          }
+        }
+      }
+      $.ajax({
+        type:'post',
+        async:true,
+        url:that.serverurl+'user/setFrequentlyUsedMenu',
+        dataType:'json',
+        xhrFields:{withCredentials:true},
+        data:{
+          menuIds:check.join(',')
+        },
+        success:function(data){
+          if(data.errorCode=='0'){
+            that.$message({
+              message: '常用菜单设置成功',
+              type: 'success',
               showClose: true,
             });
+            $('#systemsettings').modal('hide')
+          }else{
+            that.error_code(data.errorCode)
           }
         }
       })
     },
     //快捷方式点击跳转
     shortcut(val){
-      console.log(val)
+      if(val == '5'){
+        this.$router.push({'path':'/alarm'})
+      }
     },
-
-    //WebSocket 警告信息
-    // WebSocket(){
-    //   var ws = new WebSocket(url);
-    //   ws.onopen = function(){
-    //     alert('socket已连接上');
-    //   }
-    //   ws.onmessage = function (evt){
-    //     console.log(evt)
-    //   }
-    // },
+    //点击事件-->跳转图表页面
+    echart(){
+      this.$router.push({'path':'/index'})
+    },
   },
   created(){
     var that = this;
-    // WebSocket(),
     //导航栏渲染请求
     $.ajax({
       type:'post',
@@ -293,7 +374,14 @@ export default {
           that.errorCode(data.errorCode)
         }
       },
-    })
+    });
+    var ws = new WebSocket('ws://192.168.70.83/TSBM-Manager/webscoketAlarm');
+    ws.onopen = function(){
+      // alert('socket已连接上');
+    }
+    ws.onmessage = function (evt){
+      that.value = evt.data.alarmTotal
+    }
   }
 }
 </script>

@@ -225,11 +225,11 @@
                 var that = this;
                 if(that.roleManageName==''||that.roleManageID==''||that.roleManageRemark==''){
                     that.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
+                        message: '必填字段不能为空',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
                 }
                 that.menuIds=[];
                 that.operationIds=[];

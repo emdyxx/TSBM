@@ -5,9 +5,9 @@
         </div>
         <div class="alarm_main">
             <div class="alarm_top">
-                <input type="checkbox" v-model="checked">
-                <span>显示历史告警信息</span>
-                <span style="padding-left:30px;">
+                <!-- <input type="checkbox" v-model="checked">
+                <span>显示历史告警信息</span> -->
+                <span style="padding-left:15px;">
                     <span>告警级别:</span>
                     <el-select v-model="value" size='small' style="width:110px;" placeholder="请选择">
                         <el-option
@@ -18,7 +18,7 @@
                         </el-option>
                     </el-select>
                 </span>
-                <span style="padding-left:30px;">
+                <span style="padding-left:15px;">
                     <span>设备类型:</span>
                     <el-select v-model="value2" size='small' style="width:110px;" placeholder="请选择">
                         <el-option
@@ -29,6 +29,15 @@
                         </el-option>
                     </el-select>
                 </span>
+                <span style="padding-left:15px;">
+                    <span>MAC:</span>
+                    <el-input v-model="MAC" size='small' style="width:110px;" placeholder="请输入内容"></el-input>
+                </span>
+                <span style="padding-left:15px;">
+                    <span>设备型号:</span>
+                    <el-input v-model="hardwareVersion" size='small' style="width:110px;" placeholder="请输入内容"></el-input>
+                </span>
+                <el-button @click="alertsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
             </div>
             <div class="alarm_bottom"
             v-loading.body='loading'
@@ -47,31 +56,38 @@
                     width="55">
                     </el-table-column>
                     <el-table-column
-                    prop="username"
+                    prop="nickname"
                     align='center'
                     label="设备名称"
                     width="180">
                     </el-table-column>
                     <el-table-column
-                    prop="fullName"
+                    prop="content"
                     label="告警内容"
                     align='center'
                     width="180">
                     </el-table-column>
                     <el-table-column
-                    prop="departmentName"
                     label="告警级别"
                     align='center'
                     width="180">
+                        <template scope="scope">
+                            <span v-if="scope.row.departmentName==='0'" style='color:#00CC00;'>
+                                紧急
+                            </span>
+                            <span v-else-if="scope.row.departmentName==='1'" style='color:#FF0000;'>
+                                严重
+                            </span>
+                        </template>  
                     </el-table-column>
                     <el-table-column
-                    prop="mobile"
+                    prop="hardwareVersion"
                     label="设备类型"
                     align='center'
                     width="180">
                     </el-table-column>
                     <el-table-column
-                    prop="mobile"
+                    prop="ts"
                     label="告警时间"
                     align='center'>
                     </el-table-column>
@@ -79,7 +95,7 @@
                     label="操作"
                     width="90">
                         <template scope="scope">
-                            <el-button @click="alarm(scope.row)" type="text" size="small">管理设备</el-button>
+                            <el-button @click="alarm(scope.row)" type="primary" size="small">查看详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -95,6 +111,55 @@
                     </el-pagination>
                 </div>
             </div>
+            <!-- 查看详情模态框 -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:550px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">详情</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>设备名称</td>
+                                        <td>{{detail.nickname}}</td>
+                                        <td>MAC地址</td>
+                                        <td>{{detail.MAC}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>告警级别</td>
+                                        <td>
+                                            <span v-if="detail.type=='1'">一级</span>
+                                            <span v-if="detail.type=='2'">二级</span>
+                                            <span v-if="detail.type=='3'">三级</span>
+                                        </td>
+                                        <td>设备类型</td>
+                                        <td>{{detail.type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>告警时间</td>
+                                        <td>{{detail.ts}}</td>
+                                        <td>设备型号</td>
+                                        <td>{{detail.hardwareVersion}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>IP地址</td>
+                                        <td>{{detail.lanIPX}}</td>
+                                        <td>启动时间</td>
+                                        <td>{{detail.startTime}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>告警内容</td>
+                                        <td colspan="3">{{detail.content}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div><!-- /.modal -->
         </div>
     </div>
 </template>
@@ -103,9 +168,10 @@
         name: 'index',
         data () {
             return {
+                serverurl:localStorage.serverurl,
                 loading:false,
                 sites:[],
-                checked:false,
+                // checked:false,
                 value:'',
                 options:[{value:'0',label:'全部'},{value:'1',label:'紧急'},{value:'2',label:'严重'},{value:'3',label:'重要'},{value:'4',label:'次要'}],
                 value2:'',
@@ -114,6 +180,9 @@
                 pageSize:10,
                 pageIndex:1,
                 total:10,
+                MAC:'',
+                hardwareVersion:'',
+                detail:{},
             }
         },
         methods:{
@@ -131,14 +200,66 @@
                 this.pageIndex = val
                 this.ready()
             },
-            //操作点击事件
+            //查看详情点击事件
             alarm(val){
-                console.log(val)
+                $('#myModal').modal('show')
+                var that = this
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'event/getAlarmInfo',
+                    data:{
+                        alarmId:val.id
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.detail = data.result
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
+            //页面搜索
+            alertsearch(){
+                this.ready()
             },
             //页面渲染
-            ready(){}
+            ready(){
+                var that = this;
+                that.loading = true
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'event/getAlarmList',
+                    data:{
+                        pageIndex:that.pageIndex,
+                        pageSize:that.pageSize,
+                        level:that.value,
+                        type:that.value2,
+                        MAC:that.MAC,
+                        hardwareVersion:that.hardwareVersion
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.tableData3 = data.rows
+                            that.total = data.total
+                            that.loading = false
+                        }else{
+                            that.errorCode(data.errorCode)
+                            that.loading = false
+                        }
+                    }
+                })
+            }
         },
-        created(){}
+        created(){
+            this.ready()
+        }
     }
 </script>
 <style scoped>

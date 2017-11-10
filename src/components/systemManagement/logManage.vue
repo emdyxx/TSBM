@@ -264,6 +264,7 @@
                             that.loading = false
                         }else{
                             that.errorCode(data.errorCode)
+                            that.loading = false
                         }
                     }
                })

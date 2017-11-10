@@ -2,13 +2,14 @@
     <div class="equipmentLocation">
         <div class="equipmentLocation_nav">
             设备管理<i class="iconfont icon-icon"></i>设备定位
-            <el-cascader
-                v-if='selected'
-                :options="options"
-                v-model="selectedOptions"
-                @change="handleChange"
-                style="line-height:25px;">
-            </el-cascader>
+            <el-select v-if='selected' v-model="selectedOptions" @change="handleChange" placeholder="请选择">
+                <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
             <el-button type="primary" style="position:absolute;right:15px;" @click="uploadingimg">上传厂区图片</el-button>
             <!-- 模态框（Modal） -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -139,7 +140,7 @@
                 dataUrl:'',
                 sites:[],
                 options:[],
-                selectedOptions:[],
+                selectedOptions:'',
                 selected:false,
                 imgkeyid:'',
                 type:'1',
@@ -179,34 +180,30 @@
             },
             //管理员选择厂区change事件
             handleChange(val){
-                console.log(val)
                 var that = this;
-                if(val.length=='2'){
-                    this.departmentId = val[1]
-                    //厂区定位请求厂区图片
-                    if(that.tabname=='1'){
-                        $.ajax({
-                            type:'get',
-                            async:true,
-                            dataType:'json',
-                            xhrFields:{withCredentials:true},
-                            url:that.serverurl+'upload/getPlan',
-                            data:{
-                                departmentId:that.departmentId
-                            },
-                            success:function(data){
-                                if(data.errorCode=='0'){
-                                    that.sites = data.result
-                                }else{
-                                    that.errorCode(data.errorCode)
-                                }
+                //厂区定位请求厂区图片
+                if(that.tabname=='1'){
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'upload/getPlan',
+                        data:{
+                            departmentId:that.departmentId
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.sites = data.result
+                            }else{
+                                that.errorCode(data.errorCode)
                             }
-                        })
-                    }
-                    //百度地图定位请求定位数据以及坐标点
-                    if(that.tabname=='2'){
-                        that.readytwo()
-                    }
+                        }
+                    })
+                }
+                //百度地图定位请求定位数据以及坐标点
+                if(that.tabname=='2'){
+                    that.readytwo()
                 }
             },
             // 图片转base64位
@@ -576,10 +573,6 @@
         created(){
             var that = this
             if(sessionStorage.departmentId=='1'){
-                this.$message({
-                    message: '温馨提示:管理员需要选择厂区查看图片',
-                    showClose: true,
-                });
                 that.selected = true
                 //管理员登录请求selected下拉框数据
                 $.ajax({
@@ -591,7 +584,9 @@
                     data:{},
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.options = data.result
+                            that.options = data.result[0].children
+                            that.selectedOptions = data.result[0].children[0].value
+                            that.departmentId = data.result[0].children[0].value
                         }else{
                             that.errorCode(data.errorCode)
                         }

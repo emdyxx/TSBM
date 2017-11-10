@@ -236,7 +236,7 @@
                         prop="md5"
                         label="MD5"
                         align='center'
-                        width="200">
+                        width="320">
                         </el-table-column>
                         <el-table-column
                         prop="hardwareVer"
@@ -247,13 +247,12 @@
                         <el-table-column
                         prop="summary"
                         label="描述"
-                        align='center'
-                        width="120">
+                        align='center'>
                         </el-table-column>
                         <el-table-column
                         label="操作"
                         align='center'
-                        show-overflow-tooltip>
+                        width="90">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0">
                                     <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
@@ -303,9 +302,9 @@
                 sitesTwo:[],
                 pageSize:'',
                 pageIndex:'',
-                currentPage5:1,
-                sizesTwo:10,
-                totalTwo:50,
+                currentPage5:1,  //
+                sizesTwo:10,  //
+                totalTwo:50, //
                 selected:false, //上传升级包管理员选择分组
                 optionsvalue:[],//分组数据
                 selectedOptions:[],//选中分组数据
@@ -330,6 +329,7 @@
                 tableData6:[],
                 sitesthr:[],
                 opctions:'',
+                upgradeFileId:'',
             }
         },
         methods:{
@@ -365,7 +365,6 @@
                 this.typetwo = val
                 var url='';
                 this.typedata = '';
-                console.log(val,that.upgradeType)
                 if(val=='0'){
                     this.sitesthr = []
                     this.typedata = '0';
@@ -436,12 +435,65 @@
             },
             //模态框选择条数事件
             handleSizeChangeTwo(val){
-                this.pageSize = val
                 this.sizesTwo = val
+                if(that.upgradeType=='tsbg'){
+                    //tsbg
+                    url = 'Equipment/getTsbgList'
+                }
+                if(that.upgradeType=='tsbc'){
+                    //tsbc
+                    url = 'Equipment/getTsbcList'
+                }
+                if(that.upgradeType=='tsba'){
+                    //tsba
+                    url = 'Equipment/getTsbaList'
+                }
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    url:that.serverurl+url,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    data:{
+                        pageIndex:that.currentPage5,
+                        pageSize:that.sizesTwo
+                    },
+                    success:function(data){
+                        that.tableData5 = data.rows
+                        that.totalTwo = data.total
+                    }
+                })
             },
             //模态框选择页数事件
             handleCurrentChangeTwo(val){
-                this.pageIndex = val
+                this.currentPage5 = val
+                if(that.upgradeType=='tsbg'){
+                    //tsbg
+                    url = 'Equipment/getTsbgList'
+                }
+                if(that.upgradeType=='tsbc'){
+                    //tsbc
+                    url = 'Equipment/getTsbcList'
+                }
+                if(that.upgradeType=='tsba'){
+                    //tsba
+                    url = 'Equipment/getTsbaList'
+                }
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    url:that.serverurl+url,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    data:{
+                        pageIndex:that.currentPage5,
+                        pageSize:that.sizesTwo
+                    },
+                    success:function(data){
+                        that.tableData5 = data.rows
+                        that.totalTwo = data.total
+                    }
+                })
             },
             //点击升级包上传
             upload(){
@@ -523,7 +575,7 @@
                             that.upgradeType = 'tsba'
                         }
                     }else{
-                        that.errorCode(res.errorCode)
+                        that.errorCode(data.errorCode)
                     }
                 }).fail(function(res) {
                     console.log(res)
@@ -531,10 +583,11 @@
             },
             //升级包上传点击保存
             uploadsave(){
+                console.log(this.sitesthr)
                 var that = this;
                 var upgradeType='';
                 var equipmentIds=[];
-                var url = ''
+                var groupids = []
                 if(that.upgradeType=='tsbg'){
                     upgradeType='0'
                 }
@@ -544,49 +597,74 @@
                 if(that.upgradeType=='tsba'){
                     upgradeType='2'
                 }
-                if(this.opctions=='0'){
-                    url='upgrade/saveUpgradeFile'
-                }
-                if(this.opctions=='1'){
-                    url='upgrade/editUpgradeFileInfo'
-                }
                 for(var i=0;i<that.sitesTwo.length;i++){
                     equipmentIds.push(that.sitesTwo[i].id)
                 }
-                $.ajax({
-                    type:'post',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+url,
-                    data:{
-                        editUpgradeFileInfo:that.sites[0].id,
-                        fileName:that.fileName,
-                        filePath:that.filePath,
-                        fileUrl:that.fileUrl,
-                        upgradeType:upgradeType,
-                        upgradeOrder:that.typetwo,
-                        md5:that.md5,
-                        softwareVer:that.softwareVer,
-                        hardwareVer:that.hardwareVer,
-                        status:that.value,
-                        summary:that.textarea,
-                        equipmentIds:equipmentIds.join(','),
-                        groupids:that.sitesthr[0].id
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.$message({
-                                message: '保存成功',
-                                type:'success',
-                            })
-                            $('#upgrademyModal').modal('hide');
-                            that.ready()
-                        }else{
-                            that.errorCode(data.errorCode)
+                for(var i=0;i<that.sitesthr.length;i++){
+                    groupids.push(that.sitesthr[i].id)
+                }
+                if(this.opctions=='0'){
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'upgrade/saveUpgradeFile',
+                        data:{
+                            fileName:that.fileName,
+                            filePath:that.filePath,
+                            fileUrl:that.fileUrl,
+                            upgradeType:upgradeType,
+                            upgradeOrder:that.typetwo,
+                            md5:that.md5,
+                            softwareVer:that.softwareVer,
+                            hardwareVer:that.hardwareVer,
+                            status:that.value,
+                            summary:that.textarea,
+                            equipmentIds:equipmentIds.join(','),
+                            groupids:groupids.join(',')
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.$message({
+                                    message: '保存成功',
+                                    type:'success',
+                                })
+                                $('#upgrademyModal').modal('hide');
+                                that.ready()
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
                         }
-                    }
-                })
+                    })
+                }
+                if(this.opctions=='1'){
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'upgrade/editUpgradeFileInfo',
+                        data:{  
+                            upgradeFileId:that.upgradeFileId,
+                            upgradeOrder:that.typetwo,
+                            equipmentIds:equipmentIds.join(','),
+                            groupids:groupids.join(',')
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.$message({
+                                    message: '保存成功',
+                                    type:'success',
+                                })
+                                $('#upgrademyModal').modal('hide');
+                                that.ready()
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
+                }
             },
             //点击升级包分组修改
             upgradepatchamend(){
@@ -606,8 +684,7 @@
                     return;
                 }
                 if(this.sites.length=='1'){
-                    $('#upgrademyModal').modal('show')
-                    this.opctions = '1'
+                    that.opctions = '1'
                     that.uploadtype = true;
                     that.fileName = that.sites[0].fileName
                     that.softwareVer = that.sites[0].softwareVer
@@ -625,6 +702,8 @@
                         that.upgradeType = 'tsba'
                     }
                     that.valuethree = that.sites[0].upgradeOrder
+                    that.upgradeFileId = that.sites[0].id
+                    $('#upgrademyModal').modal('show')
                 }
             },
             //删除升级包
