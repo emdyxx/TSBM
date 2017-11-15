@@ -4,10 +4,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import echartss from 'echarts'
 
-
 import login from '@/components/login'  //登录页面
 import index from '@/components/index'  //首页
-import echarts from '@/components/echarts'   //图表页面
+import echarts from '@/components/statisticsmessage/echarts'   //图表页面
 import userManage from '@/components/systemManagement/userManage'  // 用户管理
 import departmentManage from '@/components/systemManagement/departmentManage'  // 组织管理
 import roleManage from '@/components/systemManagement/roleManage'  // 角色管理
@@ -22,7 +21,8 @@ import templateManage from '@/components/equipmentManage/templateManage'   //设
 import equipmentUpgrade from '@/components/upgradeManage/equipmentUpgrade'  //升级管理-->设备升级
 import alarm from '@/components/eventManage/alarm'  //事件管理-->告警信息
 import event from '@/components/eventManage/event'  //事件管理-->事件信息
-import equipmentStatistics from '@/components/echarts'  //统计信息-->设备概览
+import equipmentStatistics from '@/components/statisticsmessage/echarts'  //统计信息-->设备概览
+import dataStatistics from '@/components/statisticsmessage/dataStatistics'  //统计信息-->统计数据
 
 Vue.use(Router)
 Vue.use(ElementUI)
@@ -341,6 +341,11 @@ export default new Router({
           name: 'event',
           component: event,
         },
+        {//事件管理-->统计数据
+          path: '/dataStatistics',
+          name: 'dataStatistics',
+          component: dataStatistics,
+        }
       ]
     },
     

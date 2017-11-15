@@ -220,13 +220,13 @@
                 var that = this
                 var url=''
                 if(this.radio2=='0'){
-                    url = 'Equipment/getTsbgList'
+                    url = 'equipment/getTsbgList'
                 }
                 if(this.radio2=='1'){
-                    url = 'Equipment/getTsbcList'
+                    url = 'equipment/getTsbcList'
                 }
                 if(this.radio2=='2'){
-                    url = 'Equipment/getTsbaList'
+                    url = 'equipment/getTsbaList'
                 }
                 $.ajax({
                     type:'post',

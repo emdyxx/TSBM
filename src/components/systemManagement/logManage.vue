@@ -118,7 +118,7 @@
                             :data="logManagetableDatatwo"
                             border
                             stripe
-                            empty-text='111111111111'
+                            empty-text='暂无数据'
                             slot="empty"
                             tooltip-effect="dark"
                             style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">

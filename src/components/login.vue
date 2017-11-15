@@ -110,7 +110,7 @@ export default {
               //   showClose: true,
               // });
               sessionStorage.userName = data.result[0].userName
-              sessionStorage.departmentId = data.result[0].departmentId
+              sessionStorage.departmentId = data.result[0].departmentId //判断是否是管理员字段
               that.$router.push({'path':'/index'})
             }
           }

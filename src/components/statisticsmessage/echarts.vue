@@ -8,7 +8,7 @@
                 <p>离线:2</p>
                 <p>总计:25</p>
             </div>
-            <span><img src="../assets/u91_seg0.png" alt=""></span>
+            <span><img src="../../assets/u91_seg0.png" alt=""></span>
             <div>
                 <p>TSBA</p>
                 <p>6</p>
@@ -16,7 +16,7 @@
                 <p>离线:0</p>
                 <p>总计:6</p>
             </div>
-            <span><img src="../assets/u91_seg0.png" alt=""></span>
+            <span><img src="../../assets/u91_seg0.png" alt=""></span>
             <div>
                 <p>TSBG</p>
                 <p>1</p>
@@ -230,7 +230,7 @@ export default {
 <style scoped>
 .echarts{width: 100%;height: 100%;}
 .echarts_top{width: 100%;height: 160px;display: flex;justify-content: center;}
-.echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../assets/u43.png');background-repeat: no-repeat;}
+.echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../../assets/u43.png');background-repeat: no-repeat;}
 .echarts_top>span{display: inline-block;height: 100%;line-height: 160px;}
 .echarts_top>div>p{padding-right: 10px;color: black;margin-bottom: 0;}
 .echarts_top>div>p:nth-of-type(1){margin-top:15px;}
@@ -242,8 +242,8 @@ export default {
 .echarts_center>div>p{text-align: left;padding-left: 8px;border-bottom: 1px solid #CCCCCC;margin-bottom: 5px;}
 .echarts_center_left_bottom{width: 100%;height:233px;}
 
-.echarts_bottom{width: 100%;height: auto;display: flex;position: absolute;top:450px;bottom: 10px;}
+.echarts_bottom{width: 100%;height: auto;display: flex;position: absolute;top:450px;bottom: 10px;overflow: auto;}
 .echarts_bottom>div{width: 45%;height: 100%;margin-left: 3%;position: relative;}
 .echarts_bottom>div>p{text-align: left;padding-left: 8px;border-bottom: 1px solid #CCCCCC;margin-bottom: 5px;}
-.echarts_bottom_botom{width: 100%;height:auto;position: absolute;top:25px;bottom: 0;}
+.echarts_bottom_botom{width: 100%;height:auto;min-height:250px;position: absolute;top:25px;bottom: 0;}
 </style>

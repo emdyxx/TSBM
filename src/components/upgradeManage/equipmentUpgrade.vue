@@ -69,7 +69,7 @@
                                         </el-option>
                                     </el-select>
                                 </div>
-                                <div v-if="typedata=='0'" style="width:100%;height:220px;flex-direction: column;">
+                                <div v-if="typedata=='0'" style="width:100%;height:auto;flex-direction: column;">
                                     <el-table
                                         ref="multipleTable"
                                         :data="tableData5"
@@ -114,7 +114,7 @@
                                         </el-pagination>
                                     </div>
                                 </div>
-                                <div v-if="typedata=='1'" style="width:100%;height:220px;flex-direction: column;">
+                                <div v-if="typedata=='1'" style="width:100%;height:auto;flex-direction: column;">
                                     <el-table
                                         ref="multipleTable"
                                         :data="tableData6"
@@ -370,15 +370,15 @@
                     this.typedata = '0';
                     if(that.upgradeType=='tsbg'){
                         //tsbg
-                        url = 'Equipment/getTsbgList'
+                        url = 'equipment/getTsbgList'
                     }
                     if(that.upgradeType=='tsbc'){
                         //tsbc
-                        url = 'Equipment/getTsbcList'
+                        url = 'equipment/getTsbcList'
                     }
                     if(that.upgradeType=='tsba'){
                         //tsba
-                        url = 'Equipment/getTsbaList'
+                        url = 'equipment/getTsbaList'
                     }
                     console.log(url)
                     $.ajax({
@@ -413,7 +413,7 @@
                     $.ajax({
                         type:'post',
                         async:true,
-                        url:that.serverurl+'Equipment/getDeviceGroup',
+                        url:that.serverurl+'equipment/getDeviceGroup',
                         dataType:'json',
                         xhrFields:{withCredentials:true},
                         data:{
@@ -428,6 +428,11 @@
                         }
                     })
                 }
+                if(val=='2'){
+                    this.sitesthr = []
+                    that.sitesTwo = []
+                    this.typedata = '2';
+                }
             },
             //模态框选中行的change事件
             handleSelectionChangeTwo(val){
@@ -438,15 +443,15 @@
                 this.sizesTwo = val
                 if(that.upgradeType=='tsbg'){
                     //tsbg
-                    url = 'Equipment/getTsbgList'
+                    url = 'equipment/getTsbgList'
                 }
                 if(that.upgradeType=='tsbc'){
                     //tsbc
-                    url = 'Equipment/getTsbcList'
+                    url = 'equipment/getTsbcList'
                 }
                 if(that.upgradeType=='tsba'){
                     //tsba
-                    url = 'Equipment/getTsbaList'
+                    url = 'equipment/getTsbaList'
                 }
                 $.ajax({
                     type:'post',
@@ -765,7 +770,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '设备启用成功',
+                                message: '升级包启用成功',
                                 type:'success',
                                 showClose: true,
                             });
@@ -792,7 +797,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '设备禁用成功',
+                                message: '升级包禁用成功',
                                 type:'success',
                                 showClose: true,
                             });
