@@ -1,12 +1,22 @@
 <template>
   <div class="echarts">
+        <div class="echarts_type" v-if="select">
+            <el-select v-model="value" placeholder="请选择">
+                <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
+        </div>
         <div class="echarts_top">
             <div>
                 <p>TSBC</p>
-                <p>23</p>
+                <p>{{EquipmentCount.tsbcOnline}}</p>
                 <p>在线设备</p>
-                <p>离线:2</p>
-                <p>总计:25</p>
+                <p>离线:{{EquipmentCount.tsbcSum}}</p>
+                <p>总计:{{EquipmentCount.tsbcOnline + EquipmentCount.tsbcSum}}</p>
             </div>
             <span><img src="../../assets/u91_seg0.png" alt=""></span>
             <div>
@@ -51,14 +61,47 @@
 export default {
     name: 'echarts',
     data () {
-        return {}
+        return {
+            serverurl:localStorage.serverurl,
+            select:false,
+            options: [],
+            value: '1',
+            EquipmentCount:{}, //设备统计信息
+        }
     },
     mounted(){
+        var that = this;
+        if(sessionStorage.departmentId=='1'){
+            that.select = true
+            $.ajax({
+                type:'get',
+                async:true,
+                dataType:'json',
+                xhrFields:{withCredentials:true},
+                url:that.serverurl+'department/getTopDepartment',
+                data:{},
+                success:function(data){
+                    if(data.errorCode=='0'){
+                        that.options = data.result[0].children
+                        var data = {value:'1',label:'所有数据'}
+                        that.options.unshift(data)
+                    }else{
+                        that.errorCode(data.errorCode)
+                    }
+                }
+            })
+        }
         this.rendy()
     },
     methods:{
         rendy(){
             var that = this
+            var data = {};
+            if(sessionStorage.departmentId=='1'){
+                data.departmentId = that.value
+            }else{
+                data.departmentId = that.value = ''
+            }
             var myChartone = this.$echarts.init(document.getElementById('myChartone'))
             var myCharttwo = this.$echarts.init(document.getElementById('myCharttwo'))
             var myChartthree = this.$echarts.init(document.getElementById('myChartthree'))
@@ -73,7 +116,7 @@ export default {
                 },
                 grid: {
                     left: '3%',
-                    right: '10%',
+                    right: '20%',
                     bottom: '3%',
                     containLabel: true
                 },
@@ -112,7 +155,7 @@ export default {
                 },
                 grid: {
                     left: '3%',
-                    right: '10%',
+                    right: '20%',
                     bottom: '3%',
                     containLabel: true
                 },
@@ -217,9 +260,20 @@ export default {
                     }
                 ]
             })
-            
-            
-            
+            //获取设备统计信息
+            $.ajax({
+                type:'get',
+                async:true,
+                dataType:'json',
+                xhrFields:{withCredentials:true},
+                url:that.serverurl+'statistics/getEquipmentCount',
+                data:data,
+                success:function(data){
+                    if(data.errorCode=='0'){
+                        that.EquipmentCount = data.result
+                    }
+                }
+            })
         }
     },
     created(){
@@ -228,7 +282,8 @@ export default {
 }
 </script>
 <style scoped>
-.echarts{width: 100%;height: 100%;}
+.echarts{width: 100%;height: 100%;overflow: auto;}
+.echarts_type{position: absolute;width:150px;height: 36px;top:20px;}
 .echarts_top{width: 100%;height: 160px;display: flex;justify-content: center;}
 .echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../../assets/u43.png');background-repeat: no-repeat;}
 .echarts_top>span{display: inline-block;height: 100%;line-height: 160px;}

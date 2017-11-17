@@ -389,7 +389,7 @@ export default {
 .logo{width:25px;height: 25px;}
 #bgcolor{background: #99A9BF !important;border-right: 4px solid #20A0FF !important;color: white !important;}
 
-.index{width: 100%;height: 100%;min-width: 800px;}
+.index{width: 100%;height: 100%;min-width: 1100px;}
 .index_nav{width: 240px;height:100%;float: left;background: white;display: flex;display: -webkit-flex;flex-direction: column;}
 .index_main{height:100%;background:white;display: flex;display: -webkit-flex;flex-direction: column;position: relative;}
 .index_nav_top{color: white;font-size: 19px;background: rgb(94, 135, 176);}

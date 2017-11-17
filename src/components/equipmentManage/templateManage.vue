@@ -6,8 +6,6 @@
         <div class="templateManage_main">
             <div class="templateManage_top">
                 <el-button @click="addtemplate" type="primary" icon="plus " size="small">添加模板</el-button>
-                <el-button @click="revamptemplate" type="primary" icon="edit" size="small">修改模板</el-button>
-                <el-button @click="removetemplate" type="primary" icon="delete" size="small">删除模板</el-button>
             </div>
             <!-- 添加修改模态框（Modal） -->
             <div class="modal fade" id="addmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -30,7 +28,7 @@
                                         </el-option>
                                     </el-select>
                                 </div>
-                                <div style="margin-left:10px;margin-top:15px;">
+                                <div v-if="addrelative=='0'" style="margin-left:10px;margin-top:15px;">
                                     <span>类别:</span>
                                     <el-radio-group @change="typestatus" v-model="radio2">
                                         <el-radio :label="0">tsbg</el-radio>
@@ -38,7 +36,7 @@
                                         <el-radio :label="2">tsba</el-radio>
                                     </el-radio-group>
                                 </div>
-                                <div>
+                                <div v-if="addrelative=='0'">
                                     <span>型号:</span>
                                     <el-select @change="modelstatus" v-model="valuetwo" placeholder="请选择型号" style="width:180px;">
                                         <el-option
@@ -62,13 +60,13 @@
                                         <div class="basicstatus_top">
                                             IP类型:
                                             <select v-model="tsbgcollcate.ipType" style="width:168px;">
-                                                <option value="STATUS">STATUS</option>
+                                                <option value="STATIC">STATIC</option>
                                                 <option value="DHCP">DHCP</option>
                                                 <option value="PPPOE">PPPOE</option>
                                             </select>
                                         </div>
                                         <div class="basicstatus_center"></div>
-                                        <div v-if="tsbgcollcate.ipType=='STATUS'" class="basicstatus_bottom">
+                                        <div v-if="tsbgcollcate.ipType=='STATIC'" class="basicstatus_bottom">
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
@@ -331,10 +329,10 @@
                                                     <tr>
                                                         <td>隐藏SSID</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5ApHideSSID">
-                                                                <option value="1">隐藏</option>
-                                                                <option value="0">不隐藏</option>
-                                                            </select>
+                                                            <el-radio-group v-model="tsbccollcate.wifi5ApHideSSID">
+                                                                <el-radio :label="1">隐藏</el-radio>
+                                                                <el-radio :label="0">不隐藏</el-radio>
+                                                            </el-radio-group>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -416,7 +414,7 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="radio2=='2'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="8" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <el-radio-group v-model="tsbccollcate.wifi2Enable">
+                                            <el-radio-group v-model="tsbacaollcate.wifi2Enable">
                                                 <el-radio :label="1">启用</el-radio>
                                                 <el-radio :label="0">不启用</el-radio>
                                             </el-radio-group>
@@ -430,7 +428,7 @@
                                                         <td><input type="text" v-model="tsbacaollcate.wifi2SSID" class="inputType" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td>信息带宽:</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi2Bandwidth" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi2Bandwidth" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
                                                                 <option value="HT40">HT40</option>
                                                             </select>
@@ -457,7 +455,7 @@
                                                         </td>
                                                         <td>发射功率:</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi2LaunchPower" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi2LaunchPower" style="width:110px;height:29px;">
                                                                 <option value="Auto">Auto</option>
                                                                 <option value="27dBm">27 dBm</option>
                                                                 <option value="24dBm">24 dBm</option>
@@ -469,7 +467,7 @@
                                                     <tr>
                                                         <td>加密方式:</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi2EncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi2EncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA2</option>
                                                             </select>
@@ -480,7 +478,7 @@
                                                     <tr>
                                                         <td>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbccollcate.wifi2HideSSID">
+                                                            <el-radio-group v-model="tsbacaollcate.wifi2HideSSID">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -492,7 +490,7 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="radio2=='2'&&lookoverstatus.wifi5G!=''" title="5G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <el-radio-group v-model="tsbccollcate.wifi5Enable">
+                                            <el-radio-group v-model="tsbacaollcate.wifi5Enable">
                                                 <el-radio :label="1">启用</el-radio>
                                                 <el-radio :label="0">不启用</el-radio>
                                             </el-radio-group>
@@ -515,7 +513,7 @@
                                                     <tr>
                                                         <td>信道</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi5Channel" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi5Channel" style="width:110px;height:29px;">
                                                                 <option value="36">36</option>
                                                                 <option value="40">40</option>
                                                                 <option value="44">44</option>
@@ -529,7 +527,7 @@
                                                         </td>
                                                         <td>发射功率:</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi5LaunchPower" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi5LaunchPower" style="width:110px;height:29px;">
                                                                 <option value="Auto">Auto</option>
                                                                 <option value="27dBm">27 dBm</option>
                                                                 <option value="24dBm">24 dBm</option>
@@ -541,7 +539,7 @@
                                                     <tr>
                                                         <td>加密方式:</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi5EncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi5EncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA2</option>
                                                             </select>
@@ -552,7 +550,7 @@
                                                     <tr>
                                                         <td>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbccollcate.wifi5HideSSID">
+                                                            <el-radio-group v-model="tsbacaollcate.wifi5HideSSID">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -560,6 +558,62 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </el-collapse-item>
+                                    <el-collapse-item v-if="radio2=='1'||radio2=='2'" title="黑白名单设置" name="10" style="text-align:left;">
+                                        <div class="basicstatus_top">
+                                            <select v-model="panel">
+                                                <option value="1">黑名单</option>
+                                                <option value="0">白名单</option>
+                                            </select>
+                                            <el-button @click="paaelMACS" type="primary" size='small' style="margin-left:15px;">添加</el-button>
+                                            <div style="display:inline-block;" v-if="paaelMAC">
+                                                <el-input v-model="panelinput" size='small' style="width:126px;margin-left:15px;" placeholder="请输入MAC"></el-input>
+                                                <el-button @click="panelMACT" type="primary" size='small' style="margin-left:5px;">确认</el-button>
+                                            </div>
+                                        </div>
+                                        <div class="basicstatus_center"></div>
+                                        <div v-if="panel=='0'" class="basicstatus_bottom">
+                                            <el-table
+                                                :data="panelTable"
+                                                border
+                                                stripe
+                                                tooltip-effect="dark"
+                                                style="width: 100%;margin-bottom:10px;">
+                                                <el-table-column
+                                                prop="MAC"
+                                                align='center'
+                                                label="MAC">
+                                                </el-table-column>
+                                                <el-table-column
+                                                label="操作"
+                                                width="100">
+                                                    <template scope="scope">
+                                                        <el-button @click="deletepanel(scope.row)" type="primary" size="small">删除</el-button>
+                                                    </template>
+                                                </el-table-column>
+                                            </el-table>
+                                        </div>
+                                        <div v-if="panel=='1'" class="basicstatus_bottom">
+                                            <el-table
+                                                :data="panelTabletwo"
+                                                border
+                                                stripe
+                                                tooltip-effect="dark"
+                                                style="width: 100%;margin-bottom:10px;">
+                                                <el-table-column
+                                                prop="MAC"
+                                                align='center'
+                                                label="MAC">
+                                                </el-table-column>
+                                                <el-table-column
+                                                label="操作"
+                                                width="100">
+                                                    <template scope="scope">
+                                                        <el-button @click="deletepanel(scope.row)" type="primary" size="small">删除</el-button>
+                                                    </template>
+                                                </el-table-column>
+                                            </el-table>
                                         </div>
                                     </el-collapse-item>
                                 </el-collapse>
@@ -597,7 +651,7 @@
                                         prop="MAC"
                                         label="MAC"
                                         align='center'
-                                        width="100">
+                                        width="180">
                                         </el-table-column>
                                         <el-table-column
                                         prop="hardwareVersion"
@@ -663,66 +717,103 @@
                 <div class="templateManage_bottom_top">
                     <div class="templateManage_formtwo">
                         <span>模板名称:</span>
-                        <input type="text" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model="templatename" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="templateManage_formtwo">
-                        <span>用户名:</span>
-                        <input type="text" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <span>模板类别:</span>
+                        <el-select v-model="classesvalue" size='small' style="width:126px;" clearable placeholder="请选择">
+                            <el-option
+                            v-for="item in classes"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div class="templateManage_formtwo">
+                        <span>适用范围:</span>
+                        <el-select v-model="classesvaluetwo" size='small' style="width:126px;" clearable placeholder="请选择">
+                            <el-option
+                            v-for="item in classestwo"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
                     </div>
                     <div class="templateManage_formtwo">
                         <span>模板所属部门ID:</span>
-                        <input type="text" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model="templateId" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
-                    <el-button type="primary" icon="search" style="height:30px;margin-top:5px;" size='small'>搜索</el-button>
+                    <el-button type="primary" @click="templateseek" icon="search" style="height:30px;margin-top:5px;" size='small'>搜索</el-button>
                 </div>
                 <div class="templateManage_bottom_bottom">
                     <el-table
-                        ref="multipleTable"
                         :data="tableData3"
                         border
                         stripe
                         tooltip-effect="dark"
-                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
-                        @selection-change="handleSelectionChange">
+                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
                         <el-table-column
-                        type="selection"
-                        align='center'
-                        width="55">
-                        </el-table-column>
-                        <el-table-column
-                        prop="departmentName"
+                        prop="templateName"
                         align='center'
                         label="模板名称"
-                        width="180">
+                        width="140">
                         </el-table-column>
                         <el-table-column
-                        prop="fullName"
-                        label="姓名"
                         align='center'
-                        width="180">
+                        label="模板类型"
+                        width="100">
+                            <template scope="scope">
+                                <span v-if="scope.row.templateType=='0'">tsbg</span>
+                                <span v-if="scope.row.templateType=='1'">tsbc</span>
+                                <span v-if="scope.row.templateType=='2'">tsba</span>      
+                            </template>  
                         </el-table-column>
                         <el-table-column
                         prop="departmentName"
-                        label="分组"
+                        label="所属部门"
                         align='center'
-                        width="180">
+                        width="120">
                         </el-table-column>
                         <el-table-column
-                        prop="mobile"
-                        label="电话"
+                        prop="model"
+                        label="适用型号"
+                        align='center'
+                        width="120">
+                        </el-table-column>
+                        <el-table-column
+                        label="适用范围"
+                        align='center'
+                        width="120">
+                            <template scope="scope">
+                                <span v-if="scope.row.templateOrder=='0'">指定设备</span>
+                                <span v-if="scope.row.templateOrder=='1'">指定设备分组</span>
+                                <span v-if="scope.row.templateOrder=='2'">指定设备型号</span>      
+                            </template>  
+                        </el-table-column>
+                        <el-table-column
+                        prop="summary"
+                        label="描述"
                         align='center'>
                         </el-table-column>
                         <el-table-column
                         label="操作"
                         align='center'
-                        width="90">
+                        width="180">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0">
                                     <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
                                 </span>
                                 <span v-if="scope.row.status==1">
                                     <el-button type="primary" @click="forbidden(scope.row)" size="small">启用</el-button>
-                                </span>   
+                                </span>
+                                <span>
+                                    <el-button @click="revamptemplate(scope.row)" type="primary" size="small">修改</el-button>
+                                </span> 
+                                <span>
+                                    <el-button @click="removetemplate(scope.row)" type="primary" size="small">删除</el-button>
+                                </span>  
                             </template>  
                         </el-table-column>
                     </el-table>
@@ -751,7 +842,6 @@
                 addrelative:'0',  //判断添加修改
                 Administrator:false,
                 tableData3:[],
-                sizes:[],
                 sizesdata:[], //弹框列表选择数据
                 Pagesize:10,
                 PageIndex:1,
@@ -764,6 +854,18 @@
                 lookoverstatus:{},
                 lookoverlan:true,
                 activeNames:'1',
+                classes:[{value: '0',label: 'tsbg'},{value: '1',label: 'tsbc'},{value: '2',label: 'tsba'}],
+                classesvalue:'',
+                classestwo:[{value: '0',label: '指定设备'},{value: '1',label: '指定设备分组'},{value: '2',label: '指定设备型号'}],
+                classesvaluetwo:'',
+                templatename:'',
+                templateId:'',
+                //tsbc,tsba,黑白名单
+                panelTable:[], //黑名单
+                panelTabletwo:[], //白名单
+                paaelMAC:false,
+                panelinput:'',
+                panel:"1",
 
                 //弹框列列表参数
                 tableData4:[],
@@ -771,14 +873,15 @@
                 Pagesizetwo:10,
                 totaltwo:20,
                 valuethree:0,
+                multipleTable:[],
 
                 templateName:'',  
                 summary:"",
-                options:[{value:'STATUS',label:'STATUS'},{value:'DHCP',label:'DHCP'},{value:'PPPOE',label:'PPPOE'}],
+                options:[{value:'STATIC',label:'STATIC'},{value:'DHCP',label:'DHCP'},{value:'PPPOE',label:'PPPOE'}],
                 lookdata:{}, //弹框数据数组对象
                 tsbgcollcate:{
                     status:1,
-                    ipType:'STATUS',
+                    ipType:'STATIC',
                     wanIP:'',
                     wanSubnetmask:'',
                     wanGateway:'',
@@ -863,6 +966,8 @@
             //点击添加模板按钮
             addtemplate(){
                 var that = this;
+                this.panelTable = [];
+                this.panelTabletwo = [];
                 that.radio2 = 0;
                 $('.myModalLabel').text('添加模板')
                 $('#addmyModal').modal('show');
@@ -891,16 +996,10 @@
                 that.typestatus()
             },
             //点击修改模板按钮
-            revamptemplate(){
+            revamptemplate(val){
                 var that = this;
-                if(that.sizes.length=='0'||that.sizes.length>=2){
-                    that.$message({
-                        message: '请选择一条数据进行更改',
-                        type: 'error',
-                        showClose: true,
-                    });
-                    return;
-                }
+                this.panelTable = [];
+                this.panelTabletwo = [];
                 $('.myModalLabel').text('修改模板')
                 $('#addmyModal').modal('show');
                 that.addrelative = '1'
@@ -933,26 +1032,122 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'template/getTemplateInfo',
                     data:{
-                        templateId:that.sizes[0].id
+                        templateId:val.id
                     },
                     success:function(data){
-                        if(data.errorCode=='0'){}else{
+                        if(data.errorCode=='0'){   
+                            if(val.templateType=='0'){
+                                that.value = data.result.departmentId
+                                that.radio2 = Number(data.result.templateType)
+                                that.valuetwo = data.result.model
+                                that.templateName = data.result.templateName
+                                that.summary = data.result.summary
+                                that.tsbgcollcate.ipType = data.result.configInfo.ipType
+                                that.tsbgcollcate.wanIP = data.result.configInfo.wanIP
+                                that.tsbgcollcate.wanSubnetmask = data.result.configInfo.wanSubnetmask
+                                that.tsbgcollcate.wanGateway = data.result.configInfo.wanGateway
+                                that.tsbgcollcate.wanDNS1 = data.result.configInfo.wanDNS1
+                                that.tsbgcollcate.wanDNS2 = data.result.configInfo.wanDNS2
+                                that.tsbgcollcate.lanIp = data.result.configInfo.lanIp
+                                that.tsbgcollcate.lanSubnetmask = data.result.configInfo.lanSubnetmask
+                                that.tsbgcollcate.lanStartAddress = data.result.configInfo.lanStartAddress
+                                that.tsbgcollcate.lanEndAddress = data.result.configInfo.lanEndAddress
+                                that.tsbgcollcate.lanGateway = data.result.configInfo.lanGateway
+                                that.tsbgcollcate.lanDNS1 = data.result.configInfo.lanDNS1
+                                that.tsbgcollcate.lanDNS2 = data.result.configInfo.lanDNS2
+                                that.tsbgcollcate.startDhcpServer = Number(data.result.configInfo.startDhcpServer)
+                                that.tsbgcollcate.wanPPPoEUsername = data.result.configInfo.wanPPPoEUsername
+                                that.tsbgcollcate.wanPPPoEPassword = data.result.configInfo.wanPPPoEPassword
+                                that.tsbgcollcate.wanPPPoEDNS1 = data.result.configInfo.wanPPPoEDNS1
+                                that.tsbgcollcate.wanPPPoEDNS2 = data.result.configInfo.wanPPPoEDNS2
+                                that.valuethree = Number(data.result.templateOrder)
+                                that.multipleTable = data.result.order
+                                console.log(that.multipleTable)
+                            }
+                            if(val.templateType=='1'){
+                                that.value = data.result.departmentId
+                                that.radio2 = Number(data.result.templateType)
+                                that.valuetwo = data.result.model
+                                that.templateName = data.result.templateName
+                                that.summary = data.result.summary
+                                that.tsbccollcate.wifi2ApSSID = data.result.configInfo.wifi2ApSSID
+                                that.tsbccollcate.wifi2Enable = Number(data.result.configInfo.wifi2Enable)
+                                that.tsbccollcate.wifi2WorkMode = data.result.configInfo.wifi2WorkMode
+                                that.tsbccollcate.wifi2ApHideSSID = Number(data.result.configInfo.wifi2ApHideSSID)
+                                that.tsbccollcate.wifi2ApBandwidth = data.result.configInfo.wifi2ApBandwidth
+                                that.tsbccollcate.wifi2ApChannel = data.result.configInfo.wifi2ApChannel
+                                that.tsbccollcate.wifi2ApLaunchPower = data.result.configInfo.wifi2ApLaunchPower
+                                that.tsbccollcate.wifi2ApEncryptionMode = data.result.configInfo.wifi2ApEncryptionMode
+                                that.tsbccollcate.wifi2ApKeyAuth = data.result.configInfo.wifi2ApKeyAuth
+                                that.tsbccollcate.wifi2StaPriority = data.result.configInfo.wifi2StaPriority
+                                that.tsbccollcate.wifi2StaKeyAuth = data.result.configInfo.wifi2StaKeyAuth
+                                that.tsbccollcate.wifi2StaSSID = data.result.configInfo.wifi2StaSSID
+
+                                that.tsbccollcate.wifi5ApSSID = data.result.configInfo.wifi5ApSSID
+                                that.tsbccollcate.wifi5Enable = Number(data.result.configInfo.wifi5Enable)
+                                that.tsbccollcate.wifi5WorkMode = data.result.configInfo.wifi5WorkMode
+                                that.tsbccollcate.wifi5ApHideSSID = Number(data.result.configInfo.wifi5ApHideSSID)
+                                that.tsbccollcate.wifi5ApBandwidth = data.result.configInfo.wifi5ApBandwidth
+                                that.tsbccollcate.wifi5ApChannel = data.result.configInfo.wifi5ApChannel
+                                that.tsbccollcate.wifi5ApLaunchPower = data.result.configInfo.wifi5ApLaunchPower
+                                that.tsbccollcate.wifi5ApEncryptionMode = data.result.configInfo.wifi5ApEncryptionMode
+                                that.tsbccollcate.wifi5ApKeyAuth = data.result.configInfo.wifi5ApKeyAuth
+                                that.tsbccollcate.wifi5StaPriority = data.result.configInfo.wifi5StaPriority
+                                that.tsbccollcate.wifi5StaKeyAuth = data.result.configInfo.wifi5StaKeyAuth
+                                that.tsbccollcate.wifi5StaSSID = data.result.configInfo.wifi5StaSSID
+                                //黑白名单
+                                var array = [];
+                                array = data.result.configInfo.listContent.split(',')
+                                // for(var i=0;i<data.){}
+                                // if(data.result.configInfo.listType=='0'){
+
+                                // }
+                            }
+                            if(val.templateType=='2'){
+                                that.value = data.result.departmentId
+                                that.radio2 = Number(data.result.templateType)
+                                that.valuetwo = data.result.model
+                                that.templateName = data.result.templateName
+                                that.summary = data.result.summary
+
+                                that.tsbctsbacaollcate.ipType = data.result.configInfo.ipType
+                                that.tsbctsbacaollcate.wanIP = data.result.configInfo.wanIP
+                                that.tsbctsbacaollcate.wanSubnetmask = data.result.configInfo.wanSubnetmask
+                                that.tsbctsbacaollcate.wanDNS1 = data.result.configInfo.wanDNS1
+                                that.tsbctsbacaollcate.wanDNS2 = data.result.configInfo.wanDNS2
+                                that.tsbctsbacaollcate.wanGateway = data.result.configInfo.wanGateway
+                                that.tsbctsbacaollcate.wanPPPoEUsername = data.result.configInfo.wanPPPoEUsername
+                                that.tsbctsbacaollcate.wanPPPoEPassword = data.result.configInfo.wanPPPoEPassword
+                                that.tsbctsbacaollcate.wanPPPoEDNS1 = data.result.configInfo.wanPPPoEDNS1
+                                that.tsbctsbacaollcate.wanPPPoEDNS2 = data.result.configInfo.wanPPPoEDNS2
+
+                                that.tsbacaollcate.wifi2Enable = Number(data.result.configInfo.wifi2Enable)
+                                that.tsbacaollcate.wifi2SSID = data.result.configInfo.wifi2SSID
+                                that.tsbacaollcate.wifi2Bandwidth = data.result.configInfo.wifi2Bandwidth
+                                that.tsbacaollcate.wifi2Channel = data.result.configInfo.wifi2Channel
+                                that.tsbacaollcate.wifi2LaunchPower = data.result.configInfo.wifi2LaunchPower
+                                that.tsbacaollcate.wifi2EncryptionMode = data.result.configInfo.wifi2EncryptionMode
+                                that.tsbacaollcate.wifi2KeyAuth = data.result.configInfo.wifi2KeyAuth
+                                that.tsbacaollcate.wifi2HideSSID = Number(data.result.configInfo.wifi2HideSSID)
+
+                                that.tsbacaollcate.wifi5Enable = Number(data.result.configInfo.wifi5Enable)
+                                that.tsbacaollcate.wifi5SSID = data.result.configInfo.wifi5SSID
+                                that.tsbacaollcate.wifi5Bandwidth = data.result.configInfo.wifi5Bandwidth
+                                that.tsbacaollcate.wifi5Channel = data.result.configInfo.wifi5Channel
+                                that.tsbacaollcate.wifi5LaunchPower = data.result.configInfo.wifi5LaunchPower
+                                that.tsbacaollcate.wifi5EncryptionMode = data.result.configInfo.wifi5EncryptionMode
+                                that.tsbacaollcate.wifi5KeyAuth = data.result.configInfo.wifi5KeyAuth
+                                that.tsbacaollcate.wifi5HideSSID = Number(data.result.configInfo.wifi5HideSSID)
+                            }
+                        }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
             },
             //点击删除模板按钮
-            removetemplate(){
+            removetemplate(val){
                 var that = this;
-                if(that.sizes.length=='0'||that.sizes.length>=2){
-                    that.$message({
-                        message: '请选择一条数据进行删除',
-                        type: 'error',
-                        showClose: true,
-                    });
-                    return;
-                }
                 $.ajax({
                     type:'post',
                     async:true,
@@ -960,7 +1155,7 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'template/delTemplate',
                     data:{
-                        templateId:that.sizes[0].id
+                        templateId:val.id
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -1000,14 +1195,14 @@
                         if(data.errorCode=='0'){
                             if(val.status=='0'){
                                 that.$message({
-                                    message: '升级包启用成功',
+                                    message: '模板禁用成功',
                                     type:'success',
                                     showClose: true,
                                 });
                             }
                             if(val.status=='1'){
                                 that.$message({
-                                    message: '升级包禁用成功',
+                                    message: '模板启用成功',
                                     type:'success',
                                     showClose: true,
                                 });
@@ -1094,7 +1289,7 @@
                         });
                         return;
                     }
-                    if(that.tsbgcollcate.ipType=='STATUS'){
+                    if(that.tsbgcollcate.ipType=='STATIC'){
                         if(that.tsbgcollcate.wanIP==''||that.tsbgcollcate.wanSubnetmask==''){
                             this.$message({
                                 message: '必填字段不能为空',
@@ -1146,7 +1341,7 @@
                         });
                         return;
                     }
-                    if(that.tsbgcollcate.lanDNS2==''||that.tsbgcollcate.startDhcpServer==''){
+                    if(that.tsbgcollcate.lanDNS2==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -1168,7 +1363,7 @@
                         return;
                     }
                     if(that.tsbccollcate.wifi2WorkMode=='AP'){
-                        if(that.tsbccollcate.wifi2ApHideSSID==''||that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
+                        if(that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1204,7 +1399,7 @@
                         }
                     }
                     if(that.tsbccollcate.wifi5WorkMode=='AP'){
-                        if(that.tsbccollcate.wifi5ApHideSSID==''||that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
+                        if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1324,7 +1519,7 @@
                             return;
                         }
                     }
-                    if(that.tsbacaollcate.wifi2Enable==''||that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
+                    if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -1340,15 +1535,7 @@
                         });
                         return;
                     }
-                    if(that.tsbacaollcate.wifi2KeyAuth==''||that.tsbacaollcate.wifi2HideSSID==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi5Enable==''||that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5Bandwidth==''){
+                    if(that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5Bandwidth==''||that.tsbacaollcate.wifi2KeyAuth==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -1364,7 +1551,7 @@
                         });
                         return;
                     }
-                    if(that.tsbacaollcate.wifi5KeyAuth==''||that.tsbacaollcate.wifi5HideSSID==''){
+                    if(that.tsbacaollcate.wifi5KeyAuth==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -1384,21 +1571,21 @@
                 var groupids = []; //设备组ID
                 var url = '';
                 if(that.radio2=='0'){
-                    if(that.addrelative = '0'){url='template/addTsbgTemplate'}
-                    if(that.addrelative = '1'){url='template/editTsbgTemplate'}
+                    if(that.addrelative == '0'){url='template/addTsbgTemplate'}
+                    if(that.addrelative == '1'){url='template/editTsbgTemplate'}
                     data = that.tsbgcollcate
                     data.templateOrder = that.valuethree
                 }
                 if(that.radio2=='1'){
-                    if(that.addrelative = '0'){url='template/addTsbcTemplate'}
-                    if(that.addrelative = '1'){url='template/editTsbcTemplate'}
-                    $.extend(data,that.tsbccollcate,that.tsbccollcate.tsbctsbacaollcate)
+                    if(that.addrelative == '0'){url='template/addTsbcTemplate'}
+                    if(that.addrelative == '1'){url='template/editTsbcTemplate'}
+                    $.extend(data,that.tsbccollcate,that.tsbctsbacaollcate)
                     data.templateOrder = that.valuethree
                 }
                 if(that.radio2=='2'){
-                    if(that.addrelative = '0'){url='template/addTsbaTemplate'}
-                    if(that.addrelative = '1'){url='template/editTsbaTemplate'}
-                    $.extend(data,that.tsbacaollcate,that.tsbccollcate.tsbctsbacaollcate)
+                    if(that.addrelative == '0'){url='template/addTsbaTemplate'}
+                    if(that.addrelative == '1'){url='template/editTsbaTemplate'}
+                    $.extend(data,that.tsbacaollcate,that.tsbctsbacaollcate)
                     data.templateOrder = that.valuethree
                 }
                 if(that.valuethree=='0'){
@@ -1437,16 +1624,12 @@
                                 showClose: true,
                             });
                             $('#addmyModal').modal('hide');
-                            that.sizes = [];
+                            that.ready();
                         }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
-            },
-            //列表选中行数据
-            handleSelectionChange(val){
-                this.sizes = val
             },
             //选择条数事件
             handleSizeChange(val) {
@@ -1455,6 +1638,10 @@
             //选择页数事件
             handleCurrentChange(val) {
                 this.PageIndex = val
+            },
+            //页面数据搜索
+            templateseek(){
+                this.ready();
             },
             //页面数据渲染
             ready(){
@@ -1468,6 +1655,10 @@
                     data:{
                         pageIndex:that.PageIndex,
                         pageSize:that.Pagesize,
+                        templateName:that.templatename,
+                        templateType:that.classesvalue,
+                        templateOrder:that.classesvaluetwo,
+                        departmentId:that.templateId,
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -1479,16 +1670,18 @@
                     }
                 })
             },
-            //指定设备change事件
-            uploadscope(val){
+            //公用接口
+            uploadGY(){
                 var that = this
                 var url = ''
-                that.PageIndextwo = 1
-                that.Pagesizetwo = 10
+                var table = ''
                 //指定设备接口
                 if(that.valuethree==0){url='equipment/getAllEquipmentList'}
                 //分组接口
                 if(that.valuethree==1){url='Equipment/getDeviceGroup'}
+                if(that.radio2=='0'){table = 't_tsbg_group'}
+                if(that.radio2=='1'){table = 't_tsbc_group'}
+                if(that.radio2=='2'){table = 't_tsba_group'}
                 $.ajax({
                     type:'post',
                     async:true,
@@ -1497,17 +1690,27 @@
                     xhrFields:{withCredentials:true},
                     data:{
                         pageIndex:that.PageIndextwo,
-                        pageSize:that.Pagesizetwo
+                        pageSize:that.Pagesizetwo,
+                        type:that.radio2,
+                        table:table,
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.tableData4 = data.rows
                             that.totalTwo = data.total
+                            that.$refs.multipleTable.toggleRowSelection(that.multipleTable);
                         }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
+            },
+            //指定设备change事件
+            uploadscope(val){
+                var that = this;
+                that.PageIndextwo = 1
+                that.Pagesizetwo = 10
+                this.uploadGY()
             },
             //弹框列表选择数据
             handleSelectionChangetwo(val){
@@ -1517,49 +1720,54 @@
             handleSizeChangetwo(val){
                 var that = this
                 that.Pagesizetwo = val
-                $.ajax({
-                    type:'post',
-                    async:true,
-                    url:that.serverurl+'equipment/getAllEquipmentList',
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    data:{
-                        pageIndex:that.PageIndextwo,
-                        pageSize:that.Pagesizetwo
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.tableData4 = data.rows
-                            that.totalTwo = data.total
-                        }else{
-                            that.errorCode(data.errorCode)
-                        }
-                    }
-                })
+                this.uploadGY()
             },
             //弹框列表选择页数事件
             handleCurrentChangetwo(val){
                 var that = this
                 that.PageIndextwo = val
-                $.ajax({
-                    type:'post',
-                    async:true,
-                    url:that.serverurl+'equipment/getAllEquipmentList',
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    data:{
-                        pageIndex:that.PageIndextwo,
-                        pageSize:that.Pagesizetwo
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.tableData4 = data.rows
-                            that.totalTwo = data.total
-                        }else{
-                            that.errorCode(data.errorCode)
+                this.uploadGY()
+            },
+            //黑白名单
+            paaelMACS(){
+                this.paaelMAC = true;
+            },
+            //添加黑白名单
+            panelMACT(){
+                var data = {}
+                if(this.panelinput==''){
+                    this.$message({
+                        message: 'MAC不能为空',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                data.MAC = this.panelinput
+                if(this.panel=='0'){
+                    this.panelTable.push(data)
+                }
+                if(this.panel=='1'){
+                    this.panelTabletwo.push(data)
+                }
+            },
+            //删除黑白名单
+            deletepanel(val){
+                var MAC = val.MAC
+                if(this.panel=='0'){
+                    for(var i=0;i<this.panelTable.length;i++){
+                        if(MAC == this.panelTable[i].MAC){
+                            this.panelTable.splice(i,1)
                         }
                     }
-                })
+                }
+                if(this.panel=='1'){
+                    for(var i=0;i<this.panelTabletwo.length;i++){
+                        if(MAC == this.panelTabletwo[i].MAC){
+                            this.panelTabletwo.splice(i,1)
+                        }
+                    }
+                }
             },
         },
         created(){

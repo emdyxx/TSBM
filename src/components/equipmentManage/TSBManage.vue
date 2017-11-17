@@ -466,7 +466,7 @@
             </el-tabs>
             <!-- 设备分组模态框（Modal） -->
             <div class="modal fade" id="tsbgmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog" style="width:780px;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -513,28 +513,30 @@
                                     prop="name"
                                     align='center'
                                     label="分组名称"
-                                    width="110">
+                                    width="130">
                                     </el-table-column>
                                     <el-table-column
                                     prop="hardwareVersion"
                                     align='center'
                                     label="硬件版本"
-                                    width="100">
+                                    width="120">
                                     </el-table-column>
                                     <el-table-column
                                     prop="softwareVersion"
                                     align='center'
                                     label="软件版本"
-                                    width="90">
+                                    width="110">
                                     </el-table-column>
                                     <el-table-column
                                     prop="remark"
                                     label="备注"
+                                    show-overflow-tooltip
                                     align='center'>
                                     </el-table-column>
                                     <el-table-column
                                     label="操作"
-                                    align='center'>
+                                    align='center'
+                                    width="90">
                                         <template scope="scope">
                                             <!-- <el-button type="primary" size="small">修改</el-button> -->
                                             <el-button @click="groupingdelete(scope.row)" type="primary" size="small">删除</el-button>
@@ -926,17 +928,17 @@
                             </div>
                             <div class="modal-body">
                                 <el-collapse v-model="activeNames" accordion>
-                                    <el-collapse-item v-if="lookoverType=='tsbg'&&lookoverlan==true" title="WAN配置" name="2" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='0'&&lookoverlan==true" title="WAN配置" name="2" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
                                             <select v-model="tsbgcollcate.ipType" style="width:168px;">
-                                                <option value="STATUS">STATUS</option>
+                                                <option value="STATIC">STATIC</option>
                                                 <option value="DHCP">DHCP</option>
                                                 <option value="PPPOE">PPPOE</option>
                                             </select>
                                         </div>
                                         <div class="basicstatus_center"></div>
-                                        <div v-if="tsbgcollcate.ipType=='STATUS'" class="basicstatus_bottom">
+                                        <div v-if="tsbgcollcate.ipType=='STATIC'" class="basicstatus_bottom">
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
@@ -981,7 +983,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='tsbg'&&lookoverstatus.LAN!=''" title="LAN配置" name="3" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='0'&&lookoverstatus.LAN!=''" title="LAN配置" name="3" style="text-align:left;">
                                         <div class="basicstatus_bottom">
                                             <table class="table table-bordered">
                                                 <tbody>
@@ -1025,7 +1027,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='tsbc'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="5" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="5" style="text-align:left;">
                                         <!-- tsbc WIFI设置(2G) -->
                                         <div class="basicstatus_top">
                                             <div>
@@ -1130,7 +1132,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='tsbc'&&lookoverstatus.wifi5G!=''" title="5G配置" name="6" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi5G!=''" title="5G配置" name="6" style="text-align:left;">
                                         <!-- tsbc WIFI设置(5G)-->
                                         <div class="basicstatus_top">
                                             <div>
@@ -1231,7 +1233,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='tsbc'||lookoverType=='tsba'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'||lookoverType=='2'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
                                             <select v-model="tsbctsbacaollcate.ipType" style="width:110px;height:29px;" name="" id="">
@@ -1282,7 +1284,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='tsba'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="8" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="8" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <el-radio-group v-model="tsbccollcate.wifi2Enable">
                                                 <el-radio :label="1">启用</el-radio>
@@ -1358,7 +1360,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='tsba'&&lookoverstatus.wifi5G!=''" title="5G配置" name="9" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi5G!=''" title="5G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <el-radio-group v-model="tsbccollcate.wifi5Enable">
                                                 <el-radio :label="1">启用</el-radio>
@@ -1675,11 +1677,11 @@
                 upgradeoptions:[{value:'0',label:'ht20'},{value:'1',label:'ht40'}],
                 templatechecked:true,
     
-                options:[{value:'STATUS',label:'STATUS'},{value:'DHCP',label:'DHCP'},{value:'PPPOE',label:'PPPOE'}],
+                options:[{value:'STATIC',label:'STATIC'},{value:'DHCP',label:'DHCP'},{value:'PPPOE',label:'PPPOE'}],
                 lookdata:{}, //弹框数据数组对象
                 tsbgcollcate:{
                     status:1,
-                    ipType:'STATUS',
+                    ipType:'STATIC',
                     wanIP:'',
                     wanSubnetmask:'',
                     wanGateway:'',
@@ -1828,12 +1830,13 @@
             },
             //配置
             allocationModal(val){
+                console.log(val.type)
                 var that = this
                 var type = '';
                 var url = ''
-                if(val.type=='tsbg'){type='0';url='equipment/showConfigTsbg'}
-                if(val.type=='tsbc'){type='1';url='equipment/showConfigTsbc'}
-                if(val.type=='tsba'){type='2';url='equipment/showConfigTsba'}
+                if(val.type=='0'){type='0';url='equipment/showConfigTsbg'}
+                if(val.type=='1'){type='1';url='equipment/showConfigTsbc'}
+                if(val.type=='2'){type='2';url='equipment/showConfigTsba'}
                 //权限接口
                 $.ajax({
                     type:'get',
@@ -2020,13 +2023,13 @@
                     return;
                 }
                 var type = '';
-                if(this.sites[0].type='tsbg'){
+                if(this.sites[0].type=='tsbg'){
                     type = 't_tsbg_group';
                 }
-                if(this.sites[0].type='tsbc'){
+                if(this.sites[0].type=='tsbc'){
                     type = 't_tsbc_group';
                 }
-                if(this.sites[0].type='tsba'){
+                if(this.sites[0].type=='tsba'){
                     type = 't_tsba_group';
                 }
                 $('#tsbgmyModal').modal('show')
@@ -2048,13 +2051,13 @@
             groupingsave(){
                 var that = this;
                 var type = '';
-                if(this.sites[0].type='tsbg'){
+                if(this.sites[0].type=='tsbg'){
                     type = 't_tsbg_group';
                 }
-                if(this.sites[0].type='tsbc'){
+                if(this.sites[0].type=='tsbc'){
                     type = 't_tsbc_group';
                 }
-                if(this.sites[0].type='tsba'){
+                if(this.sites[0].type=='tsba'){
                     type = 't_tsba_group';
                 }
                 $.ajax({
