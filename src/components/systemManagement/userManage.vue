@@ -20,34 +20,34 @@
                         </div>
                         <div class="modal-body">
                             <div class="userManage_form">
-                                <span>用户名:</span>
+                                <span><i class="required">*</i>用户名:</span>
                                 <input type="text" v-model="userManageUsername" maxlength="10" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                             </div>
                             <div class="userManage_form">
-                                <span>密码:</span>
+                                <span><i class="required">*</i>密码:</span>
                                 <input type="text" v-model="userManagePassword" id="userManagePasswordture" maxlength="10" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入密码">
                             </div>
                             <div class="userManage_form">
-                                <span>姓名:</span>
+                                <span><i class="required">*</i>姓名:</span>
                                 <input type="text" v-model="userManageName" maxlength="10" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入姓名">
                             </div>
                             <div class="userManage_form">
-                                <span>性别:</span>
+                                <span><i class="required">*</i>性别:</span>
                                 <el-radio-group v-model="radios">
                                     <el-radio class="radio" :label="0" style="width:30%;">男</el-radio>
                                     <el-radio class="radio" :label="1" style="margin-top:10px;width:30%;">女</el-radio>
                                 </el-radio-group>
                             </div>
                             <div class="userManage_form">
-                                <span>电话:</span>
+                                <span><i class="required">*</i>电话:</span>
                                 <input type="text" v-model="userManagePhone" maxlength="20" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
                             </div>
                             <div class="userManage_form">
-                                <span>邮箱:</span>
+                                <span><i class="required">*</i>邮箱:</span>
                                 <input type="text" v-model="userManageEmail" maxlength="25" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
                             <div class="userManage_form">
-                                <span style="width:56px;">分组:</span>
+                                <span style="width:56px;"><i class="required">*</i>分组:</span>
                                 <!-- v-model="userManageGrouping" -->
                                 <div>
                                     <el-cascader
@@ -71,7 +71,7 @@
                                         size='small'>
                                     </el-cascader>
                                 </div> -->
-                                <span style="width:56px;">权限</span>
+                                <span style="width:56px;"><i class="required">*</i>权限</span>
                                 <el-radio-group v-model="radio2">
                                     <el-radio class="radio" :label="0">全部权限</el-radio>
                                     <el-radio class="radio" :label="1">只读权限</el-radio>
@@ -336,6 +336,8 @@
             //添加修改提交
             addRelaSubmit(){
                 var that= this
+                //中文验证
+                var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
                 //手机号码验证
                 var phone = /^((0[0-9]{1,3}-\d{5,8})|(1[3584]\d{9}))$/;
                 //邮箱验证
@@ -344,6 +346,14 @@
                 if(this.userManageUsername==''||this.userManagePassword==''||this.userManageName==''||this.userManagePhone==''||this.userManageEmail==''){
                     that.$message({
                         message: '必填字段不能为空',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                if(result.test(this.userManagePassword)){
+                    that.$message({
+                        message: '密码字段不能为中文',
                         type: 'error',
                         showClose: true,
                     });
@@ -365,6 +375,7 @@
                     });
                     return;
                 }
+                
                 if(that.selectedOptions3.length==0){
                     that.$message({
                         message: '请选择分组',
@@ -624,6 +635,7 @@
     }
 </script>
 <style scoped>
+.required{color: red;}
 .userManage{width: 100%;height: 100%;padding: 15px;position: relative;}
 .userManage_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .userManage_nav>i{font-size: 23px;}
@@ -632,7 +644,7 @@
 
 .userManage_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 .userManage_form{display: flex;width: 250px;margin: 0 auto 10px;}
-.userManage_form>span{width: 70px;line-height: 34px;font-size: 15px;}
+.userManage_form>span{width: 75px;line-height: 34px;font-size: 15px;}
 .userManage_form>input{height: 31px;}
 
 .userManage_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}

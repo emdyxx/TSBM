@@ -274,11 +274,20 @@ export default {
     //修改密码
     revampPassword(){
       var that = this;
+      //中文验证
       if(this.newPassword!=this.newPasswordTwo){
         this.$message({
           message: '新密码不一致',
           type: 'error',
           showClose: true,
+        });
+        return;
+      }
+      if(this.oldPassword==this.newPasswordTwo){
+        that.$message({
+            message: '新密码不能与旧密码一致',
+            type: 'error',
+            showClose: true,
         });
         return;
       }

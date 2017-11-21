@@ -19,7 +19,7 @@
                         </div>
                         <div class="modal-body">
                             <div class="departmentManage_form">
-                                <span style="width:74px;">所属部门:</span>
+                                <span style="width:74px;"><i class="required">*</i>所属部门:</span>
                                 <div>
                                     <el-cascader
                                         :options="options"
@@ -35,23 +35,23 @@
                                 <input type="text" v-model='departmentManageCode' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织代码">
                             </div> -->
                             <div class="departmentManage_form">
-                                <span>组织名称:</span>
+                                <span><i class="required">*</i>组织名称:</span>
                                 <input type="text" v-model='departmentManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
                             </div>
                             <div class="departmentManage_form">
-                                <span>地址:</span>
+                                <span><i class="required">*</i>地址:</span>
                                 <input type="text" v-model='departmentManageAddress' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
                             </div>
                             <div class="departmentManage_form">
-                                <span>电话:</span>
+                                <span><i class="required">*</i>电话:</span>
                                 <input type="text" v-model='departmentManagePhone' class="form-control" maxlength="16" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
                             </div>
                             <div class="departmentManage_form">
-                                <span>负责人:</span>
+                                <span><i class="required">*</i>负责人:</span>
                                 <input type="text" v-model='departmentManagePrincipal' class="form-control" maxlength="15" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入负责人">
                             </div>
                             <div class="departmentManage_form">
-                                <span>邮箱:</span>
+                                <span><i class="required">*</i>邮箱:</span>
                                 <input type="text" v-model='departmentManageEmail' class="form-control" maxlength="22" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
                         </div>
@@ -500,6 +500,7 @@
     }
 </script>
 <style scoped>
+.required{color: red;}
 .departmentManage{width: 100%;height: 100%;padding: 15px;position: relative;}
 .departmentManage_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .departmentManage_nav>i{font-size: 23px;}
