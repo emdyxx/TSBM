@@ -10,7 +10,7 @@ export default {
   methods:{
   },
   created(){
-    localStorage.serverurl = 'http://192.168.70.83/TSBM-Manager/';
+    localStorage.serverurl = 'http://192.168.10.7:8080/TSBM-Manager/';
   }
 }
 </script>

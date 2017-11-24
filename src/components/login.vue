@@ -10,8 +10,8 @@
               </div>
               <div class="login_popur_yzm_two">
                   <div>
-                    <img id="codeimg" src="http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=0.3809647994555081" 
-                     onclick="javascript:this.src='http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random();" alt="">
+                    <img id="codeimg" src="http://192.168.10.7:8080/TSBM-Manager/getVerifyToken?rnd=0.3809647994555081" 
+                     onclick="javascript:this.src='http://192.168.10.7:8080/TSBM-Manager/getVerifyToken?rnd=' + Math.random();" alt="">
                   </div>
                   <div>
                     <i @click="verification" class="iconfont icon-shuaxin1"></i>
@@ -91,7 +91,7 @@ export default {
                 type: 'error',
                 showClose: true,
               });
-              $('#codeimg').attr('src','http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
+              $('#codeimg').attr('src','http://192.168.10.7:8080/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
               return;
             }
             if(data.errorCode=='2004'){
@@ -100,15 +100,10 @@ export default {
                   type: 'error',
                   showClose: true,
                 });
-              $('#codeimg').attr('src','http://192.168.70.83/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
+              $('#codeimg').attr('src','http://192.168.10.7:8080/TSBM-Manager/getVerifyToken?rnd=' + Math.random())
               return;
             }
             if(data.errorCode=='0'){
-              // that.$message({
-              //   message: '登陆成功',
-              //   type: 'success',
-              //   showClose: true,
-              // });
               sessionStorage.userName = data.result[0].userName
               sessionStorage.departmentId = data.result[0].departmentId //判断是否是管理员字段
               that.$router.push({'path':'/index'})
