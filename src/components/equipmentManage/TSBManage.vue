@@ -64,10 +64,10 @@
                             align='center'
                             width="160">
                             <template scope="scope">
-                                <span v-if="scope.row.online==='1'" style='color:#00CC00;'>
+                                <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                     在线
                                 </span>
-                                <span v-else-if="scope.row.online==='0'" style='color:#FF0000;'>
+                                <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
                                     离线
                                 </span>
                             </template>    
@@ -172,10 +172,10 @@
                             align='center'
                             width="120">
                                 <template scope="scope">
-                                    <span v-if="scope.row.online==='1'" style='color:#00CC00;'>
+                                    <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                         在线
                                     </span>
-                                    <span v-else-if="scope.row.online==='0'" style='color:#FF0000;'>
+                                    <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
                                         离线
                                     </span>
                                 </template>    
@@ -289,10 +289,10 @@
                             align='center'
                             width="100">
                             <template scope="scope">
-                                <span v-if="scope.row.online==='1'" style='color:#00CC00;'>
+                                <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                     在线
                                 </span>
-                                <span v-else-if="scope.row.online==='0'" style='color:#FF0000;'>
+                                <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
                                     离线
                                 </span>
                             </template>    
@@ -412,10 +412,10 @@
                             align='center'
                             width="120">
                             <template scope="scope">
-                                <span v-if="scope.row.online==='1'" style='color:#00CC00;'>
+                                <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                     在线
                                 </span>
-                                <span v-else-if="scope.row.online==='0'" style='color:#FF0000;'>
+                                <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
                                     离线
                                 </span>
                             </template>    
@@ -478,15 +478,26 @@
                             <h4 class="modal-title" id="myModalLabel">设备分组</h4>
                         </div>
                         <div class="modal-body">
+                            <div v-if="typegrouping">
+                                <span>选择分组:</span>
+                                <el-select v-model="selectedOptions" @change="groupingchange" size='small' style="width:126px;margin-bottom:10px;" placeholder="请选择">
+                                    <el-option
+                                    v-for="item in groupingoptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
                             <el-button @click="dialogVisible = true" type="primary" size='small'>添加分组</el-button>
                             <div v-if="dialogVisible" class="grouping_div">
                                 <div>
-                                    <span>分组名称:</span>
-                                    <input type="text" v-model="names" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
-                                    <span>硬件版本:</span>
-                                    <input type="text" v-model="hardwareVersion" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
-                                    <span>软件版本:</span>
-                                    <input type="text" v-model="softwareVersion" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                    <span style='margin-left:45px;line-height:36px;'>分组名称:</span>
+                                    <input type="text" v-model="names" class="form-control logManage_main_input" placeholder='请输入分组名称' onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                    <span style='margin-left:45px;line-height:36px;'>硬件版本:</span>
+                                    <input type="text" v-model="hardwareVersion" class="form-control logManage_main_input" placeholder='请输入硬件版本' onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                    <span style='margin-left:45px;line-height:36px;'>软件版本:</span>
+                                    <input type="text" v-model="softwareVersion" class="form-control logManage_main_input" placeholder='请输入软件版本' onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
                                 </div>
                                 <p>
                                     <span>简介</span>
@@ -515,22 +526,16 @@
                                     width="55">  
                                     </el-table-column>
                                     <el-table-column
-                                    prop="name"
+                                    prop="groupName"
                                     align='center'
                                     label="分组名称"
                                     width="130">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="hardwareVersion"
+                                    prop="model"
                                     align='center'
-                                    label="硬件版本"
+                                    label="适用型号"
                                     width="120">
-                                    </el-table-column>
-                                    <el-table-column
-                                    prop="softwareVersion"
-                                    align='center'
-                                    label="软件版本"
-                                    width="110">
                                     </el-table-column>
                                     <el-table-column
                                     prop="remark"
@@ -1544,7 +1549,7 @@
                                 <el-collapse-item title="设备信息" name="0" style="text-align:left;">
                                     <div>
                                         <span>设备昵称:</span>
-                                        <input type="text">
+                                        <input v-model="managedata.nickname" type="text" placeholder="请输入设备昵称" style="width:146px;display:inline-block;" class="form-control logManage_main_input">
                                     </div>
                                     <div>
                                         <span>备注信息:</span>
@@ -1552,81 +1557,43 @@
                                         type="textarea"
                                         :rows="2"
                                         placeholder="请输入内容"
-                                        v-model="textarea">
+                                        v-model="managedata.remark">
                                         </el-input>
                                     </div>
+                                    <el-button @click="configurationsave(0)" type="primary" size='small' style="margin-top:5px;margin-left:10px;">保存</el-button>
                                 </el-collapse-item>
                                 <el-collapse-item title="固件管理" name="1" style="text-align:left;">
-                                    <!-- tsbg软件升级 -->
-                                    <div v-if="lookoverType=='tsbg'" class="basicstatus_bottom">
-                                        <div class="upgrade">
-                                            当前版本:V1.0052
-                                        </div>
-                                        <div class="upgrade">
-                                            选择固件:<el-select v-model="value" clearable size='small' placeholder="请选择">
-                                                <el-option
-                                                v-for="item in upgradeoptions"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                                </el-option>
-                                            </el-select>
-                                        </div>
-                                        <div>
-                                            <el-button type="primary">升级</el-button>
-                                        </div>
+                                    <div class='basicstatus_top'>
+                                        <span>选择升级包:</span>
+                                        <el-select v-model="managevalue" size='small' clearable placeholder="请选择">
+                                            <el-option
+                                            v-for="item in manageoptions"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </div> 
+                                    <div>
+                                        <el-button @click="configurationsave(1)" type="primary" size='small' style="margin-top:5px;margin-left:10px;">升级包下发</el-button>
                                     </div>
-                                    <!-- tsbc软件升级 -->
-                                    <div v-if="lookoverType=='tsbc'" class="basicstatus_bottom">
-                                        <div class="upgrade">
-                                            当前版本:V1.0052
-                                        </div>
-                                        <div class="upgrade">
-                                            选择固件:<el-select v-model="value" clearable size='small' placeholder="请选择">
-                                                <el-option
-                                                v-for="item in upgradeoptions"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                                </el-option>
-                                            </el-select>
-                                        </div>
-                                        <div>
-                                            <el-button type="primary">升级</el-button>
-                                        </div>
-                                    </div>
-                                    <!-- tsba软件升级 -->
-                                    <div v-if="lookoverType=='tsba'" class="basicstatus_bottom">
-                                        <div class="upgrade">
-                                            当前版本:V1.0052
-                                        </div>
-                                        <div class="upgrade">
-                                            选择固件:<el-select v-model="value" clearable size='small' placeholder="请选择">
-                                                <el-option
-                                                v-for="item in upgradeoptions"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                                </el-option>
-                                            </el-select>
-                                        </div>
-                                        <div>
-                                            <el-button type="primary">升级</el-button>
-                                        </div>
-                                    </div>
+                                    <div class="basicstatus_center"></div>
                                     <span>是否允许设备自动升级: </span>
-                                    <el-radio-group v-model="radio3">
+                                    <el-radio-group v-model="managedata.AutoUpgrade">
                                         <el-radio :label="1">是</el-radio>
                                         <el-radio :label="0">否</el-radio>
                                     </el-radio-group>
+                                   <div>
+                                        <el-button @click="configurationsave(4)" type="primary" size='small' style="margin-top:5px;margin-left:10px;">保存</el-button>
+                                   </div>
                                 </el-collapse-item>
                                 <el-collapse-item title="设备操作" name="2" style="text-align:left;">
                                     <!-- tsbg设备重启 -->
-                                    <div v-if="lookoverType=='tsbg'">
+                                    <div>
                                         <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
                                             <p>&#x3000&#x3000“可按下下面按钮 强制设备重新启动</p>
                                         </div>
-                                        <el-button type="primary" style="margin:10px 0 15px 0;">重启</el-button>
+                                        <el-button @click="configurationsave(5)" size='small' type="primary" style="margin:10px 0 15px 0;">重启</el-button>
                                         <div class="basicstatus_top">
                                             重置
                                         </div>
@@ -1634,53 +1601,18 @@
                                         <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
                                             <p>&#x3000&#x3000“可按下下面按钮 重置设备</p>
                                         </div>
-                                        <el-button type="primary" style="margin:10px 0 15px 0;">重置</el-button>
+                                        <el-button @click="configurationsave(6)" size='small' type="primary" style="margin:10px 0 15px 0;">重置</el-button>
                                         <div class="basicstatus_center"></div>
                                         <p style="text-align:left;">注意：在设备重启期间，请不要将设备断电</p>
                                     </div>
-                                    <!-- tsbc设备重启 -->
-                                    <div v-if="lookoverType=='tsbc'">
-                                        <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                            <p>&#x3000&#x3000“可按下下面按钮 强制设备重新启动</p>
-                                        </div>
-                                        <el-button type="primary" style="margin:10px 0 15px 0;">重启</el-button>
-                                        <div class="basicstatus_top">
-                                            重置
-                                        </div>
-                                        <div class="basicstatus_center"></div>
-                                        <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                            <p>&#x3000&#x3000“可按下下面按钮 重置设备</p>
-                                        </div>
-                                        <el-button type="primary" style="margin:10px 0 15px 0;">重置</el-button>
-                                    </div>
-                                    <!-- tsba设备重启 -->
-                                    <div v-if="lookoverType=='tsba'">
-                                        <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                            <p>&#x3000&#x3000“可按下下面按钮 强制设备重新启动</p>
-                                        </div>
-                                        <el-button type="primary" style="margin:10px 0 15px 0;">重启</el-button>
-                                    </div>
                                 </el-collapse-item>
-                                <el-collapse-item v-if="lookoverType=='tsbg'" title="模板管理" name="3" style="text-align:left;">
+                                <el-collapse-item title="模板管理" name="3" style="text-align:left;">
                                     <div class="basicstatus_bottom">
-                                       <el-checkbox>允许设备自动匹配模板</el-checkbox>
+                                       <el-checkbox v-model="managedata.upgrade">允许设备自动匹配模板</el-checkbox>
                                     </div>
-                                    <el-button type="primary">删除模板</el-button>
+                                    <el-button @click="configurationsave(8)" size='small' type="primary">保存</el-button>
+                                    <el-button @click="configurationsave(9)" size='small' type="primary">删除模板</el-button>
                                 </el-collapse-item>
-                                <el-collapse-item v-if="lookoverType=='tsba'" title="存为模板" name="5" style="text-align:left;">
-                                    <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                        <el-checkbox v-model="templatechecked" >应用模板</el-checkbox>
-                                        <p>&#x3000&#x3000“应用模板”开关打开后，当前终端设备会主动从控制网关应用配置模板；否则使用自身已有配置。</p>
-                                    </div>
-                                    <div class="basicstatus_top">
-                                        存为模板
-                                    </div>
-                                    <div class="basicstatus_center"></div>
-                                    <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                        <p>&#x3000&#x3000“将当前设备的配置项存为模板，保存在控制网关，可根据需要应用于其它相同型终端设备上。</p>
-                                    </div>
-                                    <el-button type="primary" style="margin:10px 0 15px 0;">存为模板</el-button>
-                                </el-collapse-item> 
                             </el-collapse>
                         </div>
                     </div><!-- /.modal-content -->
@@ -1708,9 +1640,12 @@
                 lookoverType:'',
                 lookoverstatus:{},
                 lookoverlan:true,
-                activeNames: '2',
+                activeNames: '0',
                 textarea:'',
                 //设备分组
+                typegrouping:false,
+                selectedOptions:'', //选择分组绑定数据
+                groupingoptions:[], //管理员登录选择分组
                 groupingdata:[],
                 dialogVisible :false,
                 names:'',
@@ -1719,6 +1654,9 @@
                 groupingtextarea:'',
                 sites:[],
                 sitestwo:[],
+                //管理升级包数据
+                manageoptions:[],
+                managevalue:'',
 
                 tsbgdata:[],
                 tsbgpagechange:1,
@@ -1732,7 +1670,6 @@
                 optionsone:[{value:'0',label:'离线'},{value:'1',label:'在线'}],
                 DHCPchecked:true,
                 tsbguploaddata:[],
-                radio3:1,
                 templatechecked:false,
                 
                 tsbcdata:[],
@@ -1859,6 +1796,12 @@
                 },//tsba配置数据
                 configuration:[],//配置选中的数据
                 showconfigdata:{},//接口返回成功的数据
+                managedata:{
+                    nickname:'',
+                    remark:'',
+                    AutoUpgrade:'0',
+                    upgrade:true,
+                },
             }
         },
         methods:{
@@ -1882,8 +1825,8 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'equipment/getAllEquipmentList',
                     data:{
-                        pageIndex:that.tsbgpageIndex,
-                        pageSize:that.tsbgpageSize,
+                        pageIndex:that.pageIndex,
+                        pageSize:that.pageSize,
                         MAC:that.username,
                         lanIPX:that.userIP,
                         online:that.value
@@ -2104,10 +2047,30 @@
             },
             //管理
             administerModal(val){
+                var that = this;
                 $('#administerModal').modal('show')
                 this.lookoverType = val.type
+                this.configuration = val
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/getEquipmentUpgradeFileList',
+                    data:{
+                        type:val.type,
+                        equipmentId:val.id
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.manageoptions = data.result
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
             },
-            //配置保存
+            //配置(模板)保存
             deploysave(val){
                 var that = this;
                 var url = '';
@@ -2380,25 +2343,23 @@
                         return;
                     }
                     if(that.tsbacaollcate.wifi2EncryptionMode=='0'){
-                        if(that.tsbacaollcate.wifi2KeyAuth==''){}else{
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
+                    }else{
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
                     }    
                     if(that.tsbacaollcate.wifi5EncryptionMode=='0'){
-                        if(that.tsbacaollcate.wifi5KeyAuth==''){}else{
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                    }        
+                    }else{
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }          
                 }
                 if(that.lookoverType=='0'){
                     url='equipment/saveConfigTsbg'
@@ -2454,6 +2415,113 @@
                     }
                 })
             },
+            //管理保存
+            configurationsave(val){
+                var that = this;
+                var url = '';
+                var data = {};
+                if(that.configuration.type=='0'){url='equipment/saveManagerTsbg';}
+                if(that.configuration.type=='1'){url='equipment/saveManagerTsbc';}
+                if(that.configuration.type=='2'){url='equipment/saveManagerTsba';}
+                if(val=='0'){
+                    data.flag = 'SAVE';
+                    data.nickname = that.managedata.nickname
+                    data.remark = that.managedata.remark
+                }
+                if(val=='1'){
+                    if(that.managevalue==''){
+                        that.$message({
+                            message: '请选择升级包',
+                            type: 'error'
+                        })
+                        return;
+                    }
+                    for(var i=0;i<that.manageoptions.length;i++){
+                        if(that.managevalue = that.manageoptions[i].value){
+                            data.url = that.manageoptions[i].fileUrl
+                        }
+                    }
+                    data.flag = 'UPGRADE';
+                }//升级包下发按钮
+                if(val=='4'){
+                    data.flag = 'AUTOUPGRADE';
+                    data.autoUpgrade = that.managedata.AutoUpgrade
+                }
+                if(val=='5'||val=='7'){
+                    data.flag = 'REBOOT';
+                }//重启
+                if(val=='6'){
+                    data.flag = 'RESET';
+                }//重置
+                if(val=='8'){
+                    data.flag = 'AUTOCONFIG';
+                    if(that.managedata.upgrade==true){
+                        data.autoConfig = 1
+                    }else{
+                        data.autoConfig = 0
+                    }
+                    
+                }//模板是否允许自动升级
+                if(val=='9'){
+                    data.flag = 'DELTEMPLATE';
+                }//删除模板
+                data.id = that.configuration.id;
+                data.MAC = that.configuration.MAC;
+                data.senderIP = that.configuration.senderIP;
+                data.senderMAC = that.configuration.senderMAC;
+                data.hardwareVersion = that.configuration.hardwareVersion;
+                data.softwareVersion = that.configuration.softwareVersion;
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+url,
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            if(val=='0'||val=='4'){
+                                that.$message({
+                                    message: '保存成功',
+                                    type: 'success'
+                                })
+                            }
+                            if(val=='1'){
+                                that.$message({
+                                    message: '升级包下发成功',
+                                    type: 'success'
+                                })
+                            }
+                            if(val=='5'||val=='7'){
+                                that.$message({
+                                    message: '重启成功',
+                                    type: 'success'
+                                })
+                            }
+                            if(val=='6'){
+                                that.$message({
+                                    message: '重置成功',
+                                    type: 'success'
+                                })
+                            }
+                            if(val=='8'){
+                                that.$message({
+                                    message: '保存成功',
+                                    type: 'success'
+                                })
+                            }
+                            if(val=='9'){
+                                that.$message({
+                                    message: '删除成功',
+                                    type: 'success'
+                                })
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
             //页面数据选择
             handleSelectionChange(val){
                 this.sites = [];
@@ -2482,27 +2550,89 @@
                     return;
                 }
                 var type = '';
-                if(this.sites[0].type=='tsbg'){
-                    type = 't_tsbg_group';
+                console.log(this.sites[0].type)
+                if(this.sites[0].type=='0'){
+                    type = '0';
                 }
-                if(this.sites[0].type=='tsbc'){
-                    type = 't_tsbc_group';
+                if(this.sites[0].type=='1'){
+                    type = '1';
                 }
-                if(this.sites[0].type=='tsba'){
-                    type = 't_tsba_group';
+                if(this.sites[0].type=='2'){
+                    type = '2';
                 }
                 $('#tsbgmyModal').modal('show')
+                if(sessionStorage.departmentId=='1'){
+                    that.typegrouping = true;
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'department/getTopDepartment',
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.groupingoptions = data.result[0].children
+                                that.selectedOptions = data.result[0].children[0].value
+                                setTimeout(function(){
+                                    $.ajax({
+                                        type:'get',
+                                        async:true,
+                                        dataType:'json',
+                                        xhrFields:{withCredentials:true},
+                                        url:that.serverurl+'equipment/getEquipmentGroupList',
+                                        data:{
+                                            type:type,
+                                            departmentId:that.selectedOptions
+                                        },
+                                        success:function(data){
+                                            that.groupingdata = data.result
+                                        }
+                                    })
+                                },300)
+                            }
+                        }
+                    })
+                }else{
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'equipment/getEquipmentGroupList',
+                        data:{
+                            type:type
+                        },
+                        success:function(data){
+                            that.groupingdata = data.result
+                        }
+                    })
+                }
+            },
+            //管理员选择分组chang事件
+            groupingchange(){
+                var that = this
+                var type = '';
+                if(this.sites[0].type=='0'){
+                    type = '0';
+                }
+                if(this.sites[0].type=='1'){
+                    type = '1';
+                }
+                if(this.sites[0].type=='2'){
+                    type = '2';
+                }
                 $.ajax({
-                    type:'post',
+                    type:'get',
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+'equipment/getDeviceGroup',
+                    url:that.serverurl+'equipment/getEquipmentGroupList',
                     data:{
-                        table:type
+                        type:type,
+                        departmentId:that.selectedOptions
                     },
                     success:function(data){
-                        that.groupingdata = data.rows
+                        that.groupingdata = data.result
                     }
                 })
             },
@@ -2510,28 +2640,31 @@
             groupingsave(){
                 var that = this;
                 var type = '';
-                if(this.sites[0].type=='tsbg'){
-                    type = 't_tsbg_group';
+                var data = {};
+                if(this.sites[0].type=='0'){
+                    type = '0';
                 }
-                if(this.sites[0].type=='tsbc'){
-                    type = 't_tsbc_group';
+                if(this.sites[0].type=='1'){
+                    type = '1';
                 }
-                if(this.sites[0].type=='tsba'){
-                    type = 't_tsba_group';
+                if(this.sites[0].type=='2'){
+                    type = '2';
+                }
+                data.type = type;
+                data.groupName = that.names;
+                data.model = that.hardwareVersion;
+                data.softwareVersion = that.softwareVersion;
+                data.remark = that.groupingtextarea;
+                if(sessionStorage.departmentId=='1'){
+                    data.departmentId = that.selectedOptions
                 }
                 $.ajax({
                     type:'post',
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+'equipment/saveDeviceGroup',
-                    data:{
-                       table: type,
-                       name: that.names,
-                       hardwareVersion: that.hardwareVersion,
-                       softwareVersion: that.softwareVersion,
-                       remark: that.groupingtextarea
-                    },
+                    url:that.serverurl+'equipment/saveEquipmentGroup',
+                    data:data,
                     success:function(data){
                         console.log(data)
                         if(data.errorCode=='0'){
@@ -2540,7 +2673,20 @@
                                 type: 'success'
                             })
                             that.dialogVisible = false;
-                            that.machinegrouping()
+                            $.ajax({
+                                type:'get',
+                                async:true,
+                                dataType:'json',
+                                xhrFields:{withCredentials:true},
+                                url:that.serverurl+'equipment/getEquipmentGroupList',
+                                data:{
+                                    type:type,
+                                    departmentId:that.selectedOptions
+                                },
+                                success:function(data){
+                                    that.groupingdata = data.result
+                                }
+                            })
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -2551,24 +2697,24 @@
             groupingdelete(val){
                 var that = this
                 var type = '';
-                if(this.sites[0].type='tsbg'){
-                    type = 't_tsbg_group';
+                if(this.sites[0].type=='0'){
+                    type = '0';
                 }
-                if(this.sites[0].type='tsbc'){
-                    type = 't_tsbc_group';
+                if(this.sites[0].type=='1'){
+                    type = '1';
                 }
-                if(this.sites[0].type='tsba'){
-                    type = 't_tsba_group';
+                if(this.sites[0].type=='2'){
+                    type = '2';
                 }
                 $.ajax({
                     type:'post',
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+'equipment/deleteDeviceGroup',
+                    url:that.serverurl+'equipment/delEquipmentGroup',
                     data:{
-                        table:type,
-                        id:val.id
+                        type:type,
+                        groupIds:val.id
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -2576,7 +2722,21 @@
                                 message: '删除成功',
                                 type: 'success'
                             })
-                            that.machinegrouping()
+                            alert(type)
+                            $.ajax({
+                                type:'get',
+                                async:true,
+                                dataType:'json',
+                                xhrFields:{withCredentials:true},
+                                url:that.serverurl+'equipment/getEquipmentGroupList',
+                                data:{
+                                    type:type,
+                                    departmentId:that.selectedOptions
+                                },
+                                success:function(data){
+                                    that.groupingdata = data.result
+                                }
+                            })
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -2589,24 +2749,21 @@
                 var type = '';
                 var id = [];
                 var groupname = '';
-                if(this.sites[0].type='tsbg'){
-                    type = 't_tsbg';
-                    groupname = 'tsbgGroupId'
+                if(this.sites[0].type='0'){
+                    type = '0';
                 }
-                if(this.sites[0].type='tsbc'){
-                    type = 't_tsbc';
-                    groupname = 'tsbcGroupId'
+                if(this.sites[0].type='1'){
+                    type = '1';
                 }
-                if(this.sites[0].type='tsba'){
-                    type = 't_tsba';
-                    groupname = 'tsbaGroupId'
+                if(this.sites[0].type='2'){
+                    type = '2';
                 }
                 for(var i=0;i<this.sites.length;i++){
                     id.push(this.sites[i].id)
                 }
-                if(this.sitestwo.length>=2){
+                if(this.sitestwo.length==0||this.sitestwo.length>=2){
                     this.$message({
-                        message:'请选取分组进行保存',
+                        message:'请选取一个分组进行保存',
                         type:'error'
                     })
                     return;
@@ -2616,12 +2773,11 @@
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+'equipment/divideDeviceGroup',
+                    url:that.serverurl+'equipment/setEquipmentGroup',
                     data:{
-                        table:type,
-                        groupname:groupname,
+                        type:type,
                         groupId:that.sitestwo[0].id,
-                        ids:id.join(',')
+                        equipmentIds:id.join(',')
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -2676,10 +2832,6 @@
             //tsbg搜索
             searchone(){
                 this.tsbgready()
-            },
-            //tsbg固件管理多选框change事件
-            tsbgupgrad(val){
-                console.log(val)
             },
             
 
@@ -2805,30 +2957,56 @@
                     }
                 }
             },
-            
-
             //判断标签页change事件
             handleClick(tab){
                 var that = this
-                if(tab.name=='1'){
+                var TSBManage1 = '';
+                var TSBManage2= '';
+                var TSBManage3 = '';
+                var TSBManage4 = '';
+                if(this.activeName=='1'){
                     this.ready()
+                    // clearInterval(TSBManage2);
+                    // clearInterval(TSBManage3);
+                    // clearInterval(TSBManage4);
+                    // TSBManage1 = setInterval(function(){
+                    //     that.ready();
+                    // },10000)
                 }
-                if(tab.name=='2'){
+                if(this.activeName=='2'){
                     this.tsbgready()
                     this.sites = []
+                    // clearInterval(TSBManage1);
+                    // clearInterval(TSBManage3);
+                    // clearInterval(TSBManage4);
+                    // TSBManage2 = setInterval(function(){
+                    //     that.tsbgready();
+                    // },10000)
                 }
-                if(tab.name=='3'){
+                if(this.activeName=='3'){
                     this.tsbcready()
                     this.sites = []
+                    // clearInterval(TSBManage1);
+                    // clearInterval(TSBManage2);
+                    // clearInterval(TSBManage4);
+                    // TSBManage3 = setInterval(function(){
+                    //     that.tsbcready();
+                    // },10000)
                 }
-                if(tab.name=='4'){
+                if(this.activeName=='4'){
                     this.tsbaready()
                     this.sites = []
+                    // clearInterval(TSBManage1);
+                    // clearInterval(TSBManage2);
+                    // clearInterval(TSBManage3);
+                    // TSBManage4 = setInterval(function(){
+                    //     that.tsbaready();
+                    // },10000)
                 }
             }
         },
         created(){
-            this.ready();
+            this.handleClick();
         }
     }
 </script>

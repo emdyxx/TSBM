@@ -8,17 +8,35 @@
                 <el-button @click="Goback" type="primary" size='small' icon="arrow-left">返回上一级</el-button>
             </div>
             <div class="imgcoordinate_A_bottom">
-                <div class="imgcoordinate" @mouseup="uplift" @mousedown="press">
-                    <img :src=imgUrl alt="">
+                <div class="imgcoordinate">
+                    <img :src=imgUrl alt="" @mouseup="uplift" style="width: 100%;height: 100%;opacity: 0.6;">
                     <template v-for="(item,key) in imgdata">
-                        <i v-if='item.equipmentType==="0"' :style="`left:${item.x}px;top:${item.y}px;color:#F4EA2A;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
-                        <i v-if='item.equipmentType==="1"' :style="`left:${item.x}px;top:${item.y}px;color:#1986F2;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
-                        <i v-if='item.equipmentType==="2"' :style="`left:${item.x}px;top:${item.y}px;color:#1AFA29;`" @dblclick="upliftTwo(key)" class="iconfont icon-wodeweizhi img-i"></i>
+                        <template v-if='item.equipmentType=="0"'>
+                            <img v-if='item.online=="0"' :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png">
+                            <img v-if='item.online=="1"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png">
+                            <img v-if='item.online=="2"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png">
+                        </template>
+                        <template v-if='item.equipmentType=="1"'>
+                            <img v-if='item.online=="0"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png">
+                            <img v-if='item.online=="1"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png">
+                            <img v-if='item.online=="2"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png">
+                        </template>
+                        <template v-if='item.equipmentType=="2"'>
+                            <img v-if='item.online=="0"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png">
+                            <img v-if='item.online=="1"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png">
+                            <img v-if='item.online=="2"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png">
+                        </template>
+                        <!-- <i v-if='item.equipmentType==="0"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#F4EA2A;`" class="iconfont icon-wodeweizhi img-i"></i>
+                        <i v-if='item.equipmentType==="1"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#1986F2;`" class="iconfont icon-wodeweizhi img-i"></i>
+                        <i v-if='item.equipmentType==="2"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#1AFA29;`" class="iconfont icon-wodeweizhi img-i"></i> -->
                     </template>
-                    
                     <div class="contextmenu" :style="styleObject" v-if="opction">
                         <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加WIFI</el-button>
                         <el-button @click="cancel" type="primary" size="small" icon="circle-cross">取消</el-button>
+                    </div>
+                    <div class="contextmenu" :style="styleObjecttwo" v-if="opctiontwo">
+                        <el-button @click="addWIFItwo" type="primary" size="small" icon="plus">删除WIFI</el-button>
+                        <el-button @click="canceltwo" type="primary" size="small" icon="circle-cross">取消</el-button>
                     </div>
                     <!-- 模态框（Modal） -->
                     <div class="modal fade" id="myModalWIFI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -93,7 +111,7 @@
                             </div><!-- /.modal-content -->
                         </div>
                     </div><!-- /.modal -->
-                </div>   
+                </div> 
             </div>
         </div>
     </div>
@@ -107,7 +125,12 @@
                 imgIds:sessionStorage.imgIds,
                 imgUrl:sessionStorage.imgUrl,
                 opction:false,
+                opctiontwo:false,
                 styleObject: {
+                    left: '',
+                    top: ''
+                },
+                styleObjecttwo:{
                     left: '',
                     top: ''
                 },
@@ -120,8 +143,9 @@
                 pageIndex:1,
                 handleCurrent:[],
                 imgdata:[],
-                // dialogVisible:false,
-                // delectedKey:'',
+
+                delectedId:'',
+                delectedType:'',
             }
         },
         methods:{
@@ -134,7 +158,7 @@
                     var x = ev.offsetX 
                     var y = ev.offsetY
                     var vx = $('.imgcoordinate').width() , vy = $('.imgcoordinate').height()
-                    var mw =  110, mh =  100;
+                    var mw =  120, mh =  110;
                     var lefts,tops;
                     if(x + mw>vx){
                         lefts = vx - mw
@@ -147,16 +171,36 @@
                         tops = y
                     }
                     that.styleObject = {
-                        left: lefts+15 +"px",
-                        top: tops+15 +"px"
+                        left: lefts+"px",
+                        top: tops+"px"
                     }
-                    sessionStorage.clientX = ev.offsetX
-                    sessionStorage.clientY = ev.offsetY
+                    sessionStorage.clientX = ev.offsetX - 13
+                    sessionStorage.clientY = ev.offsetY - 30
                     that.opction = true 
                 } 
-            },  
-            //小图片双击删除设备事件
-            upliftTwo(key){
+            }, 
+            //设备坐标右键事件 
+            uplifttwo(ev){
+                console.log(ev)
+                var that = this;
+                var btn = ev.button;
+                if(btn==2){
+                    for(var i = 0;i<that.imgdata.length;i++){
+                        if(ev.target.id==that.imgdata[i].MAC){
+                            var x = '';var y = '';
+                            x = Number(that.imgdata[i].x)+15;y=Number(that.imgdata[i].y)+15;
+                            console.log(x,y)
+                            that.styleObjecttwo.left = x +"px",
+                            that.styleObjecttwo.top = y +"px"
+                            that.delectedId = that.imgdata[i].id
+                            that.delectedType = that.imgdata[i].equipmentType
+                        }
+                    }
+                    that.opctiontwo = true;
+                }
+            },
+            //设备坐标删除
+            addWIFItwo(){
                 var that = this
                 this.$confirm('此操作将删除该设备, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -170,8 +214,8 @@
                         xhrFields:{withCredentials:true},
                         url:that.serverurl+'location/removeLocatedEquitment',
                         data:{
-                            equitmentId:that.imgdata[key].id,
-                            equitmentType:that.imgdata[key].equipmentType
+                            equitmentId:that.delectedId,
+                            equitmentType:that.delectedType
                         },
                         success:function(data){
                             if(data.errorCode=='0'){
@@ -179,6 +223,7 @@
                                     type: 'success',
                                     message: '删除成功!'
                                 });
+                                that.opctiontwo = false;
                                 that.ready()
                             }else{
                                 that.errorCode(data.errorCode)
@@ -192,10 +237,6 @@
 
                     });          
                 });
-            },
-            press(ev){
-                // var that = this
-                // that.opction = false
             },
             //选中设备change事件
             handleCurrentChange(val){
@@ -297,6 +338,9 @@
             cancel(){
                 this.opction = false
             },
+            canceltwo(){
+                this.opctiontwo = false;
+            },
             //返回上一级
             Goback(){
                 this.$router.push({'path':'/equipmentLocation'})
@@ -352,11 +396,10 @@
 .imgcoordinate_nav>i{font-size: 23px;}
 .imgcoordinate_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
 .imgcoordinate_A_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
-.imgcoordinate_A_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;}
+.imgcoordinate_A_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;overflow: auto;display: flex;justify-content: center;align-items: center;}
 
-.imgcoordinate{width: 100%;height: 100%;position: relative;overflow: auto;}
-.imgcoordinate>img{width: 100%;height: 100%;opacity: 0.6;}
+.imgcoordinate{width: 950px;height: 600px;position: relative;}
 .contextmenu{width: 110px;background: #D3DCE6;box-shadow: 1px 1px 10px;border-radius:3px;position: absolute;}
 .contextmenu>button{margin:0;margin-bottom: 5px;width: 100%;}
-.img-i{position: absolute;font-size: 30px;}
+.img-i{position: absolute;width: 25px;height: 30px;}
 </style>

@@ -382,9 +382,7 @@
                             departmentId:that.departmentId
                         },
                         success:function(data){
-                            console.log(data)
                             that.mapcoordinate = data.result
-                            // for(){}
                             setTimeout(function(){
                                     // 百度地图API功能
                                     var map = new BMap.Map("allmap");    // 创建Map实例
@@ -414,50 +412,91 @@
                                         menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
                                     }
                                     map.addContextMenu(menu);
-                                    var tsbamyIcon = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/tsba.png", new BMap.Size(30,30));
-                                    var tsbcmyIcon = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/tsbc.png", new BMap.Size(30,30));
-                                    var tsbgmyIcon = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/tsbg.png", new BMap.Size(30,30));
+
+                                    var greenA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+
+                                    var offlineA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+
+                                    var redA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var marker = new Array();
                                     for(var i=0;i<that.mapcoordinate.length;i++){
                                         var point = new BMap.Point(that.mapcoordinate[i].coord.split(",")[0],that.mapcoordinate[i].coord.split(",")[1]);
-                                        if(that.mapcoordinate[i].equipmentType=='0'){
-                                            var marker = new BMap.Marker(point,{icon:tsbgmyIcon});
+                                        if(that.mapcoordinate[i].equipmentType=='0'){ 
+                                            if(that.mapcoordinate[i].online=='0'){
+                                                 marker[i] = new BMap.Marker(point,{icon:offlineG});
+                                            }
+                                            if(that.mapcoordinate[i].online=='1'){
+                                                 marker[i]  = new BMap.Marker(point,{icon:greenG});
+                                            }
+                                            if(that.mapcoordinate[i].online=='2'){
+                                                 marker[i]  = new BMap.Marker(point,{icon:redG});
+                                            }
                                         }
                                         if(that.mapcoordinate[i].equipmentType=='1'){
-                                            var marker = new BMap.Marker(point,{icon:tsbcmyIcon});
+                                            if(that.mapcoordinate[i].online=='0'){
+                                                 marker[i]  = new BMap.Marker(point,{icon:offlineC});
+                                            }
+                                            if(that.mapcoordinate[i].online=='1'){
+                                                 marker[i]  = new BMap.Marker(point,{icon:greenC});
+                                            }
+                                            if(that.mapcoordinate[i].online=='2'){
+                                                 marker[i]  = new BMap.Marker(point,{icon:redC});
+                                            }
                                         }
                                         if(that.mapcoordinate[i].equipmentType=='2'){
-                                            var marker = new BMap.Marker(point,{icon:tsbamyIcon});
+                                            if(that.mapcoordinate[i].online=='0'){
+                                                 marker[i] = new BMap.Marker(point,{icon:offlineA});
+                                            }
+                                            if(that.mapcoordinate[i].online=='1'){
+                                                 marker[i] = new BMap.Marker(point,{icon:greenA});
+                                            }
+                                            if(that.mapcoordinate[i].online=='2'){
+                                                 marker[i] = new BMap.Marker(point,{icon:redA});
+                                            }
                                         }
-                                        var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(20,0)});
+                                        
+                                        var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(25,5)});
                                         label.setStyle({display:"none"});//对label 样式隐藏
-                                        marker.setLabel(label);  //把label设置到maker上  
-                                        marker.setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
-                                        marker.id=that.mapcoordinate[i].id
-                                        map.addOverlay(marker); 
-                                        marker.addEventListener("dblclick",function(e){
-                                            var type = e.target.getLabel().content
-                                            var id = e.target.id
-                                            
-                                            that.$confirm('此操作将删除该设备, 是否继续?', '提示', {
-                                            confirmButtonText: '确定',
-                                            cancelButtonText: '取消',
-                                            type: 'warning'
-                                            }).then(() => {
-                                                that.remove(id,type)
-                                            }).catch(() => {
-                                                that.$message({
-                                                    type: 'info',
-                                                    message: '已取消删除'
-                                                });  
-                                            })
-                                            
-                                        });
+                                        marker[i] .setLabel(label);  //把label设置到maker上  
+                                        marker[i] .setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
+                                        marker[i] .id=that.mapcoordinate[i].id
+                                        map.addOverlay(marker[i]); 
+                                        console.log(marker)
+                                        that.Listener(marker[i]);
                                     }
                             },500)
                         }
                     })
                 }
-                
+            },
+            Listener(marker){
+                var that = this
+                marker.addEventListener("rightclick",function(e){
+                    var id = e.target.id
+                    var type = e.target.getLabel().content
+                    var menuTwo = new BMap.ContextMenu();
+                    menuTwo.addItem(new BMap.MenuItem('删除设备',function(e){
+                        that.$confirm('此操作将删除该设备, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            that.remove(id,type)
+                        }).catch(() => {
+                            that.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });  
+                        })
+                    }));
+                    marker.addContextMenu(menuTwo)
+                });
             },
             remove(id,Type){
                 var that = this
@@ -489,13 +528,13 @@
                 var that = this
                 var url=''
                 if(this.radio2=='0'){
-                    url = 'Equipment/getTsbgList'
+                    url = 'equipment/getTsbgList'
                 }
                 if(this.radio2=='1'){
-                    url = 'Equipment/getTsbcList'
+                    url = 'equipment/getTsbcList'
                 }
                 if(this.radio2=='2'){
-                    url = 'Equipment/getTsbaList'
+                    url = 'equipment/getTsbaList'
                 }
                 $.ajax({
                     type:'post',
@@ -596,6 +635,7 @@
                 this.ready()
             }
         }
+        
     }
 </script>
 <style scoped>

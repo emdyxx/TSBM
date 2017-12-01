@@ -355,8 +355,17 @@ export default {
     },
     //快捷方式点击跳转
     shortcut(val){
-      if(val == '5'){
-        this.$router.push({'path':'/alarm'})
+      if(val == '1'){
+        this.$router.push({'path':'/equipmentStatistics'})
+      }
+      if(val == '2'){
+        this.$router.push({'path':'/TSBManage'})
+      }
+      if(val == '3'){
+        this.$router.push({'path':'/equipmentLocation'})
+      }
+      if(val == '4'){
+        this.$router.push({'path':'/dataStatistics'})
       }
     },
     //点击事件-->跳转图表页面

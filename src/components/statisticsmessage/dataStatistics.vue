@@ -3,7 +3,7 @@
         <div class="dataStatistics_main">
             <template>
                 <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-                    <el-tab-pane label="概览" name="0">
+                    <el-tab-pane label="总览" name="0">
                         <div class="dataStatistics_top">
                             <div id="EC_left"></div>
                             <div id="EC_right"></div>
@@ -77,8 +77,40 @@
                             </div>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="实时" name="1">实时</el-tab-pane>
-                    <el-tab-pane label="历史" name="2">历史</el-tab-pane>
+                    <el-tab-pane label="查询" name="1">
+                        <div class="inquire_top">
+                            <div class="inquire_top_main">
+                                <div class="inquire_formtwo">
+                                    <span>MAC:</span>
+                                    <input type="text" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入MAC">
+                                </div>
+                                <div class="inquire_formtwo">
+                                    <span>型号:</span>
+                                    <el-select v-model="model" size='small' clearable placeholder="请选择">
+                                        <el-option
+                                        v-for="item in modeloptions"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+                                <div class="inquire_formtwo">
+                                    <span>请选择时间范围:</span>
+                                    <el-date-picker
+                                        v-model="time"
+                                        type="datetimerange"
+                                        @change="times"
+                                        size='small'
+                                        placeholder="选择时间范围"
+                                        range-separator='~'
+                                        style="width:320px;">
+                                    </el-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inquire_bottom"></div>
+                    </el-tab-pane>
                 </el-tabs>
             </template>
         </div>
@@ -90,12 +122,17 @@
         data () {
             return {
                 activeName2: '0',
+                //概览
                 options:[{value:'0',label:'tsbc'},{value:'1',label:'tsba'}],
                 value:'',
                 dataStatisticsData:[],
                 pageIndex:1,
                 pageSize:10,
                 total:100,
+                //查询
+                modeloptions:[],
+                model:'',
+                time:'',
             }
         },
         mounted(){
@@ -206,7 +243,12 @@
             //选择条数事件
             handleSizeChange(val){},
             //选择页数事件
-            handleCurrentChange(val){}
+            handleCurrentChange(val){},
+
+            times(val){
+                var type = val.split('~')
+                console.log(type)
+            }
         },
         created(){},
     }
@@ -221,4 +263,11 @@
 .dataStatistics_bottom_top>span{display: inline-block;margin-left:20px; }
 .dataStatistics_bottom_center{position:absolute;left:0;right:12px;height:1px;background: black;}
 .dataStatistics_bottom_bottom{position: absolute;top:43px;left:0;right:12px;bottom:0;}
+.inquire_top{width:100%;height:40px;}
+.inquire_bottom{width:100%;height: auto;position: absolute;top:40px;bottom:3px;;background: black;}
+.inquire_top_main{width: 100%;height: 40px;display: flex;justify-content: center;}
+.inquire_formtwo{display: flex;margin-top: 6px;}
+.inquire_formtwo>span{width: 30%;line-height: 30px;}
+.inquire_formtwo>input{height: 30px;width: 130px;}
+.inquire_formtwo>div{height: 30px;width: 140px;}
 </style>

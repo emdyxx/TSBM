@@ -50,6 +50,7 @@ Vue.prototype.errorCode = function(code){
           type: 'error',
           showClose: true,
       });
+      this.loading = false
     }
     if(code=='1004'){
       this.$message({
