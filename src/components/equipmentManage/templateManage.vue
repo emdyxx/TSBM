@@ -5,7 +5,7 @@
         </div>
         <div class="templateManage_main">
             <div class="templateManage_top">
-                <el-button @click="addtemplate" type="primary" icon="plus " size="small">添加模板</el-button>
+                <el-button v-if="addtemplate" @click="addtemplateT" type="primary" icon="plus " size="small">添加模板</el-button>
             </div>
             <!-- 添加修改模态框（Modal） -->
             <div class="modal fade" id="addmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -835,11 +835,11 @@
                                 <span v-if="scope.row.status==1">
                                     <el-button type="primary" @click="forbidden(scope.row)" size="small">启用</el-button>
                                 </span>
-                                <span>
+                                <span v-if="removetemplate">
                                     <el-button @click="revamptemplate(scope.row)" type="primary" size="small">修改</el-button>
                                 </span> 
-                                <span>
-                                    <el-button @click="removetemplate(scope.row)" type="primary" size="small">删除</el-button>
+                                <span v-if="delatetemplate">
+                                    <el-button @click="removetemplateT(scope.row)" type="primary" size="small">删除</el-button>
                                 </span>  
                             </template>  
                         </el-table-column>
@@ -865,6 +865,11 @@
         name: 'index',
         data () {
             return {
+                //按钮权限
+                addtemplate:false,
+                removetemplate:false,
+                delatetemplate:false,
+                startusing:false,
                 serverurl:localStorage.serverurl,
                 addrelative:'0',  //判断添加修改
                 Administrator:false,
@@ -991,9 +996,45 @@
                 },//tsba配置数据
             }
         },
+        mounted(){
+            var that = this;
+            setTimeout(function(){
+                //请求用户操作权限
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='addTemplate'){
+                                    that.addtemplate = true
+                                }
+                                if(data.result[i].code=='editTemplate'){
+                                    that.removetemplate = true
+                                }
+                                if(data.result[i].code=='delTemplate'){
+                                    that.delatetemplate = true
+                                }
+                                if(data.result[i].code=='setTemplateStatus'){
+                                    that.startusing = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
+        },
         methods:{
             //点击添加模板按钮
-            addtemplate(){
+            addtemplateT(){
                 var that = this;
                 this.panelTable = [];
                 this.panelTabletwo = [];
@@ -1091,7 +1132,6 @@
                                 that.tsbgcollcate.wanPPPoEDNS2 = data.result.configInfo.wanPPPoEDNS2
                                 that.valuethree = Number(data.result.templateOrder)
                                 that.multipleTable = data.result.order
-                                console.log(that.multipleTable)
                             }
                             if(val.templateType=='1'){
                                 that.value = data.result.departmentId
@@ -1204,34 +1244,53 @@
                 })
             },
             //点击删除模板按钮
-            removetemplate(val){
+            removetemplateT(val){
                 var that = this;
-                $.ajax({
-                    type:'post',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'template/delTemplate',
-                    data:{
-                        templateId:val.id
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.$message({
-                                message: '模板删除成功',
-                                type: 'success',
-                                showClose: true,
-                            });
-                            that.ready();
-                        }else{
-                            that.errorCode(data.errorCode)
+                this.$confirm('确认删除该模板, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'template/delTemplate',
+                        data:{
+                            templateId:val.id
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.$message({
+                                    message: '模板删除成功',
+                                    type: 'success',
+                                    showClose: true,
+                                });
+                                that.ready();
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
                         }
-                    }
-                })
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
+                });
             },
             //点击启用禁用按钮
             forbidden(val){
                 var that = this
+                if(that.startusing==false){
+                    that.$message({
+                        message: '您无此权限',
+                        type:'error',
+                        showClose: true,
+                    });
+                    return;
+                }
                 var status = '';
                 if(val.status=='0'){
                     status = '1'
@@ -1840,7 +1899,7 @@
                     }
                 }
                 //分组接口
-                if(that.valuethree==1){url='Equipment/getDeviceGroup'}
+                if(that.valuethree==1){url='equipment/getEquipmentGroupList'}
                 $.ajax({
                     type:'post',
                     async:true,
@@ -1856,7 +1915,6 @@
                         if(data.errorCode=='0'){
                             that.tableData4 = data.rows
                             that.totaltwo = data.total
-                            console.log(that.totaltwo,data.total)
                             // that.$refs.multipleTable.toggleRowSelection(that.multipleTable);
                         }else{
                             that.errorCode(data.errorCode)

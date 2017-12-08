@@ -10,7 +10,7 @@
                 :value="item.value">
                 </el-option>
             </el-select>
-            <el-button type="primary" style="position:absolute;right:15px;" @click="uploadingimg">上传厂区图片</el-button>
+            <el-button v-if="uploading" type="primary" style="position:absolute;right:15px;" @click="uploadingimg">上传厂区图片</el-button>
             <!-- 模态框（Modal） -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -41,8 +41,8 @@
                         <li class="flex-item" v-for='(site,key) in sites'>
                             <img :src=site.imgUrl @click="imgrouter(key)">
                             <div class="img_bottom">
-                                <span @click="imgdelete(key)">删除</span>
-                                <span @click="imgamend(key)">修改</span>
+                                <span v-if="deletetype" @click="imgdelete(key)">删除</span>
+                                <span v-if="revamp" @click="imgamend(key)">修改</span>
                             </div>
                         </li>
                     </ul>
@@ -134,6 +134,10 @@
         name: 'index',
         data () {
             return {
+                //按钮权限
+                uploading:false,
+                deletetype:false,
+                revamp:false,
                 serverurl:localStorage.serverurl,       
                 activeName:'1',
                 imageUrl:'',
@@ -157,6 +161,44 @@
                 mapcood:{},
                 mapcoordinate:[],
             }
+        },
+        mounted(){
+            var that = this
+            setTimeout(function(){
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='uploadImg'){
+                                    that.uploading = true
+                                }
+                                if(data.result[i].code=='delImg'){
+                                    that.deletetype = true
+                                }
+                                if(data.result[i].code=='editImg'){
+                                    that.revamp = true
+                                }
+                                if(data.result[i].code=='locEquipment'){
+                                    localStorage.addequipments = true
+                                }
+                                if(data.result[i].code=='removeEquipment'){
+                                    localStorage.Deleteequipments = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
         },
         methods:{
             //标签页事件
@@ -257,7 +299,6 @@
                     xhrFields:{withCredentials:true},
                     contentType: false
                 }).done(function(res) {
-                    console.log(res.errorCode)
                     if(res.errorCode=='0'){
                         that.$message({
                             message: '上传成功',
@@ -270,7 +311,6 @@
                         that.errorCode(res.errorCode)
                     }
                 }).fail(function(res) {
-                    console.log(res)
                 });
             },
             //页面渲染请求图片
@@ -354,7 +394,6 @@
             },
             //点击图片路由跳转
             imgrouter(key){
-                console.log(key)
                 sessionStorage.imgIds = this.sites[key].id
                 sessionStorage.imgUrl = this.sites[key].imgUrl
                 this.$router.push({'path':'/imgcoordinate'})
@@ -403,7 +442,14 @@
                                                     });
                                                 }else{
                                                     that.mapcood = e
-                                                    $('#myModalWIFIMap').modal('show')
+                                                    if(localStorage.addequipments==false){
+                                                        that.$message({
+                                                            message: '您无此权限',
+                                                            showClose: true,
+                                                        });
+                                                    }else{
+                                                        $('#myModalWIFIMap').modal('show')
+                                                    }
                                                 } 
                                             }
                                         }
@@ -467,7 +513,6 @@
                                         marker[i] .setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
                                         marker[i] .id=that.mapcoordinate[i].id
                                         map.addOverlay(marker[i]); 
-                                        console.log(marker)
                                         that.Listener(marker[i]);
                                     }
                             },500)
@@ -482,18 +527,25 @@
                     var type = e.target.getLabel().content
                     var menuTwo = new BMap.ContextMenu();
                     menuTwo.addItem(new BMap.MenuItem('删除设备',function(e){
-                        that.$confirm('此操作将删除该设备, 是否继续?', '提示', {
-                            confirmButtonText: '确定',
-                            cancelButtonText: '取消',
-                            type: 'warning'
-                        }).then(() => {
-                            that.remove(id,type)
-                        }).catch(() => {
+                        if(localStorage.Deleteequipments == false){
                             that.$message({
-                                type: 'info',
-                                message: '已取消删除'
-                            });  
-                        })
+                                message: '您无此权限',
+                                showClose: true,
+                            });
+                        }else{
+                            that.$confirm('此操作将删除该设备, 是否继续?', '提示', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }).then(() => {
+                                that.remove(id,type)
+                            }).catch(() => {
+                                that.$message({
+                                    type: 'info',
+                                    message: '已取消删除'
+                                });  
+                            })
+                        }
                     }));
                     marker.addContextMenu(menuTwo)
                 });
@@ -611,6 +663,9 @@
         },
         created(){
             var that = this
+            //请求用户操作权限
+            localStorage.addequipments = false;
+            localStorage.Deleteequipments = false;
             if(sessionStorage.departmentId=='1'){
                 that.selected = true
                 //管理员登录请求selected下拉框数据

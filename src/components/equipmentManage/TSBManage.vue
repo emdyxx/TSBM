@@ -132,7 +132,8 @@
                             </el-select>
                         </div>
                         <el-button type="primary" @click="searchone" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
-                        <el-button type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBG设备分组</el-button>
+                        <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBG设备分组</el-button>
+                        <el-button @click="affiliation" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">归属分组</el-button>
                     </div>
                     <!-- 设备列表 -->
                     <div class="TSBManage_main_bottom">
@@ -204,8 +205,8 @@
                             width="210">
                                 <template scope="scope">
                                     <el-button @click="LookoverModal(scope.row)" type="primary" size="small">查看</el-button>
-                                    <el-button @click="allocationModal(scope.row)" type="primary" size="small">配置</el-button>
-                                    <el-button @click="administerModal(scope.row)" type="primary" size="small">管理</el-button>
+                                    <el-button v-if="configurationtype" @click="allocationModal(scope.row)" type="primary" size="small">配置</el-button>
+                                    <el-button v-if="managetype" @click="administerModal(scope.row)" type="primary" size="small">管理</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -250,7 +251,8 @@
                             </el-select>
                         </div>
                         <el-button type="primary" @click="searchtwo" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
-                        <el-button type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBC设备分组</el-button>
+                        <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBC设备分组</el-button>
+                        <el-button type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">归属分组</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
                         <el-table
@@ -327,8 +329,8 @@
                             width="210">
                                 <template scope="scope">
                                     <el-button @click="LookoverModal(scope.row)" type="primary" size="small">查看</el-button>
-                                    <el-button @click="allocationModal(scope.row)" type="primary" size="small">配置</el-button>
-                                    <el-button @click="administerModal(scope.row)" type="primary" size="small">管理</el-button>
+                                    <el-button v-if="configurationtype" @click="allocationModal(scope.row)" type="primary" size="small">配置</el-button>
+                                    <el-button v-if="managetype" @click="administerModal(scope.row)" type="primary" size="small">管理</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -373,7 +375,8 @@
                             </el-select>
                         </div>
                         <el-button type="primary" @click="searchthree" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
-                        <el-button type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBA设备分组</el-button>
+                        <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBA设备分组</el-button>
+                        <el-button type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">归属分组</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
                         <el-table
@@ -444,8 +447,8 @@
                             width="210">
                                 <template scope="scope">
                                     <el-button @click="LookoverModal(scope.row)" type="primary" size="small">查看</el-button>
-                                    <el-button @click="allocationModal(scope.row)" type="primary" size="small">配置</el-button>
-                                    <el-button @click="administerModal(scope.row)" type="primary" size="small">管理</el-button>
+                                    <el-button v-if="configurationtype" @click="allocationModal(scope.row)" type="primary" size="small">配置</el-button>
+                                    <el-button v-if="managetype" @click="administerModal(scope.row)" type="primary" size="small">管理</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -489,7 +492,7 @@
                                     </el-option>
                                 </el-select>
                             </div>
-                            <el-button @click="dialogVisible = true" type="primary" size='small'>添加分组</el-button>
+                            <el-button v-if="groupingtypeadd" @click="dialogVisible = true" type="primary" size='small'>添加分组</el-button>
                             <div v-if="dialogVisible" class="grouping_div">
                                 <div>
                                     <span style='margin-left:45px;line-height:36px;'>分组名称:</span>
@@ -562,7 +565,66 @@
                     </div><!-- /.modal-content -->
                 </div>
             </div><!-- /.modal -->
-            
+            <!-- 归属分组模态框 -->
+            <div class="modal fade" id="affiliationgrouping" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:600px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">归属分组</h4>
+                        </div>
+                        <div class="modal-body">
+                            <el-table
+                                ref="multipleTable"
+                                :data="affiliationdata"
+                                border
+                                stripe
+                                tooltip-effect="dark"
+                                @selection-change="affiliationChange"
+                                style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                                <el-table-column
+                                type="selection"
+                                align='center'
+                                width="55">  
+                                </el-table-column>
+                                <el-table-column
+                                prop="departmentName"
+                                align='center'
+                                label="设备分组名称"
+                                width="160">
+                                </el-table-column>
+                                <el-table-column
+                                prop="phone"
+                                label="电话"
+                                align='center'
+                                width="130">
+                                </el-table-column>
+                                <el-table-column
+                                prop="address"
+                                label="地址"
+                                align='center'
+                                show-overflow-tooltip>
+                                </el-table-column>
+                            </el-table>
+                            <div class="block">
+                                <el-pagination
+                                @size-change="affiliationsizechange"
+                                @current-change="affiliationcurrentchange"
+                                :current-page="affiliationpageIndex"
+                                :page-sizes="[10, 20, 30, 50]"
+                                :page-size="affiliationpageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="affiliationtotal">
+                                </el-pagination>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button @click="affiliationadd" type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div><!-- /.modal -->
             <!-- 查看 -->
             <div class="modal fade" id="LookoverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog" style="width:780px;">
@@ -1626,6 +1688,19 @@
         name: 'index',
         data () {
             return {
+                //按钮权限
+                configurationtype:false,
+                managetype:false,
+                groupingtype:false, //设备分组
+                groupingtypeadd:false,
+                groupingtypedelete:false,
+                //归属分组数据
+                affiliationgrouping:false,
+                affiliationdata:[],
+                affiliationupload:[],//归属分组选中的分组
+                affiliationpageIndex:1,
+                affiliationpageSize:10,
+                affiliationtotal:10,
                 serverurl:localStorage.serverurl,       
                 activeName:'1',
                 data:[],
@@ -1804,6 +1879,45 @@
                 },
             }
         },
+        mounted(){
+            var that = this;
+            setTimeout(function(){
+                //请求用户操作权限
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='cofEquipment'){
+                                    that.configurationtype = true
+                                }
+                                if(data.result[i].code=='setEquipment'){
+                                    that.managetype = true
+                                }
+                                if(data.result[i].code=='setGroup'){
+                                    that.groupingtype = true
+                                }
+                                if(data.result[i].code=='addGroup'){
+                                    that.groupingtypeadd = true
+                                }
+                                if(data.result[i].code=='delGroup'){
+                                    that.groupingtypedelete = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
+        },
         methods:{
             //所有条数事件
             sizechange(val){
@@ -1845,6 +1959,100 @@
             search(){
                 this.ready()
             },
+            //点击归属分组  
+            affiliation(){
+                var that = this
+                if(that.sites.length==0){
+                    that.$message({
+                        message: '请选择数据进行归属分组!',
+                        type: 'error'
+                    })
+                    return;
+                }
+                $('#affiliationgrouping').modal('show')
+                this.affiliationdatas()
+            },
+            //归属分组请求列表数据
+            affiliationdatas(){
+                var that = this
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'department/getDepartmentList',
+                    data:{
+                        pageIndex:that.affiliationpageIndex,
+                        pageSize:that.affiliationpageSize
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.affiliationdata = data.rows
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
+            //归属分组条数事件
+            affiliationsizechange(val){
+                this.affiliationpageSize = val
+                this.affiliationdatas()
+            },
+            //归属分组页数事件
+            affiliationcurrentchange(val){
+                this.affiliationpageIndex = val
+                this.affiliationdatas()
+            },
+            //归属分组选中的分组事件
+            affiliationChange(val){
+                this.affiliationupload = val
+            },
+            //归属分组保存按钮
+            affiliationadd(){
+                var that = this;
+                if(this.affiliationupload.length==0){
+                    that.$message({
+                        message: '请选择分组!',
+                        type: 'error'
+                    })
+                    return;
+                }
+                if(this.affiliationupload.length>=2){
+                    that.$message({
+                        message: '请选择一个分组!',
+                        type: 'error'
+                    })
+                    return;
+                }
+                var ids = [];
+                for(var i=0;i<that.sites.length;i++){
+                    ids.push(that.sites[i].id)
+                }
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/setEquipmentDepartment',
+                    data:{
+                        type: that.sites[0].type,
+                        equipmentIds: ids.join(','),
+                        departmentId: that.affiliationupload[0].id
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '归属分组成功!',
+                                type: 'success'
+                            })
+                            $('#affiliationgrouping').modal('hide')
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
             //查看
             LookoverModal(val){
                 var that = this;
@@ -1857,7 +2065,7 @@
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+url,
+                    url:that.serverurl+'department/getDepartmentList',
                     data:{id:val.id},
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -2550,7 +2758,6 @@
                     return;
                 }
                 var type = '';
-                console.log(this.sites[0].type)
                 if(this.sites[0].type=='0'){
                     type = '0';
                 }
@@ -2666,7 +2873,6 @@
                     url:that.serverurl+'equipment/saveEquipmentGroup',
                     data:data,
                     success:function(data){
-                        console.log(data)
                         if(data.errorCode=='0'){
                             that.$message({
                                 message: '保存成功',
@@ -2696,6 +2902,13 @@
             //删除分组
             groupingdelete(val){
                 var that = this
+                if(that.groupingtypedelete==false){
+                    that.$message({
+                        message: '您没有此权限',
+                        type: 'success'
+                    })
+                    return;
+                }
                 var type = '';
                 if(this.sites[0].type=='0'){
                     type = '0';
@@ -2833,7 +3046,6 @@
             searchone(){
                 this.tsbgready()
             },
-            
 
             //tsbc条数事件
             tsbcsizechange(val){
@@ -2960,53 +3172,61 @@
             //判断标签页change事件
             handleClick(tab){
                 var that = this
-                var TSBManage1 = '';
-                var TSBManage2= '';
-                var TSBManage3 = '';
-                var TSBManage4 = '';
+                // var TSBManage1 = '';
                 if(this.activeName=='1'){
                     this.ready()
-                    // clearInterval(TSBManage2);
-                    // clearInterval(TSBManage3);
-                    // clearInterval(TSBManage4);
-                    // TSBManage1 = setInterval(function(){
-                    //     that.ready();
-                    // },10000)
+                    clearInterval(window.TSBManage1);
+                    clearInterval(window.TSBManage2);
+                    clearInterval(window.TSBManage3);
+                    clearInterval(window.TSBManage4);
+                    window.TSBManage1 = setInterval(function(){
+                        that.ready();
+                    },20000)
                 }
                 if(this.activeName=='2'){
                     this.tsbgready()
                     this.sites = []
-                    // clearInterval(TSBManage1);
-                    // clearInterval(TSBManage3);
-                    // clearInterval(TSBManage4);
-                    // TSBManage2 = setInterval(function(){
-                    //     that.tsbgready();
-                    // },10000)
+                    clearInterval(window.TSBManage1);
+                    clearInterval(window.TSBManage2);
+                    clearInterval(window.TSBManage3);
+                    clearInterval(window.TSBManage4);
+                    window.TSBManage2 = setInterval(function(){
+                        that.tsbgready();
+                    },20000)
                 }
                 if(this.activeName=='3'){
                     this.tsbcready()
                     this.sites = []
-                    // clearInterval(TSBManage1);
-                    // clearInterval(TSBManage2);
-                    // clearInterval(TSBManage4);
-                    // TSBManage3 = setInterval(function(){
-                    //     that.tsbcready();
-                    // },10000)
+                    clearInterval(window.TSBManage1);
+                    clearInterval(window.TSBManage2);
+                    clearInterval(window.TSBManage3);
+                    clearInterval(window.TSBManage4);
+                    window.TSBManage3 = setInterval(function(){
+                        that.tsbcready();
+                    },20000)
                 }
                 if(this.activeName=='4'){
                     this.tsbaready()
                     this.sites = []
-                    // clearInterval(TSBManage1);
-                    // clearInterval(TSBManage2);
-                    // clearInterval(TSBManage3);
-                    // TSBManage4 = setInterval(function(){
-                    //     that.tsbaready();
-                    // },10000)
+                    clearInterval(window.TSBManage1);
+                    clearInterval(window.TSBManage2);
+                    clearInterval(window.TSBManage3);
+                    clearInterval(window.TSBManage4);
+                    window.TSBManage4 = setInterval(function(){
+                        that.tsbaready();
+                    },20000)
                 }
             }
         },
         created(){
+            var that = this
             this.handleClick();
+        },
+        beforeDestroy(){
+            clearInterval(window.TSBManage1);
+            clearInterval(window.TSBManage2);
+            clearInterval(window.TSBManage3);
+            clearInterval(window.TSBManage4);
         }
     }
 </script>
@@ -3040,8 +3260,8 @@
 .grouping_div>div>input{width: 127px;}
 .state{width:70%;height: 60px;margin: 0 auto;background: #D7D7D7;border: 1px solid #797979;border-radius: 10px;display: flex;justify-content: space-around;}
 .state>div{display: flex;flex-direction: column;}
-.state>div>div:nth-of-type(1){width: 30px;height: 30px;border: 1px solid #797979;background: #FFFFFF;margin-top:5px;}
-.state>div>div:nth-of-type(2){font-size:13px;}
+.state>div>div:nth-of-type(1){padding-top:5px;width: 30px;height: 30px;font-size:11px;border: 1px solid #797979;background: #FFFFFF;margin-top:5px;}
+.state>div>div:nth-of-type(2){font-size:11px;padding-top:5px;}
 .state_two{width: 70%;height: 40px;margin: 0 auto;padding-top:10px;display: flex;justify-content: space-around;}
 .state_two>div{display: flex;}
 .state_two>div>span:nth-of-type(1){width: 25px;height: 25px;border: 1px solid #797979;}

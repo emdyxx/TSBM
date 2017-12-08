@@ -248,8 +248,36 @@ Vue.prototype.errorCode = function(code){
           showClose: true,
       });
     }
-};
 
+    if(code=='2023'){
+      this.$message({
+          message: '未查询到模板信息',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2024'){
+      this.$message({
+          message: '设置模板状态失败',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2025'){
+      this.$message({
+          message: '保存模板配置信息失败',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2026'){
+      this.$message({
+          message: '生成模板失败',
+          type: 'error',
+          showClose: true,
+      });
+    }
+};
 export default new Router({
   routes: [
     {

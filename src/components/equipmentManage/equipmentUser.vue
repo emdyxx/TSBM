@@ -129,7 +129,7 @@
                             <input v-model="search.ueMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue设备MAC">
                         </div>
                         <el-button @click="searchs" type="primary" size='small' style="height:30px;margin-top:3px;margin-left:5px;">搜索</el-button>
-                        <el-button @click="approve" type="primary" size='small' style="height:30px;margin-top:3px;">新增用户</el-button>
+                        <el-button v-if="addtype" @click="approve" type="primary" size='small' style="height:30px;margin-top:3px;">新增用户</el-button>
                     </div>
                     <div class="equipmentUser_bottom">
                         <el-table
@@ -236,7 +236,7 @@
                             <input v-model="search.ueMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue设备MAC">
                         </div>
                         <el-button @click="searchs" type="primary" size='small' style="height:30px;margin-top:3px;margin-left:5px;">搜索</el-button>
-                        <el-button @click="renzheng" type="primary" size='small' style="height:30px;margin-top:3px;">认证</el-button>
+                        <el-button v-if="approvetype" @click="renzheng" type="primary" size='small' style="height:30px;margin-top:3px;">认证</el-button>
                     </div>
                     <div class="equipmentUser_bottom">
                         <el-table
@@ -395,6 +395,10 @@
         name: 'index',
         data (){
             return {
+                //按钮权限
+                addtype:false,
+                delate:false,
+                approvetype:false,
                 serverurl:localStorage.serverurl,
                 activeName:'1',
                 tableData:[],
@@ -435,6 +439,39 @@
 
                 SelectionChange:[], //注册用户选取的数据
             }
+        },
+        mounted(){
+            var that = this
+            setTimeout(function(){
+                //请求用户操作权限
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='addUe'){
+                                    that.addtype = true
+                                }
+                                if(data.result[i].code=='delUe'){
+                                    that.delate = true
+                                }
+                                if(data.result[i].code=='authUe'){
+                                    that.approvetype = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
         },
         methods:{
             handleClick(){
@@ -489,7 +526,6 @@
                         }
                     }
                 })
-               console.log(this.activeName)
             },
             //所有页面数据选择
             SizeChange(){this.handleClick()},
@@ -615,32 +651,54 @@
             //通用删除按钮
             deleteUser(val){
                 var that = this;
-                $.ajax({
-                    type:'post',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'ue/delUe',
-                    data:{
-                        ueIds:val.id,
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.$message({
-                                message: '删除成功',
-                                type: 'success',
-                                showClose: true,
-                            })
-                            that.handleClick();
-                        }else{
-                            that.errorCode(data.errorCode)
+                if(that.delate==false){
+                    that.$message({
+                        message: '您没有权限',
+                        type: 'error',
+                        showClose: true,
+                    })
+                    return;
+                }
+                that.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    $.ajax({
+                        type:'post',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'ue/delUe',
+                        data:{
+                            ueIds:val.id,
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.$message({
+                                    message: '删除成功',
+                                    type: 'success',
+                                    showClose: true,
+                                })
+                                that.handleClick();
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
                         }
-                    }
+                    })
+                }).catch(() => {
+                    that.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });  
                 })
+                
             },
         },
         created(){
+            var that = this;
             this.handleClick()
+            
         }
     }
 </script>
@@ -658,8 +716,8 @@ equipmentUser_nav>i{font-size: 23px;}
 .equipmentUser_form>input{height: 31px;width:69%;}
 .equipmentUser_form>div{height: 31px;width:69%;}
 
-.equipmentUser_formtwo{display: flex;margin-top: 4px;margin-left:9px;}
+.equipmentUser_formtwo{display: flex;margin-top: 4px;margin-left:5px;}
 .equipmentUser_formtwo>span{line-height: 30px;}
-.equipmentUser_formtwo>input{height: 30px;width: 160px;}
+.equipmentUser_formtwo>input{height: 30px;width: 150px;}
 .equipmentUser_formtwo>div{height: 30px;width: 140px;}
 </style>

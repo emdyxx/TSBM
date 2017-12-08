@@ -216,7 +216,6 @@
                 var tolerant = this.sites[0].menuIds.split(",")
                 var tolerantTwo = this.sites[0].operationIds.split(",")
                 var tolerantThree = tolerant.concat(tolerantTwo)
-                console.log(tolerantThree)
                 this.$refs.tree.setCheckedKeys(tolerantThree);
                 this.selectedOptions3.push(String(this.sites[0].departmentId))
            },
@@ -276,7 +275,6 @@
                         operationIdst.push(that.operationIds[i]);
                     }
                 }
-                console.log(menuIdsT,operationIdst)
                 if(this.option=='1'){
                     $.ajax({
                         type:'post',
@@ -506,7 +504,6 @@
                     menuId:sessionStorage.menuId
                 },
                 success:function(data){
-                    console.log(data.result)
                     if(data.errorCode=='0'){
                         // for(var i=0;i<data.result.length;i++){
                         //     if(data.result[i].menuId==21){

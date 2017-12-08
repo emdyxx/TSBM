@@ -5,9 +5,9 @@
         </div>
         <div class="equipmentUpgrade_main">
             <div class="equipmentUpgrade_top">
-                <el-button type="primary" icon="upload2" size="small" @click="upload">升级包上传</el-button>
-                <el-button type="primary" icon='edit' size="small" @click="upgradepatchamend">升级包分组修改</el-button>
-                <el-button type="primary" icon='delete2' size="small" @click="upgradepatchdelete">删除升级包</el-button>
+                <el-button v-if="uploading" type="primary" icon="upload2" size="small" @click="upload">升级包上传</el-button>
+                <el-button v-if="revamp" type="primary" icon='edit' size="small" @click="upgradepatchamend">升级包分组修改</el-button>
+                <el-button v-if="remove" type="primary" icon='delete2' size="small" @click="upgradepatchdelete">删除升级包</el-button>
             </div>
             <!--上传模态框-->
             <div class="modal fade" id="upgrademyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -284,6 +284,11 @@
         name: 'equipmentUpgrade',
         data () {
             return {
+                //按钮权限
+                uploading:false,
+                revamp:false,
+                remove:false,
+                operationtype:false,
                 serverurl:localStorage.serverurl,
                 loading:false,
                 tableData4:[],
@@ -331,6 +336,42 @@
                 opctions:'',
                 upgradeFileId:'',
             }
+        },
+        mounted(){
+            var that = this;
+            setTimeout(function(){
+                //请求用户操作权限
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='uploadFirmware'){
+                                    that.uploading = true
+                                }
+                                if(data.result[i].code=='editFirmware'){
+                                    that.revamp = true
+                                }
+                                if(data.result[i].code=='delFirmware'){
+                                    that.remove = true
+                                }
+                                if(data.result[i].code=='setFirmwareStatus'){
+                                    that.operationtype = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
         },
         methods:{
             //列表选中行的change事件
@@ -380,7 +421,6 @@
                         //tsba
                         url = 'equipment/getTsbaList'
                     }
-                    console.log(url)
                     $.ajax({
                         type:'post',
                         async:true,
@@ -583,12 +623,11 @@
                         that.errorCode(data.errorCode)
                     }
                 }).fail(function(res) {
-                    console.log(res)
+
                 });
             },
             //升级包上传点击保存
             uploadsave(){
-                console.log(this.sitesthr)
                 var that = this;
                 var upgradeType='';
                 var equipmentIds=[];
@@ -729,33 +768,53 @@
                     return;
                 }
                 if(this.sites.length=='1'){
-                    $.ajax({
-                        type:'post',
-                        async:true,
-                        dataType:'json',
-                        xhrFields:{withCredentials:true},
-                        url:that.serverurl+'upgrade/delUpgradeFile',
-                        data:{
-                            upgradeFileId:that.sites[0].id
-                        },
-                        success:function(data){
-                            if(data.errorCode=='0'){
-                                that.$message({
-                                    message:'删除成功',
-                                    type:'success'
-                                })
-                                that.ready()
-                            }else{
-                                that.errorCode(data.errorCode)
+                    that.$confirm('此操作将删除升级包信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            type:'post',
+                            async:true,
+                            dataType:'json',
+                            xhrFields:{withCredentials:true},
+                            url:that.serverurl+'upgrade/delUpgradeFile',
+                            data:{
+                                upgradeFileId:that.sites[0].id
+                            },
+                            success:function(data){
+                                if(data.errorCode=='0'){
+                                    that.$message({
+                                        message:'删除成功',
+                                        type:'success'
+                                    })
+                                    that.ready()
+                                }else{
+                                    that.errorCode(data.errorCode)
+                                }
                             }
-                        }
-                    })
+                        })
+                    }).catch(() => {
+                        that.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });          
+                    });
+                    
                 }
             },
 
             //列表状态操作
             startusing(val){
                 var that = this
+                if(that.operationtype==false){
+                    that.$message({
+                        message: '您暂无此权限',
+                        type:'error',
+                        showClose: true,
+                    });
+                    return;
+                }
                 //启用
                 $.ajax({
                     type:'post',
@@ -783,6 +842,14 @@
             },
             forbidden(val){
                 var that = this
+                if(that.operationtype==false){
+                    that.$message({
+                        message: '您暂无此权限',
+                        type:'error',
+                        showClose: true,
+                    });
+                    return;
+                }
                 //禁用
                 $.ajax({
                     type:'post',
@@ -841,6 +908,7 @@
             }
         },
         created(){
+            var that = this;
             sessionStorage.pageIndex = 1
             sessionStorage.pageSize = 10
             this.ready();

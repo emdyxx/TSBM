@@ -199,14 +199,48 @@
                 radio2:0,//权限
                 // selectedOptions4:[], //角色默认值
                 opinion:'',
-                add:true,
-                remove:true,
-                delate:true,
+                add:false,
+                remove:false,
+                delate:false,
                 props: {
                     value:'id',
                     label:'roleName'
                 }
             }
+        },
+        mounted(){
+            var that = this;
+            setTimeout(function(){
+                console.log(sessionStorage.menuId)
+                //请求用户操作权限
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='addUser'){
+                                    that.add = true
+                                }
+                                if(data.result[i].code=='editUser'){
+                                    that.remove = true
+                                }
+                                if(data.result[i].code=='delUser'){
+                                    that.delate = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)  
         },
         methods:{
             //搜索
@@ -413,8 +447,6 @@
                             privilegeType:that.radio2
                         },
                         success:function(data){
-                            console.log(data.errorCode)
-                            console.log(typeof(data.errorCode))
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '添加成功',
@@ -432,7 +464,6 @@
                     })
                 }
                 if(this.opinion=='2'){
-                    console.log(that.radios)
                     $.ajax({
                         type:'post',
                         async:true,
@@ -452,8 +483,6 @@
                             privilegeType:that.radio2
                         },
                         success:function(data){
-                            console.log(data.errorCode)
-                            console.log(typeof(data.errorCode))
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '修改成功',
@@ -601,35 +630,6 @@
         },
         created(){
             this.tree()
-            var that = this;
-            //请求用户操作权限
-            // $.ajax({
-            //     type:'post',
-            //     async:true,
-            //     dataType:'json',
-            //     xhrFields:{withCredentials:true},
-            //     url:that.serverurl+'system/getUserPrivilege',
-            //     data:{
-            //         menuId:sessionStorage.menuId
-            //     },
-            //     success:function(data){
-            //         if(data.errorCode=='0'){
-            //             for(var i=0;i<data.result.length;i++){
-            //                 if(data.result[i].id==1){
-            //                     that.add = true
-            //                 }
-            //                 if(data.result[i].id==2){
-            //                     that.remove = true
-            //                 }
-            //                 if(data.result[i].id==3){
-            //                     that.delate = true
-            //                 }
-            //             }
-            //         }else{
-            //             that.errorCode(data.errorCode)
-            //         }
-            //     }
-            // })
             this.ready()
         }
     }

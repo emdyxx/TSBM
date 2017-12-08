@@ -5,9 +5,9 @@
         </div>
         <div class="departmentManage_main">
             <div class="departmentManage_top">
-                <el-button type="primary" icon="plus" size="small" @click="departmentManageAdd">添加</el-button>
-                <el-button type="primary" icon="edit" size="small" @click="departmentManageRevamp">修改</el-button>
-                <el-button type="primary" icon="delete" size="small" @click="departmentManageDelete">删除</el-button>
+                <el-button v-if="add" type="primary" icon="plus" size="small" @click="departmentManageAdd">添加</el-button>
+                <el-button v-if="remove" type="primary" icon="edit" size="small" @click="departmentManageRevamp">修改</el-button>
+                <el-button v-if="delate" type="primary" icon="delete" size="small" @click="departmentManageDelete">删除</el-button>
             </div>
             <!-- 添加修改模态框 -->
             <div class="modal fade" id="departmentManageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -155,6 +155,10 @@
                 address:'',
                 phone:'',
                 serverurl:localStorage.serverurl,
+                //权限
+                add:false,
+                remove:false,
+                delate:false,
                 total:100,
                 sizes:10,
                 currentPage4:1,
@@ -171,6 +175,39 @@
                 departmentManagePrincipal:'',
                 departmentManageEmail:'',
             }
+        },
+        mounted(){
+            var that = this
+            //请求用户操作权限
+            setTimeout(function(){
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='addDepartment'){
+                                    that.add = true
+                                }
+                                if(data.result[i].code=='editDepartment'){
+                                    that.remove = true
+                                }
+                                if(data.result[i].code=='delDepartment'){
+                                    that.delate = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
         },
         methods:{
             //搜索
@@ -247,7 +284,6 @@
             },
             //所属部门chang事件
             handleChange(value){
-                console.log(value)
                 this.selectedOptions3=value
             },
             //添加修改提交
@@ -257,7 +293,7 @@
                 var phone = /^((0[0-9]{1,3}-\d{5,8})|(1[3584]\d{9}))$/;
                 //邮箱验证
                 var email = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
-                if(this.departmentManageCode==''||this.departmentManageName==''||this.departmentManageAddress==''||this.departmentManagePhone==''||this.departmentManagePrincipal==''||this.departmentManageEmail==''){
+                if(this.departmentManageName==''||this.departmentManageAddress==''||this.departmentManagePhone==''||this.departmentManagePrincipal==''||this.departmentManageEmail==''){
                     that.$message({
                         message: '字段不能为空',
                         type: 'error',
@@ -383,7 +419,6 @@
                             dpartmentIds:userIds.join(',')
                         },
                         success:function(data){
-                            console.log(data);
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '删除成功',
@@ -420,7 +455,6 @@
             },
             //加载页面数据
             ready(){
-                console.log(sessionStorage.pageSize)
                 var that = this;
                 that.loading = true;
                 var pageSize='';
@@ -464,37 +498,6 @@
             },
         },
         created(){
-            var that = this
-            //请求用户操作权限
-            //请求用户操作权限
-            $.ajax({
-                type:'post',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'system/getUserPrivilege',
-                data:{
-                    menuId:sessionStorage.menuId
-                },
-                success:function(data){
-                    console.log(data.result)
-                    if(data.errorCode=='0'){
-                        // for(var i=0;i<data.result.length;i++){
-                        //     if(data.result[i].menuId==21){
-                        //         this.add = true
-                        //     }
-                        //     if(data.result[i].menuId==22){
-                        //         this.remove = true
-                        //     }
-                        //     if(data.result[i].menuId==23){
-                        //         this.delate = true
-                        //     }
-                        // }
-                    }else{
-                        that.errorCode(data.errorCode)
-                    }
-                }
-            })
             this.ready()
         }
     }

@@ -181,7 +181,6 @@
             }, 
             //设备坐标右键事件 
             uplifttwo(ev){
-                console.log(ev)
                 var that = this;
                 var btn = ev.button;
                 if(btn==2){
@@ -189,7 +188,6 @@
                         if(ev.target.id==that.imgdata[i].MAC){
                             var x = '';var y = '';
                             x = Number(that.imgdata[i].x)+15;y=Number(that.imgdata[i].y)+15;
-                            console.log(x,y)
                             that.styleObjecttwo.left = x +"px",
                             that.styleObjecttwo.top = y +"px"
                             that.delectedId = that.imgdata[i].id
@@ -202,41 +200,47 @@
             //设备坐标删除
             addWIFItwo(){
                 var that = this
-                this.$confirm('此操作将删除该设备, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-                }).then(() => {
-                    $.ajax({
-                        type:'post',
-                        async:true,
-                        dataType:'json',
-                        xhrFields:{withCredentials:true},
-                        url:that.serverurl+'location/removeLocatedEquitment',
-                        data:{
-                            equitmentId:that.delectedId,
-                            equitmentType:that.delectedType
-                        },
-                        success:function(data){
-                            if(data.errorCode=='0'){
-                                that.$message({
-                                    type: 'success',
-                                    message: '删除成功!'
-                                });
-                                that.opctiontwo = false;
-                                that.ready()
-                            }else{
-                                that.errorCode(data.errorCode)
+                if(localStorage.Deleteequipments==false){
+                    that.$message({
+                        type: 'error',
+                        message: '您无此权限'
+                    });
+                }else{
+                    this.$confirm('此操作将删除该设备, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            type:'post',
+                            async:true,
+                            dataType:'json',
+                            xhrFields:{withCredentials:true},
+                            url:that.serverurl+'location/removeLocatedEquitment',
+                            data:{
+                                equitmentId:that.delectedId,
+                                equitmentType:that.delectedType
+                            },
+                            success:function(data){
+                                if(data.errorCode=='0'){
+                                    that.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    });
+                                    that.opctiontwo = false;
+                                    that.ready()
+                                }else{
+                                    that.errorCode(data.errorCode)
+                                }
                             }
-                        }
-                    })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-
-                    });          
-                });
+                        })
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });          
+                    });
+                }
             },
             //选中设备change事件
             handleCurrentChange(val){
@@ -291,9 +295,16 @@
             },
             //添加wifi弹窗
             addWIFI(){
-                $('#myModalWIFI').modal('show')
-                this.opction = false
-                this.opctiondata()
+                if(localStorage.addequipments == false){
+                    that.$message({
+                        type: 'error',
+                        message: '您无此权限'
+                    });
+                }else{
+                    $('#myModalWIFI').modal('show')
+                    this.opction = false
+                    this.opctiondata()
+                }
             },
             //添加WIFI提交
             ZBsubmit(){

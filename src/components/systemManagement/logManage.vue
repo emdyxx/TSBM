@@ -250,7 +250,6 @@
                         remark:'',
                     },
                     success:function(data){
-                        console.log(data)
                         if(data.errorCode=='0'){ 
                             for(var i=0;i<data.rows.length;i++){
                                 if(data.rows[i].status=='0'){
@@ -275,13 +274,11 @@
            },
            //登录日志选择条数事件
            handleSizeChange(val){
-               console.log(val)
                this.pageSize = val
                this.ready()
            },
            //登录日志选择页数事件
            handleCurrentChange(val){
-               console.log(val)
                this.pageIndex = val
                this.ready()
            },
@@ -304,7 +301,6 @@
                         operationType:that.statusthree,
                     },
                     success:function(data){
-                        console.log(data)
                         if(data.errorCode=='0'){ 
                             for(var i=0;i<data.rows.length;i++){
                                 if(data.rows[i].status=='0'){
@@ -328,13 +324,11 @@
            },
            //操作日志选择条数事件
            handleSizeChangetwo(val){
-               console.log(val)
                this.pageSizetwo = val
                this.readytwo()
            },
            //操作日志选择页数事件
            handleCurrentChangetwo(val){
-               console.log(val)
                this.pageIndextwo = val
                this.readytwo()
            },
@@ -351,36 +345,6 @@
            },
         },
         created(){
-            var that = this
-            //请求用户操作权限
-            $.ajax({
-                type:'post',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'system/getUserPrivilege',
-                data:{
-                    menuId:sessionStorage.menuId
-                },
-                success:function(data){
-                    console.log(data.result)
-                    if(data.errorCode=='0'){
-                        // for(var i=0;i<data.result.length;i++){
-                        //     if(data.result[i].menuId==21){
-                        //         this.add = true
-                        //     }
-                        //     if(data.result[i].menuId==22){
-                        //         this.remove = true
-                        //     }
-                        //     if(data.result[i].menuId==23){
-                        //         this.delate = true
-                        //     }
-                        // }
-                    }else{
-                        that.errorCode(data.errorCode)
-                    }
-                }
-            })
             this.ready()
         }
     } 
