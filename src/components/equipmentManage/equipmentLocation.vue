@@ -211,7 +211,7 @@
                     var that = this
                     this.tabname = '2'
                     this.readytwo()
-                    if(this.departmentId!=''){
+                    if(this.selectedOptions!=''){
                     }else{
                         this.$message({
                             message: '温馨提示:管理员需要选择厂区来进行定位',
@@ -232,7 +232,7 @@
                         xhrFields:{withCredentials:true},
                         url:that.serverurl+'upload/getPlan',
                         data:{
-                            departmentId:that.departmentId
+                            departmentId:that.selectedOptions
                         },
                         success:function(data){
                             if(data.errorCode=='0'){
@@ -287,7 +287,7 @@
                     url='upload/editPlan'
                 }
                 if(sessionStorage.departmentId=='1'){
-                    formdate.append("departmentId", this.departmentId);
+                    formdate.append("departmentId", this.selectedOptions);
                 }
                 $.ajax({
                     url: that.serverurl+url,
@@ -316,7 +316,7 @@
             //页面渲染请求图片
             ready(){
                 var that = this;
-                if(this.departmentId!=''){
+                if(this.selectedOptions!=''){
 
                 }else{
                     this.$message({
@@ -332,7 +332,7 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'upload/getPlan',
                     data:{
-                        departmentId:that.departmentId
+                        departmentId:that.selectedOptions
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -401,7 +401,7 @@
             //地图定位渲染
             readytwo(){
                 var that = this
-                if(this.departmentId==''){
+                if(this.selectedOptions==''){
                     setTimeout(function(){
                         // 百度地图API功能
                         var map = new BMap.Map("allmap");    // 创建Map实例
@@ -418,7 +418,7 @@
                         xhrFields:{withCredentials:true},
                         url:that.serverurl+'location/getLocatedEquitmentByMap',
                         data:{
-                            departmentId:that.departmentId
+                            departmentId:that.selectedOptions
                         },
                         success:function(data){
                             that.mapcoordinate = data.result
@@ -435,7 +435,7 @@
                                         {
                                             text:'添加设备',
                                             callback:function(e){
-                                                if(that.departmentId==''){
+                                                if(that.selectedOptions==''){
                                                     that.$message({
                                                         message: '请选择厂区进行添加',
                                                         showClose: true,
@@ -449,6 +449,7 @@
                                                         });
                                                     }else{
                                                         $('#myModalWIFIMap').modal('show')
+                                                        that.selectedmap()
                                                     }
                                                 } 
                                             }
@@ -596,7 +597,8 @@
                     url:that.serverurl+url,
                     data:{
                         pageIndex:that.pageIndex,
-                        pageSize:that.pageSize
+                        pageSize:that.pageSize,
+                        departmentId:that.selectedOptions
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -680,7 +682,7 @@
                         if(data.errorCode=='0'){
                             that.options = data.result[0].children
                             that.selectedOptions = data.result[0].children[0].value
-                            that.departmentId = data.result[0].children[0].value
+                            that.selectedOptions = data.result[0].children[0].value
                         }else{
                             that.errorCode(data.errorCode)
                         }

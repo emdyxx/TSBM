@@ -654,14 +654,12 @@
                                         <option value="2">指定型号</option>
                                     </select>
                                 </div>
-                                <div v-if="valuethree==0">
+                                <div v-if="valuethree==0" style="flex-direction: column;">
                                     <el-table
                                         ref="multipleTable"
                                         :data="tableData4"
                                         border
-                                        stripe
-                                        tooltip-effect="dark"
-                                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                        style="width: 598px;"
                                         @selection-change="handleSelectionChangetwo">
                                         <el-table-column
                                         type="selection"
@@ -703,9 +701,7 @@
                                         ref="multipleTable"
                                         :data="tableData4"
                                         border
-                                        stripe
-                                        tooltip-effect="dark"
-                                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                        style="width: 598px;"
                                         @selection-change="handleSelectionChangetwo">
                                         <el-table-column
                                         type="selection"
@@ -713,19 +709,13 @@
                                         width="55">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="name"
+                                        prop="departmentName"
                                         align='center'
                                         label="分组名称"
                                         width="100">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="softwareVersion"
-                                        label="软件版本"
-                                        align='center'
-                                        width="100">
-                                        </el-table-column>
-                                        <el-table-column
-                                        prop="hardwareVersion"
+                                        prop="model"
                                         label="硬件版本"
                                         align='center'>
                                         </el-table-column>
@@ -1398,6 +1388,8 @@
                 //中文验证
                 var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
                 var that = this;
+                // that.showtype = '2'
+                // that.uploadscope()
                 //tsbg
                 if(this.radio2=='0'){
                     if(that.templateName==''||that.valuetwo==''){
@@ -1901,20 +1893,26 @@
                 //分组接口
                 if(that.valuethree==1){url='equipment/getEquipmentGroupList'}
                 $.ajax({
-                    type:'post',
+                    type:'get',
                     async:true,
                     url:that.serverurl+url,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:{
+                        type:that.radio2,
                         pageIndex:that.PageIndextwo,
                         pageSize:that.Pagesizetwo,
                         hardwareVersion:hardwareVersion
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.tableData4 = data.rows
-                            that.totaltwo = data.total
+                            if(that.valuethree==0){
+                                that.tableData4 = data.rows
+                                that.totaltwo = data.total
+                            }
+                            if(that.valuethree==1){
+                                that.tableData4 = data.result
+                            }
                             // that.$refs.multipleTable.toggleRowSelection(that.multipleTable);
                         }else{
                             that.errorCode(data.errorCode)

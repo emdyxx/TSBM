@@ -8,37 +8,6 @@
         </div>
         <span>TSBM-管理系统</span>
       </div>
-      <div class="index_nav_bottom">
-        <div class="index_nav_bottom_top">
-          <img src="../assets/index.jpg" alt="">
-          <div>
-            <p>您好,</p>
-            <p>超级管理员</p>
-          </div>
-        </div>
-        <div class="index_nav_bottom_bottom">
-          <!-- 此处循环添加列表 -->
-          <div v-for="(site,key) in sites" style="margin-top:1px;">
-            <a @click='listclick(site.enLabel,key)' class="list-group-item" style="background:rgb(244, 244, 244);border-bottom: 1px solid #ffffff;border-top: 1px solid #e7e7e7;color:#555555;cursor:default;text-align:left;">
-              <i v-if="site.menuName==='常用菜单'" class="left_i iconfont icon-changyongcaidan"></i>
-              <i v-else-if="site.menuName==='系统管理'" style="left:-3px;" class="left_i iconfont icon-xitongguanli"></i>
-              <i v-else-if="site.menuName==='设备管理'" style='left:-1px;font-size:20px;' class="left_i iconfont icon-shebei"></i>
-              <i v-else-if="site.menuName==='升级管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
-              <i v-else-if="site.menuName==='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
-              <i v-else-if="site.menuName==='统计信息'" style="font-size:19px;left:-4px;" class="left_i iconfont icon-gailan"></i>
-              {{site.menuName}}
-              <i id="left_i_JT" class="iconfont icon-icon left_i_JT"></i>
-            </a>
-            <el-collapse-transition>
-              <div v-show="fun(site.enLabel)" class="list">
-                <router-link v-for='(item,index) in site.sonMenu' :id='bagcolor==item.enLabel ? "bgcolor":""'  @click.native='bgcolor(item.enLabel,item.id)' class="list-group-item" :to=item.enLabel>{{item.menuName}}</router-link>
-              </div>   
-            </el-collapse-transition>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="index_main">
       <div class="index_main_top">
         <div class="index_main_top_left">
           <span>版本号:1.0.1</span>
@@ -63,6 +32,42 @@
               <el-dropdown-item command="c">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="index_main">
+      <div class="index_nav_bottom">
+        <div class="index_nav_bottom_top">
+          <div @click="leftshrink" v-if="isCollapse==false">
+            <i class="iconfont icon-iconfontplatformentrance1"></i>
+            <i class="iconfont icon-iconfontplatformentrance1"></i>
+            <i class="iconfont icon-iconfontplatformentrance1"></i>
+          </div>
+          <div @click='rightshrink' v-if="isCollapse==true">
+            <i class="iconfont icon-iconfontplatformentrance"></i>
+            <i class="iconfont icon-iconfontplatformentrance"></i>
+            <i class="iconfont icon-iconfontplatformentrance"></i>
+          </div>
+        </div>
+        <div class="index_nav_bottom_bottom">
+          <el-menu default-active="1-4-1" :unique-opened='uniqueopened' class="el-menu-vertical-demo" :collapse="isCollapse">
+            <el-submenu v-for="(site,key) in sites" :index=site.id style="text-align:left;">
+              <template slot='title'>
+                <i v-if="site.menuName=='常用菜单'" class="left_i iconfont icon-changyongcaidan"></i>
+                <i v-else-if="site.menuName=='系统管理'" style="left:-3px;" class="left_i iconfont icon-xitongguanli"></i>
+                <i v-else-if="site.menuName=='设备管理'" style='left:-1px;font-size:20px;' class="left_i iconfont icon-shebei"></i>
+                <i v-else-if="site.menuName=='升级管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
+                <i v-else-if="site.menuName=='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
+                <i v-else-if="site.menuName=='统计信息'" style="font-size:19px;left:-4px;" class="left_i iconfont icon-gailan"></i>
+                <span slot="title">{{site.menuName}}</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item v-for='(item,index) in site.sonMenu' index='1-1'>
+                  <router-link style="color:#48576a;display:inline-block;width:100%;height:100%;text-decoration: none;" :id='bagcolor==item.enLabel ? "bgcolor":""' :to=item.enLabel  @click.native='bgcolor(item.enLabel,item.id)'>{{item.menuName}}</router-link>
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+          </el-menu>
         </div>
       </div>
       <!-- 模态框（Modal） -->
@@ -121,6 +126,8 @@ export default {
   name: 'index',
   data () {
     return {
+      isCollapse:false,
+      uniqueopened:true,
       username:sessionStorage.userName,
       frequentlyUsedMenu: false,
       systemManage:false,
@@ -128,7 +135,7 @@ export default {
       upgradeManage:false,
       eventManage:false,
       statisticsInfo:false,
-      sites:{},
+      sites:[],
       activeName2: 'first',
       bagcolor:'',
       serverurl:localStorage.serverurl,
@@ -356,21 +363,37 @@ export default {
     //快捷方式点击跳转
     shortcut(val){
       if(val == '1'){
+        sessionStorage.menuId = 61
         this.$router.push({'path':'/equipmentStatistics'})
       }
       if(val == '2'){
+        sessionStorage.menuId = 31
         this.$router.push({'path':'/TSBManage'})
       }
       if(val == '3'){
+        sessionStorage.menuId = 34
         this.$router.push({'path':'/equipmentLocation'})
       }
       if(val == '4'){
+        sessionStorage.menuId = 62
         this.$router.push({'path':'/dataStatistics'})
       }
     },
     //点击事件-->跳转图表页面
     echart(){
       this.$router.push({'path':'/index'})
+    },
+    //左缩进
+    leftshrink(){
+      $(".index_nav_bottom").css('width',"64px");
+      $(".index_main_bottom").css('left',"54px");
+      this.isCollapse=true
+    },
+    //右缩进
+    rightshrink(){
+      $(".index_nav_bottom").css('width',"240px");
+      $(".index_main_bottom").css('left',"240px");
+      this.isCollapse=false
     },
   },
   created(){
@@ -388,6 +411,9 @@ export default {
       success:function(data){
         if(data.errorCode=='0'){
           that.sites = data.result
+          for(var i=0;i<that.sites.length;i++){
+            that.sites[i].id = String(that.sites[i].id)
+          }
         }else{
           that.errorCode(data.errorCode)
         }
@@ -407,26 +433,31 @@ export default {
 .logo{width:25px;height: 25px;}
 #bgcolor{background: #99A9BF !important;border-right: 4px solid #20A0FF !important;color: white !important;}
 
-.index{width: 100%;height: 100%;min-width: 1100px;}
-.index_nav{width: 240px;height:100%;float: left;background: white;display: flex;display: -webkit-flex;flex-direction: column;}
-.index_main{height:100%;background:white;display: flex;display: -webkit-flex;flex-direction: column;position: relative;}
-.index_nav_top{color: white;font-size: 19px;background: rgb(94, 135, 176);}
+.index{width: 100%;height: 100%;}
+.index_nav{width: 100%;height: 70px;background: white;display: flex;}
+.index_main{position: absolute;top:70px;bottom:0;width:100%;height:auto;background:white;display: flex;display: -webkit-flex;flex-direction: column;}
+.index_nav_top{color: white;font-size: 19px;background: rgb(94, 135, 176);width:240px;}
 .index_nav_top>div{display: inline-block;width: 32px;height:32px;border: 1px solid white;border-radius: 50%;position: relative;left: -15px;top:20px;}
 .index_nav_top i{font-size: 25px;line-height: 32px;}
 .index_nav_top>span{position: relative;left: -15px;top:20px;}
-.icon-jinggao{display: inline-block;line-height: 25px;font-size:25px;color: #486d93;text-shadow: 0.5px 0.5px #b4c7da, -0.5px -0.5px #375471;}
-.index_main_top_left{width: 100px;position: absolute;height: 70px;line-height: 70px;color: white;font-size: 16px;right: 170px;}
+.icon-jinggao{display: inline-block;line-height: 25pxf;ont-size:25px;color: #486d93;text-shadow: 0.5px 0.5px #b4c7da, -0.5px -0.5px #375471;}
+
+.index_main_top_left{position: absolute;left: 240px;right: 0;height: 70px;line-height: 70px;color: white;font-size: 16px;}
 .index_main_top_center{position: absolute;height: 70px;line-height: 70px;left: 10px;}
 
 .index_main_top_right{position: absolute;right: 2%;height: 70px;line-height: 70px;}
 .index_nav_top,.index_main_top{height: 70px;}
-.index_main_top{background:rgb(94, 135, 176);}
-.index_nav_bottom{position: absolute;top: 70px;bottom: 0;width: 240px;height: auto;border-right: 1px solid #dddddd;background: rgb(244, 244, 244);}
-.index_main_bottom{position: absolute;top: 70px;bottom: 0;height: auto;background: rgb(244, 244, 244);width: 100%;}
-.index_nav_bottom_top{width: 100%;height: 60px;display: flex;margin: 15px 0;}
+.index_main_top{background:rgb(94, 135, 176);position: absolute;left: 240px;right: 0;height: 70px;}
+.index_nav_bottom{position: absolute;left:0;height:100%;width: 240px;border-right: 1px solid #dddddd;background: rgb(244, 244, 244);}
+.index_main_bottom{position: absolute;left:240px;right:0;height: 100%;background: rgb(244, 244, 244);}
+.index_nav_bottom_top{width: 100%;height: 30px;display: flex;}
+.index_nav_bottom_top>div{position: absolute;right: 7px;cursor: pointer;width: 42px;height: 30px;}
+.index_nav_bottom_top>div>i{font-size:24px;position: absolute;top: 0px;}
+.index_nav_bottom_top>div>i:nth-of-type(2){left: 7px;}
+.index_nav_bottom_top>div>i:nth-of-type(3){left: 14px;}
 .index_nav_bottom_top>img{width: 60px;border-radius: 50%;margin-left: 15px;border: 1px solid gray;padding: 2px;}
 .index_nav_bottom_top>div{margin-left: 15px;padding: 8px 0;}
-.index_nav_bottom_bottom{position: absolute;width: 240px;height: auto;top:90px;bottom: 0;}
+.index_nav_bottom_bottom{position: absolute;width: 240px;height: auto;top:30px;bottom: 0;overflow: hidden;}
 .systemsettingspsd{display: flex;flex-direction: column;align-items: center;font-size: 14px}
 .systemsettingspsd>label{margin-bottom: 15px;}
 .list>a{background: #FBFDFF;border-bottom: 1px solid #dfe6ec;text-align: center;}

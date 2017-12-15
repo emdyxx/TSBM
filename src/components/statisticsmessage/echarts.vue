@@ -207,7 +207,8 @@ export default {
                             yAxis : [
                                 {
                                     type : 'value',
-                                    name:'设备数量'
+                                    name:'设备数量',
+                                    max:10,
                                 }
                             ],
                             series : [
@@ -270,7 +271,8 @@ export default {
                             yAxis : [
                                 {
                                     type : 'value',
-                                    name:'设备数量'
+                                    name:'设备数量',
+                                    max:10,
                                 }
                             ],
                             series : [

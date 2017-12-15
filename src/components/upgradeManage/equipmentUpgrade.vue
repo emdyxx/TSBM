@@ -69,14 +69,12 @@
                                         </el-option>
                                     </el-select>
                                 </div>
-                                <div v-if="typedata=='0'" style="width:100%;height:auto;flex-direction: column;">
+                                <div v-if="typedata=='0'" style="flex-direction: column;">
                                     <el-table
                                         ref="multipleTable"
                                         :data="tableData5"
                                         border
-                                        stripe
-                                        tooltip-effect="dark"
-                                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                        style="width:450px;"
                                         @selection-change="handleSelectionChangeTwo">
                                         <el-table-column
                                         type="selection"
@@ -98,8 +96,7 @@
                                         <el-table-column
                                         prop="hardwareVersion"
                                         label="硬件版本"
-                                        align='center'
-                                        show-overflow-tooltip>
+                                        align='center'>
                                         </el-table-column>
                                     </el-table>
                                     <div class="block" style="width:100%;overflow:auto;">
@@ -114,14 +111,12 @@
                                         </el-pagination>
                                     </div>
                                 </div>
-                                <div v-if="typedata=='1'" style="width:100%;height:auto;flex-direction: column;">
+                                <div v-if="typedata=='1'">
                                     <el-table
                                         ref="multipleTable"
                                         :data="tableData6"
                                         border
-                                        stripe
-                                        tooltip-effect="dark"
-                                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                        style="width:450px;"
                                         @selection-change="handleSelectionChangethree">
                                         <el-table-column
                                         type="selection"
@@ -129,22 +124,15 @@
                                         width="55">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="name"
+                                        prop="departmentName"
                                         align='center'
                                         label="分组名称"
-                                        width="100">
+                                        width="140">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="softwareVersion"
-                                        label="软件版本"
-                                        align='center'
-                                        width="100">
-                                        </el-table-column>
-                                        <el-table-column
-                                        prop="hardwareVersion"
+                                        prop="model"
                                         label="硬件版本"
-                                        align='center'
-                                        show-overflow-tooltip>
+                                        align='center'>
                                         </el-table-column>
                                     </el-table>
                                 </div>
@@ -408,7 +396,6 @@
                 this.typedata = '';
                 if(val=='0'){
                     this.sitesthr = []
-                    this.typedata = '0';
                     if(that.upgradeType=='tsbg'){
                         //tsbg
                         url = 'equipment/getTsbgList'
@@ -422,7 +409,7 @@
                         url = 'equipment/getTsbaList'
                     }
                     $.ajax({
-                        type:'post',
+                        type:'get',
                         async:true,
                         url:that.serverurl+url,
                         dataType:'json',
@@ -436,37 +423,38 @@
                             that.totalTwo = data.total
                         }
                     })
+                    this.typedata = '0';
                 }  
                 if(val=='1'){
                     that.sitesTwo = []
-                    this.typedata = '1';
                     var type=''
                     if(that.upgradeType=='tsbg'){
-                        type = 't_tsbg_group'
+                        type = '0'
                     }
                     if(that.upgradeType=='tsbc'){
-                        type = 't_tsbc_group'
+                        type = '1'
                     }
                     if(that.upgradeType=='tsba'){
-                        type = 't_tsba_group'
+                        type = '2'
                     }
                     $.ajax({
-                        type:'post',
+                        type:'get',
                         async:true,
-                        url:that.serverurl+'equipment/getDeviceGroup',
+                        url:that.serverurl+'equipment/getEquipmentGroupList',
                         dataType:'json',
                         xhrFields:{withCredentials:true},
                         data:{
-                            table:type
+                            type:type
                         },
                         success:function(data){
                             if(data.errorCode=='0'){
-                                that.tableData6 = data.rows
+                                that.tableData6 = data.result
                             }else{
                                 that.errorCode(data.errorCode)
                             }
                         }
                     })
+                    this.typedata = '1';
                 }
                 if(val=='2'){
                     this.sitesthr = []

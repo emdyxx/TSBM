@@ -12,6 +12,7 @@ import departmentManage from '@/components/systemManagement/departmentManage'  /
 import roleManage from '@/components/systemManagement/roleManage'  // 角色管理
 import logManage from '@/components/systemManagement/logManage'  // 日志管理
 import TSBManage from '@/components/equipmentManage/TSBManage'  //设备管理-->TSB管理
+import equipmentGroup from '@/components/equipmentManage/equipmentGroup'  //设备管理-->分组管理
 import equipmentLocation from '@/components/equipmentManage/equipmentLocation' //设备管理-->设备定位
 import equipmentUser from '@/components/equipmentManage/equipmentUser' //设备管理-->终端用户
 import imgcoordinate from '@/components/equipmentManage/imgcoordinate'  //设备管理-->设备定位单张图片路由页面
@@ -329,6 +330,11 @@ export default new Router({
           path: '/TSBManage',
           name: 'TSBManage',
           component: TSBManage
+        },
+        {// 设备管理-->分组管理
+          path: '/equipmentGroup',
+          name: 'equipmentGroup',
+          component: equipmentGroup
         },
         {// 设备管理-->设备定位
           path: '/equipmentLocation',

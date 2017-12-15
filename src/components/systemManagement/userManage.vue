@@ -1,11 +1,10 @@
 <template>
     <div class="userManage">
         <div class="userManage_nav">
-            系统管理<i class="iconfont icon-icon"></i>用户管理
+            系统管理<i class="iconfont icon-icon"></i>分组管理
         </div>
         <div class="userManage_main">
             <div class="userManage_top">
-                <!-- 系统管理>用户管理 -->
                 <el-button v-if='add' type="primary" icon="plus " size="small" @click="userManageAdd">添加</el-button>
                 <el-button v-if='remove' type="primary" icon="edit" size="small" @click="userManageRevamp">修改</el-button>
                 <el-button v-if='delate' type="primary" icon="delete" size="small" @click="userManageDelete">删除</el-button>

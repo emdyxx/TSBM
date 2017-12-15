@@ -163,15 +163,15 @@
                             width="160">
                             </el-table-column>
                             <el-table-column
-                            prop="lanIPX"
+                            prop="IP"
                             label="ip地址"
                             align='center'
-                            width="180">
+                            width="160">
                             </el-table-column>
                             <el-table-column
                             label="状态"
                             align='center'
-                            width="120">
+                            width="80">
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                         在线
@@ -185,19 +185,19 @@
                             prop="hardwareVersion"
                             label="硬件版本"
                             align='center'
-                            width="140">
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="140">
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
                             label="在线时长"
                             align='center'
-                            width="220">
+                            width="200">
                             </el-table-column>
                             <el-table-column
                             label="操作"
@@ -252,7 +252,6 @@
                         </div>
                         <el-button type="primary" @click="searchtwo" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBC设备分组</el-button>
-                        <el-button type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">归属分组</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
                         <el-table
@@ -310,12 +309,6 @@
                             label="软件版本"
                             align='center'
                             width="120">
-                            </el-table-column>
-                            <el-table-column
-                            prop="type"
-                            label="分组"
-                            align='center'
-                            width="100">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
@@ -376,7 +369,6 @@
                         </div>
                         <el-button type="primary" @click="searchthree" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBA设备分组</el-button>
-                        <el-button type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">归属分组</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
                         <el-table
@@ -574,48 +566,48 @@
                             <h4 class="modal-title" id="myModalLabel">归属分组</h4>
                         </div>
                         <div class="modal-body">
-                            <el-table
-                                ref="multipleTable"
-                                :data="affiliationdata"
-                                border
-                                stripe
-                                tooltip-effect="dark"
-                                @selection-change="affiliationChange"
-                                style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
-                                <el-table-column
-                                type="selection"
-                                align='center'
-                                width="55">  
-                                </el-table-column>
-                                <el-table-column
-                                prop="departmentName"
-                                align='center'
-                                label="设备分组名称"
-                                width="160">
-                                </el-table-column>
-                                <el-table-column
-                                prop="phone"
-                                label="电话"
-                                align='center'
-                                width="130">
-                                </el-table-column>
-                                <el-table-column
-                                prop="address"
-                                label="地址"
-                                align='center'
-                                show-overflow-tooltip>
-                                </el-table-column>
-                            </el-table>
-                            <div class="block">
-                                <el-pagination
-                                @size-change="affiliationsizechange"
-                                @current-change="affiliationcurrentchange"
-                                :current-page="affiliationpageIndex"
-                                :page-sizes="[10, 20, 30, 50]"
-                                :page-size="affiliationpageSize"
-                                layout="total, sizes, prev, pager, next, jumper"
-                                :total="affiliationtotal">
-                                </el-pagination>
+                            <div style="width:100%;margin-top:10px;">
+                                <el-table
+                                    :data="affiliationdata"
+                                    border
+                                    stripe
+                                    tooltip-effect="dark"
+                                    style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                    @selection-change="affiliationChange">
+                                    <el-table-column
+                                    type="selection"
+                                    align='center'
+                                    width="55">  
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="departmentName"
+                                    align='center'
+                                    label="设备分组名称"
+                                    width="160">
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="phone"
+                                    label="电话"
+                                    align='center'
+                                    width="130">
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="address"
+                                    label="地址"
+                                    align='center'>
+                                    </el-table-column>
+                                </el-table>
+                                <div class="block">
+                                    <el-pagination
+                                    @size-change="affiliationsizechange"
+                                    @current-change="affiliationcurrentchange"
+                                    :current-page="affiliationpageIndex"
+                                    :page-sizes="[10, 20, 30, 50]"
+                                    :page-size="affiliationpageSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="affiliationtotal">
+                                    </el-pagination>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -996,7 +988,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">模板配置</h4>
+                                <h4 class="modal-title" id="myModalLabel">设备配置</h4>
                             </div>
                             <div class="modal-body">
                                 <el-collapse v-model="activeNames" accordion>
@@ -1969,12 +1961,12 @@
                     })
                     return;
                 }
-                $('#affiliationgrouping').modal('show')
                 this.affiliationdatas()
             },
             //归属分组请求列表数据
             affiliationdatas(){
                 var that = this
+                var type='';
                 $.ajax({
                     type:'get',
                     async:true,
@@ -1988,11 +1980,13 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.affiliationdata = data.rows
+                            that.affiliationtotal = data.total
                         }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
+                $('#affiliationgrouping').modal('show')
             },
             //归属分组条数事件
             affiliationsizechange(val){
@@ -2065,7 +2059,7 @@
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:that.serverurl+'department/getDepartmentList',
+                    url:that.serverurl+url,
                     data:{id:val.id},
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -2259,6 +2253,12 @@
                 $('#administerModal').modal('show')
                 this.lookoverType = val.type
                 this.configuration = val
+                var url = '';
+                if(val.type=='0'){url='equipment/showManagerTsbg'}
+                if(val.type=='1'){url='equipment/showManagerTsbc'}
+                if(val.type=='2'){url='equipment/showManagerTsba'}
+                
+                //固件管理升级报获取
                 $.ajax({
                     type:'get',
                     async:true,
@@ -2272,6 +2272,25 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.manageoptions = data.result
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+                //获取基本数据
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+url,
+                    data:{id:val.id},
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.managedata.nickname = data.rows[0].nickname
+                            that.managedata.remark = data.rows[0].remark
+                            that.managedata.AutoUpgrade = data.rows[0].autoUpgrade
+                            // that.managedata.upgrade = data.
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -3181,7 +3200,7 @@
                     clearInterval(window.TSBManage4);
                     window.TSBManage1 = setInterval(function(){
                         that.ready();
-                    },20000)
+                    },60000)
                 }
                 if(this.activeName=='2'){
                     this.tsbgready()
@@ -3192,7 +3211,7 @@
                     clearInterval(window.TSBManage4);
                     window.TSBManage2 = setInterval(function(){
                         that.tsbgready();
-                    },20000)
+                    },60000)
                 }
                 if(this.activeName=='3'){
                     this.tsbcready()
@@ -3203,7 +3222,7 @@
                     clearInterval(window.TSBManage4);
                     window.TSBManage3 = setInterval(function(){
                         that.tsbcready();
-                    },20000)
+                    },60000)
                 }
                 if(this.activeName=='4'){
                     this.tsbaready()
@@ -3214,7 +3233,7 @@
                     clearInterval(window.TSBManage4);
                     window.TSBManage4 = setInterval(function(){
                         that.tsbaready();
-                    },20000)
+                    },60000)
                 }
             }
         },
