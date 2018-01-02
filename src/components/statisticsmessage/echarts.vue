@@ -371,7 +371,7 @@ export default {
 }
 </script>
 <style scoped>
-.echarts{width: 100%;height: 100%;overflow: auto;}
+.echarts{width: 100%;height: 100%;}
 .echarts_type{position: absolute;width:150px;height: 36px;top:20px;}
 .echarts_top{width: 100%;height: 160px;display: flex;justify-content: center;}
 .echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../../assets/u43.png');background-repeat: no-repeat;}
@@ -386,7 +386,7 @@ export default {
 .echarts_center>div>p{text-align: left;padding-left: 8px;border-bottom: 1px solid #CCCCCC;margin-bottom: 5px;}
 .echarts_center_left_bottom{width: 100%;height:233px;}
 
-.echarts_bottom{width: 100%;height: auto;display: flex;position: absolute;top:450px;bottom: 10px;overflow: auto;}
+.echarts_bottom{width: 100%;height: auto;display: flex;position: absolute;top:450px;bottom: 10px;}
 .echarts_bottom>div{width: 45%;height: 100%;margin-left: 3%;position: relative;}
 .echarts_bottom>div>p{text-align: left;padding-left: 8px;border-bottom: 1px solid #CCCCCC;margin-bottom: 5px;}
 .echarts_bottom_botom{width: 100%;height:auto;min-height:250px;position: absolute;top:25px;bottom: 0;}

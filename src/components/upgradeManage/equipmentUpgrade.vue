@@ -124,7 +124,7 @@
                                         width="55">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="departmentName"
+                                        prop="groupName"
                                         align='center'
                                         label="分组名称"
                                         width="140">
@@ -212,7 +212,7 @@
                         prop="fileName"
                         align='center'
                         label="升级包名称"
-                        width="180">
+                        width="200">
                         </el-table-column>
                         <el-table-column
                         prop="softwareVer"
@@ -315,6 +315,7 @@
                 upgradeType:'',  //升级包类型
                 filePath:'',  //文件存放路径
                 fileUrl:'',  //文件下载url
+                departmentId:'',
                 searchfilename:'', //检索条件
                 softwareversion:'',
                 hardwareversion:'',
@@ -390,33 +391,22 @@
             },
             //升级包适用范围change事件
             uploadscope(val){
-                var that = this
-                this.typetwo = val
-                var url='';
+                var that = this;
+                this.typetwo = val;
                 this.typedata = '';
                 if(val=='0'){
                     this.sitesthr = []
-                    if(that.upgradeType=='tsbg'){
-                        //tsbg
-                        url = 'equipment/getTsbgList'
-                    }
-                    if(that.upgradeType=='tsbc'){
-                        //tsbc
-                        url = 'equipment/getTsbcList'
-                    }
-                    if(that.upgradeType=='tsba'){
-                        //tsba
-                        url = 'equipment/getTsbaList'
-                    }
                     $.ajax({
                         type:'get',
                         async:true,
-                        url:that.serverurl+url,
+                        url:that.serverurl+'equipment/getEquipmentList',
                         dataType:'json',
                         xhrFields:{withCredentials:true},
                         data:{
                             pageIndex:1,
-                            pageSize:10
+                            pageSize:10,
+                            model:that.hardwareVer,
+                            departmentId:that.departmentId,
                         },
                         success:function(data){
                             that.tableData5 = data.rows
@@ -426,25 +416,16 @@
                     this.typedata = '0';
                 }  
                 if(val=='1'){
-                    that.sitesTwo = []
-                    var type=''
-                    if(that.upgradeType=='tsbg'){
-                        type = '0'
-                    }
-                    if(that.upgradeType=='tsbc'){
-                        type = '1'
-                    }
-                    if(that.upgradeType=='tsba'){
-                        type = '2'
-                    }
+                    that.sitesTwo = [];
                     $.ajax({
                         type:'get',
                         async:true,
-                        url:that.serverurl+'equipment/getEquipmentGroupList',
+                        url:that.serverurl+'equipment/getGroupList',
                         dataType:'json',
                         xhrFields:{withCredentials:true},
                         data:{
-                            type:type
+                            departmentId:that.departmentId,
+                            model:that.hardwareVer
                         },
                         success:function(data){
                             if(data.errorCode=='0'){
@@ -468,28 +449,19 @@
             },
             //模态框选择条数事件
             handleSizeChangeTwo(val){
+                var that = this;
                 this.sizesTwo = val
-                if(that.upgradeType=='tsbg'){
-                    //tsbg
-                    url = 'equipment/getTsbgList'
-                }
-                if(that.upgradeType=='tsbc'){
-                    //tsbc
-                    url = 'equipment/getTsbcList'
-                }
-                if(that.upgradeType=='tsba'){
-                    //tsba
-                    url = 'equipment/getTsbaList'
-                }
                 $.ajax({
                     type:'post',
                     async:true,
-                    url:that.serverurl+url,
+                    url:that.serverurl+'equipment/getEquipmentList',
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:{
                         pageIndex:that.currentPage5,
-                        pageSize:that.sizesTwo
+                        pageSize:that.sizesTwo,
+                        model:that.hardwareVer,
+                        departmentId:that.departmentId,
                     },
                     success:function(data){
                         that.tableData5 = data.rows
@@ -499,28 +471,19 @@
             },
             //模态框选择页数事件
             handleCurrentChangeTwo(val){
+                var that = this;
                 this.currentPage5 = val
-                if(that.upgradeType=='tsbg'){
-                    //tsbg
-                    url = 'Equipment/getTsbgList'
-                }
-                if(that.upgradeType=='tsbc'){
-                    //tsbc
-                    url = 'Equipment/getTsbcList'
-                }
-                if(that.upgradeType=='tsba'){
-                    //tsba
-                    url = 'Equipment/getTsbaList'
-                }
                 $.ajax({
                     type:'post',
                     async:true,
-                    url:that.serverurl+url,
+                    url:that.serverurl+'equipment/getEquipmentList',
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:{
                         pageIndex:that.currentPage5,
-                        pageSize:that.sizesTwo
+                        pageSize:that.sizesTwo,
+                        model:that.hardwareVer,
+                        departmentId:that.departmentId,
                     },
                     success:function(data){
                         that.tableData5 = data.rows
@@ -546,7 +509,7 @@
                         data:{},
                         success:function(data){
                             if(data.errorCode=='0'){
-                                that.optionsvalue = data.result
+                                that.optionsvalue = data.result[0].children
                             }else{
                                 that.errorCode(data.errorCode)
                             }
@@ -560,7 +523,7 @@
             nextstep(){
                 var that = this
                 if(sessionStorage.departmentId=='1'){
-                    if(this.selectedOptions.length<2){
+                    if(this.selectedOptions.length<1){
                         that.$message({
                             type: 'error',
                             message: '管理员需要选择分组才能进行上传!'
@@ -572,7 +535,7 @@
                 var fd = new FormData();
                 fd.append("file", that.$refs.imgs.files[0]);
                 if(sessionStorage.departmentId=='1'){
-                    fd.append("departmentId", that.selectedOptions[1]);
+                    fd.append("departmentId", that.selectedOptions[0]);
                 }
                 $.ajax({
                     url: that.serverurl+'upgrade/uploadUpgradeFile',
@@ -591,6 +554,7 @@
                             showClose: true,
                         });
                         that.uploadtype = data.result;
+                        that.departmentId = data.result.departmentId
                         that.uploadtype = true;
                         that.fileName = data.result.fileName;
                         that.softwareVer = data.result.softwareVer;
@@ -643,6 +607,7 @@
                         xhrFields:{withCredentials:true},
                         url:that.serverurl+'upgrade/saveUpgradeFile',
                         data:{
+                            departmentId:that.departmentId,
                             fileName:that.fileName,
                             filePath:that.filePath,
                             fileUrl:that.fileUrl,

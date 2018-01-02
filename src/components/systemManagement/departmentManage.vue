@@ -18,7 +18,7 @@
                             <h4 class="modal-title departmentManageLabel" id="myModalLabel" style="text-align:left;">添加</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="departmentManage_form">
+                            <!-- <div class="departmentManage_form">
                                 <span style="width:74px;"><i class="required">*</i>所属部门:</span>
                                 <div>
                                     <el-cascader
@@ -29,7 +29,7 @@
                                         size='small'>
                                     </el-cascader>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- <div class="departmentManage_form">
                                 <span>组织代码:</span>
                                 <input type="text" v-model='departmentManageCode' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织代码">
@@ -66,21 +66,21 @@
             v-loading.body='loading'
             element-loading-text="拼命加载中">
                 <div class="departmentManage_bottom_top">
-                    <div class="departmentManage_formtwo">
+                    <!-- <div class="departmentManage_formtwo">
                         <span>编号:</span>
                         <input type="text" v-model="code"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                    </div>
+                    </div> -->
                     <div class="departmentManage_formtwo">
-                        <span>部门名称:</span>
-                        <input type="text" v-model="departmentName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <span>组织名称:</span>
+                        <input type="text" v-model="departmentName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
                     </div>
-                    <div class="departmentManage_formtwo">
+                    <!-- <div class="departmentManage_formtwo">
                         <span>地址:</span>
                         <input type="text" v-model="address"  maxlength="25" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                    </div>
+                    </div> -->
                     <div class="departmentManage_formtwo">
                         <span>联系电话:</span>
-                        <input type="text" v-model="phone"  maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model="phone"  maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入联系电话">
                     </div>
                     <el-button type="primary" icon="search" @click="tissueSearch" style="height:30px;" size='small'>搜索</el-button>
                 </div>
@@ -150,9 +150,9 @@
         name: 'departmentManage',
         data () {
             return {
-                code:'',
+                // code:'',
                 departmentName:'',
-                address:'',
+                // address:'',
                 phone:'',
                 serverurl:localStorage.serverurl,
                 //权限
@@ -226,7 +226,7 @@
                 this.departmentManageEmail=''
                 this.option = '1'
                 this.selectedOptions3=[];
-                this.branchTree()
+                // this.branchTree()
             },
             //修改
             departmentManageRevamp(){
@@ -248,39 +248,27 @@
                 this.departmentManagePrincipal=that.sites[0].principal
                 this.departmentManageEmail=that.sites[0].email
                 this.option = '2'
-                this.branchTree()
+                // this.branchTree()
             },
             //获取所属部门的tree树列表
             branchTree(){
-                var that = this
-                $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'department/getDepartmentTree',
-                    data:{},
-                    success:function(data){
-                        delete data.result[0].children
-                        that.options = data.result
-                        if(that.option == '2'){
-                            that.selectedOptions3=[];
-                            that.selectedOptions3.push('1')
-                            // for(var i=0;i<that.options[0].children.length;i++){
-                            //     if(that.options[0].children[i].value==that.sites[0].parentId){
-                            //         that.selectedOptions3.push(that.options[0].children[i].value)
-                            //     }else{
-                            //         for(var j=0;j<that.options[0].children[i].children.length;j++){
-                            //             if(that.options[0].children[i].children[j].value==that.sites[0].parentId){
-                            //                 that.selectedOptions3.push(that.options[0].children[i].value)
-                            //                 that.selectedOptions3.push(that.options[0].children[i].children[j].value)
-                            //             }
-                            //         }
-                            //     }
-                            // }
-                        }
-                    }
-                })
+                // var that = this
+                // $.ajax({
+                //     type:'get',
+                //     async:true,
+                //     dataType:'json',
+                //     xhrFields:{withCredentials:true},
+                //     url:that.serverurl+'department/getDepartmentTree',
+                //     data:{},
+                //     success:function(data){
+                //         delete data.result[0].children
+                //         that.options = data.result
+                //         if(that.option == '2'){
+                //             that.selectedOptions3=[];
+                //             that.selectedOptions3.push('1')
+                //         }
+                //     }
+                // })
             },
             //所属部门chang事件
             handleChange(value){
@@ -301,14 +289,14 @@
                     });
                     return;
                 }
-                if(that.selectedOptions3.length>1){
-                    that.$message({
-                        message: '所属部门目前只能为系统管理',
-                        type: 'error',
-                        showClose: true,
-                    });
-                    return;
-                }
+                // if(that.selectedOptions3.length>1){
+                //     that.$message({
+                //         message: '所属部门目前只能为系统管理',
+                //         type: 'error',
+                //         showClose: true,
+                //     });
+                //     return;
+                // }
                 if(!phone.test(this.departmentManagePhone)){
                     that.$message({
                         message: '电话不符合格式',
@@ -333,9 +321,9 @@
                         xhrFields:{withCredentials:true},
                         url:that.serverurl+'department/addDepartment',
                         data:{
-                            parentId:that.selectedOptions3[0],
+                            parentId:1,
                             departmentName:that.departmentManageName,
-                            code:that.departmentManageCode,
+                            // code:that.departmentManageCode,
                             phone:that.departmentManagePhone,
                             email: that.departmentManageEmail,
                             address:that.departmentManageAddress,
@@ -365,9 +353,9 @@
                         url:that.serverurl+'department/editDepartment',
                         data:{
                             id:that.sites[0].id,
-                            parentId:that.selectedOptions3[0],
+                            parentId:1,
                             departmentName:that.departmentManageName,
-                            code:that.departmentManageCode,
+                            // code:that.departmentManageCode,
                             phone:that.departmentManagePhone,
                             email: that.departmentManageEmail,
                             address:that.departmentManageAddress,
@@ -479,9 +467,9 @@
                     data:{
                         pageIndex:pageIndex,
                         pageSize:pageSize,
-                        code:that.code,
+                        // code:that.code,
                         departmentName:that.departmentName,
-                        address:that.address,
+                        // address:that.address,
                         phone:that.phone
                     },
                     success:function(data){

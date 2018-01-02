@@ -111,7 +111,6 @@
                 </div> 
                 <div class="userManage_bottom_bottom">
                     <el-table
-                        ref="multipleTable"
                         :data="tableData3"
                         border
                         stripe

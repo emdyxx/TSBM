@@ -46,10 +46,17 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
-                            prop="nickname"
                             align='center'
                             label="设备名称"
-                            width="120">
+                            width="160">
+                                <template scope="scope">
+                                    <span v-if="scope.row.nickname==''">
+                                        {{scope.row.ueMAC}}
+                                    </span>
+                                    <span v-else>
+                                        {{scope.row.nickname}}
+                                    </span>
+                                </template>  
                             </el-table-column>  
                             <el-table-column
                             prop="ueIP"
@@ -340,7 +347,7 @@
                         </div>
                         <div class="modal-body">
                             <div v-if="selected" class="equipmentUser_form">
-                                <span><i class="required">*</i>选择分组:</span>
+                                <span><i class="required">*</i>归属部门:</span>
                                 <el-select v-model="add.departmentId" placeholder="请选择">
                                     <el-option
                                     v-for="item in options"
@@ -698,7 +705,6 @@
         created(){
             var that = this;
             this.handleClick()
-            
         }
     }
 </script>

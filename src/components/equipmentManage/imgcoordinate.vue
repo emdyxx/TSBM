@@ -31,11 +31,11 @@
                         <i v-if='item.equipmentType==="2"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#1AFA29;`" class="iconfont icon-wodeweizhi img-i"></i> -->
                     </template>
                     <div class="contextmenu" :style="styleObject" v-if="opction">
-                        <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加WIFI</el-button>
+                        <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加设备</el-button>
                         <el-button @click="cancel" type="primary" size="small" icon="circle-cross">取消</el-button>
                     </div>
                     <div class="contextmenu" :style="styleObjecttwo" v-if="opctiontwo">
-                        <el-button @click="addWIFItwo" type="primary" size="small" icon="plus">删除WIFI</el-button>
+                        <el-button @click="addWIFItwo" type="primary" size="small" icon="plus">删除设备</el-button>
                         <el-button @click="canceltwo" type="primary" size="small" icon="circle-cross">取消</el-button>
                     </div>
                     <!-- 模态框（Modal） -->
@@ -44,7 +44,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="myModalLabel">添加WIFI</h4>
+                                    <h4 class="modal-title" id="myModalLabel">添加设备</h4>
                                 </div>
                                 <div class="modal-body">
                                     <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
@@ -327,7 +327,6 @@
                     data:{
                         imgId:sessionStorage.imgIds,
                         equitmentId:that.handleCurrent[0].id,
-                        equitmentType:that.radio2,
                         coord:coord.join(',')
                     },
                     success:function(data){

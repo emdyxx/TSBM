@@ -61,14 +61,17 @@
                                 <h4 class="modal-title" id="myModalLabel">添加WIFI设备</h4>
                             </div>
                             <div class="modal-body">
-                                <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
-                                <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#f4ea2a;margin-right:20px;">tsbg</i>
-                                <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1afa29;">tsba</i>
-                                <div style="margin-top:30px;">
+                                <div>
                                     <el-radio-group v-model="radio2" @change="selectedmap">
-                                        <el-radio :label="1">tsbc</el-radio>
-                                        <el-radio :label="0">tsbg</el-radio>
-                                        <el-radio :label="2">tsba</el-radio>
+                                        <el-radio :label="0">
+                                            <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png" alt="">
+                                        </el-radio>
+                                        <el-radio :label="1">
+                                            <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png" alt="">
+                                        </el-radio>
+                                        <el-radio :label="2">
+                                            <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png" alt="">
+                                        </el-radio>
                                     </el-radio-group>
                                 </div>
                                 <div class="equipment">
@@ -93,8 +96,8 @@
                                         width="160">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="lanIPX"
-                                        label="ip地址"
+                                        prop="MAC"
+                                        label="MAC"
                                         align='center'
                                         width="180">
                                         </el-table-column>
@@ -510,9 +513,9 @@
                                         
                                         var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(25,5)});
                                         label.setStyle({display:"none"});//对label 样式隐藏
-                                        marker[i] .setLabel(label);  //把label设置到maker上  
-                                        marker[i] .setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
-                                        marker[i] .id=that.mapcoordinate[i].id
+                                        marker[i].setLabel(label);  //把label设置到maker上  
+                                        marker[i].setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
+                                        marker[i].id=that.mapcoordinate[i].id
                                         map.addOverlay(marker[i]); 
                                         that.Listener(marker[i]);
                                     }
@@ -560,8 +563,7 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'location/removeLocatedEquitment',
                     data:{
-                        equitmentId:id,
-                        equitmentType:Type
+                        equitmentId:id
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -644,7 +646,6 @@
                     url:that.serverurl+'location/setEquitmentLocationByMap',
                     data:{
                         equitmentId:that.handleCurrent[0].id,
-                        equitmentType:that.radio2,
                         coord:coord.join(',')
                     },
                     success:function(data){
@@ -681,7 +682,6 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.options = data.result[0].children
-                            that.selectedOptions = data.result[0].children[0].value
                             that.selectedOptions = data.result[0].children[0].value
                         }else{
                             that.errorCode(data.errorCode)

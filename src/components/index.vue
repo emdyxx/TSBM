@@ -56,7 +56,7 @@
                 <i v-if="site.menuName=='常用菜单'" class="left_i iconfont icon-changyongcaidan"></i>
                 <i v-else-if="site.menuName=='系统管理'" style="left:-3px;" class="left_i iconfont icon-xitongguanli"></i>
                 <i v-else-if="site.menuName=='设备管理'" style='left:-1px;font-size:20px;' class="left_i iconfont icon-shebei"></i>
-                <i v-else-if="site.menuName=='升级管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
+                <i v-else-if="site.menuName=='终端管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
                 <i v-else-if="site.menuName=='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
                 <i v-else-if="site.menuName=='统计信息'" style="font-size:19px;left:-4px;" class="left_i iconfont icon-gailan"></i>
                 <span slot="title">{{site.menuName}}</span>
@@ -79,7 +79,22 @@
                       <h4 class="modal-title" id="myModalLabel">个人设置</h4>
                   </div>
                   <div class="modal-body">
-                    <el-collapse v-model="activeName" accordion>
+                    <form class="systemsettingspsd">
+                      <label for="" style="margin-top:8px;">
+                        原始密码:
+                        <input type="password" v-model="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
+                      </label>
+                      <label for="">
+                        新密码:&#12288
+                        <input type="password" v-model="newPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入新密码" required>
+                      </label>
+                      <label for="">
+                        确认密码:
+                        <input type="password" v-model="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
+                      </label> 
+                    </form>
+                    <button style="margin-left:150px;" type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
+                    <!-- <el-collapse v-model="activeName" accordion>
                       <el-collapse-item title="密码修改" name="1">
                         <form class="systemsettingspsd">
                             <label for="" style="margin-top:8px;">
@@ -109,7 +124,7 @@
                         </el-tree>
                         <button style="margin-left:150px;margin-top:5px;" type="button" @click="revampPasswordtwo" class="btn btn-primary">提交更改</button>
                       </el-collapse-item>
-                    </el-collapse>
+                    </el-collapse> -->
                   </div>
               </div><!-- /.modal-content -->
           </div>
@@ -371,12 +386,16 @@ export default {
         this.$router.push({'path':'/TSBManage'})
       }
       if(val == '3'){
-        sessionStorage.menuId = 34
+        sessionStorage.menuId = 33
         this.$router.push({'path':'/equipmentLocation'})
       }
       if(val == '4'){
         sessionStorage.menuId = 62
         this.$router.push({'path':'/dataStatistics'})
+      }
+      if(val=='5'){
+        sessionStorage.menuId = 51
+        this.$router.push({'path':'/alarm'})
       }
     },
     //点击事件-->跳转图表页面
@@ -385,7 +404,7 @@ export default {
     },
     //左缩进
     leftshrink(){
-      $(".index_nav_bottom").css('width',"64px");
+      $(".index_nav_bottom").css('width',"54px");
       $(".index_main_bottom").css('left',"54px");
       this.isCollapse=true
     },
@@ -440,16 +459,16 @@ export default {
 .index_nav_top>div{display: inline-block;width: 32px;height:32px;border: 1px solid white;border-radius: 50%;position: relative;left: -15px;top:20px;}
 .index_nav_top i{font-size: 25px;line-height: 32px;}
 .index_nav_top>span{position: relative;left: -15px;top:20px;}
-.icon-jinggao{display: inline-block;line-height: 25pxf;ont-size:25px;color: #486d93;text-shadow: 0.5px 0.5px #b4c7da, -0.5px -0.5px #375471;}
+.icon-jinggao{display: inline-block;line-height: 25px;font-size:25px;color: #486d93;text-shadow: 0.5px 0.5px #b4c7da, -0.5px -0.5px #375471;}
 
-.index_main_top_left{position: absolute;left: 240px;right: 0;height: 70px;line-height: 70px;color: white;font-size: 16px;}
+.index_main_top_left{position: absolute;right: 180px;height: 70px;line-height: 70px;color: white;font-size: 16px;}
 .index_main_top_center{position: absolute;height: 70px;line-height: 70px;left: 10px;}
 
 .index_main_top_right{position: absolute;right: 2%;height: 70px;line-height: 70px;}
 .index_nav_top,.index_main_top{height: 70px;}
 .index_main_top{background:rgb(94, 135, 176);position: absolute;left: 240px;right: 0;height: 70px;}
-.index_nav_bottom{position: absolute;left:0;height:100%;width: 240px;border-right: 1px solid #dddddd;background: rgb(244, 244, 244);}
-.index_main_bottom{position: absolute;left:240px;right:0;height: 100%;background: rgb(244, 244, 244);}
+.index_nav_bottom{position: absolute;left:0;height:100%;width: 220px;border-right: 1px solid #dddddd;background: rgb(244, 244, 244);}
+.index_main_bottom{position: absolute;left:220px;right:0;height: 100%;background: rgb(244, 244, 244);overflow: auto;}
 .index_nav_bottom_top{width: 100%;height: 30px;display: flex;}
 .index_nav_bottom_top>div{position: absolute;right: 7px;cursor: pointer;width: 42px;height: 30px;}
 .index_nav_bottom_top>div>i{font-size:24px;position: absolute;top: 0px;}
@@ -457,7 +476,7 @@ export default {
 .index_nav_bottom_top>div>i:nth-of-type(3){left: 14px;}
 .index_nav_bottom_top>img{width: 60px;border-radius: 50%;margin-left: 15px;border: 1px solid gray;padding: 2px;}
 .index_nav_bottom_top>div{margin-left: 15px;padding: 8px 0;}
-.index_nav_bottom_bottom{position: absolute;width: 240px;height: auto;top:30px;bottom: 0;overflow: hidden;}
+.index_nav_bottom_bottom{position: absolute;width: 220px;height: auto;top:30px;bottom: 0;overflow: hidden;}
 .systemsettingspsd{display: flex;flex-direction: column;align-items: center;font-size: 14px}
 .systemsettingspsd>label{margin-bottom: 15px;}
 .list>a{background: #FBFDFF;border-bottom: 1px solid #dfe6ec;text-align: center;}

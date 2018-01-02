@@ -31,11 +31,11 @@
                 </span>
                 <span style="padding-left:15px;">
                     <span>MAC:</span>
-                    <el-input v-model="MAC" size='small' style="width:110px;" placeholder="请输入内容"></el-input>
+                    <el-input v-model="MAC" size='small' style="width:110px;" placeholder="请输入MAC"></el-input>
                 </span>
                 <span style="padding-left:15px;">
                     <span>设备型号:</span>
-                    <el-input v-model="hardwareVersion" size='small' style="width:110px;" placeholder="请输入内容"></el-input>
+                    <el-input v-model="hardwareVersion" size='small' style="width:110px;" placeholder="请输入设备型号"></el-input>
                 </span>
                 <el-button @click="alertsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
             </div>
@@ -269,7 +269,4 @@
 .alarm_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
 .alarm_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
 .alarm_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
-
-
-
 </style>
