@@ -55,6 +55,12 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
                             prop="MAC"
                             align='center'
                             label="MAC"
@@ -140,8 +146,8 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBG设备分组</el-button>
-                        <el-button @click="affiliation" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">设备归属</el-button>
-                        <el-button @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
+                        <el-button v-if="groupingtypeadd" @click="affiliation" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">设备归属</el-button>
+                        <el-button v-if="groupingtypedelete" @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
                     </div>
                     <!-- 设备列表 -->
                     <div class="TSBManage_main_bottom">
@@ -170,6 +176,12 @@
                                         {{scope.row.nickname}}
                                     </span>
                                 </template>  
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="MAC"
@@ -267,7 +279,7 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBC设备分组</el-button>
-                        <el-button @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
+                        <el-button v-if="groupingtypedelete" @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
                         <el-table
@@ -295,6 +307,12 @@
                                         {{scope.row.nickname}}
                                     </span>
                                 </template>  
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="MAC"
@@ -392,7 +410,7 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBA设备分组</el-button>
-                        <el-button @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
+                        <el-button v-if="groupingtypedelete" @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
                         <el-table
@@ -420,6 +438,12 @@
                                         {{scope.row.nickname}}
                                     </span>
                                 </template>  
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="MAC"
@@ -504,48 +528,15 @@
                             <h4 class="modal-title" id="myModalLabel">设备分组</h4>
                         </div>
                         <div class="modal-body">
-                            <!-- <div v-if="typegrouping">
-                                <span>选择分组:</span>
-                                <el-select v-model="selectedOptions" @change="groupingchange" size='small' style="width:126px;margin-bottom:10px;" placeholder="请选择">
-                                    <el-option
-                                    v-for="item in groupingoptions"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </div> -->
-                            <!-- <el-button v-if="groupingtypeadd" @click="dialogVisible = true" type="primary" size='small'>添加分组</el-button> -->
-                            <!-- <div v-if="dialogVisible" class="grouping_div">
-                                <div>
-                                    <span style='margin-left:45px;line-height:36px;'>分组名称:</span>
-                                    <input type="text" v-model="names" class="form-control logManage_main_input" placeholder='请输入分组名称' onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
-                                    <span style='margin-left:45px;line-height:36px;'>硬件版本:</span>
-                                    <input type="text" v-model="hardwareVersion" class="form-control logManage_main_input" placeholder='请输入硬件版本' onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
-                                    <span style='margin-left:45px;line-height:36px;'>软件版本:</span>
-                                    <input type="text" v-model="softwareVersion" class="form-control logManage_main_input" placeholder='请输入软件版本' onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
-                                </div>
-                                <p>
-                                    <span>简介</span>
-                                    <el-input
-                                    type="textarea"
-                                    :rows="1"
-                                    placeholder="请输入内容"
-                                    v-model="groupingtextarea">
-                                    </el-input>
-                                </p>
-                                <el-button type="primary" @click="groupingsave" size='small'>保存</el-button>
-                                <el-button type="primary" @click="dialogVisible = false" size='small'>取消</el-button>
-                            </div>     -->
-                            <div style="width:100%;margin-top:10px;">
+                            <div style="width:100%;">
                                     <el-table
                                     ref="multipleTable"
                                     :data="groupingdata"
                                     border
                                     stripe
                                     tooltip-effect="dark"
-                                    @selection-change="groupingsaveChange"
-                                    style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                                    style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                                    @selection-change="groupingsaveChange">
                                     <el-table-column
                                     type="selection"
                                     align='center'
@@ -564,19 +555,17 @@
                                     width="120">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="remark"
-                                    label="备注"
-                                    show-overflow-tooltip
-                                    align='center'>
-                                    </el-table-column>
-                                    <el-table-column
                                     label="操作"
                                     align='center'
                                     width="90">
                                         <template scope="scope">
-                                            <!-- <el-button type="primary" size="small">修改</el-button> -->
                                             <el-button @click="groupingdelete(scope.row)" type="primary" size="small">删除</el-button>
                                         </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="remark"
+                                    label="备注"
+                                    align='center'>
                                     </el-table-column>
                                 </el-table>
                             </div>
@@ -1708,11 +1697,11 @@
         data () {
             return {
                 //按钮权限
-                configurationtype:false,
-                managetype:false,
+                configurationtype:false, //设备配置
+                managetype:false,  //设备管理
                 groupingtype:false, //设备分组
-                groupingtypeadd:false,
-                groupingtypedelete:false,
+                groupingtypeadd:false, //设备归属
+                groupingtypedelete:false, //删除设备
                 //归属分组数据
                 affiliationgrouping:false,
                 affiliationdata:[],
@@ -1889,10 +1878,10 @@
                                 if(data.result[i].code=='setGroup'){
                                     that.groupingtype = true
                                 }
-                                if(data.result[i].code=='addGroup'){
+                                if(data.result[i].code=='setDepartment'){
                                     that.groupingtypeadd = true
                                 }
-                                if(data.result[i].code=='delGroup'){
+                                if(data.result[i].code=='delEquipment'){
                                     that.groupingtypedelete = true
                                 }
                             }
@@ -2748,7 +2737,6 @@
             //设备分组数据渲染
             machinegrouping(){
                 var that = this
-                var array = [];
                 if(this.sites.length==0){
                     that.$message({
                         message: '请选择数据进行分组',
@@ -2756,62 +2744,31 @@
                     })
                     return;
                 }
-                // var type = '';
-                // if(this.sites[0].type=='0'){
-                //     type = '0';
-                // }
-                // if(this.sites[0].type=='1'){
-                //     type = '1';
-                // }
-                // if(this.sites[0].type=='2'){
-                //     type = '2';
-                // }
+                $('#tsbgmyModal').modal('show')
+                var array = [];
                 for(var i=0;i<this.sites.length;i++){
                     array.push(this.sites[i].id)
                 }
-                $('#tsbgmyModal').modal('show')
-                $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'equipment/getGroupByEquipment',
-                    data:{
-                        equipmentIds:array.join(',')
-                    },
-                    success:function(data){
-                        that.groupingdata = data.result
-                    }
-                })
-            },
-            //管理员选择分组chang事件
-            groupingchange(){
-                var that = this
-                var type = '';
-                if(this.sites[0].type=='0'){
-                    type = '0';
-                }
-                if(this.sites[0].type=='1'){
-                    type = '1';
-                }
-                if(this.sites[0].type=='2'){
-                    type = '2';
-                }
-                $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'equipment/getEquipmentGroupList',
-                    data:{
-                        type:type,
-                        departmentId:that.selectedOptions
-                    },
-                    success:function(data){
-                        that.groupingdata = data.result
-                    }
-                })
-            },
+                setTimeout(function(){
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'equipment/getGroupByEquipment',
+                        data:{
+                            equipmentIds:array.join(',')
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.groupingdata=data.result
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
+                },200)
+            }, 
             //添加保存分组
             groupingsave(){
                 var that = this;
@@ -2848,20 +2805,7 @@
                                 type: 'success'
                             })
                             that.dialogVisible = false;
-                            $.ajax({
-                                type:'get',
-                                async:true,
-                                dataType:'json',
-                                xhrFields:{withCredentials:true},
-                                url:that.serverurl+'equipment/getEquipmentGroupList',
-                                data:{
-                                    type:type,
-                                    // departmentId:that.selectedOptions
-                                },
-                                success:function(data){
-                                    that.groupingdata = data.result
-                                }
-                            })
+                            that.ready()
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -2871,13 +2815,6 @@
             //删除分组
             groupingdelete(val){
                 var that = this
-                if(that.groupingtypedelete==false){
-                    that.$message({
-                        message: '您没有此权限',
-                        type: 'success'
-                    })
-                    return;
-                }
                 var type = '';
                 if(this.sites[0].type=='0'){
                     type = '0';
@@ -2904,7 +2841,6 @@
                                 message: '删除成功',
                                 type: 'success'
                             })
-                            alert(type)
                             $.ajax({
                                 type:'get',
                                 async:true,
@@ -2916,7 +2852,11 @@
                                     departmentId:that.selectedOptions
                                 },
                                 success:function(data){
-                                    that.groupingdata = data.result
+                                    if(data.errorCode=='0'){
+                                        that.groupingdata = data.result
+                                    }else{
+                                        that.errorCode(data.errorCode)
+                                    }
                                 }
                             })
                         }else{

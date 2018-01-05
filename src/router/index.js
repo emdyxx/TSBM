@@ -278,6 +278,105 @@ Vue.prototype.errorCode = function(code){
           showClose: true,
       });
     }
+
+    if(code=='2027'){
+      this.$message({
+          message: '设备不是同一型号',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2028'){
+      this.$message({
+          message: '设备型号与分组不一致',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2029'){
+      this.$message({
+          message: '未获取到设备组',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2030'){
+      this.$message({
+          message: '设备分组名称存在',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2031'){
+      this.$message({
+          message: '设备不存在自己的模板',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2032'){
+      this.$message({
+          message: 'ue（用户）不存在或无权限',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2033'){
+      this.$message({
+          message: 'ue（用户）存在',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2034'){
+      this.$message({
+          message: 'ue（用户）认证失败',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2035'){
+      this.$message({
+          message: '设备不存在或无权限',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2036'){
+      this.$message({
+          message: '移除设备分组失败',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2037'){
+      this.$message({
+          message: '设备不是同一部门（用户组）',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2038'){
+      this.$message({
+          message: '未查询到设备或升级包',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='2039'){
+      this.$message({
+          message: '设备与平面图不在同一部门',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(code=='3001'){
+      this.$message({
+          message: '发送配置失败',
+          type: 'error',
+          showClose: true,
+      });
+    }
 };
 export default new Router({
   routes: [

@@ -164,6 +164,41 @@
                 rightdata:[],//往右侧移动数据id
             }
         },
+        mounted(){
+            var that = this
+            setTimeout(function(){
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='addGroup'){
+                                    that.addgrouping = true
+                                }
+                                if(data.result[i].code=='editGroup'){
+                                    that.deletegrouping = true
+                                }
+                                if(data.result[i].code=='delGroup'){
+                                    that.removegrouping = true
+                                }
+                                if(data.result[i].code=='saveEquipmentGroup'){
+                                    that.savegrouping = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
+        },
         methods:{
             //最左侧树行列表点击事件
             handleNodeClick(data){
@@ -449,36 +484,6 @@
         created(){
             var that = this;
             this.treeready();
-            $.ajax({
-                type:'post',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'system/getUserPrivilege',
-                data:{
-                    menuId:sessionStorage.menuId
-                },
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        for(var i=0;i<data.result.length;i++){
-                            if(data.result[i].code=='addGroup'){
-                                that.addgrouping = true
-                            }
-                            if(data.result[i].code=='editGroup'){
-                                that.deletegrouping = true
-                            }
-                            if(data.result[i].code=='delGroup'){
-                                that.removegrouping = true
-                            }
-                            if(data.result[i].code=='saveEquipmentGroup'){
-                                that.savegrouping = true
-                            }
-                        }
-                    }else{
-                        that.errorCode(data.errorCode)
-                    }
-                }
-            })
         }
     }
 </script>

@@ -758,10 +758,6 @@
                             </el-option>
                         </el-select>
                     </div>
-                    <div class="templateManage_formtwo">
-                        <span>模板所属部门ID:</span>
-                        <input type="text" v-model="templateId" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入所属部门ID">
-                    </div>
                     <el-button type="primary" @click="templateseek" icon="search" style="height:30px;margin-top:5px;" size='small'>搜索</el-button>
                 </div>
                 <div class="templateManage_bottom_bottom">
@@ -810,6 +806,15 @@
                             </template>  
                         </el-table-column>
                         <el-table-column
+                        label="模板类别"
+                        align='center'
+                        width="120">
+                            <template scope="scope">
+                                <span v-if="scope.row.configType=='0'">设备配置</span>
+                                <span v-if="scope.row.configType=='1'">模板配置</span>    
+                            </template>  
+                        </el-table-column>
+                        <el-table-column
                         prop="summary"
                         label="描述"
                         align='center'>
@@ -819,10 +824,10 @@
                         align='center'
                         width="180">
                             <template scope="scope">
-                                <span v-if="scope.row.status==0">
+                                <span v-if="scope.row.status==0&&scope.row.configType=='1'">
                                     <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
                                 </span>
-                                <span v-if="scope.row.status==1">
+                                <span v-if="scope.row.status==1&&scope.row.configType=='1'">
                                     <el-button type="primary" @click="forbidden(scope.row)" size="small">启用</el-button>
                                 </span>
                                 <span v-if="removetemplate">
@@ -898,6 +903,8 @@
                 valuethree:0,
 
                 templateName:'',  
+                templateId:'',
+                realname:'',
                 summary:"",
                 options:[{value:'STATIC',label:'STATIC'},{value:'DHCP',label:'DHCP'},{value:'PPPOE',label:'PPPOE'}],
                 lookdata:{}, //弹框数据数组对象
@@ -1232,6 +1239,8 @@
                             for(var i=0;i<data.result.order.length;i++){
                                 that.multipleTable.push(data.result.order[i].id)
                             }
+                            that.templateId = data.result.templateId;
+                            that.realname = data.result.realname;
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -1693,13 +1702,11 @@
                     if(that.addrelative == '0'){url='template/addTsbgTemplate'}
                     if(that.addrelative == '1'){url='template/editTsbgTemplate'}
                     data = that.tsbgcollcate
-                    data.templateOrder = that.valuethree
                 }
                 if(that.radio2=='1'){
                     if(that.addrelative == '0'){url='template/addTsbcTemplate'}
                     if(that.addrelative == '1'){url='template/editTsbcTemplate'}
                     $.extend(data,that.tsbccollcate,that.tsbctsbacaollcate)
-                    data.templateOrder = that.valuethree
                     data.listType = that.panel
                     if(that.panel=='0'){
                         //白名单
@@ -1714,7 +1721,6 @@
                     if(that.addrelative == '0'){url='template/addTsbaTemplate'}
                     if(that.addrelative == '1'){url='template/editTsbaTemplate'}
                     $.extend(data,that.tsbacaollcate,that.tsbctsbacaollcate)
-                    data.templateOrder = that.valuethree
                     data.listType = that.panel
                     if(that.panel=='0'){
                         //白名单
@@ -1742,10 +1748,15 @@
                 if(sessionStorage.departmentId=='1'){
                     data.departmentId = that.value
                 }
+                if(that.addrelative == '1'){
+                    data.templateId = that.templateId
+                    data.realname = that.realname
+                }
                 data.templateName = that.templateName
                 data.model = that.valuetwo
                 data.summary = that.summary
                 data.templateType = that.radio2
+                data.templateOrder = that.valuethree
                 $.ajax({
                     type:'post',
                     async:true,
@@ -1755,11 +1766,20 @@
                     data:data,
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.$message({
-                                message: '模板添加成功',
-                                type: 'success',
-                                showClose: true,
-                            });
+                            if(that.addrelative=='0'){
+                                that.$message({
+                                    message: '模板添加成功',
+                                    type: 'success',
+                                    showClose: true,
+                                });
+                            }
+                            if(that.addrelative=='1'){
+                                that.$message({
+                                    message: '模板修改成功',
+                                    type: 'success',
+                                    showClose: true,
+                                });
+                            }
                             $('#addmyModal').modal('hide');
                             that.ready();
                         }else{
@@ -1795,7 +1815,6 @@
                         templateName:that.templatename,
                         templateType:that.classesvalue,
                         templateOrder:that.classesvaluetwo,
-                        departmentId:that.templateId,
                     },
                     success:function(data){
                         if(data.errorCode=='0'){

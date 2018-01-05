@@ -164,7 +164,7 @@ export default {
         children: 'sonMenu',
         label: 'menuName'
       },
-      value:'8',
+      value:'0',
     }
   },
   methods:{
@@ -443,7 +443,11 @@ export default {
       // alert('socket已连接上');
     }
     ws.onmessage = function (evt){
-      that.value = evt.data.alarmTotal
+      var data = JSON.parse(evt.data)
+      that.value = data.alarmTotal
+    }
+    ws.onclose = function (evt){
+      ws = new WebSocket('ws://192.168.70.83/TSBM-Manager/webscoketAlarm');
     }
   }
 }

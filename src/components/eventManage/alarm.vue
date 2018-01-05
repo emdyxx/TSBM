@@ -9,7 +9,7 @@
                 <span>显示历史告警信息</span> -->
                 <span style="padding-left:15px;">
                     <span>告警级别:</span>
-                    <el-select v-model="value" size='small' style="width:110px;" placeholder="请选择">
+                    <el-select v-model="value" clearable size='small' style="width:110px;" placeholder="请选择">
                         <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -20,7 +20,7 @@
                 </span>
                 <span style="padding-left:15px;">
                     <span>设备类型:</span>
-                    <el-select v-model="value2" size='small' style="width:110px;" placeholder="请选择">
+                    <el-select v-model="value2" clearable size='small' style="width:110px;" placeholder="请选择">
                         <el-option
                         v-for="item in options2"
                         :key="item.value"
@@ -56,9 +56,9 @@
                     width="55">
                     </el-table-column>
                     <el-table-column
-                    prop="nickname"
+                    prop="MAC"
                     align='center'
-                    label="设备名称"
+                    label="设备MAC"
                     width="180">
                     </el-table-column>
                     <el-table-column
@@ -72,19 +72,35 @@
                     align='center'
                     width="180">
                         <template scope="scope">
-                            <span v-if="scope.row.departmentName==='0'" style='color:#00CC00;'>
+                            <span v-if="scope.row.level=='1'" style='color:red;'>
                                 紧急
                             </span>
-                            <span v-else-if="scope.row.departmentName==='1'" style='color:#FF0000;'>
+                            <span v-else-if="scope.row.level=='2'" style='color:#FF0000;'>
                                 严重
+                            </span>
+                            <span v-else-if="scope.row.level=='3'" style='color:#FF0000;'>
+                                重要
+                            </span>
+                            <span v-else-if="scope.row.level=='4'" style='color:#FF0000;'>
+                                次要
                             </span>
                         </template>  
                     </el-table-column>
                     <el-table-column
-                    prop="hardwareVersion"
                     label="设备类型"
                     align='center'
                     width="180">
+                        <template scope="scope">
+                            <span v-if="scope.row.type=='0'">
+                                TSBG
+                            </span>
+                            <span v-else-if="scope.row.type==='1'">
+                                TSBC
+                            </span>
+                            <span v-else-if="scope.row.type==='2'">
+                                TSBA
+                            </span>
+                        </template>  
                     </el-table-column>
                     <el-table-column
                     prop="ts"
@@ -131,9 +147,10 @@
                                     <tr>
                                         <td>告警级别</td>
                                         <td>
-                                            <span v-if="detail.type=='1'">一级</span>
-                                            <span v-if="detail.type=='2'">二级</span>
-                                            <span v-if="detail.type=='3'">三级</span>
+                                            <span v-if="detail.level=='1'">一级</span>
+                                            <span v-if="detail.level=='2'">二级</span>
+                                            <span v-if="detail.level=='3'">三级</span>
+                                            <span v-if="detail.level=='4'">四级</span>
                                         </td>
                                         <td>设备类型</td>
                                         <td>{{detail.type}}</td>
@@ -173,9 +190,9 @@
                 sites:[],
                 // checked:false,
                 value:'',
-                options:[{value:'0',label:'全部'},{value:'1',label:'紧急'},{value:'2',label:'严重'},{value:'3',label:'重要'},{value:'4',label:'次要'}],
+                options:[{value:'1',label:'紧急'},{value:'2',label:'严重'},{value:'3',label:'重要'},{value:'4',label:'次要'}],
                 value2:'',
-                options2:[{value:'3',label:'全部'},{value:'0',label:'tsbg'},{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
+                options2:[{value:'0',label:'tsbg'},{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
                 tableData3:[],
                 pageSize:10,
                 pageIndex:1,
