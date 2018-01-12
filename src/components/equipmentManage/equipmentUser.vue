@@ -98,6 +98,12 @@
                             width="180">
                             </el-table-column>
                             <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
                             prop="remark"
                             label="备注"
                             align='center'
@@ -185,7 +191,7 @@
                             prop="ueIP"
                             label="ip地址"
                             align='center'
-                            width="130">
+                            width="150">
                             </el-table-column>
                             <el-table-column
                             prop="ueMAC"
@@ -236,6 +242,12 @@
                             label="链接设备"
                             align='center'
                             width="180">
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="remark"
@@ -304,7 +316,7 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
-                            prop="equipmentMAC"
+                            prop="staMAC"
                             label="设备MAC"
                             align='center'
                             width="180">
@@ -319,6 +331,19 @@
                                     </span>
                                     <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
                                         离线
+                                    </span>
+                                </template>  
+                            </el-table-column>
+                            <el-table-column
+                            label="wifi类型"
+                            align='center'
+                            width="100">
+                                <template scope="scope">
+                                    <span v-if="scope.row.wifiType=='0'">
+                                        2.4G
+                                    </span>
+                                    <span v-else-if="scope.row.wifiType=='1'">
+                                        5G
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -339,6 +364,12 @@
                             prop="equipmentMAC"
                             label="链接设备MAC"
                             align='center'>
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             label="操作"
@@ -541,13 +572,15 @@
                     pageSize=that.pageSize;
                     url='terminal/getAllTerminalList';
                     data.equipmentMAC=that.search.equipmentMAC
-                    data.terminalMAC=that.search.terminalMAC
+                    data.ueMAC=that.search.ueMAC
                 }
                 if(that.activeName=='2'){
                     pageIndex=that.pageIndex2;
                     pageSize=that.pageSize2;
                     url='terminal/getUeList';
+                    data.equipmentMAC=that.search.equipmentMAC
                     data.authStatus = that.Authenticationvalue
+                    data.staMAC=that.search.staMAC
                 }
                 if(that.activeName=='3'){
                     pageIndex=that.pageIndex3;
@@ -824,6 +857,8 @@
             //通用删除按钮
             deleteUser(val){
                 var that = this;
+                var url = ''
+                var data = {}
                 if(that.delate==false){
                     that.$message({
                         message: '您没有权限',
@@ -832,6 +867,8 @@
                     })
                     return;
                 }
+                if(that.activeName == '2'){url='terminal/delUe';data.ueIds = val.id}
+                if(that.activeName == '3'){url='/terminal/delSta';data.staIds = val.id}
                 that.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -842,10 +879,8 @@
                         async:true,
                         dataType:'json',
                         xhrFields:{withCredentials:true},
-                        url:that.serverurl+'terminal/delUe',
-                        data:{
-                            ueIds:val.id,
-                        },
+                        url:that.serverurl+url,
+                        data:data,
                         success:function(data){
                             if(data.errorCode=='0'){
                                 that.$message({

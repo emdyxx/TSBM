@@ -12,23 +12,20 @@
                     <img :src=imgUrl alt="" @mouseup="uplift" style="width: 100%;height: 100%;opacity: 0.6;">
                     <template v-for="(item,key) in imgdata">
                         <template v-if='item.equipmentType=="0"'>
-                            <img v-if='item.online=="0"' :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png">
-                            <img v-if='item.online=="1"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png">
-                            <img v-if='item.online=="2"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png">
+                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png">
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png">
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png">
                         </template>
                         <template v-if='item.equipmentType=="1"'>
-                            <img v-if='item.online=="0"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png">
-                            <img v-if='item.online=="1"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png">
-                            <img v-if='item.online=="2"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png">
+                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png">
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png">
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png">
                         </template>
                         <template v-if='item.equipmentType=="2"'>
-                            <img v-if='item.online=="0"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png">
-                            <img v-if='item.online=="1"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png">
-                            <img v-if='item.online=="2"' :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png">
+                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png">
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png">
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png">
                         </template>
-                        <!-- <i v-if='item.equipmentType==="0"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#F4EA2A;`" class="iconfont icon-wodeweizhi img-i"></i>
-                        <i v-if='item.equipmentType==="1"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#1986F2;`" class="iconfont icon-wodeweizhi img-i"></i>
-                        <i v-if='item.equipmentType==="2"' @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;color:#1AFA29;`" class="iconfont icon-wodeweizhi img-i"></i> -->
                     </template>
                     <div class="contextmenu" :style="styleObject" v-if="opction">
                         <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加设备</el-button>
@@ -73,19 +70,22 @@
                                             width="55">  
                                             </el-table-column>
                                             <el-table-column
-                                            prop="nickname"
                                             align='center'
                                             label="设备名称"
                                             width="160">
+                                                <template scope="scope">
+                                                    <span v-if="scope.row.nickname==''">{{scope.row.MAC}}</span>
+                                                    <span v-else>{{scope.row.nickname}}</span>
+                                                </template>
                                             </el-table-column>
                                             <el-table-column
-                                            prop="lanIPX"
-                                            label="ip地址"
+                                            prop="MAC"
+                                            label="MAC"
                                             align='center'
                                             width="180">
                                             </el-table-column>
                                             <el-table-column
-                                            prop="hardwardVersion"
+                                            prop="model"
                                             label="硬件型号"
                                             align='center'
                                             show-overflow-tooltip>
@@ -134,11 +134,11 @@
                     left: '',
                     top: ''
                 },
-                radio2:1,
+                radio2:0,
                 opctionsdata:[],
                 pagechange:1,
                 sizes:10,
-                total:100,
+                total:10,
                 pageSize:10,
                 pageIndex:1,
                 handleCurrent:[],
@@ -263,25 +263,18 @@
             //获取弹窗数据
             opctiondata(){
                 var that = this
-                var url=''
-                if(this.radio2=='0'){
-                    url = 'equipment/getTsbgList'
-                }
-                if(this.radio2=='1'){
-                    url = 'equipment/getTsbcList'
-                }
-                if(this.radio2=='2'){
-                    url = 'equipment/getTsbaList'
-                }
+                var url='equipment/getEquipmentList'
                 $.ajax({
-                    type:'post',
+                    type:'GET',
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+url,
                     data:{
                         pageIndex:that.pageIndex,
-                        pageSize:that.pageSize
+                        pageSize:that.pageSize,
+                        type:that.radio2,
+                        departmentId:sessionStorage.departmentimgIds
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -308,9 +301,9 @@
             },
             //添加WIFI提交
             ZBsubmit(){
-                if(this.handleCurrent.length>=2){
+                if(this.handleCurrent.length>=2||this.handleCurrent.length==0){
                     that.$message({
-                        message: '只能选择一个设备,请勿多选',
+                        message: '请选择一个设备进行保存',
                         type:'error',
                         showClose: true,
                     });

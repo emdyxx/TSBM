@@ -1,5 +1,5 @@
 <template>
-  <div class="echarts">
+    <div class="factory">
         <div class="echarts_type" v-if="select">
             <el-select v-model="value" @change="echartstype" placeholder="请选择">
                 <el-option
@@ -41,7 +41,7 @@
                 <div class="echarts_center_left_bottom" id="myCharttwo"></div>
             </div>
             <div>
-                <p>2.5G频谱信道分布图</p>
+                <p>5.8G频谱信道分布图</p>
                 <div class="echarts_center_left_bottom" id="myChartfour"></div>
             </div>
         </div>
@@ -55,42 +55,21 @@
                 <div class="echarts_bottom_botom" id="myChartone"></div>
             </div>
         </div>
-  </div>
+    </div>
 </template>
 <script>
 export default {
-    name: 'echarts',
+    name: 'factory',
     data () {
         return {
             serverurl:localStorage.serverurl,
-            select:false,
+            select: false ,
             options: [],
             value: '1',
             EquipmentCount:{}, //设备统计信息
         }
     },
     mounted(){
-        var that = this;
-        if(sessionStorage.departmentId=='1'){
-            that.select = true
-            $.ajax({
-                type:'get',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'department/getTopDepartment',
-                data:{},
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        that.options = data.result[0].children
-                        var data = {value:'1',label:'所有数据'}
-                        that.options.unshift(data)
-                    }else{
-                        that.errorCode(data.errorCode)
-                    }
-                }
-            })
-        }
         this.rendy()
     },
     methods:{
@@ -299,21 +278,21 @@ export default {
                     if(data.errorCode=='0'){
                         var one = '';var two = '';var three = '';
                         for(var i='0';i<data.result.length;i++){
-                            if(data.result[i].useLink=='2G'){
+                            if(data.result[i].link=='2G'){
                                 if(data.result[i].sum==''){
                                     one = 0
                                 }else{
                                     one = data.result[i].sum
                                 }
                             }
-                            if(data.result[i].useLink=='5G'){
+                            if(data.result[i].link=='5G'){
                                 if(data.result[i].sum==''){
                                     two = 0
                                 }else{
                                     two = data.result[i].sum
                                 }
                             }
-                            if(data.result[i].useLink=='ETH'){
+                            if(data.result[i].link=='ETH'){
                                 if(data.result[i].sum==''){
                                     three = 0
                                 }else{
@@ -361,17 +340,38 @@ export default {
                 }
             })
         },
+        //部门change事件
         echartstype(){
             this.rendy()
         }
     },
     created(){
-        
-    }
+        var that = this;
+        if(sessionStorage.departmentId=='1'){
+            that.select = true
+            $.ajax({
+                type:'get',
+                async:true,
+                dataType:'json',
+                xhrFields:{withCredentials:true},
+                url:that.serverurl+'department/getTopDepartment',
+                data:{},
+                success:function(data){
+                    if(data.errorCode=='0'){
+                        that.options = data.result[0].children
+                        var data = {value:'1',label:'所有数据'}
+                        that.options.unshift(data)
+                    }else{
+                        that.errorCode(data.errorCode)
+                    }
+                }
+            })
+        }
+    },
 }
 </script>
 <style scoped>
-.echarts{width: 100%;height: 100%;}
+.factory{width: 100%;height: 100%;}
 .echarts_type{position: absolute;width:150px;height: 36px;top:20px;}
 .echarts_top{width: 100%;height: 160px;display: flex;justify-content: center;}
 .echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../../assets/u43.png');background-repeat: no-repeat;}

@@ -41,6 +41,7 @@
                     <el-table-column
                     prop='ts'
                     label="时间"
+                    align='center'
                     width="200">
                     </el-table-column>
                 </el-table>
@@ -101,6 +102,7 @@
             //页面渲染
             ready(){
                 var that = this;
+                that.loading = true
                 $.ajax({
                     type:'get',
                     async:true,
@@ -115,6 +117,8 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.tableData3 = data.rows
+                            that.total = data.total
+                            that.loading = false
                         }else{
                             that.errorCode(data.errorCode)
                         }

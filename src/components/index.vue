@@ -19,10 +19,10 @@
           <el-button @click="shortcut(4)">数据统计</el-button>
         </div>
         <div class="index_main_top_right">
-          <el-badge :value=value class="item" style="line-height:0;margin-right:30px;">
+          <el-badge :value=value class="item" style="line-height:0;margin-right:30px;cursor: pointer;">
             <i @click="shortcut(5)" class="iconfont icon-jinggao"></i>
           </el-badge>
-          <el-dropdown trigger="click" @command="handleCommand">
+          <el-dropdown trigger="click" style="cursor: pointer;" @command="handleCommand">
             <span class="el-dropdown-link" style="color: white;font-size:16px;">
               {{username}}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
@@ -51,7 +51,7 @@
         </div>
         <div class="index_nav_bottom_bottom">
           <el-menu default-active="1-4-1" :unique-opened='uniqueopened' class="el-menu-vertical-demo" :collapse="isCollapse">
-            <el-submenu v-for="(site,key) in sites" :index=site.id style="text-align:left;">
+            <el-submenu v-for="(site,key) in sites" :key="site.id" :index=site.id style="text-align:left;">
               <template slot='title'>
                 <i v-if="site.menuName=='常用菜单'" class="left_i iconfont icon-changyongcaidan"></i>
                 <i v-else-if="site.menuName=='系统管理'" style="left:-3px;" class="left_i iconfont icon-xitongguanli"></i>
@@ -62,8 +62,8 @@
                 <span slot="title">{{site.menuName}}</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item v-for='(item,index) in site.sonMenu' index='1-1'>
-                  <router-link style="color:#48576a;display:inline-block;width:100%;height:100%;text-decoration: none;" :id='bagcolor==item.enLabel ? "bgcolor":""' :to=item.enLabel  @click.native='bgcolor(item.enLabel,item.id)'>{{item.menuName}}</router-link>
+                <el-menu-item v-for='(item,index) in site.sonMenu' :key="item.id" index='1-1'>
+                  <span style="color:#48576a;display:inline-block;width:100%;height:100%;text-decoration: none;" :id='bagcolor==item.enLabel ? "bgcolor":""'  @click='bgcolor(item.enLabel,item.id,item.enLabel)'>{{item.menuName}}</span>
                 </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
@@ -135,7 +135,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: 'index',
@@ -205,7 +204,7 @@ export default {
           success:function(data){
             if(data.errorCode=='0'){
               localStorage.username = ''
-              that.$router.push({'path':'/login'})
+              that.$router.push({'path':'/'})
             }
           }
         })
@@ -289,9 +288,14 @@ export default {
         return this.statisticsInfo
       }
     },
-    bgcolor(name,id){
+    bgcolor(name,id,url){
       this.bagcolor = name
       sessionStorage.menuId = id
+      if(url=='equipmentStatistics'){
+        this.$router.push({'path':'/factory'})
+      }else{
+        this.$router.push({'path':url})
+      }
     },
     //修改密码
     revampPassword(){
@@ -330,7 +334,8 @@ export default {
               type: 'success',
               showClose: true,
             });
-            that.$router.push({'path':'/login'})
+            $('#systemsettings').modal('hide')
+            that.$router.push({'path':'/'})
           }else{
             that.error_code(data.errorCode)
           }
@@ -379,7 +384,7 @@ export default {
     shortcut(val){
       if(val == '1'){
         sessionStorage.menuId = 61
-        this.$router.push({'path':'/equipmentStatistics'})
+        this.$router.push({'path':'/factory'})
       }
       if(val == '2'){
         sessionStorage.menuId = 31
@@ -400,7 +405,7 @@ export default {
     },
     //点击事件-->跳转图表页面
     echart(){
-      this.$router.push({'path':'/index'})
+      this.$router.push({'path':'/factory'})
     },
     //左缩进
     leftshrink(){
@@ -459,7 +464,7 @@ export default {
 .index{width: 100%;height: 100%;}
 .index_nav{width: 100%;height: 70px;background: white;display: flex;}
 .index_main{position: absolute;top:70px;bottom:0;width:100%;height:auto;background:white;display: flex;display: -webkit-flex;flex-direction: column;}
-.index_nav_top{color: white;font-size: 19px;background: rgb(94, 135, 176);width:240px;}
+.index_nav_top{cursor: pointer;color: white;font-size: 19px;background: rgb(94, 135, 176);width:240px;}
 .index_nav_top>div{display: inline-block;width: 32px;height:32px;border: 1px solid white;border-radius: 50%;position: relative;left: -15px;top:20px;}
 .index_nav_top i{font-size: 25px;line-height: 32px;}
 .index_nav_top>span{position: relative;left: -15px;top:20px;}

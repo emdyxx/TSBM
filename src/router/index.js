@@ -6,7 +6,7 @@ import echartss from 'echarts'
 
 import login from '@/components/login'  //登录页面
 import index from '@/components/index'  //首页
-import echarts from '@/components/statisticsmessage/echarts'   //图表页面
+import echarts from '@/components/statisticsmessage/equipmentStatistics'   //图表页面
 import userManage from '@/components/systemManagement/userManage'  // 用户管理
 import departmentManage from '@/components/systemManagement/departmentManage'  // 组织管理
 import roleManage from '@/components/systemManagement/roleManage'  // 角色管理
@@ -22,7 +22,10 @@ import templateManage from '@/components/equipmentManage/templateManage'   //设
 import equipmentUpgrade from '@/components/upgradeManage/equipmentUpgrade'  //升级管理-->设备升级
 import alarm from '@/components/eventManage/alarm'  //事件管理-->告警信息
 import event from '@/components/eventManage/event'  //事件管理-->事件信息
-import equipmentStatistics from '@/components/statisticsmessage/echarts'  //统计信息-->设备概览
+import equipmentStatistics from '@/components/statisticsmessage/equipmentStatistics'  //统计信息-->设备概览
+import factory from '@/components/type/factory'  //统计信息-->工厂
+
+
 import dataStatistics from '@/components/statisticsmessage/dataStatistics'  //统计信息-->统计数据
 
 Vue.use(Router)
@@ -43,7 +46,7 @@ Vue.prototype.errorCode = function(code){
           type: 'error',
           showClose: true,
       });
-      this.$router.push({'path':'/login'})
+      this.$router.push({'path':'/'})
     }
     if(code=='1003'){
       this.$message({
@@ -383,12 +386,7 @@ export default new Router({
     {
       path: '/',
       name: 'login',
-      component: login
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: login
+      component: login,
     },
     {
       path: '/index',
@@ -404,6 +402,13 @@ export default new Router({
           path:'/equipmentStatistics',
           name:'equipmentStatistics',
           component:equipmentStatistics,
+          children:[
+            {//工厂数据
+              path:'/factory',
+              name:'factory',
+              component:factory,
+            },
+          ]
         },
         { // 用户管理
           path: '/userManage',
@@ -482,6 +487,5 @@ export default new Router({
         }
       ]
     },
-    
   ]
 })

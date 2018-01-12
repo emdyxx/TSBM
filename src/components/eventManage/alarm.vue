@@ -65,12 +65,12 @@
                     prop="content"
                     label="告警内容"
                     align='center'
-                    width="180">
+                    width="260">
                     </el-table-column>
                     <el-table-column
                     label="告警级别"
                     align='center'
-                    width="180">
+                    width="120">
                         <template scope="scope">
                             <span v-if="scope.row.level=='1'" style='color:red;'>
                                 紧急
@@ -87,17 +87,30 @@
                         </template>  
                     </el-table-column>
                     <el-table-column
+                    label="状态"
+                    align='center'
+                    width="120">
+                        <template scope="scope">
+                            <span v-if="scope.row.status=='0'" style='color:red;'>
+                                未读
+                            </span>
+                            <span v-else-if="scope.row.status=='1'" style='color:rgb(0, 204, 0);'>
+                                已读
+                            </span>
+                        </template>  
+                    </el-table-column>
+                    <el-table-column
                     label="设备类型"
                     align='center'
-                    width="180">
+                    width="120">
                         <template scope="scope">
                             <span v-if="scope.row.type=='0'">
                                 TSBG
                             </span>
-                            <span v-else-if="scope.row.type==='1'">
+                            <span v-else-if="scope.row.type=='1'">
                                 TSBC
                             </span>
-                            <span v-else-if="scope.row.type==='2'">
+                            <span v-else-if="scope.row.type=='2'">
                                 TSBA
                             </span>
                         </template>  

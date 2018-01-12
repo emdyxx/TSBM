@@ -724,8 +724,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" v-if="showtype=='1'" @click="nextstep" class="btn btn-primary">下一步</button>
-                            <button type="button" v-if="showtype=='2'" @click="save" class="btn btn-primary">保存</button>
+                            <button type="button" v-if="showtype=='1'&&configType=='1'" @click="nextstep" class="btn btn-primary">下一步</button>
+                            <button type="button" v-if="showtype=='2'||configType=='0'" @click="save" class="btn btn-primary">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -793,7 +793,7 @@
                         prop="model"
                         label="适用型号"
                         align='center'
-                        width="120">
+                        width="140">
                         </el-table-column>
                         <el-table-column
                         label="适用范围"
@@ -866,6 +866,7 @@
                 delatetemplate:false,
                 startusing:false,
                 serverurl:localStorage.serverurl,
+                configType:'', //点击修改数据的模板类别                
                 addrelative:'0',  //判断添加修改
                 Administrator:false,
                 tableData3:[],
@@ -1030,9 +1031,58 @@
             },200)
         },
         methods:{
+            //清空模板配置数据
+            removedata(){
+                var that = this;
+                that.valuetwo = ''
+                that.templateName = ''
+                that.summary = ''
+                that.tsbgcollcate.wanIP = ''
+                that.tsbgcollcate.wanSubnetmask = ''
+                that.tsbgcollcate.wanGateway = ''
+                that.tsbgcollcate.wanDNS1 = ''
+                that.tsbgcollcate.wanDNS2 = ''
+                that.tsbgcollcate.lanIp = ''
+                that.tsbgcollcate.lanSubnetmask = ''
+                that.tsbgcollcate.lanStartAddress = ''
+                that.tsbgcollcate.lanEndAddress = ''
+                that.tsbgcollcate.lanGateway = ''
+                that.tsbgcollcate.lanDNS1 = ''
+                that.tsbgcollcate.lanDNS2 = ''
+                that.tsbgcollcate.wanPPPoEUsername = ''
+                that.tsbgcollcate.wanPPPoEPassword = ''
+                that.tsbgcollcate.wanPPPoEDNS1 = ''
+                that.tsbgcollcate.wanPPPoEDNS2 = ''
+
+                that.tsbccollcate.wifi2ApSSID = ''
+                that.tsbccollcate.wifi2ApKeyAuth = ''
+                that.tsbccollcate.wifi2StaEncryptionMode = ''
+                that.tsbccollcate.wifi2StaKeyAuth = ''
+                that.tsbccollcate.wifi2StaSSID = ''
+                that.tsbccollcate.wifi5ApSSID = ''
+                that.tsbccollcate.wifi5ApKeyAuth = ''
+                that.tsbccollcate.wifi5StaKeyAuth = ''
+                that.tsbccollcate.wifi5StaSSID = ''
+
+                that.tsbacaollcate.wifi2SSID = ''
+                that.tsbacaollcate.wifi2KeyAuth = ''
+                that.tsbacaollcate.wifi5SSID = ''
+                that.tsbacaollcate.wifi5KeyAuth = ''
+
+                that.tsbctsbacaollcate.wanIP = ''
+                that.tsbctsbacaollcate.wanSubnetmask = ''
+                that.tsbctsbacaollcate.wanDNS1 = ''
+                that.tsbctsbacaollcate.wanDNS2 = ''
+                that.tsbctsbacaollcate.wanGateway =''
+                that.tsbctsbacaollcate.wanPPPoEUsername = ''
+                that.tsbctsbacaollcate.wanPPPoEPassword = ''
+                that.tsbctsbacaollcate.wanPPPoEDNS1 = ''
+                that.tsbctsbacaollcate.wanPPPoEDNS2 = ''
+            },
             //点击添加模板按钮
             addtemplateT(){
                 var that = this;
+                this.removedata();
                 this.panelTable = [];
                 this.panelTabletwo = [];
                 this.sizesdata = [];
@@ -1040,6 +1090,7 @@
                 $('.myModalLabel').text('添加模板')
                 $('#addmyModal').modal('show');
                 that.addrelative = '0'
+                that.configType = '1'
                 that.showtype = '1'
                 if(sessionStorage.departmentId=='1'){
                     that.Administrator = true;
@@ -1072,29 +1123,11 @@
                 that.multipleTable = [];
                 this.sizesdata = [];
                 $('.myModalLabel').text('修改模板')
+                that.Administrator = false;
                 $('#addmyModal').modal('show');
+                that.configType = val.configType
                 that.addrelative = '1'
                 that.showtype = '1'
-                if(sessionStorage.departmentId=='1'){
-                    that.Administrator = true;
-                    //管理员登录请求分组下拉框数据
-                    $.ajax({
-                        type:'get',
-                        async:true,
-                        dataType:'json',
-                        xhrFields:{withCredentials:true},
-                        url:that.serverurl+'department/getTopDepartment',
-                        data:{},
-                        success:function(data){
-                            if(data.errorCode=='0'){
-                                that.options = data.result[0].children
-                                that.value = data.result[0].children[0].value
-                            }else{
-                                that.errorCode(data.errorCode)
-                            }
-                        }
-                    })
-                }
                 that.typestatus()
                 $.ajax({
                     type:'get',
@@ -1402,7 +1435,6 @@
                 //中文验证
                 var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
                 var that = this;
-                // that.showtype = '2'
                 // that.uploadscope()
                 //tsbg
                 if(this.radio2=='0'){
@@ -1671,6 +1703,297 @@
                         });
                         return;
                     }
+                    if(that.valuetwo=='TSBA221'){}else{
+                        if(that.tsbacaollcate.wifi5SSID==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }   
+                    }       
+                    that.showtype = '2'
+                    that.uploadscope()
+                }
+            },
+            //保存按钮
+            save(){
+                var that = this;
+                var data = {};
+                var equipmentIds = []; //设备ID
+                var groupids = []; //设备组ID
+                var url = '';
+                if(this.configType=='0'){
+                    //中文验证
+                var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+                var that = this;
+                // that.uploadscope()
+                //tsbg
+                if(this.radio2=='0'){
+                    if(that.templateName==''||that.valuetwo==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbgcollcate.ipType=='STATIC'){
+                        if(that.tsbgcollcate.wanIP==''||that.tsbgcollcate.wanSubnetmask==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbgcollcate.ipType=='PPPOE'){
+                        if(that.tsbgcollcate.wanPPPoEUsername==''||that.tsbgcollcate.wanPPPoEPassword==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbgcollcate.lanIp==''||that.tsbgcollcate.lanSubnetmask==''||that.tsbgcollcate.lanStartAddress==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbgcollcate.lanEndAddress==''||that.tsbgcollcate.lanGateway==''||that.tsbgcollcate.lanDNS1==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbgcollcate.lanDNS2==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                }
+                //tsbc
+                if(this.radio2=='1'){
+                    if(that.templateName==''||that.valuetwo==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbccollcate.wifi2WorkMode=='AP'){
+                        if(that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
+                            if(that.tsbccollcate.wifi2ApKeyAuth==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(result.test(that.tsbccollcate.wifi2ApKeyAuth)){
+                                this.$message({
+                                    message: '认证秘钥不能有中文字符',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                    }
+                    if(that.tsbccollcate.wifi2WorkMode=='Station'){
+                        // that.tsbccollcate.wifi2StaPriority==''||
+                        if(that.tsbccollcate.wifi2StaSSID==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbccollcate.wifi2StaEncryptionMode=='0'){}else{
+                            if(that.tsbccollcate.wifi2StaKeyAuth==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(result.test(that.tsbccollcate.wifi2StaKeyAuth)){
+                                this.$message({
+                                    message: '认证秘钥不能有中文字符',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        
+                    }
+                    if(that.tsbccollcate.wifi5WorkMode=='AP'){
+                        if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
+                            if(that.tsbccollcate.wifi5ApKeyAuth==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(result.test(that.tsbccollcate.wifi5ApKeyAuth)){
+                                this.$message({
+                                    message: '认证秘钥不能有中文字符',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                    }
+                    if(that.tsbccollcate.wifi5WorkMode=='Station'){
+                        // that.tsbccollcate.wifi5StaPriority==''||
+                        if(that.tsbccollcate.wifi5StaKeyAuth==''||that.tsbccollcate.wifi5StaSSID==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){}else{
+                            if(that.tsbccollcate.wifi5StaKeyAuth==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(result.test(that.tsbccollcate.wifi5StaKeyAuth)){
+                                this.$message({
+                                    message: '认证秘钥不能有中文字符',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                    }
+                    if(that.tsbctsbacaollcate.ipType=='STATIC'){
+                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbctsbacaollcate.ipType=='PPPOE'){
+                        if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    that.showtype = '2'
+                    that.uploadscope()
+                }
+                //tsba
+                if(this.radio2=='2'){
+                    if(that.templateName==''||that.valuetwo==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbctsbacaollcate.ipType=='STATIC'){
+                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbctsbacaollcate.ipType=='PPPOE'){
+                        if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbacaollcate.wifi2Channel==''||that.tsbacaollcate.wifi2LaunchPower==''){
+                        this.$message({
+                            message: '必填字段不能为空',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
                     if(that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5Bandwidth==''){
                         this.$message({
                             message: '必填字段不能为空',
@@ -1690,14 +2013,7 @@
                     that.showtype = '2'
                     that.uploadscope()
                 }
-            },
-            //保存按钮
-            save(){
-                var that = this;
-                var data = {};
-                var equipmentIds = []; //设备ID
-                var groupids = []; //设备组ID
-                var url = '';
+                }
                 if(that.radio2=='0'){
                     if(that.addrelative == '0'){url='template/addTsbgTemplate'}
                     if(that.addrelative == '1'){url='template/editTsbgTemplate'}
@@ -1791,10 +2107,12 @@
             //选择条数事件
             handleSizeChange(val) {
                 this.Pagesize = val
+                this.ready()
             },
             //选择页数事件
             handleCurrentChange(val) {
                 this.PageIndex = val
+                this.ready()
             },
             //页面数据搜索
             templateseek(){

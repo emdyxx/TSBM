@@ -2,7 +2,7 @@
     <div class="equipmentLocation">
         <div class="equipmentLocation_nav">
             设备管理<i class="iconfont icon-icon"></i>设备定位
-            <el-select v-if='selected' v-model="selectedOptions" @change="handleChange" placeholder="请选择">
+            <el-select v-if='selected=="true"' v-model="selectedOptions" @change="handleChange" placeholder="请选择">
                 <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -38,7 +38,7 @@
             <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane label="厂区定位" name='1' style="height:100%;overflow: auto;">
                     <ul style="list-style: none;display: flex;display: -webkit-flex;flex-direction: row;flex-wrap: wrap;">
-                        <li class="flex-item" v-for='(site,key) in sites'>
+                        <li class="flex-item" v-for='(site,key) in sites' :key="site.id">
                             <img :src=site.imgUrl @click="imgrouter(key)">
                             <div class="img_bottom">
                                 <span v-if="deletetype" @click="imgdelete(key)">删除</span>
@@ -90,10 +90,13 @@
                                         width="55">  
                                         </el-table-column>
                                         <el-table-column
-                                        prop="nickname"
                                         align='center'
                                         label="设备名称"
                                         width="160">
+                                            <template scope="scope">
+                                                <span v-if="scope.row.nickname==''">{{scope.row.MAC}}</span>
+                                                <span v-else>{{scope.row.nickname}}</span>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column
                                         prop="MAC"
@@ -102,7 +105,7 @@
                                         width="180">
                                         </el-table-column>
                                         <el-table-column
-                                        prop="hardwardVersion"
+                                        prop="model"
                                         label="硬件型号"
                                         align='center'
                                         show-overflow-tooltip>
@@ -214,12 +217,13 @@
                     var that = this
                     this.tabname = '2'
                     this.readytwo()
-                    if(this.selectedOptions!=''){
-                    }else{
-                        this.$message({
-                            message: '温馨提示:管理员需要选择厂区来进行定位',
-                            showClose: true,
-                        });
+                    if(sessionStorage.departmentId=='1'){
+                        if(this.selectedOptions==''){
+                            this.$message({
+                                message: '温馨提示:管理员需要选择查看的厂区查看图片',
+                                showClose: true,
+                            });
+                        }
                     }
                 }
             },
@@ -319,15 +323,15 @@
             //页面渲染请求图片
             ready(){
                 var that = this;
-                if(this.selectedOptions!=''){
-
-                }else{
-                    this.$message({
-                        message: '温馨提示:管理员需要选择查看的厂区查看图片',
-                        showClose: true,
-                    });
+                if(sessionStorage.departmentId=='1'){
+                    if(this.selectedOptions==''){
+                        this.$message({
+                            message: '温馨提示:管理员需要选择查看的厂区查看图片',
+                            showClose: true,
+                        });
+                    }
                 }
-                that.selected = true
+                // that.selected = true
                 $.ajax({
                     type:'get',
                     async:true,
@@ -399,20 +403,145 @@
             imgrouter(key){
                 sessionStorage.imgIds = this.sites[key].id
                 sessionStorage.imgUrl = this.sites[key].imgUrl
+                sessionStorage.departmentimgIds=this.selectedOptions
                 this.$router.push({'path':'/imgcoordinate'})
             },
             //地图定位渲染
             readytwo(){
                 var that = this
-                if(this.selectedOptions==''){
-                    setTimeout(function(){
-                        // 百度地图API功能
-                        var map = new BMap.Map("allmap");    // 创建Map实例
-                        map.centerAndZoom(new BMap.Point(120.203479,30.20003), 11);  // 初始化地图,设置中心点坐标和地图级别
-                        map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
-                        map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
-                        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-                    },500)
+                if(sessionStorage.departmentId=='1'){
+                    if(this.selectedOptions==''){
+                        setTimeout(function(){
+                            // 百度地图API功能
+                            var map = new BMap.Map("allmap");    // 创建Map实例
+                            map.centerAndZoom(new BMap.Point(120.203479,30.20003), 11);  // 初始化地图,设置中心点坐标和地图级别
+                            map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+                            map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
+                            map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+                        },500)
+                    }else{
+                        $.ajax({
+                            type:'get',
+                            async:false,
+                            dataType:'json',
+                            xhrFields:{withCredentials:true},
+                            url:that.serverurl+'location/getLocatedEquitmentByMap',
+                            data:{
+                                departmentId:that.selectedOptions
+                            },
+                            success:function(data){
+                                that.mapcoordinate = data.result
+                                setTimeout(function(){
+                                        // 百度地图API功能
+                                        var map = new BMap.Map("allmap");    // 创建Map实例
+                                        map.centerAndZoom(new BMap.Point(120.203479,30.20003), 11);  // 初始化地图,设置中心点坐标和地图级别
+                                        map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+                                        map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
+                                        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+                                        //添加鼠标右键事件
+                                        var menu = new BMap.ContextMenu();
+                                        var txtMenuItem = [
+                                            {
+                                                text:'添加设备',
+                                                callback:function(e){
+                                                    if(sessionStorage.departmentId=='1'){
+                                                        if(this.selectedOptions==''){
+                                                            this.$message({
+                                                                message: '请选择厂区进行添加',
+                                                                showClose: true,
+                                                            });
+                                                        }else{
+                                                            that.mapcood = e
+                                                            if(localStorage.addequipments==false){
+                                                                that.$message({
+                                                                    message: '您无此权限',
+                                                                    showClose: true,
+                                                                });
+                                                            }else{
+                                                                $('#myModalWIFIMap').modal('show')
+                                                                that.selectedmap()
+                                                            }
+                                                        } 
+                                                    }else{
+                                                        that.mapcood = e
+                                                        if(localStorage.addequipments==false){
+                                                            that.$message({
+                                                                message: '您无此权限',
+                                                                showClose: true,
+                                                            });
+                                                        }else{
+                                                            $('#myModalWIFIMap').modal('show')
+                                                            that.selectedmap()
+                                                        }
+                                                    } 
+                                                }
+                                            }
+                                        ];
+                                        for(var i=0; i < txtMenuItem.length; i++){
+                                            menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+                                        }
+                                        map.addContextMenu(menu);
+
+                                        var greenA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var greenC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var greenG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+
+                                        var offlineA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var offlineC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var offlineG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+
+                                        var redA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var redC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var redG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var marker = new Array();
+                                        for(var i=0;i<that.mapcoordinate.length;i++){
+                                            var point = new BMap.Point(that.mapcoordinate[i].coord.split(",")[0],that.mapcoordinate[i].coord.split(",")[1]);
+                                            if(that.mapcoordinate[i].equipmentType=='0'){ 
+                                                if(that.mapcoordinate[i].online=='0'){
+                                                    marker[i] = new BMap.Marker(point,{icon:offlineG});
+                                                }
+                                                if(that.mapcoordinate[i].online=='1'){
+                                                    marker[i]  = new BMap.Marker(point,{icon:greenG});
+                                                }
+                                                if(that.mapcoordinate[i].online=='2'){
+                                                    marker[i]  = new BMap.Marker(point,{icon:redG});
+                                                }
+                                            }
+                                            if(that.mapcoordinate[i].equipmentType=='1'){
+                                                if(that.mapcoordinate[i].online=='0'){
+                                                    marker[i]  = new BMap.Marker(point,{icon:offlineC});
+                                                }
+                                                if(that.mapcoordinate[i].online=='1'){
+                                                    marker[i]  = new BMap.Marker(point,{icon:greenC});
+                                                }
+                                                if(that.mapcoordinate[i].online=='2'){
+                                                    marker[i]  = new BMap.Marker(point,{icon:redC});
+                                                }
+                                            }
+                                            if(that.mapcoordinate[i].equipmentType=='2'){
+                                                if(that.mapcoordinate[i].online=='0'){
+                                                    marker[i] = new BMap.Marker(point,{icon:offlineA});
+                                                }
+                                                if(that.mapcoordinate[i].online=='1'){
+                                                    marker[i] = new BMap.Marker(point,{icon:greenA});
+                                                }
+                                                if(that.mapcoordinate[i].online=='2'){
+                                                    marker[i] = new BMap.Marker(point,{icon:redA});
+                                                }
+                                            }
+                                            
+                                            var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(25,5)});
+                                            label.setStyle({display:"none"});//对label 样式隐藏
+                                            marker[i].setLabel(label);  //把label设置到maker上  
+                                            marker[i].setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
+                                            marker[i].id=that.mapcoordinate[i].id
+                                            map.addOverlay(marker[i]); 
+                                            that.Listener(marker[i]);
+                                        }
+                                },500)
+                            }
+                        })
+                    }
                 }else{
                     $.ajax({
                         type:'get',
@@ -438,11 +567,24 @@
                                         {
                                             text:'添加设备',
                                             callback:function(e){
-                                                if(that.selectedOptions==''){
-                                                    that.$message({
-                                                        message: '请选择厂区进行添加',
-                                                        showClose: true,
-                                                    });
+                                                if(sessionStorage.departmentId=='1'){
+                                                    if(this.selectedOptions==''){
+                                                        this.$message({
+                                                            message: '请选择厂区进行添加',
+                                                            showClose: true,
+                                                        });
+                                                    }else{
+                                                        that.mapcood = e
+                                                        if(localStorage.addequipments==false){
+                                                            that.$message({
+                                                                message: '您无此权限',
+                                                                showClose: true,
+                                                            });
+                                                        }else{
+                                                            $('#myModalWIFIMap').modal('show')
+                                                            that.selectedmap()
+                                                        }
+                                                    } 
                                                 }else{
                                                     that.mapcood = e
                                                     if(localStorage.addequipments==false){
@@ -581,18 +723,9 @@
             //单选change事件
             selectedmap(val){
                 var that = this
-                var url=''
-                if(this.radio2=='0'){
-                    url = 'equipment/getTsbgList'
-                }
-                if(this.radio2=='1'){
-                    url = 'equipment/getTsbcList'
-                }
-                if(this.radio2=='2'){
-                    url = 'equipment/getTsbaList'
-                }
+                var url='equipment/getEquipmentList'
                 $.ajax({
-                    type:'post',
+                    type:'get',
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
@@ -600,6 +733,7 @@
                     data:{
                         pageIndex:that.pageIndex,
                         pageSize:that.pageSize,
+                        type:that.radio2,
                         departmentId:that.selectedOptions
                     },
                     success:function(data){
@@ -629,9 +763,9 @@
             //地图定位添加坐标保存提交
             ZBsubmitMap(){
                 var that = this
-                if(this.handleCurrent.length>=2){
+                if(this.handleCurrent.length>=2||this.handleCurrent.length==0){
                     that.$message({
-                        message: '只能选择一个设备,请勿多选',
+                        message: '请选择一个设备进行保存',
                         type:'error',
                         showClose: true,
                     });
@@ -670,7 +804,7 @@
             localStorage.addequipments = false;
             localStorage.Deleteequipments = false;
             if(sessionStorage.departmentId=='1'){
-                that.selected = true
+                that.selected = 'true'
                 //管理员登录请求selected下拉框数据
                 $.ajax({
                     type:'get',
@@ -681,6 +815,8 @@
                     data:{},
                     success:function(data){
                         if(data.errorCode=='0'){
+                            // that.options = data.result
+                            // that.selectedOptions = data.result[0].value
                             that.options = data.result[0].children
                             that.selectedOptions = data.result[0].children[0].value
                         }else{
@@ -689,6 +825,7 @@
                     }
                 })
             }else{
+                that.selected = false
                 this.ready()
             }
         }

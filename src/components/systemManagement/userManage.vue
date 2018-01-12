@@ -1,7 +1,7 @@
 <template>
     <div class="userManage">
         <div class="userManage_nav">
-            系统管理<i class="iconfont icon-icon"></i>分组管理
+            系统管理<i class="iconfont icon-icon"></i>用户管理
         </div>
         <div class="userManage_main">
             <div class="userManage_top">
@@ -20,7 +20,7 @@
                         <div class="modal-body">
                             <div class="userManage_form">
                                 <span><i class="required">*</i>用户名:</span>
-                                <input type="text" v-model="userManageUsername" maxlength="10" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                                <input type="text" v-model="userManageUsername" id="userManageUsername" maxlength="10" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>密码:</span>
@@ -336,13 +336,6 @@
                             for(var i=0;i<that.options[0].children.length;i++){
                                 if(that.options[0].children[i].value==that.sites[0].departmentId){
                                     that.selectedOptions3.push(that.options[0].children[i].value)
-                                }else{
-                                    for(var j=0;j<that.options[0].children[i].children.length;j++){
-                                        if(that.options[0].children[i].children[j].value==that.sites[0].departmentId){
-                                            that.selectedOptions3.push(that.options[0].children[i].value)
-                                            that.selectedOptions3.push(that.options[0].children[i].children[j].value)
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -355,6 +348,7 @@
                 $('#userManageAddRevamp').modal('show');
                 $('#userManagemyModalLabel').text('添加用户');
                 $('#userManagePasswordture').val()
+                $('#userManageUsername').attr('disabled',false)
                 $('#userManagePasswordture').attr('disabled',false)
                 this.userManageUsername=''
                 this.userManagePassword=''
@@ -510,14 +504,16 @@
                 }
                 $('#userManageAddRevamp').modal('show');
                 $('#userManagemyModalLabel').text('修改用户')
-                this.opinion = '2'
+                this.opinion = '2'   
                 this.userManageUsername=that.sites[0].username
                 this.userManagePassword='******'
+                $('#userManageUsername').attr('disabled',true)
                 $('#userManagePasswordture').attr('disabled',true)
                 this.userManageName=that.sites[0].fullName
                 this.radios = that.sites[0].sex
                 this.userManagePhone=that.sites[0].mobile
                 this.userManageEmail=that.sites[0].email
+                this.radio2 = that.sites[0].privilegeType
                 this.tree()
                 $.ajax({
                     type:'get',
@@ -621,10 +617,6 @@
                 //     }
                 // })
             },
-            //角色弹出疼下拉框change事件
-            // handletwoChange(value){
-            //     this.selectedOptions4=value
-            // }
         },
         created(){
             this.tree()

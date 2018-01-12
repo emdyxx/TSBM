@@ -11,7 +11,7 @@
             </div>
             <div class='equipmentGroup_bottom'>
                 <div class="equipmentGroup_bottom_left">
-                    <el-tree :data="regions" :props="props" :highlight-current='highlight' node-key="id" @node-click="handleNodeClick"></el-tree>
+                    <el-tree :data="regions" accordion :props="props" :highlight-current='highlight' @node-click="handleNodeClick"></el-tree>
                 </div>
                 <div class="equipmentGroup_bottom_right">
                     <div class="equipmentGroup_bottom_right_left">
@@ -137,11 +137,13 @@
         name: 'index',
         data () {
             return {
+                serverurl:localStorage.serverurl,
+                isCollapse:false,
+                uniqueopened:true,
                 addgrouping:false,
                 deletegrouping:false,
                 removegrouping:false,
-                savegrouping:false,
-                serverurl:localStorage.serverurl,   
+                savegrouping:false,  
                 regions:[],
                 highlight:true,
                 props:{
@@ -209,6 +211,10 @@
                 if(data.groupId==''||data.groupId==undefined){
                     this.departmentId = data.departmentId
                 }
+                this.leftchangedata = []
+                this.rightchangedata = []
+                this.leftdata = [];
+                this.rightdata = [];
                 this.level = data.level
                 this.groupName = data.groupName
                 this.model = data.model
@@ -420,13 +426,16 @@
                                 showClose: true,
                             });
                             that.ready(that.groupId)
+                            that.leftchangedata = []
+                            that.rightchangedata = []
+                            that.leftdata = [];
+                            that.rightdata = [];
                         }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
             },
-
             //请求右侧两个表格的数据
             ready(val){
                 var that = this
@@ -473,7 +482,11 @@
                     data:{},
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.regions = data.result[0].sonDepartments
+                            if(data.result[0].level=='1'){
+                                that.regions = data.result[0].sonDepartments
+                            }else{
+                                that.regions = data.result
+                            }
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -483,7 +496,28 @@
         },
         created(){
             var that = this;
-            this.treeready();
+            this.regions = []
+            setTimeout(function(){
+                $.ajax({
+                type:'get',
+                async:false,
+                dataType:'json',
+                xhrFields:{withCredentials:true},
+                url:that.serverurl+'equipment/getGroupTree',
+                data:{},
+                success:function(data){
+                    if(data.errorCode=='0'){
+                        if(data.result[0].level=='1'){
+                            that.regions = data.result[0].sonDepartments
+                        }else{
+                            that.regions = data.result
+                        }
+                    }else{
+                        that.errorCode(data.errorCode)
+                    }
+                }
+            })
+            },200)
         }
     }
 </script>

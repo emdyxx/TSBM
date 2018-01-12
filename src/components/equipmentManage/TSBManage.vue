@@ -53,13 +53,7 @@
                                         {{scope.row.nickname}}
                                     </span>
                                 </template>  
-                            </el-table-column>
-                            <el-table-column
-                            prop="departmentName"
-                            align='center'
-                            label="归属分组"
-                            width="120">
-                            </el-table-column>
+                            </el-table-column>                       
                             <el-table-column
                             prop="MAC"
                             align='center'
@@ -75,7 +69,7 @@
                             <el-table-column
                             label="状态"
                             align='center'
-                            width="160">
+                            width="120">
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                         在线
@@ -102,6 +96,12 @@
                             label="在线时长"
                             align='center'
                             width="220">
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             prop="startTime"
@@ -178,12 +178,6 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
-                            prop="departmentName"
-                            align='center'
-                            label="归属分组"
-                            width="120">
-                            </el-table-column>
-                            <el-table-column
                             prop="MAC"
                             align='center'
                             label="MAC"
@@ -212,7 +206,7 @@
                             prop="model"
                             label="硬件版本"
                             align='center'
-                            width="120">
+                            width="140">
                             </el-table-column>
                             <el-table-column
                             prop="softwareVersion"
@@ -225,6 +219,12 @@
                             label="在线时长"
                             align='center'
                             width="200">
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             label="操作"
@@ -298,7 +298,7 @@
                             <el-table-column
                             align='center'
                             label="设备名称"
-                            width="140">
+                            width="160">
                                 <template scope="scope">
                                     <span v-if="scope.row.nickname==''">
                                         {{scope.row.MAC}}
@@ -309,15 +309,9 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
-                            prop="departmentName"
+                            prop="tsbgMAC"
                             align='center'
-                            label="归属分组"
-                            width="120">
-                            </el-table-column>
-                            <el-table-column
-                            prop="MAC"
-                            align='center'
-                            label="MAC"
+                            label="TSBG设备MAC"
                             width="160">
                             </el-table-column>
                             <el-table-column
@@ -343,7 +337,7 @@
                             prop="model"
                             label="硬件版本"
                             align='center'
-                            width="120">
+                            width="140">
                             </el-table-column>
                             <el-table-column
                             prop="softwareVersion"
@@ -356,6 +350,12 @@
                             label="在线时长"
                             align='center'
                             width="220">
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             label="操作"
@@ -440,12 +440,6 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
-                            prop="departmentName"
-                            align='center'
-                            label="归属分组"
-                            width="120">
-                            </el-table-column>
-                            <el-table-column
                             prop="MAC"
                             align='center'
                             label="MAC"
@@ -474,7 +468,7 @@
                             prop="model"
                             label="硬件版本"
                             align='center'
-                            width="120">
+                            width="140">
                             </el-table-column>
                             <el-table-column
                             prop="softwareVersion"
@@ -487,6 +481,12 @@
                             label="在线时长"
                             align='center'
                             width="220">
+                            </el-table-column>
+                            <el-table-column
+                            prop="departmentName"
+                            align='center'
+                            label="归属分组"
+                            width="120">
                             </el-table-column>
                             <el-table-column
                             label="操作"
@@ -553,14 +553,6 @@
                                     align='center'
                                     label="适用型号"
                                     width="120">
-                                    </el-table-column>
-                                    <el-table-column
-                                    label="操作"
-                                    align='center'
-                                    width="90">
-                                        <template scope="scope">
-                                            <el-button @click="groupingdelete(scope.row)" type="primary" size="small">删除</el-button>
-                                        </template>
                                     </el-table-column>
                                     <el-table-column
                                     prop="remark"
@@ -1063,7 +1055,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='0'&&lookoverstatus.LAN!=''" title="LAN配置" name="3" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='0'&&lookoverstatus.LAN=='1'" title="LAN配置" name="3" style="text-align:left;">
                                         <div class="basicstatus_bottom">
                                             <table class="table table-bordered">
                                                 <tbody>
@@ -1107,7 +1099,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="5" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi2G=='1'" title="2.4G配置" name="5" style="text-align:left;">
                                         <!-- tsbc WIFI设置(2G) -->
                                         <div class="basicstatus_top">
                                             <div>
@@ -1226,7 +1218,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi5G!=''" title="5G配置" name="6" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi5G=='1'" title="5G配置" name="6" style="text-align:left;">
                                         <!-- tsbc WIFI设置(5G)-->
                                         <div class="basicstatus_top">
                                             <div>
@@ -1341,7 +1333,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='1'||lookoverType=='2'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverlan==true||lookoverType=='2'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
                                             <select v-model="tsbctsbacaollcate.ipType" style="width:110px;height:29px;" name="" id="">
@@ -1392,7 +1384,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="8" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi2G=='1'" title="2.4G配置" name="8" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <el-radio-group v-model="tsbacaollcate.wifi2Enable">
                                                 <el-radio :label="1">启用</el-radio>
@@ -1468,7 +1460,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi5G!=''" title="5G配置" name="9" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'" title="5G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <el-radio-group v-model="tsbacaollcate.wifi5Enable">
                                                 <el-radio :label="1">启用</el-radio>
@@ -1540,7 +1532,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='1'||lookoverType=='2'" title="黑白名单设置" name="10" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverlan==true||lookoverType=='2'&&lookoverlan==true" title="黑白名单设置" name="10" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <select v-model="panel">
                                                 <option value="1">黑名单</option>
@@ -2070,6 +2062,7 @@
                                 type: 'success'
                             })
                             $('#affiliationgrouping').modal('hide')
+                            that.handleClick()
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -2080,6 +2073,7 @@
             LookoverModal(val){
                 var that = this;
                 var url = '';
+                this.lookoverType = val.type
                 $.ajax({
                     type:'get',
                     async:true,
@@ -2096,17 +2090,66 @@
                     }
                 })
                 $('#LookoverModal').modal('show')
-                this.lookoverType = val.type
+            },
+            //清空模板配置数据
+            removedata(){
+                var that = this;
+                that.valuetwo = ''
+                that.templateName = ''
+                that.summary = ''
+                that.tsbgcollcate.wanIP = ''
+                that.tsbgcollcate.wanSubnetmask = ''
+                that.tsbgcollcate.wanGateway = ''
+                that.tsbgcollcate.wanDNS1 = ''
+                that.tsbgcollcate.wanDNS2 = ''
+                that.tsbgcollcate.lanIp = ''
+                that.tsbgcollcate.lanSubnetmask = ''
+                that.tsbgcollcate.lanStartAddress = ''
+                that.tsbgcollcate.lanEndAddress = ''
+                that.tsbgcollcate.lanGateway = ''
+                that.tsbgcollcate.lanDNS1 = ''
+                that.tsbgcollcate.lanDNS2 = ''
+                that.tsbgcollcate.wanPPPoEUsername = ''
+                that.tsbgcollcate.wanPPPoEPassword = ''
+                that.tsbgcollcate.wanPPPoEDNS1 = ''
+                that.tsbgcollcate.wanPPPoEDNS2 = ''
+
+                that.tsbccollcate.wifi2ApSSID = ''
+                that.tsbccollcate.wifi2ApKeyAuth = ''
+                that.tsbccollcate.wifi2StaEncryptionMode = ''
+                that.tsbccollcate.wifi2StaKeyAuth = ''
+                that.tsbccollcate.wifi2StaSSID = ''
+                that.tsbccollcate.wifi5ApSSID = ''
+                that.tsbccollcate.wifi5ApKeyAuth = ''
+                that.tsbccollcate.wifi5StaKeyAuth = ''
+                that.tsbccollcate.wifi5StaSSID = ''
+
+                that.tsbacaollcate.wifi2SSID = ''
+                that.tsbacaollcate.wifi2KeyAuth = ''
+                that.tsbacaollcate.wifi5SSID = ''
+                that.tsbacaollcate.wifi5KeyAuth = ''
+
+                that.tsbctsbacaollcate.wanIP = ''
+                that.tsbctsbacaollcate.wanSubnetmask = ''
+                that.tsbctsbacaollcate.wanDNS1 = ''
+                that.tsbctsbacaollcate.wanDNS2 = ''
+                that.tsbctsbacaollcate.wanGateway =''
+                that.tsbctsbacaollcate.wanPPPoEUsername = ''
+                that.tsbctsbacaollcate.wanPPPoEPassword = ''
+                that.tsbctsbacaollcate.wanPPPoEDNS1 = ''
+                that.tsbctsbacaollcate.wanPPPoEDNS2 = ''
             },
             //配置
             allocationModal(val){
                 var that = this;
+                this.removedata()
                 that.configuration = val
                 var type = '';
                 var url = '';
                 that.showconfigdata = {};
                 that.panelTable = [];
                 that.panelTabletwo = [];
+                that.lookoverType = val.type
                 //权限接口
                 $.ajax({
                     type:'get',
@@ -2120,19 +2163,25 @@
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.lookoverstatus = data.result[0]
-                            var WAN = []
-                            if(data.result[0].WAN!=''){
-                                WAN = data.result[0].WAN.split(',');
-                            }else{
+                            if(data.result.length==0){
+                                that.lookoverstatus = {}
                                 that.lookoverlan = false
-                            }
-                            for(var i=0;i<WAN.length;i++){
-                                if(WAN[i]=='1'){
-                                    that.lookoverlan = true
+                                return false;
+                            }else{
+                                that.lookoverstatus = data.result[0]
+                                var WAN = []
+                                if(that.lookoverstatus!=''){
+                                    WAN = data.result[0].WAN.split(',');
+                                }else{
+                                    that.lookoverlan = false
+                                }
+                                for(var i=0;i<WAN.length;i++){
+                                    if(WAN[i]=='1'){
+                                        that.lookoverlan = true
+                                    }
                                 }
                             }
-                            that.lookoverType = val.type
+                            
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -2269,7 +2318,10 @@
                         }
                     }
                 })
-                $('#allocationModal').modal('show')
+                setTimeout(function(){
+                    console.log(that.lookoverlan)
+                    $('#allocationModal').modal('show')
+                },200)
             },
             //管理
             administerModal(val){
@@ -2279,9 +2331,6 @@
                 this.lookoverType = val.type;
                 this.configuration = val;
                 var url = '';
-                // if(val.type=='0'){url='equipment/showManagerTsbg'}
-                // if(val.type=='1'){url='equipment/showManagerTsbc'}
-                // if(val.type=='2'){url='equipment/showManagerTsba'}
                 //固件管理升级报获取升级包
                 $.ajax({
                     type:'get',
@@ -2310,10 +2359,10 @@
                     data:{equipmentId:val.id},
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.managedata.nickname = data.result[0].nickname
-                            that.managedata.remark = data.result[0].remark
-                            that.managedata.AutoUpgrade = data.result[0].autoUpgrade
-                            if(data.result[0].autoConfig=='0'){
+                            that.managedata.nickname = data.result.nickname
+                            that.managedata.remark = data.result.remark
+                            that.managedata.AutoUpgrade = data.result.autoUpgrade
+                            if(data.result.autoConfig=='0'){
                                 that.managedata.upgrade = false
                             }else{
                                 that.managedata.upgrade = true
@@ -2533,22 +2582,16 @@
                         });
                         return;
                     }
-                    if(that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5Bandwidth==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi5Channel==''||that.tsbacaollcate.wifi5LaunchPower==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }       
+                    if(that.valuetwo=='TSBA221'){}else{
+                        if(that.tsbacaollcate.wifi5SSID==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }   
+                    }        
                 }
                 if(that.lookoverType=='0'){
                     url='equipment/saveConfigTsbg'
@@ -2897,9 +2940,8 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'equipment/setEquipmentGroup',
                     data:{
-                        type:type,
                         groupId:that.sitestwo[0].id,
-                        equipmentIds:id.join(',')
+                        addEquipmentIds:id.join(',')
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -2908,6 +2950,7 @@
                                 type: 'success'
                             })
                             $('#tsbgmyModal').modal('hide')
+                            that.handleClick();
                         }else{
                             that.errorCode(data.errorCode)
                         }

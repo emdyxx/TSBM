@@ -18,11 +18,10 @@
                             <h4 class="modal-title" id="myModalLabel">上传升级包</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="upload_div" v-if="uploadtype===false">
-                                <div>
+                            <div class="upload_div" v-if="uploadtype==false">
+                                <div v-if='selected'>
                                     <span>选择分组:</span>
                                     <el-cascader
-                                        v-if='selected'
                                         :options="optionsvalue"
                                         v-model="selectedOptions"
                                         size='small'
@@ -212,7 +211,7 @@
                         prop="fileName"
                         align='center'
                         label="升级包名称"
-                        width="200">
+                        width="230">
                         </el-table-column>
                         <el-table-column
                         prop="softwareVer"
@@ -230,7 +229,16 @@
                         prop="hardwareVer"
                         label="硬件版本号"
                         align='center'
+                        width="140">
+                        </el-table-column>
+                        <el-table-column
+                        label="状态"
+                        align='center'
                         width="120">
+                            <template scope="scope">
+                                <span v-if="scope.row.status==0" style="color:#20A0FF">已启用</span>
+                                <span v-if="scope.row.status==1" style="color:#FF4949">已禁用</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                         prop="summary"
@@ -286,7 +294,7 @@
                 total:100,
                 input:'',
                 options:[{value:0,label:'禁用'},{value:1,label:'启用'}],
-                value:'',
+                value:0,
                 optionstwo:[{value:'0',label:'tsbg'},{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
                 valuetwo:'',
                 optionsthree:[{value:0,label:'指定设备'},{value:1,label:'指定分组'},{value:2,label:'指定型号'}],
@@ -394,6 +402,16 @@
                 var that = this;
                 this.typetwo = val;
                 this.typedata = '';
+                var upgradeTypes = '';
+                if(that.upgradeType == 'tsbg'){
+                    upgradeTypes = 0
+                }
+                if(that.upgradeType == 'tsbc'){
+                    upgradeTypes = 1
+                }
+                if(that.upgradeType == 'tsba'){
+                    upgradeTypes = 2
+                }
                 if(val=='0'){
                     this.sitesthr = []
                     $.ajax({
@@ -407,6 +425,7 @@
                             pageSize:10,
                             model:that.hardwareVer,
                             departmentId:that.departmentId,
+                            type:upgradeTypes
                         },
                         success:function(data){
                             that.tableData5 = data.rows
