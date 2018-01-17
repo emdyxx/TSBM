@@ -54,7 +54,7 @@
                     </div>
                     <div class="equipmentGroup_bottom_right_center">
                         <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">到左边</el-button></div>
-                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>到左边<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
+                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>到右边<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
                         <div v-if="savegrouping" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>保存</el-button></div>
                     </div>
                     <div class="equipmentGroup_bottom_right_right">
@@ -111,15 +111,15 @@
                         <div class="modal-body">
                             <div class="userManage_form">
                                 <span><i class="required">*</i>分组名称:</span>
-                                <input type="text" v-model="groupName" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入分组名称">
+                                <input type="text" v-model.lazy="groupName" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入分组名称">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>硬件版本:</span>
-                                <input type="text" v-model="model" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                                <input type="text" v-model.lazy="model" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                             </div>
                             <div class="userManage_form">
                                 <span>备注:</span>
-                                <input type="text" v-model="remark" maxlength="50" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入备注">
+                                <input type="text" v-model.lazy="remark" maxlength="50" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入备注">
                             </div>
                         </div>
                         <div class="modal-footer">

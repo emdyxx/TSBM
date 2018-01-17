@@ -4,20 +4,20 @@
             设备管理<i class="iconfont icon-icon"></i>终端用户
         </div>
         <div class="equipmentUser_main">
-            <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
+            <el-tabs type="border-card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
                 <el-tab-pane label="所有" name='1'>
                     <div class="equipmentUser_top">
                         <div class="equipmentUser_formtwo">
                             <span>连接设备MAC:</span>
-                            <input v-model="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue连接设备MAC">
+                            <input v-model.lazy="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue连接设备MAC">
                         </div>
                         <div class="equipmentUser_formtwo">
                             <span>设备MAC:</span>
-                            <input v-model="search.terminalMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
+                            <input v-model.lazy="search.terminalMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
                         </div>
                         <div class="equipmentUser_formtwo">
                             <span>在线状态:</span>
-                            <el-select v-model="onlinevalue" size='small' clearable placeholder="请选择">
+                            <el-select v-model.lazy="onlinevalue" size='small' clearable placeholder="请选择">
                                 <el-option
                                 v-for="item in onlineoptions"
                                 :key="item.value"
@@ -127,15 +127,15 @@
                     <div class="equipmentUser_top">
                         <div class="equipmentUser_formtwo">
                             <span>ue连接设备MAC:</span>
-                            <input v-model="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue连接设备MAC">
+                            <input v-model.lazy="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue连接设备MAC">
                         </div>
                         <div class="equipmentUser_formtwo">
                             <span>ue设备MAC:</span>
-                            <input v-model="search.ueMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
+                            <input v-model.lazy="search.ueMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
                         </div>
                         <div class="equipmentUser_formtwo">
                             <span>在线状态:</span>
-                            <el-select v-model="onlinevalue" size='small' clearable placeholder="请选择">
+                            <el-select v-model.lazy="onlinevalue" size='small' clearable placeholder="请选择">
                                 <el-option
                                 v-for="item in onlineoptions"
                                 :key="item.value"
@@ -146,7 +146,7 @@
                         </div>
                         <div class="equipmentUser_formtwo">
                             <span>认证状态:</span>
-                            <el-select v-model="Authenticationvalue" size='small' clearable placeholder="请选择">
+                            <el-select v-model.lazy="Authenticationvalue" size='small' clearable placeholder="请选择">
                                 <el-option
                                 v-for="item in Authenticationoptions"
                                 :key="item.value"
@@ -282,15 +282,15 @@
                         <div class="equipmentUser_top">
                             <div class="equipmentUser_formtwo">
                                 <span>连接设备MAC:</span>
-                                <input v-model="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入连接设备MAC">
+                                <input v-model.lazy="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入连接设备MAC">
                             </div>
                             <div class="equipmentUser_formtwo">
                                 <span>设备MAC:</span>
-                                <input v-model="search.staMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入设备MAC">
+                                <input v-model.lazy="search.staMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入设备MAC">
                             </div>
                             <div class="equipmentUser_formtwo">
                                 <span>在线状态:</span>
-                                <el-select v-model="onlinevalue" size='small' clearable placeholder="请选择">
+                                <el-select v-model.lazy="onlinevalue" size='small' clearable placeholder="请选择">
                                     <el-option
                                     v-for="item in onlineoptions"
                                     :key="item.value"
@@ -405,7 +405,7 @@
                         <div class="modal-body">
                             <div v-if="selected" class="equipmentUser_form">
                                 <span><i class="required">*</i>归属部门:</span>
-                                <el-select v-model="add.departmentId" placeholder="请选择">
+                                <el-select v-model.lazy="add.departmentId" placeholder="请选择">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -416,29 +416,29 @@
                             </div>
                             <div class="equipmentUser_form">
                                 <span><i class="required">*</i>ue设备MAC:</span>
-                                <input v-model="add.ueMAC" id="ueMAC" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
+                                <input v-model.lazy="add.ueMAC" id="ueMAC" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
                             </div>
                             <div class="equipmentUser_form">
-                                <el-checkbox v-model="checked" @change='Autopassword' style="margin-left:20px;color: #555555;">使用默认密码</el-checkbox>
+                                <el-checkbox v-model.lazy="checked" @change='Autopassword' style="margin-left:20px;color: #555555;">使用默认密码</el-checkbox>
                             </div>
                             <div class="equipmentUser_form">
                                 <span><i class="required">*</i>认证密码:</span>
-                                <input v-model="add.authPwd" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入认证密码">
+                                <input v-model.lazy="add.authPwd" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入认证密码">
                             </div>
                             <div class="equipmentUser_form">
                                 <span><i class="required">*</i>ue类型:</span>
-                                <input v-model="add.ueType" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue类型">
+                                <input v-model.lazy="add.ueType" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue类型">
                             </div>
                             <div class="equipmentUser_form">
                                 <span><i class="required">*</i>ue昵称:</span>
-                                <input v-model="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue昵称">
+                                <input v-model.lazy="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue昵称">
                             </div>
                             <div class="equipmentUser_form">
-                                <el-checkbox v-model="checkedtwo" @change='AutoIP' style="margin-left:20px;color: #555555;">自动获取IP</el-checkbox>
+                                <el-checkbox v-model.lazy="checkedtwo" @change='AutoIP' style="margin-left:20px;color: #555555;">自动获取IP</el-checkbox>
                             </div>
                             <div class="equipmentUser_form">
                                 <span>ueIP:</span>
-                                <input v-model="add.ueIP" id="ueIP" type="text" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ueIP">
+                                <input v-model.lazy="add.ueIP" id="ueIP" type="text" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ueIP">
                             </div>
                             <div class="equipmentUser_form">
                                 <span>备注信息:</span>
@@ -446,7 +446,7 @@
                                 type="textarea"
                                 style="height:75px;"
                                 placeholder="请输入备注信息"
-                                v-model="add.remark">
+                                v-model.lazy="add.remark">
                                 </el-input>
                             </div>
                         </div>

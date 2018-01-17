@@ -25,34 +25,34 @@
                                         :options="options"
                                         @change="handleChange"
                                         change-on-select
-                                        v-model="selectedOptions3"
+                                        v-model.lazy="selectedOptions3"
                                         size='small'>
                                     </el-cascader>
                                 </div>
                             </div> -->
                             <!-- <div class="departmentManage_form">
                                 <span>组织代码:</span>
-                                <input type="text" v-model='departmentManageCode' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织代码">
+                                <input type="text" v-model.lazy='departmentManageCode' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织代码">
                             </div> -->
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>组织名称:</span>
-                                <input type="text" v-model='departmentManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
+                                <input type="text" v-model.lazy='departmentManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>地址:</span>
-                                <input type="text" v-model='departmentManageAddress' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
+                                <input type="text" v-model.lazy='departmentManageAddress' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>电话:</span>
-                                <input type="text" v-model='departmentManagePhone' class="form-control" maxlength="16" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
+                                <input type="text" v-model.lazy='departmentManagePhone' class="form-control" maxlength="16" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>负责人:</span>
-                                <input type="text" v-model='departmentManagePrincipal' class="form-control" maxlength="15" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入负责人">
+                                <input type="text" v-model.lazy='departmentManagePrincipal' class="form-control" maxlength="15" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入负责人">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>邮箱:</span>
-                                <input type="text" v-model='departmentManageEmail' class="form-control" maxlength="22" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
+                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="22" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -68,19 +68,19 @@
                 <div class="departmentManage_bottom_top">
                     <!-- <div class="departmentManage_formtwo">
                         <span>编号:</span>
-                        <input type="text" v-model="code"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="code"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div> -->
                     <div class="departmentManage_formtwo">
                         <span>组织名称:</span>
-                        <input type="text" v-model="departmentName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
+                        <input type="text" v-model.lazy="departmentName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
                     </div>
                     <!-- <div class="departmentManage_formtwo">
                         <span>地址:</span>
-                        <input type="text" v-model="address"  maxlength="25" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="address"  maxlength="25" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div> -->
                     <div class="departmentManage_formtwo">
                         <span>联系电话:</span>
-                        <input type="text" v-model="phone"  maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入联系电话">
+                        <input type="text" v-model.lazy="phone"  maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入联系电话">
                     </div>
                     <el-button type="primary" icon="search" @click="tissueSearch" style="height:30px;" size='small'>搜索</el-button>
                 </div>

@@ -2,11 +2,11 @@
   <div class="login">
     <div class="login_popur">
           <h1>TSBM-管理系统</h1>
-          <el-input v-model="username" placeholder="用户名" required='required'></el-input>
-          <el-input v-model="password" type='password' placeholder="密码" required></el-input>
+          <el-input v-model.lazy="username" placeholder="用户名" required='required'></el-input>
+          <el-input v-model.lazy="password" type='password' placeholder="密码" required></el-input>
           <div class="login_popur_yzm">
               <div>
-                <el-input v-model="verificationcode" placeholder="请输入验证码" required></el-input>
+                <el-input v-model.lazy="verificationcode" placeholder="请输入验证码" required></el-input>
               </div>
               <div class="login_popur_yzm_two">
                   <div>
@@ -38,7 +38,8 @@ export default {
         username:'',
         password:'',
         verificationcode:'',
-        serverurl:localStorage.serverurl
+        serverurl:localStorage.serverurl,
+        onkeyType:'0'
     }
   },
   mounted(){
@@ -117,7 +118,9 @@ export default {
     var that = this
     window.onkeydown = function(e){
         if(e.keyCode==13){
-          that.login()
+          if(that.onkeyType=='0'){
+            that.login()
+          }
         }
     }
   }
@@ -133,6 +136,9 @@ export default {
   display: -webkit-flex;
   justify-content: center;
   align-items: center;
+  background-image: url('http://192.168.70.83/TSBM-Manager/img/images/111.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 .login_popur{
   width: 500px;
@@ -140,6 +146,8 @@ export default {
   padding: 0 30px;
   box-shadow: 5px 5px 15px black;
   border-radius: 15px;
+  background: white;
+  opacity: 0.8;
 }
 .login_popur>h1:nth-of-type(1){
   font: normal 25px Helvetica, Arial, sans-serif;

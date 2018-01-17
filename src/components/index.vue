@@ -60,7 +60,7 @@
                 <i v-else-if="site.menuName=='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
                 <i v-else-if="site.menuName=='统计信息'" style="font-size:19px;left:-4px;" class="left_i iconfont icon-gailan"></i>
                 <span slot="title">{{site.menuName}}</span>
-              </template>
+              </template> 
               <el-menu-item-group>
                 <el-menu-item v-for='(item,index) in site.sonMenu' :key="item.id" index='1-1'>
                   <span style="color:#48576a;display:inline-block;width:100%;height:100%;text-decoration: none;" :id='bagcolor==item.enLabel ? "bgcolor":""'  @click='bgcolor(item.enLabel,item.id,item.enLabel)'>{{item.menuName}}</span>
@@ -82,32 +82,32 @@
                     <form class="systemsettingspsd">
                       <label for="" style="margin-top:8px;">
                         原始密码:
-                        <input type="password" v-model="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
+                        <input type="password" v-model.lazy="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
                       </label>
                       <label for="">
                         新密码:&#12288
-                        <input type="password" v-model="newPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入新密码" required>
+                        <input type="password" v-model.lazy="newPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入新密码" required>
                       </label>
                       <label for="">
                         确认密码:
-                        <input type="password" v-model="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
+                        <input type="password" v-model.lazy="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
                       </label> 
                     </form>
                     <button style="margin-left:150px;" type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
-                    <!-- <el-collapse v-model="activeName" accordion>
+                    <!-- <el-collapse v-model.lazy="activeName" accordion>
                       <el-collapse-item title="密码修改" name="1">
                         <form class="systemsettingspsd">
                             <label for="" style="margin-top:8px;">
                               原始密码:
-                              <input type="password" v-model="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
+                              <input type="password" v-model.lazy="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
                             </label>
                             <label for="">
                               新密码:&#12288
-                              <input type="password" v-model="newPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入新密码" required>
+                              <input type="password" v-model.lazy="newPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入新密码" required>
                             </label>
                             <label for="">
                               确认密码:
-                              <input type="password" v-model="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
+                              <input type="password" v-model.lazy="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
                             </label> 
                          </form>
                          <button style="margin-left:150px;" type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
@@ -164,6 +164,7 @@ export default {
         label: 'menuName'
       },
       value:'0',
+      onkeyType:'1'
     }
   },
   methods:{
@@ -453,6 +454,13 @@ export default {
     }
     ws.onclose = function (evt){
       ws = new WebSocket('ws://192.168.70.83/TSBM-Manager/webscoketAlarm');
+    }
+    window.onkeydown = function(e){
+        if(e.keyCode==13){
+          if(that.onkeyType=='1'){
+            return;
+          }
+        }
     }
   }
 }

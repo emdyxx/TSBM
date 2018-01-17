@@ -23,7 +23,7 @@
                                     <span>选择分组:</span>
                                     <el-cascader
                                         :options="optionsvalue"
-                                        v-model="selectedOptions"
+                                        v-model.lazy="selectedOptions"
                                         size='small'
                                         style="width:150px;">
                                     </el-cascader>
@@ -33,33 +33,34 @@
                                     <input type="file" ref="imgs" name="file" id="file_name">
                                 </div> 
                                 <div v-if="percentageType" style="padding-left:30px">
+                                    <span style="width: 40px;margin-top: -6px;">进度:</span>
                                     <el-progress :percentage='percentage'></el-progress>
                                 </div>
                             </div>
                             <div class="upload_div" v-if="uploadtype">
                                 <div>
                                     <span>文件名称:</span>
-                                    <input type="text" v-model="fileName" disabled>
+                                    <input type="text" v-model.lazy="fileName" disabled>
                                 </div> 
                                 <div>
                                     <span>软件版本号:</span>
-                                    <input type="text" v-model="softwareVer" disabled>
+                                    <input type="text" v-model.lazy="softwareVer" disabled>
                                 </div> 
                                 <div>
                                     <span>硬件版本号:</span>
-                                    <input type="text" v-model="hardwareVer" disabled>
+                                    <input type="text" v-model.lazy="hardwareVer" disabled>
                                 </div> 
                                 <div>
                                     <span>MD5:</span>
-                                    <input type="text" v-model="md5" disabled>
+                                    <input type="text" v-model.lazy="md5" disabled>
                                 </div> 
                                 <div>
                                     <span>升级包类型:</span>
-                                    <input type="text" v-model="upgradeType" disabled>
+                                    <input type="text" v-model.lazy="upgradeType" disabled>
                                 </div> 
                                 <div>
                                     <span>适用范围</span>
-                                    <el-select size="small" style="width:150px;" v-model="valuethree" @change="uploadscope" placeholder="请选择">
+                                    <el-select size="small" style="width:150px;" v-model.lazy="valuethree" @change="uploadscope" placeholder="请选择">
                                         <el-option
                                         v-for="item in optionsthree"
                                         :key="item.value"
@@ -137,7 +138,7 @@
                                 </div>
                                 <div>
                                     <span>升级包状态:</span>
-                                    <el-select size="small" v-model="value" style="width:150px;" placeholder="请选择">
+                                    <el-select size="small" v-model.lazy="value" style="width:150px;" placeholder="请选择">
                                         <el-option
                                         v-for="item in options"
                                         :key="item.value"
@@ -152,7 +153,7 @@
                                     type="textarea"
                                     :rows="2"
                                     placeholder="请输入描述内容"
-                                    v-model="textarea">
+                                    v-model.lazy="textarea">
                                     </el-input>
                                 </div>
                             </div>
@@ -170,19 +171,19 @@
                 <div class="equipmentUpgrade_bottom_top">
                     <div class="equipmentUpgrade_formtwo">
                         <span>文件名称:</span>
-                        <input type="text" v-model="searchfilename" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="searchfilename" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>软件版本号:</span>
-                        <input type="text" v-model="softwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="softwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>硬件版本号:</span>
-                        <input type="text" v-model="hardwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="hardwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>升级包状态:</span>
-                        <el-select v-model="value4" size='small' clearable placeholder="请选择">
+                        <el-select v-model.lazy="value4" size='small' clearable placeholder="请选择">
                             <el-option
                             v-for="item in options"
                             :key="item.value"
@@ -550,6 +551,8 @@
                         return;
                     }
                 }
+                that.percentageType = true;
+                setTimeout(function(){that.percentage=65},900)
                 var xhr = new XMLHttpRequest();
                 var fd = new FormData();
                 fd.append("file", that.$refs.imgs.files[0]);
@@ -567,11 +570,13 @@
                     contentType: false
                 }).done(function(data) {
                     if(data.errorCode=='0'){
+                        that.percentage = 100  //进度条
                         that.$message({
                             message: '上传成功',
                             type:'success',
                             showClose: true,
                         });
+                        that.percentageType = false;
                         that.uploadtype = data.result;
                         that.departmentId = data.result.departmentId
                         that.uploadtype = true;
@@ -590,7 +595,10 @@
                         if(data.result.upgradeType=='2'){
                             that.upgradeType = 'tsba'
                         }
+                        that.percentage = 0  //进度条
                     }else{
+                        that.percentageType = false;
+                        that.percentage = 0  //进度条
                         that.errorCode(data.errorCode)
                     }
                 }).fail(function(res) {

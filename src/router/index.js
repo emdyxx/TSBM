@@ -25,7 +25,6 @@ import event from '@/components/eventManage/event'  //事件管理-->事件信�
 import equipmentStatistics from '@/components/statisticsmessage/equipmentStatistics'  //统计信息-->设备概览
 import factory from '@/components/type/factory'  //统计信息-->工厂
 
-
 import dataStatistics from '@/components/statisticsmessage/dataStatistics'  //统计信息-->统计数据
 
 Vue.use(Router)

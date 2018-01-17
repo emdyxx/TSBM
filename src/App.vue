@@ -10,17 +10,17 @@ export default {
   methods:{
   },
   created(){
-    // $.ajax({
-    //   type:'post',
-    //   async:true,
-    //   xhrFields:{withCredentials:true},
-    //   url:'/TSBM-Manager/json/url.json',
-    //   dataType:'json',
-    //   success:function(data){
-    //     localStorage.serverurl = data.url;
-    //   }
-    // })
-    localStorage.serverurl = 'http://192.168.70.83/TSBM-Manager/';
+    $.ajax({
+      type:'post',
+      async:true,
+      xhrFields:{withCredentials:true},
+      url:'/TSBM-Manager/json/url.json',
+      dataType:'json',
+      success:function(data){
+        localStorage.serverurl = data.url;
+      }
+    })
+    // localStorage.serverurl = 'http://192.168.70.83/TSBM-Manager/';
   }
 }
 </script>

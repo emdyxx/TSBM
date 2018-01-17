@@ -6,20 +6,20 @@
         <div class="logManage_main" 
         v-loading.body='loading'
         element-loading-text="拼命加载中">
-            <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
+            <el-tabs type="border-card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
                 <el-tab-pane label="登录日志" name='1'>
                     <div class="logManage_main_top">
                         <div class="logManage_form">
                             <span>用户名:</span>
-                            <input type="text" v-model="username"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                            <input type="text" v-model.lazy="username"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                         </div>
                         <div class="logManage_form">
                             <span>用户登录IP:</span>
-                            <input type="text" v-model="ipAddress" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                            <input type="text" v-model.lazy="ipAddress" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                         </div>
                         <div class="logManage_form">
                             <span>登录状态:</span>
-                            <el-select v-model="status" size='small' style="width:126px;" clearable placeholder="请选择">
+                            <el-select v-model.lazy="status" size='small' style="width:126px;" clearable placeholder="请选择">
                                 <el-option
                                 v-for="item in options"
                                 :key="item.value"
@@ -86,11 +86,11 @@
                     <div class="logManage_main_top">
                         <div class="logManage_form">
                             <span>用户名:</span>
-                            <input type="text" v-model="usernametwo"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                            <input type="text" v-model.lazy="usernametwo"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                         </div>
                         <div class="logManage_form">
                             <span>日志类型:</span>
-                            <el-select v-model="statustwo" size='small' style="width:126px;" clearable placeholder="请选择">
+                            <el-select v-model.lazy="statustwo" size='small' style="width:126px;" clearable placeholder="请选择">
                                 <el-option
                                 v-for="item in optionstwo"
                                 :key="item.value"
@@ -101,7 +101,7 @@
                         </div>
                         <div class="logManage_form">
                             <span>操作类型:</span>
-                            <el-select v-model="statusthree" size='small' style="width:126px;" clearable placeholder="请选择">
+                            <el-select v-model.lazy="statusthree" size='small' style="width:126px;" clearable placeholder="请选择">
                                 <el-option
                                 v-for="item in optionsthree"
                                 :key="item.value"

@@ -19,7 +19,7 @@
                             <div class="template_top" v-if="showtype=='1'">
                                 <div v-if="Administrator">
                                     <span>分组:</span>
-                                    <el-select v-model="value" placeholder="请选择分组" style="width:180px;">
+                                    <el-select v-model.lazy="value" placeholder="请选择分组" style="width:180px;">
                                         <el-option
                                         v-for="item in options"
                                         :key="item.value"
@@ -30,7 +30,7 @@
                                 </div>
                                 <div v-if="addrelative=='0'" style="margin-left:10px;margin-top:15px;">
                                     <span>类别:</span>
-                                    <el-radio-group @change="typestatus" v-model="radio2">
+                                    <el-radio-group @change="typestatus" v-model.lazy="radio2">
                                         <el-radio :label="0">tsbg</el-radio>
                                         <el-radio :label="1">tsbc</el-radio>
                                         <el-radio :label="2">tsba</el-radio>
@@ -38,7 +38,7 @@
                                 </div>
                                 <div v-if="addrelative=='0'">
                                     <span>型号:</span>
-                                    <el-select @change="modelstatus" v-model="valuetwo" placeholder="请选择型号" style="width:180px;">
+                                    <el-select @change="modelstatus" v-model.lazy="valuetwo" placeholder="请选择型号" style="width:180px;">
                                         <el-option
                                         v-for="item in optionstwo"
                                         :key="item.value"
@@ -49,17 +49,17 @@
                                 </div>
                                 <div>
                                     <span><i class="required">*</i>模板名称:</span>
-                                    <input type="text" v-model="templateName" class="inputType form-control logManage_main_input" style="width:146px;display:inline-block;" placeholder="请输入模板名称" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                    <input type="text" v-model.lazy="templateName" class="inputType form-control logManage_main_input" style="width:146px;display:inline-block;" placeholder="请输入模板名称" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
                                     <span>备注:</span>
-                                    <input type="text" v-model="summary" class="inputType form-control logManage_main_input" style="width:256px;display:inline-block;" placeholder="请输入备注" min="1" max="100" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                    <input type="text" v-model.lazy="summary" class="inputType form-control logManage_main_input" style="width:256px;display:inline-block;" placeholder="请输入备注" min="1" max="100" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
                                 </div>
                             </div>
                             <div class="template_center" v-if="showtype=='1'">
-                                <el-collapse v-model="activeNames" accordion>
+                                <el-collapse v-model.lazy="activeNames" accordion>
                                     <el-collapse-item v-if="radio2=='0'&&lookoverlan==true" title="WAN配置" name="2" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
-                                            <select class="form-control logManage_main_input" v-model="tsbgcollcate.ipType" style="width:168px;">
+                                            <select class="form-control logManage_main_input" v-model.lazy="tsbgcollcate.ipType" style="width:168px;">
                                                 <option value="STATIC">STATIC</option>
                                                 <option value="DHCP">DHCP</option>
                                                 <option value="PPPOE">PPPOE</option>
@@ -72,20 +72,20 @@
                                                     <tr>
                                                         <td><i class="required">*</i>IP地址:</td>
                                                         <td>
-                                                            <input type="text" v-model="tsbgcollcate.wanIP" placeholder="请输入IP地址" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                                            <input type="text" v-model.lazy="tsbgcollcate.wanIP" placeholder="请输入IP地址" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
                                                         </td>
                                                         <td><i class="required">*</i>子网掩码:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>网关:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td>主DNS:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>辅DNS:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -96,16 +96,16 @@
                                                     <tr>
                                                         <td><i class="required">*</i>PPPoE用户名:</td>
                                                         <td>
-                                                            <input type="text" v-model="tsbgcollcate.wanPPPoEUsername" placeholder="请输入PPPoE用户名" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                                            <input type="text" v-model.lazy="tsbgcollcate.wanPPPoEUsername" placeholder="请输入PPPoE用户名" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
                                                         </td>
                                                         <td><i class="required">*</i>PPPoE密码:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPoE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPoE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>DNS1:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td>DNS2:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -117,9 +117,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>IP地址:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanIp" placeholder="请输入IP地址" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanIp" placeholder="请输入IP地址" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>子网掩码:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -130,22 +130,22 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>起始地址:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanStartAddress" class="inputType form-control logManage_main_input" placeholder="请输入起始地址" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanStartAddress" class="inputType form-control logManage_main_input" placeholder="请输入起始地址" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>结束地址:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanEndAddress" class="inputType form-control logManage_main_input" placeholder="请输入结束地址" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanEndAddress" class="inputType form-control logManage_main_input" placeholder="请输入结束地址" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>网关地址:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关地址" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关地址" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>DNS1:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS服务器" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS服务器" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>DNS2:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS服务器" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS服务器" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>DHCP服务器:</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbgcollcate.startDhcpServer">
+                                                            <el-radio-group v-model.lazy="tsbgcollcate.startDhcpServer">
                                                                 <el-radio :label="1">启用</el-radio>
                                                                 <el-radio :label="0">不启用</el-radio>
                                                             </el-radio-group>
@@ -159,13 +159,13 @@
                                         <!-- tsbc WIFI设置(2G) -->
                                         <div class="basicstatus_top">
                                             <div>
-                                                <el-radio-group v-model="tsbccollcate.wifi2Enable">
+                                                <el-radio-group v-model.lazy="tsbccollcate.wifi2Enable">
                                                     <el-radio :label="1">启用</el-radio>
                                                     <el-radio :label="0">不启用</el-radio>
                                                 </el-radio-group>
                                             </div>
                                             工作模式:
-                                            <select v-model="tsbccollcate.wifi2WorkMode">
+                                            <select v-model.lazy="tsbccollcate.wifi2WorkMode">
                                                 <option value="AP">AP</option>
                                                 <option value="Station">Station</option>
                                             </select>
@@ -176,10 +176,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model="tsbccollcate.wifi2ApSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi2ApBandwidth" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" style="width:110px;height:29px;">
                                                                 <option value="ht20">HT20</option>
                                                                 <option value="ht40">HT40</option>
                                                             </select>
@@ -188,7 +188,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>信道:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi2ApChannel" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApChannel" style="width:110px;height:29px;">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
@@ -206,7 +206,7 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi2ApLaunchPower" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApLaunchPower" style="width:110px;height:29px;">
                                                                 <option value="Auto">Auto</option>
                                                                 <option value="27dBm">27 dBm</option>
                                                                 <option value="24dBm">24 dBm</option>
@@ -217,18 +217,18 @@
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi2ApEncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApEncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
                                                         </td>
                                                         <td>认证秘钥:</td>
-                                                        <td><input v-model="tsbccollcate.wifi2ApKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbccollcate.wifi2ApHideSSID">
+                                                            <el-radio-group v-model.lazy="tsbccollcate.wifi2ApHideSSID">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -242,10 +242,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model="tsbccollcate.wifi2StaSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi2StaEncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2StaEncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
@@ -253,12 +253,12 @@
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model="tsbccollcate.wifi2StaKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi2StaPriority" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2StaPriority" style="width:110px;height:29px;">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
@@ -278,13 +278,13 @@
                                         <!-- tsbc WIFI设置(5G)-->
                                         <div class="basicstatus_top">
                                             <div>
-                                                <el-radio-group v-model="tsbccollcate.wifi5Enable">
+                                                <el-radio-group v-model.lazy="tsbccollcate.wifi5Enable">
                                                     <el-radio :label="1">启用</el-radio>
                                                     <el-radio :label="0">不启用</el-radio>
                                                 </el-radio-group>
                                             </div>
                                             工作模式:
-                                            <select v-model="tsbccollcate.wifi5WorkMode">
+                                            <select v-model.lazy="tsbccollcate.wifi5WorkMode">
                                                 <option value="AP">AP</option>
                                                 <option value="Station">Station</option>
                                             </select>
@@ -295,10 +295,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model="tsbccollcate.wifi5ApSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5ApBandwidth" style="width:110px;height:29px;" name="" id="">
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="ht20">HT20</option>
                                                                 <option value="ht40">HT40</option>
                                                             </select>
@@ -307,7 +307,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>信道:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5ApChannel" style="width:110px;height:29px;" name="" id="">
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApChannel" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="36">36</option>
                                                                 <option value="40">40</option>
                                                                 <option value="44">44</option>
@@ -321,7 +321,7 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5ApLaunchPower" style="width:110px;height:29px;" name="" id="">
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApLaunchPower" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="Auto">Auto</option>
                                                                 <option value="27dBm">27 dBm</option>
                                                                 <option value="24dBm">24 dBm</option>
@@ -332,18 +332,18 @@
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5ApEncryptionMode" style="width:110px;height:29px;" name="" id="">
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApEncryptionMode" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
                                                         </td>
                                                         <td>认证秘钥:</td>
-                                                        <td><input v-model="tsbccollcate.wifi5ApKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbccollcate.wifi5ApHideSSID">
+                                                            <el-radio-group v-model.lazy="tsbccollcate.wifi5ApHideSSID">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -357,9 +357,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model="tsbccollcate.wifi5StaSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i class="required">*</i>加密方式</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5StaEncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi5StaEncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
@@ -367,12 +368,12 @@
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model="tsbccollcate.wifi5StaKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
                                                         <td>
-                                                            <select v-model="tsbccollcate.wifi5StaPriority" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi5StaPriority" style="width:110px;height:29px;">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
@@ -391,7 +392,7 @@
                                     <el-collapse-item v-if="radio2=='1'||radio2=='2'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
-                                            <select v-model="tsbctsbacaollcate.ipType" style="width:110px;height:29px;" name="" id="">
+                                            <select v-model.lazy="tsbctsbacaollcate.ipType" style="width:110px;height:29px;" name="" id="">
                                                 <option value="STATIC">STATIC</option>
                                                 <option value="DHCP">DHCP</option>
                                                 <option value="PPPOE">PPPOE</option>
@@ -403,19 +404,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ip地址</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanIP" class="inputType form-control logManage_main_input" placeholder="请输入ip地址" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanIP" class="inputType form-control logManage_main_input" placeholder="请输入ip地址" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>子网掩码:</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><i class="required">*</i>首选DNS:</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入首选DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td><i class="required">*</i>备选DNS:</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入备选DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>首选DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入首选DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>备选DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入备选DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><i class="required">*</i>网关:</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>网关:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -425,15 +426,15 @@
                                                 <tbody>
                                                     <tr>
                                                        <td><i class="required">*</i>PPPOE用户名:</td>
-                                                       <td><input type="text" v-model="tsbctsbacaollcate.wanPPPoEUsername" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE用户名" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td> 
+                                                       <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEUsername" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE用户名" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td> 
                                                        <td><i class="required">*</i>PPPOE密码:</td> 
-                                                       <td><input type="text" v-model="tsbctsbacaollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>  
+                                                       <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>  
                                                     </tr>
                                                     <tr>
                                                         <td>DNS1:</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td>DNS2:</td>
-                                                        <td><input type="text" v-model="tsbctsbacaollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -441,7 +442,7 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="radio2=='2'&&lookoverstatus.wifi2G!=''" title="2.4G配置" name="8" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <el-radio-group v-model="tsbacaollcate.wifi2Enable">
+                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi2Enable">
                                                 <el-radio :label="1">启用</el-radio>
                                                 <el-radio :label="0">不启用</el-radio>
                                             </el-radio-group>
@@ -452,10 +453,10 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.wifi2SSID" class="inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi2Bandwidth" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" style="width:110px;height:29px;">
                                                                 <option value="ht20">HT20</option>
                                                                 <option value="ht40">HT40</option>
                                                             </select>
@@ -464,7 +465,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>信道</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi2Channel" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi2Channel" style="width:110px;height:29px;">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
@@ -482,7 +483,7 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi2LaunchPower" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi2LaunchPower" style="width:110px;height:29px;">
                                                                 <option value="Auto">Auto</option>
                                                                 <option value="27dBm">27 dBm</option>
                                                                 <option value="24dBm">24 dBm</option>
@@ -494,18 +495,18 @@
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi2EncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi2EncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA2</option>
                                                             </select>
                                                         </td>
                                                         <td>认证秘钥:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.wifi2KeyAuth" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbacaollcate.wifi2HideSSID">
+                                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi2HideSSID">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -517,7 +518,7 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="radio2=='2'&&lookoverstatus.wifi5G!=''" title="5G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <el-radio-group v-model="tsbacaollcate.wifi5Enable">
+                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi5Enable">
                                                 <el-radio :label="1">启用</el-radio>
                                                 <el-radio :label="0">不启用</el-radio>
                                             </el-radio-group>
@@ -528,7 +529,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.wifi5SSID" class="inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
                                                             <select v-if="tsbacaollcate.wifi5Bandwidth" style="width:110px;height:29px;">
@@ -540,7 +541,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>信道</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi5Channel" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi5Channel" style="width:110px;height:29px;">
                                                                 <option value="36">36</option>
                                                                 <option value="40">40</option>
                                                                 <option value="44">44</option>
@@ -554,7 +555,7 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi5LaunchPower" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi5LaunchPower" style="width:110px;height:29px;">
                                                                 <option value="Auto">Auto</option>
                                                                 <option value="27dBm">27 dBm</option>
                                                                 <option value="24dBm">24 dBm</option>
@@ -566,18 +567,18 @@
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model="tsbacaollcate.wifi5EncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi5EncryptionMode" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA2</option>
                                                             </select>
                                                         </td>
                                                         <td>认证秘钥:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.wifi5KeyAuth" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model="tsbacaollcate.wifi5HideSSID">
+                                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi5HideSSID">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -589,13 +590,13 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="radio2=='1'||radio2=='2'" title="黑白名单设置" name="10" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <select v-model="panel">
+                                            <select v-model.lazy="panel">
                                                 <option value="1">黑名单</option>
                                                 <option value="0">白名单</option>
                                             </select>
                                             <el-button @click="paaelMACS" type="primary" size='small' style="margin-left:15px;">添加</el-button>
                                             <div style="display:inline-block;" v-if="paaelMAC">
-                                                <el-input v-model="panelinput" size='small' style="width:156px;margin-left:15px;" placeholder="请输入MAC"></el-input>
+                                                <el-input v-model.lazy="panelinput" size='small' style="width:156px;margin-left:15px;" placeholder="请输入MAC"></el-input>
                                                 <el-button @click="panelMACT" type="primary" size='small' style="margin-left:5px;">确认</el-button>
                                             </div>
                                         </div>
@@ -648,7 +649,7 @@
                             <div class="template_two" v-if="showtype=='2'">
                                 <div>
                                     <span>指定设备类型:</span>
-                                    <select @change="uploadscope" v-model='valuethree' style="width:126px;height:26px;">
+                                    <select @change="uploadscope" v-model.lazy='valuethree' style="width:126px;height:26px;">
                                         <option value="0">指定设备</option>
                                         <option value="1">指定分组</option>
                                         <option value="2">指定型号</option>
@@ -734,11 +735,11 @@
                 <div class="templateManage_bottom_top">
                     <div class="templateManage_formtwo">
                         <span>模板名称:</span>
-                        <input type="text" v-model="templatename" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入模板名称">
+                        <input type="text" v-model.lazy="templatename" maxlength="10" minlength="1" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入模板名称">
                     </div>
                     <div class="templateManage_formtwo">
                         <span>模板类别:</span>
-                        <el-select v-model="classesvalue" size='small' style="width:126px;" clearable placeholder="请选择">
+                        <el-select v-model.lazy="classesvalue" size='small' style="width:126px;" clearable placeholder="请选择">
                             <el-option
                             v-for="item in classes"
                             :key="item.value"
@@ -749,7 +750,7 @@
                     </div>
                     <div class="templateManage_formtwo">
                         <span>适用范围:</span>
-                        <el-select v-model="classesvaluetwo" size='small' style="width:126px;" clearable placeholder="请选择">
+                        <el-select v-model.lazy="classesvaluetwo" size='small' style="width:126px;" clearable placeholder="请选择">
                             <el-option
                             v-for="item in classestwo"
                             :key="item.value"

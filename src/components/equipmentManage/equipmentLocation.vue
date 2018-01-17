@@ -2,7 +2,7 @@
     <div class="equipmentLocation">
         <div class="equipmentLocation_nav">
             设备管理<i class="iconfont icon-icon"></i>设备定位
-            <el-select v-if='selected=="true"' v-model="selectedOptions" @change="handleChange" placeholder="请选择">
+            <el-select v-if='selected=="true"' v-model.lazy="selectedOptions" @change="handleChange" placeholder="请选择">
                 <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -35,7 +35,7 @@
             </div><!-- /.modal -->
         </div>
         <div class="equipmentLocation_main">
-            <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+            <el-tabs v-model.lazy="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane label="厂区定位" name='1' style="height:100%;overflow: auto;">
                     <ul style="list-style: none;display: flex;display: -webkit-flex;flex-direction: row;flex-wrap: wrap;">
                         <li class="flex-item" v-for='(site,key) in sites' :key="site.id">
@@ -62,7 +62,7 @@
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <el-radio-group v-model="radio2" @change="selectedmap">
+                                    <el-radio-group v-model.lazy="radio2" @change="selectedmap">
                                         <el-radio :label="0">
                                             <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png" alt="">
                                         </el-radio>

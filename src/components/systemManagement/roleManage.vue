@@ -20,7 +20,7 @@
                         <div class="modal-body">
                             <div class="roleManage_form">
                                 <span>角色名称:</span>
-                                <input type="text" v-model='roleManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入角色名称">
+                                <input type="text" v-model.lazy='roleManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入角色名称">
                             </div>
                             <div class="roleManage_form">
                                 <span style="width:75px;">分组:</span>
@@ -29,14 +29,14 @@
                                         :options="options"
                                         @change="handleChange"
                                         change-on-select
-                                        v-model="selectedOptions3"
+                                        v-model.lazy="selectedOptions3"
                                         size='small'>
                                     </el-cascader>
                                 </div>
                             </div>
                             <div class="roleManage_form">
                                 <span style="width:112px;">备注说明:</span>
-                                <textarea rows="3" cols="40" v-model='roleManageRemark' style="border: 1px solid #ccc;" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入描述"></textarea>
+                                <textarea rows="3" cols="40" v-model.lazy='roleManageRemark' style="border: 1px solid #ccc;" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入描述"></textarea>
                             </div>
                             <div style="width:270px;margin:0 auto;text-align:left;">
                                 权限分配
@@ -68,7 +68,7 @@
                 <div class="roleManage_bottom_top">
                     <div class="roleManage_formtwo">
                         <span>角色名称:</span>
-                        <input type="text" v-model="roleName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入角色名成">
+                        <input type="text" v-model.lazy="roleName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入角色名成">
                     </div>
                     <div class="roleManage_formtwo">
                         <span>所属分组:</span>

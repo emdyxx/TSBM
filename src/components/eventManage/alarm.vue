@@ -5,11 +5,11 @@
         </div>
         <div class="alarm_main">
             <div class="alarm_top">
-                <!-- <input type="checkbox" v-model="checked">
+                <!-- <input type="checkbox" v-model.lazy="checked">
                 <span>显示历史告警信息</span> -->
                 <span style="padding-left:15px;">
                     <span>告警级别:</span>
-                    <el-select v-model="value" clearable size='small' style="width:110px;" placeholder="请选择">
+                    <el-select v-model.lazy="value" clearable size='small' style="width:110px;" placeholder="请选择">
                         <el-option
                         v-for="item in options"
                         :key="item.value"
@@ -20,7 +20,7 @@
                 </span>
                 <span style="padding-left:15px;">
                     <span>设备类型:</span>
-                    <el-select v-model="value2" clearable size='small' style="width:110px;" placeholder="请选择">
+                    <el-select v-model.lazy="value2" clearable size='small' style="width:110px;" placeholder="请选择">
                         <el-option
                         v-for="item in options2"
                         :key="item.value"
@@ -31,11 +31,11 @@
                 </span>
                 <span style="padding-left:15px;">
                     <span>MAC:</span>
-                    <el-input v-model="MAC" size='small' style="width:110px;" placeholder="请输入MAC"></el-input>
+                    <el-input v-model.lazy="MAC" size='small' style="width:110px;" placeholder="请输入MAC"></el-input>
                 </span>
                 <span style="padding-left:15px;">
                     <span>设备型号:</span>
-                    <el-input v-model="hardwareVersion" size='small' style="width:110px;" placeholder="请输入设备型号"></el-input>
+                    <el-input v-model.lazy="hardwareVersion" size='small' style="width:110px;" placeholder="请输入设备型号"></el-input>
                 </span>
                 <el-button @click="alertsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
             </div>

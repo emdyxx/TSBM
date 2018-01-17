@@ -1,7 +1,7 @@
 <template>
     <div class="factory">
         <div class="echarts_type" v-if="select">
-            <el-select v-model="value" @change="echartstype" placeholder="请选择">
+            <el-select v-model.lazy="value" @change="echartstype" placeholder="请选择">
                 <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -15,24 +15,24 @@
                 <p>TSBC</p>
                 <p>{{EquipmentCount.tsbcOnline}}</p>
                 <p>在线设备</p>
-                <p>离线:{{EquipmentCount.tsbcSum}}</p>
-                <p>总计:{{EquipmentCount.tsbcOnline + EquipmentCount.tsbcSum}}</p>
+                <p>离线:{{EquipmentCount.tsbcSum - EquipmentCount.tsbcOnline}}</p>
+                <p>总计:{{EquipmentCount.tsbcSum}}</p>
             </div>
             <span><img src="../../assets/u91_seg0.png" alt=""></span>
             <div>
                 <p>TSBA</p>
                 <p>{{EquipmentCount.tsbaOnline}}</p>
                 <p>在线设备</p>
-                <p>离线:{{EquipmentCount.tsbaSum}}</p>
-                <p>总计:{{EquipmentCount.tsbaOnline + EquipmentCount.tsbaSum}}</p>
+                <p>离线:{{EquipmentCount.tsbaSum - EquipmentCount.tsbaOnline}}</p>
+                <p>总计:{{EquipmentCount.tsbaSum}}</p>
             </div>
             <span><img src="../../assets/u91_seg0.png" alt=""></span>
             <div>
                 <p>TSBG</p>
                 <p>{{EquipmentCount.tsbgOnline}}</p>
                 <p>在线设备</p>
-                <p>离线:{{EquipmentCount.tsbgSum}}</p>
-                <p>总计:{{EquipmentCount.tsbgOnline + EquipmentCount.tsbgSum}}</p>
+                <p>离线:{{EquipmentCount.tsbgSum - EquipmentCount.tsbgOnline}}</p>
+                <p>总计:{{EquipmentCount.tsbgSum}}</p>
             </div>
         </div>
         <div class="echarts_center">
@@ -148,15 +148,18 @@ export default {
                 data:data,
                 success:function(data){
                     if(data.errorCode=='0'){
+                        var datasort = [];
                         var datas = [];
-                        data.result.sort(function(a,b){
-                            return Number(a.wifi2Channel) > Number(b.wifi2Channel)
-                        })
                         for(var i=0;i<data.result.length;i++){
-                            if(data.result[i].wifi2Channel==''){
+                            if(data.result[i].wifi2Channel==i+1){
+                                datasort.push(data.result[i])
+                            }
+                        }
+                        for(var i=0;i<datasort.length;i++){
+                            if(datasort[i].wifi2Channel==''){
 
                             }else{
-                                datas.push(data.result[i].total)
+                                datas.push(datasort[i].total)
                             } 
                         }
                         myCharttwo.setOption({
@@ -278,21 +281,21 @@ export default {
                     if(data.errorCode=='0'){
                         var one = '';var two = '';var three = '';
                         for(var i='0';i<data.result.length;i++){
-                            if(data.result[i].link=='2G'){
+                            if(data.result[i].currentLink=='ath0'){
                                 if(data.result[i].sum==''){
                                     one = 0
                                 }else{
                                     one = data.result[i].sum
                                 }
                             }
-                            if(data.result[i].link=='5G'){
+                            if(data.result[i].currentLink=='ath1'){
                                 if(data.result[i].sum==''){
                                     two = 0
                                 }else{
                                     two = data.result[i].sum
                                 }
                             }
-                            if(data.result[i].link=='ETH'){
+                            if(data.result[i].currentLink=='eth0.1'){
                                 if(data.result[i].sum==''){
                                     three = 0
                                 }else{

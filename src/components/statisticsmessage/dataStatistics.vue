@@ -1,16 +1,27 @@
 <template>
     <div class="dataStatistics">
+        <div class="dataStatistics_nav">
+            统计信息<i class="iconfont icon-icon"></i>统计数据
+            <!-- 管理员登录显示部门 -->
+            <el-select v-if="selected" v-model.lazy="value2" @change="detaparmentchange" placeholder="请选择">
+                <el-option
+                v-for="item in options2"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
+        </div>
         <div class="dataStatistics_main">
             <template>
-                <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
+                <el-tabs v-model.lazy="activeName2" type="card" @tab-click="handleClick">
                     <el-tab-pane label="总览" name="0">
                         <div class="dataStatistics_top">
-                            <div id="EC_left"></div>
-                            <div id="EC_right"></div>
+                            
                         </div>
                         <div class="dataStatistics_bottom">
                             <div class="dataStatistics_bottom_top">
-                                <el-select v-model="value" size='small' style="width:126px;" placeholder="请选择">
+                                <el-select v-model.lazy="value" @change="typechange" size='small' style="width:126px;" placeholder="请选择">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -18,9 +29,9 @@
                                     :value="item.value">
                                     </el-option>
                                 </el-select>
-                                <span>总数: 56</span>
-                                <span>在线: 56</span>
-                                <span>离线: 0</span>
+                                <span>总数: {{totalSum}}</span>
+                                <span>在线: {{onlineSum}}</span>
+                                <span>离线: {{totalSum - onlineSum}}</span>
                             </div>
                             <div class="dataStatistics_bottom_center"></div>
                             <div class="dataStatistics_bottom_bottom">
@@ -39,29 +50,35 @@
                                     width="180">
                                     </el-table-column>  
                                     <el-table-column
-                                    prop="operationTypeValue"
-                                    label="流量统计"
+                                    prop="wifi2SendByte"
+                                    label="2.4G发送字节"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="userName"
-                                    label="丢包率"
+                                    prop="wifi2ReceiveByte"
+                                    label="2.4G接收字节"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="dataId"
-                                    label="丢包数"
+                                    prop="wifi5SendByte"
+                                    label="5.8G发送字节"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="ts"
-                                    label="在线时间"
+                                    prop="wifi5ReceiveByte"
+                                    label="5.8G接收字节"
                                     align='center'
                                     show-overflow-tooltip>
                                     </el-table-column>
+                                    <!-- <el-table-column
+                                    prop=""
+                                    label="在线时间"
+                                    align='center'
+                                    show-overflow-tooltip>
+                                    </el-table-column> -->
                                 </el-table>
                                 <div class="block">
                                     <el-pagination
@@ -82,23 +99,16 @@
                             <div class="inquire_top_main">
                                 <div class="inquire_formtwo">
                                     <span>MAC:</span>
-                                    <input type="text" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入MAC">
+                                    <input v-model.lazy="MAC" type="text" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
                                 </div>
                                 <div class="inquire_formtwo">
                                     <span>型号:</span>
-                                    <el-select v-model="model" size='small' clearable placeholder="请选择">
-                                        <el-option
-                                        v-for="item in modeloptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                        </el-option>
-                                    </el-select>
+                                    <input v-model.lazy="type" type="text" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入型号">
                                 </div>
                                 <div class="inquire_formtwo">
                                     <span>请选择时间范围:</span>
                                     <el-date-picker
-                                        v-model="time"
+                                        v-model.lazy="time"
                                         type="datetimerange"
                                         @change="times"
                                         size='small'
@@ -107,7 +117,7 @@
                                         style="width:320px;">
                                     </el-date-picker>
                                 </div>
-                                <el-button type="primary" style="height:30px;margin-top:6px;margin-left:5px;" size="small">搜索</el-button>
+                                <el-button @click="tableDataSG" type="primary" style="height:30px;margin-top:6px;margin-left:5px;" size="small">搜索</el-button>
                                 <div class="inquire_top_type">
                                     <span @click='Active("0")' :class="isActive=='0' ? 'nativeone' : 'nativetwo'">列表显示</span>
                                     <span>/</span>
@@ -130,31 +140,31 @@
                                     width="55">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="username"
+                                    prop="equipmentMAC"
                                     align='center'
                                     label="设备MAC"
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="fullName"
+                                    prop="model"
                                     label="设备型号"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="departmentName"
+                                    prop="currentTnw"
                                     label="当前接口"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="mobile"
+                                    prop="originalTnw"
                                     label="原始接口"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
-                                    prop="email"
+                                    prop="ts"
                                     label="切换时间"
                                     align='center'
                                     show-overflow-tooltip>
@@ -188,19 +198,27 @@
         name: 'echarts',
         data () {
             return {
+                serverurl:localStorage.serverurl, 
                 activeName2: '0',
+                options2:[],
+                value2:'',
+                selected:false,
                 //总览页面
-                options:[{value:'0',label:'tsbc'},{value:'1',label:'tsba'}],
-                value:'',
+                options:[{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
+                value:'1',
+                onlineSum:'',
+                totalSum:'',
                 dataStatisticsData:[],
                 pageIndex:1,
                 pageSize:10,
                 total:10,
                 
                 //查询页面 参数
-                modeloptions:[],
-                model:'',
+                MAC:'',
+                type:'',
                 time:'',
+                startTime:'',
+                endTime:"",
                 isActive :'0',
                 tableData:[],
                 pageIndex2:1,
@@ -209,7 +227,7 @@
             }
         },
         mounted(){
-            this.ready()
+            
         },
         methods:{
             //判断选中标签页
@@ -217,112 +235,134 @@
                 var that = this
                 if(tab.name=='0'){this.ready()}
                 if(tab.name=='1'){
-                    if(that.isActive=='0'){}
-                    if(that.isActive=='1'){
-                        that.readytwo()
-                    }
+                    that.readytwo()
                 }
             },
-            //概览页面数据渲染
-            ready(){
-                var that = this
-                var ECleft = this.$echarts.init(document.getElementById('EC_left'))
-                var ECright = this.$echarts.init(document.getElementById('EC_right'))
-                ECleft.setOption({
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+            //部门change事件
+            detaparmentchange(){
+                if(this.activeName2=='0'){
+                    $(".dataStatistics_top").children().remove();
+                    this.ready()
+                }
+                if(this.activeName2=='1'){
+                    this.readytwo()
+                }
+            },
+            //下侧设备类型change事件
+            typechange(){
+                this.bottomData()
+            },
+            //下侧列表数据获取
+            bottomData(){
+                var that = this;
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'statistics/getEquipmentStatus',
+                    data:{
+                        pageIndex:that.pageIndex,
+                        pageSize:that.pageSize,
+                        type:that.value,
+                        departmentId:that.value2
                     },
-                    legend: {
-                        orient: 'vertical',
-                        x: 'left',
-                        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-                    },
-                    series: [
-                        {
-                            name:'访问来源',
-                            type:'pie',
-                            radius: ['50%', '67%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'center'
-                                },
-                                emphasis: {
-                                    show: true,
-                                    textStyle: {
-                                        fontSize: '18',
-                                        fontWeight: 'bold'
-                                    }
-                                }
-                            },
-                            labelLine: {
-                                normal: {
-                                    show: false
-                                }
-                            },
-                            data:[
-                                {value:335, name:'直接访问'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-                                {value:135, name:'视频广告'},
-                                {value:1548, name:'搜索引擎'}
-                            ]
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.dataStatisticsData = data.rows
+                            that.onlineSum = data.onlineSum
+                            that.totalSum = data.total
+                            that.total = data.total
+                        }else{
+                            that.errorCode(data.errorCode)
                         }
-                    ]
-                })
-                ECright.setOption({
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b}: {c} ({d}%)"
-                    },
-                    legend: {
-                        orient: 'vertical',
-                        x: 'left',
-                        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-                    },
-                    series: [
-                        {
-                            name:'访问来源',
-                            type:'pie',
-                            radius: ['50%', '67%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'center'
-                                },
-                                emphasis: {
-                                    show: true,
-                                    textStyle: {
-                                        fontSize: '18',
-                                        fontWeight: 'bold'
-                                    }
-                                }
-                            },
-                            labelLine: {
-                                normal: {
-                                    show: false
-                                }
-                            },
-                            data:[
-                                {value:335, name:'直接访问'},
-                                {value:310, name:'邮件营销'},
-                                {value:234, name:'联盟广告'},
-                                {value:135, name:'视频广告'},
-                                {value:1548, name:'搜索引擎'}
-                            ]
-                        }
-                    ]
+                    }
                 })
             },
+            //总览页面数据渲染
+            ready(){
+                var that = this
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'statistics/getAllTsbgStatus',
+                    data:{
+                        departmentId:that.value2
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                $('.dataStatistics_top').append('<div style="width: 33%;height: 180px;display: flex;justify-content: center;" id='+"EC"+i+'></div>')
+                            }
+                            for(var i=0;i<data.result.length;i++){
+                                var one = data.result[i].cpuUsageRate;
+                                var two = 100 - data.result[i].cpuUsageRate;
+                                var ECdata = that.$echarts.init($('.dataStatistics_top>div').eq(i)[0])
+                                ECdata.setOption({
+                                    tooltip: {
+                                        trigger: 'item',
+                                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                                    },
+                                    legend: {
+                                        orient: 'vertical',
+                                        x: 'left',
+                                        data:['cpu使用率','cpu剩余率']
+                                    },
+                                    series: [
+                                        {
+                                            name:'访问来源',
+                                            type:'pie',
+                                            radius: ['50%', '67%'],
+                                            avoidLabelOverlap: false,
+                                            label: {
+                                                normal: {
+                                                    show: false,
+                                                    position: 'center'
+                                                },
+                                                emphasis: {
+                                                    show: true,
+                                                    textStyle: {
+                                                        fontSize: '18',
+                                                        fontWeight: 'bold'
+                                                    }
+                                                }
+                                            },
+                                            labelLine: {
+                                                normal: {
+                                                    show: false
+                                                }
+                                            },
+                                            data:[
+                                                {value:one, name:'cpu使用率'},
+                                                {value:two, name:'cpu剩余率'}
+                                            ]
+                                        }
+                                    ]
+                                })
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+                that.bottomData()
+            },
             //选择条数事件
-            handleSizeChange(val){},
+            handleSizeChange(val){
+                this.pageSize = val
+                this.bottomData()
+            },
             //选择页数事件
-            handleCurrentChange(val){},
+            handleCurrentChange(val){
+                this.pageIndex = val
+                this.bottomData()
+            },
             times(val){
                 var type = val.split('~')
+                this.startTime = type[0]
+                this.endTime = type[1]
             },
             //改变现实类别
             Active(val){
@@ -330,79 +370,178 @@
                     this.isActive = val
                 }
                 if(val=='1'){
+                    //必须指定时间段和MAC
+                    if(this.MAC==''||this.startTime==''||this.endTime==''){
+                        this.$message({
+                            message: '图形展示必须指定MAC以及时间段!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
                     this.isActive = val
                     this.readytwo()
                 }
             },
+            //查询页面搜索
+            tableDataSG(){
+                this.readytwo()
+            },
             readytwo(){
                 var that = this;
-                var width = $('.dataStatistics_main').width();
-                var height  = $('.dataStatistics_main').height ();
-                setTimeout(function(){
-                    $('#query').css('width',width).css('height',height);
-                    var query = that.$echarts.init(document.getElementById('query'));
-                    query.setOption(
-                        {
-                            title: {
-                                text: 'Step Line'
-                            },
-                            tooltip: {
-                                trigger: 'axis'
-                            },
-                            legend: {
-                                data:['Step Start', 'Step Middle', 'Step End']
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: {
-                                type: 'category',
-                                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-                            series: [
-                                {
-                                    name:'Step Start',
-                                    type:'line',
-                                    step: 'start',
-                                    data:[120, 132, 101, 134, 90, 230, 210]
-                                },
-                                {
-                                    name:'Step Middle',
-                                    type:'line',
-                                    step: 'middle',
-                                    data:[220, 282, 201, 234, 290, 430, 410]
-                                },
-                                {
-                                    name:'Step End',
-                                    type:'line',
-                                    step: 'end',
-                                    data:[450, 432, 401, 454, 590, 530, 510]
-                                }
-                            ],
+                if(this.isActive=='0'){
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'statistics/getTnwList',
+                        data:{
+                            pageIndex:that.pageIndex2,
+                            pageSize:that.pageSize2,
+                            departmentId:that.value2,
+                            MAC:that.MAC,
+                            model:that.type,
+                            startTime:that.startTime,
+                            endTime:that.endTime
                         },
-                    )
-                },500)
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                that.tableData = data.rows;
+                                that.total2 = data.total
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
+                }
+                if(this.isActive=='1'){
+                    //必须指定时间段和MAC
+                    if(that.MAC==''||that.startTime==''||that.endTime==''){
+                        this.$message({
+                            message: '图形展示必须指定MAC以及时间段!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    var width = $('.dataStatistics_main').width();
+                    var height  = $('.dataStatistics_main').height ();
+                    $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'statistics/getAllTnwList',
+                        data:{
+                            departmentId:that.value2,
+                            MAC:that.MAC,
+                            model:that.type,
+                            startTime:that.startTime,
+                            endTime:that.endTime
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){
+                                var one = [];
+                                var two = [];
+                                for(var i=0;i<data.result.length;i++){
+                                    one.push(data.result[i].ts)
+                                    if(data.result[i].currentTnw=='eth0.1'){
+                                        two.push(0)
+                                    }
+                                    if(data.result[i].currentTnw=='ath0'){
+                                        two.push(1)
+                                    }
+                                    if(data.result[i].currentTnw=='ath2'){
+                                        two.push(2)
+                                    }
+                                }
+                                $('#query').css('width',width).css('height',height);
+                                var query = that.$echarts.init(document.getElementById('query'));
+                                query.setOption(
+                                    {
+                                        title: {
+                                            text: 'Step Line'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis'
+                                        },
+                                        legend: {
+                                            data:['接口使用']
+                                        },
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+                                        toolbox: {
+                                            feature: {
+                                                saveAsImage: {}
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            name:'时间',
+                                            data: one //时间
+                                        },
+                                        yAxis : [
+                                            {
+                                                type : 'category',
+                                                name:'接口',
+                                                data: ['eth0.1','ath0','ath2']
+                                            }
+                                        ],
+                                        series: [
+                                            {
+                                                name:'接口使用',
+                                                type:'line',
+                                                step: 'start',
+                                                data:two
+                                            }
+                                        ],
+                                    },
+                                )
+                            }else{
+                                that.errorCode(data.errorCode)
+                            }
+                        }
+                    })
+                }
             }
         },
-        created(){},
+        created(){
+            //请求部门数据
+            var that = this
+            if(sessionStorage.departmentId=='1'){
+                that.selected = 'true'
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'department/getTopDepartment',
+                    data:{},
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.options2 = data.result[0].children
+                            that.value2 = data.result[0].children[0].value
+                            // that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            }
+        },
     }
 </script>
 <style scoped>
 .dataStatistics{width: 100%;height: 100%;padding:5px;}
-.dataStatistics_main{position: relative;width:100%;height:100%;background-color: #FFFFFF;border: 1px solid #c4c4c4;border-radius: 0 0 4px 4px;}
-.dataStatistics_top{width: 100%;height: 180px;display: flex;margin-top: 10px;}
-.dataStatistics_top>div{width: 50%;height: 100%;}
+.dataStatistics_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;padding-left: 10px;}
+.dataStatistics_nav>i{font-size: 23px;}
+.dataStatistics_main{position:absolute;top:55px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;background-color: #FFFFFF;border: 1px solid #c4c4c4;border-radius: 0 0 4px 4px;}
+.dataStatistics_top{width: 100%;height: 180px;display: flex;flex-wrap:wrap;margin-top: 10px;justify-content: center;overflow: auto;}
 .dataStatistics_bottom{width: 100%;height: auto;position: absolute;top:180px;bottom: 0;}
 .dataStatistics_bottom_top{margin-bottom:5px;text-align: left;padding-left:10px;}
 .dataStatistics_bottom_top>span{display: inline-block;margin-left:20px; }

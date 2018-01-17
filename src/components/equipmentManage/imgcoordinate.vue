@@ -48,7 +48,7 @@
                                     <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#f4ea2a;margin-right:20px;">tsbg</i>
                                     <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1afa29;">tsba</i>
                                     <div style="margin-top:30px;">
-                                        <el-radio-group v-model="radio2" @change="selected">
+                                        <el-radio-group v-model.lazy="radio2" @change="selected">
                                             <el-radio :label="1">tsbc</el-radio>
                                             <el-radio :label="0">tsbg</el-radio>
                                             <el-radio :label="2">tsba</el-radio>

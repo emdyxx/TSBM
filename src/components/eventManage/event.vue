@@ -7,7 +7,7 @@
             <div class="event_top">
                 <span style="padding-left:15px;">
                     <span>事件内容:</span>
-                    <el-input v-model="content" size='small' style="width:110px;" placeholder="请输入事件内容"></el-input>
+                    <el-input v-model.lazy="content" size='small' style="width:110px;" placeholder="请输入事件内容"></el-input>
                 </span>
                 <el-button @click="eventsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
             </div>
