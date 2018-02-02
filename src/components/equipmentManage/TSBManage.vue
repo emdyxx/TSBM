@@ -9,11 +9,11 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
-                            <input type="text" v-model.lazy="userIP" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入MAC">
+                            <input type="text" v-model.lazy="userIP" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>状态:</span>
@@ -127,11 +127,11 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
-                            <input type="text" v-model.lazy="userIP" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入MAC">
+                            <input type="text" v-model.lazy="userIP" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>状态:</span>
@@ -260,11 +260,11 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
-                            <input type="text" v-model.lazy="userIP" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入MAC">
+                            <input type="text" v-model.lazy="userIP" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>状态:</span>
@@ -391,11 +391,11 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
-                            <input type="text" v-model.lazy="userIP" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入MAC">
+                            <input type="text" v-model.lazy="userIP" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>状态:</span>
@@ -552,7 +552,7 @@
                                     prop="model"
                                     align='center'
                                     label="适用型号"
-                                    width="120">
+                                    width="180">
                                     </el-table-column>
                                     <el-table-column
                                     prop="remark"
@@ -777,13 +777,13 @@
                                                 <td>ip地址:</td>
                                                 <td>{{lookdata.wanIPX}} </td>
                                                 <td>连接链路:</td>
-                                                <td>{{lookdata.link}} </td>
+                                                <td>{{lookdata.currentLink}} </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="basicstatus_top">
-                                    RAOIO(2G)
+                                    RADIO(2G)
                                 </div>
                                 <div class="basicstatus_center"></div>
                                 <div class="basicstatus_bottom">
@@ -817,7 +817,7 @@
                                     </table>
                                 </div>
                                 <div class="basicstatus_top">
-                                    RAOIO(5G)
+                                    RADIO(5G)
                                 </div>
                                 <div class="basicstatus_center"></div>
                                 <div class="basicstatus_bottom">
@@ -909,7 +909,7 @@
                                     </table>
                                 </div>
                                 <div class="basicstatus_top">
-                                    RAOIO(2G)
+                                    RADIO(2G)
                                 </div>
                                 <div class="basicstatus_center"></div>
                                 <div class="basicstatus_bottom">
@@ -947,7 +947,7 @@
                                     </table>
                                 </div>
                                 <div class="basicstatus_top">
-                                    RAOIO(5G)
+                                    RADIO(5G)
                                 </div>
                                 <div class="basicstatus_center"></div>
                                 <div class="basicstatus_bottom">
@@ -1547,7 +1547,7 @@
                                         <div class="basicstatus_center"></div>
                                         <div v-if="panel=='0'" class="basicstatus_bottom">
                                             <el-table
-                                                :data="panelTabletwo"
+                                                :data="panelTable"
                                                 border
                                                 stripe
                                                 tooltip-effect="dark"
@@ -1568,7 +1568,7 @@
                                         </div>
                                         <div v-if="panel=='1'" class="basicstatus_bottom">
                                             <el-table
-                                                :data="panelTable"
+                                                :data="panelTabletwo"
                                                 border
                                                 stripe
                                                 tooltip-effect="dark"
@@ -1744,8 +1744,8 @@
                 templatechecked:true,
 
                 //tsbc,tsba,黑白名单
-                panelTable:[], //黑名单
-                panelTabletwo:[], //白名单
+                panelTable:[], //白名单
+                panelTabletwo:[], //黑名单
                 paaelMAC:false,
                 panelinput:'',
                 panel:"1",
@@ -2147,8 +2147,6 @@
                 var type = '';
                 var url = '';
                 that.showconfigdata = {};
-                that.panelTable = [];
-                that.panelTabletwo = [];
                 that.lookoverType = val.type
                 //权限接口
                 $.ajax({
@@ -2295,19 +2293,26 @@
                                 that.tsbacaollcate.wifi5HideSSID = Number(data.result.configInfo.wifi5HideSSID)
                             }
                             if(val.type=='1'||val.type=='2'){
-                                that.panel = data.result.configInfo.listType;
-                                var array = [];
-                                array = data.result.configInfo.listContent.split(",");
-                                var arr = {};
-                                for(var i=0;i<array.length;i++){
-                                    arr.MAC = array[i]
-                                    if(data.result.configInfo.listType=='1'){
-                                        that.panelTable.push(arr)
-                                    }
-                                    if(data.result.configInfo.listType=='0'){
-                                        that.panelTabletwo.push(arr)
+                                that.panelTable = [];
+                                that.panelTabletwo = [];
+                                if(data.result.configInfo.listContent==''){
+
+                                }else{
+                                    that.panel = data.result.configInfo.listType;
+                                    var array = [];
+                                    array = data.result.configInfo.listContent.split(",");
+                                    var arr = {};
+                                    for(var i=0;i<array.length;i++){
+                                        arr.MAC = array[i]
+                                        if(data.result.configInfo.listType=='0'){
+                                            that.panelTable.push(arr)
+                                        }
+                                        if(data.result.configInfo.listType=='1'){
+                                            that.panelTabletwo.push(arr)
+                                        }
                                     }
                                 }
+                                
                             }
                             that.showconfigdata = data.result;
                             delete that.showconfigdata.order;
@@ -2379,15 +2384,58 @@
                 var url = '';
                 var data = {};
                 var array = [];
+                var IP = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/
+                //子网掩码
+                var exp=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
+                //DNS
+                var DNSS=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
                 if(that.lookoverType=='0'){
                     if(that.tsbgcollcate.ipType=='STATIC'){
-                        if(that.tsbgcollcate.wanIP==''||that.tsbgcollcate.wanSubnetmask==''){
-                            this.$message({
-                                message: '必填字段不能为空',
+                        if(!IP.test(that.tsbgcollcate.wanIP)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(!exp.test(that.tsbgcollcate.wanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbgcollcate.wanGateway==''){}else{
+                            if(!IP.test(that.tsbgcollcate.wanGateway)){
+                                that.$message({
+                                    message: '请输入正确的网关地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbgcollcate.wanDNS1==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbgcollcate.wanDNS2==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbgcollcate.ipType=='PPPOE'){
@@ -2399,8 +2447,44 @@
                             });
                             return;
                         }
+                        if(that.tsbgcollcate.wanPPPoEDNS1==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanPPPoEDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbgcollcate.wanPPPoEDNS2==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanPPPoEDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
                     }
-                    if(that.tsbgcollcate.lanIp==''||that.tsbgcollcate.lanSubnetmask==''||that.tsbgcollcate.lanStartAddress==''){
+                    if(!IP.test(that.tsbgcollcate.lanIp)){
+                        that.$message({
+                            message: '请输入正确的IP地址',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(!exp.test(that.tsbgcollcate.lanSubnetmask)){
+                        that.$message({
+                            message: '请输入正确的子网掩码',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbgcollcate.lanStartAddress==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -2408,7 +2492,7 @@
                         });
                         return;
                     }
-                    if(that.tsbgcollcate.lanEndAddress==''||that.tsbgcollcate.lanGateway==''||that.tsbgcollcate.lanDNS1==''){
+                    if(that.tsbgcollcate.lanEndAddress==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -2416,9 +2500,17 @@
                         });
                         return;
                     }
-                    if(that.tsbgcollcate.lanDNS2==''){
+                    if(!IP.test(that.tsbgcollcate.lanGateway)){
+                        that.$message({
+                            message: '请输入正确的网关地址',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(!DNSS.test(that.tsbgcollcate.lanDNS1)||!DNSS.test(that.tsbgcollcate.lanDNS2)){
                         this.$message({
-                            message: '必填字段不能为空',
+                            message: '请输入正确的DNS',
                             type: 'error',
                             showClose: true,
                         });
@@ -2525,13 +2617,51 @@
                         }
                     }
                     if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
-                            this.$message({
-                                message: '必填字段不能为空',
+                        if(!IP.test(that.tsbctsbacaollcate.wanIP)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                            if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                that.$message({
+                                    message: '请输入正确的网关地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbctsbacaollcate.ipType=='PPPOE'){
@@ -2542,18 +2672,76 @@
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                 }
                 if(that.lookoverType=='2'){
                     if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
-                            this.$message({
-                                message: '必填字段不能为空',
+                        if(!IP.test(that.tsbctsbacaollcate.wanIP)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                            if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                that.$message({
+                                    message: '请输入正确的网关地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbctsbacaollcate.ipType=='PPPOE'){
@@ -2564,6 +2752,26 @@
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
@@ -2581,6 +2789,42 @@
                             showClose: true,
                         });
                         return;
+                    }
+                    if(that.tsbacaollcate.wifi2EncryptionMode=='0'){}else{
+                        if(that.tsbacaollcate.wifi2KeyAuth==''){
+                            this.$message({
+                                message: '加密方式非NONE时,认证秘钥不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
+                            this.$message({
+                                message: '认证秘钥不能有中文字符',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbacaollcate.wifi5EncryptionMode=='0'){}else{
+                        if(that.tsbacaollcate.wifi5KeyAuth==''){
+                            this.$message({
+                                message: '加密方式非NONE时,认证秘钥不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(result.test(that.tsbacaollcate.wifi5KeyAuth)){
+                            this.$message({
+                                message: '认证秘钥不能有中文字符',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
                     }
                     if(that.valuetwo=='TSBA221'){}else{
                         if(that.tsbacaollcate.wifi5SSID==''){
@@ -2602,15 +2846,15 @@
                     url='equipment/saveConfigTsbc'
                     $.extend(data,that.tsbccollcate,that.tsbctsbacaollcate,that.showconfigdata)
                     if(that.panel=='0'){
-                        for(var i=0;i<that.panelTabletwo.length;i++){
-                            array.push(that.panelTabletwo[i].MAC)
+                        for(var i=0;i<that.panelTable.length;i++){
+                            array.push(that.panelTable[i].MAC)
                         }
                         //白名单
                         data.listContent = array.join(',')
                     }
                     if(that.panel=='1'){
-                        for(var i=0;i<that.panelTable.length;i++){
-                            array.push(that.panelTable[i].MAC)
+                        for(var i=0;i<that.panelTabletwo.length;i++){
+                            array.push(that.panelTabletwo[i].MAC)
                         }
                         //黑名单
                         data.listContent = array.join(',')
@@ -2620,15 +2864,15 @@
                     url='equipment/saveConfigTsba'
                     $.extend(data,that.tsbacaollcate,that.tsbctsbacaollcate,that.showconfigdata)
                     if(that.panel=='0'){
-                        for(var i=0;i<that.panelTabletwo.length;i++){
-                            array.push(that.panelTabletwo[i].MAC)
+                        for(var i=0;i<that.panelTable.length;i++){
+                            array.push(that.panelTable[i].MAC)
                         }
                         //白名单
                         data.listContent = array.join(',')
                     }
                     if(that.panel=='1'){
-                        for(var i=0;i<that.panelTable.length;i++){
-                            array.push(that.panelTable[i].MAC)
+                        for(var i=0;i<that.panelTabletwo.length;i++){
+                            array.push(that.panelTabletwo[i].MAC)
                         }
                         //黑名单
                         data.listContent = array.join(',')
@@ -2965,9 +3209,10 @@
             //添加黑白名单
             panelMACT(){
                 var data = {}
-                if(this.panelinput==''){
+                var reg_name=/[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}/
+                if(!reg_name.test(this.panelinput)){
                     this.$message({
-                        message: 'MAC不能为空',
+                        message: '请输入正确的MAC地址',
                         type: 'error',
                         showClose: true,
                     });
@@ -2975,26 +3220,26 @@
                 }
                 data.MAC = this.panelinput
                 if(this.panel=='0'){
-                    this.panelTabletwo.push(data)
+                    this.panelTable.push(data)
                 }
                 if(this.panel=='1'){
-                    this.panelTable.push(data)
+                    this.panelTabletwo.push(data)
                 }
             },
             //删除黑白名单
             deletepanel(val){
                 var MAC = val.MAC
                 if(this.panel=='0'){
-                    for(var i=0;i<this.panelTabletwo.length;i++){
-                        if(MAC == this.panelTabletwo[i].MAC){
-                            this.panelTabletwo.splice(i,1)
+                    for(var i=0;i<this.panelTable.length;i++){
+                        if(MAC == this.panelTable[i].MAC){
+                            this.panelTable.splice(i,1)
                         }
                     }
                 }
                 if(this.panel=='1'){
-                    for(var i=0;i<this.panelTable.length;i++){
-                        if(MAC == this.panelTable[i].MAC){
-                            this.panelTable.splice(i,1)
+                    for(var i=0;i<this.panelTabletwo.length;i++){
+                        if(MAC == this.panelTabletwo[i].MAC){
+                            this.panelTabletwo.splice(i,1)
                         }
                     }
                 }

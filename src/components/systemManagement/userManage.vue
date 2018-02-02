@@ -39,11 +39,11 @@
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>电话:</span>
-                                <input type="text" v-model.lazy="userManagePhone" maxlength="20" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
+                                <input type="text" v-model.lazy="userManagePhone" maxlength="25" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>邮箱:</span>
-                                <input type="text" v-model.lazy="userManageEmail" maxlength="25" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
+                                <input type="text" v-model.lazy="userManageEmail" maxlength="150" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
                             <div class="userManage_form">
                                 <span style="width:56px;"><i class="required">*</i>组织:</span>
@@ -54,6 +54,7 @@
                                         @change="handleChange"
                                         change-on-select
                                         v-model.lazy="selectedOptions3"
+                                        :disabled='disabledcascader'
                                         size='small'>
                                     </el-cascader>
                                 </div>
@@ -71,7 +72,7 @@
                                     </el-cascader>
                                 </div> -->
                                 <span style="width:56px;"><i class="required">*</i>权限</span>
-                                <el-radio-group v-model.lazy="radio2">
+                                <el-radio-group v-model.lazy="radio2" :disabled='disabledradio'>
                                     <el-radio class="radio" :label="0">全部权限</el-radio>
                                     <el-radio class="radio" :label="1">只读权限</el-radio>
                                 </el-radio-group>
@@ -97,9 +98,9 @@
                         <input type="text" v-model.lazy="fullName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户姓名">
                     </div>
                     <div class="userManage_formtwo">
-                        <span>部门:</span>
+                        <span>组织:</span>
                         <el-cascader
-                            :options="options"
+                            :options="optionssearch"
                             @change="searchChange"
                             change-on-select
                             size='small'
@@ -136,7 +137,7 @@
                         </el-table-column>
                         <el-table-column
                         prop="departmentName"
-                        label="分组"
+                        label="组织"
                         align='center'
                         width="180">
                         </el-table-column>
@@ -191,6 +192,7 @@
                 radios: 0,
                 userManagePhone:'',
                 userManageEmail:'',
+                optionssearch:[], //搜索框组织数据
                 options: [], //分组数据
                 optionstwo:[], //角色数据
                 selectedOptions3:[], //分组默认值
@@ -203,7 +205,9 @@
                 props: {
                     value:'id',
                     label:'roleName'
-                }
+                },
+                disabledcascader:false,
+                disabledradio:false,
             }
         },
         mounted(){
@@ -332,11 +336,15 @@
                         that.options = data.result
                         if(that.opinion == '2'){
                             that.selectedOptions3=[];
-                            that.selectedOptions3.push('1')
-                            for(var i=0;i<that.options[0].children.length;i++){
-                                if(that.options[0].children[i].value==that.sites[0].departmentId){
-                                    that.selectedOptions3.push(that.options[0].children[i].value)
+                            if(sessionStorage.departmentId=='1'){
+                                that.selectedOptions3.push('1')
+                                    for(var i=0;i<that.options[0].children.length;i++){
+                                    if(that.options[0].children[i].value==that.sites[0].departmentId){
+                                        that.selectedOptions3.push(that.options[0].children[i].value)
+                                    }
                                 }
+                            }else{
+                                that.selectedOptions3.push(String(that.sites[0].departmentId))
                             }
                         }
                     }
@@ -350,6 +358,8 @@
                 $('#userManagePasswordture').val()
                 $('#userManageUsername').attr('disabled',false)
                 $('#userManagePasswordture').attr('disabled',false)
+                that.disabledcascader = false
+                that.disabledradio = false
                 this.userManageUsername=''
                 this.userManagePassword=''
                 this.userManageName=''
@@ -365,7 +375,7 @@
                 //中文验证
                 var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
                 //手机号码验证
-                var phone = /^((0[0-9]{1,3}-\d{5,8})|(1[3584]\d{9}))$/;
+                var phone = /^((0[0-9]{1,3}-\d{5,8})|(1[35784]\d{9}))$/;
                 //邮箱验证
                 var email = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
                 var departmentId = '';
@@ -379,7 +389,7 @@
                 }
                 if(result.test(this.userManagePassword)){
                     that.$message({
-                        message: '密码字段不能为中文',
+                        message: '密码字段不能有中文',
                         type: 'error',
                         showClose: true,
                     });
@@ -502,6 +512,31 @@
                     });
                     return;
                 }
+
+                if(sessionStorage.id==that.sites[0].id){
+                    //自己改自己
+                    that.disabledradio = true
+                    that.disabledcascader = true
+                }else{
+                    if(sessionStorage.id=='1'){
+                        //超级管理员上改下  全部放开
+                        that.disabledradio = false
+                        that.disabledcascader = false
+                    }else if(sessionStorage.departmentId==that.sites[0].departmentId){
+                        //管理员 普通用户 同改同 
+                        that.$message({
+                            message: '您不能修改同级数据!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }else{
+                        //管理员上改下 全部放开
+                        that.disabledradio = false
+                        that.disabledcascader = false
+                    }
+                }
+                
                 $('#userManageAddRevamp').modal('show');
                 $('#userManagemyModalLabel').text('修改用户')
                 this.opinion = '2'   
@@ -515,26 +550,6 @@
                 this.userManageEmail=that.sites[0].email
                 this.radio2 = that.sites[0].privilegeType
                 this.tree()
-                $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'role/getRoleByDepartmnet',
-                    data:{
-                        departmentId:that.sites[0].departmentId
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){
-                            that.optionstwo = data.result
-                            that.selectedOptions4 = []
-                            that.selectedOptions4.push(that.sites[0].roleId)
-                        }else{
-                            that.errorCode(data.errorCode)
-                        }
-                        
-                    }
-                })
             },
             //删除
             userManageDelete(){
@@ -619,7 +634,18 @@
             },
         },
         created(){
-            this.tree()
+            var that = this
+            $.ajax({
+                type:'get',
+                async:true,
+                dataType:'json',
+                xhrFields:{withCredentials:true},
+                url:that.serverurl+'department/getDepartmentTree',
+                data:{},
+                success:function(data){
+                    that.optionssearch = data.result
+                }  
+            })
             this.ready()
         }
     }

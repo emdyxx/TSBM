@@ -52,7 +52,7 @@
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>邮箱:</span>
-                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="22" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
+                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="100" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -278,7 +278,7 @@
             departmentManageSubmit(){
                 var that = this
                 //手机号码验证
-                var phone = /^((0[0-9]{1,3}-\d{5,8})|(1[3584]\d{9}))$/;
+                var phone = /^((0[0-9]{1,3}-\d{5,8})|(1[35784]\d{9}))$/;
                 //邮箱验证
                 var email = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
                 if(this.departmentManageName==''||this.departmentManageAddress==''||this.departmentManagePhone==''||this.departmentManagePrincipal==''||this.departmentManageEmail==''){
@@ -289,14 +289,6 @@
                     });
                     return;
                 }
-                // if(that.selectedOptions3.length>1){
-                //     that.$message({
-                //         message: '所属部门目前只能为系统管理',
-                //         type: 'error',
-                //         showClose: true,
-                //     });
-                //     return;
-                // }
                 if(!phone.test(this.departmentManagePhone)){
                     that.$message({
                         message: '电话不符合格式',

@@ -169,7 +169,7 @@ Vue.prototype.errorCode = function(code){
     }
     if(code=='2011'){
       this.$message({
-          message: '文类型式错误',
+          message: '文件型式错误',
           type: 'error',
           showClose: true,
       });
@@ -393,14 +393,9 @@ export default new Router({
       component: index,
       children:[
         {//图表页面
-          path:'/',
+          path:'/echarts',
           name:'echarts',
           component:echarts,
-        },
-        {//图表页面
-          path:'/equipmentStatistics',
-          name:'equipmentStatistics',
-          component:equipmentStatistics,
           children:[
             {//工厂数据
               path:'/factory',

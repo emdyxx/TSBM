@@ -10,7 +10,7 @@
       </div>
       <div class="index_main_top">
         <div class="index_main_top_left">
-          <span>版本号:1.0.1</span>
+          <span>版本号:{{versionNumber}}</span>
         </div>
         <div class="index_main_top_center">
           <el-button @click="shortcut(1)">设备概览</el-button>
@@ -28,7 +28,7 @@
             </span>
             <el-dropdown-menu style="margin-top:0px;">
               <el-dropdown-item command="a">个人设置</el-dropdown-item>
-              <el-dropdown-item command="b">帮助</el-dropdown-item>
+              <!-- <el-dropdown-item command="b">帮助</el-dropdown-item> -->
               <el-dropdown-item command="c">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -164,7 +164,8 @@ export default {
         label: 'menuName'
       },
       value:'0',
-      onkeyType:'1'
+      onkeyType:'1',
+      versionNumber:localStorage.versionNumber  //版本号
     }
   },
   methods:{
@@ -416,8 +417,8 @@ export default {
     },
     //右缩进
     rightshrink(){
-      $(".index_nav_bottom").css('width',"240px");
-      $(".index_main_bottom").css('left',"240px");
+      $(".index_nav_bottom").css('width',"220px");
+      $(".index_main_bottom").css('left',"220px");
       this.isCollapse=false
     },
   },
@@ -439,21 +440,22 @@ export default {
           for(var i=0;i<that.sites.length;i++){
             that.sites[i].id = String(that.sites[i].id)
           }
+          that.$router.push({'path':'/factory'})
         }else{
           that.errorCode(data.errorCode)
         }
       },
     });
-    var ws = new WebSocket('ws://192.168.70.83/TSBM-Manager/webscoketAlarm');
-    ws.onopen = function(){
-      // alert('socket已连接上');
-    }
+    var url = localStorage.serverurl.split('//');
+    url = 'ws://'+url[1]
+    var ws = new WebSocket(url+'webscoketAlarm');
+    ws.onopen = function(){}
     ws.onmessage = function (evt){
       var data = JSON.parse(evt.data)
       that.value = data.alarmTotal
     }
     ws.onclose = function (evt){
-      ws = new WebSocket('ws://192.168.70.83/TSBM-Manager/webscoketAlarm');
+      ws = new WebSocket(url+'webscoketAlarm');
     }
     window.onkeydown = function(e){
         if(e.keyCode==13){

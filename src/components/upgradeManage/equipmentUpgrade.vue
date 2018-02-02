@@ -60,7 +60,7 @@
                                 </div> 
                                 <div>
                                     <span>适用范围</span>
-                                    <el-select size="small" style="width:150px;" v-model.lazy="valuethree" @change="uploadscope" placeholder="请选择">
+                                    <el-select size="small" style="width:150px;" v-model="typetwo" @change="uploadscope" placeholder="请选择">
                                         <el-option
                                         v-for="item in optionsthree"
                                         :key="item.value"
@@ -171,15 +171,15 @@
                 <div class="equipmentUpgrade_bottom_top">
                     <div class="equipmentUpgrade_formtwo">
                         <span>文件名称:</span>
-                        <input type="text" v-model.lazy="searchfilename" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="searchfilename" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>软件版本号:</span>
-                        <input type="text" v-model.lazy="softwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="softwareversion" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>硬件版本号:</span>
-                        <input type="text" v-model.lazy="hardwareversion" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="hardwareversion" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>升级包状态:</span>
@@ -225,6 +225,12 @@
                         label="MD5"
                         align='center'
                         width="320">
+                        </el-table-column>
+                        <el-table-column
+                        prop="departmentName"
+                        label="组织"
+                        align='center'
+                        width="140">
                         </el-table-column>
                         <el-table-column
                         prop="hardwareVer"
@@ -294,24 +300,23 @@
                 currentPage4:1,
                 total:100,
                 input:'',
-                options:[{value:0,label:'禁用'},{value:1,label:'启用'}],
+                options:[{value:1,label:'禁用'},{value:0,label:'启用'}],
                 value:0,
                 optionstwo:[{value:'0',label:'tsbg'},{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
                 valuetwo:'',
                 optionsthree:[{value:0,label:'指定设备'},{value:1,label:'指定分组'},{value:2,label:'指定型号'}],
-                valuethree:'',
                 tableData5:[],
                 sitesTwo:[],
                 pageSize:'',
                 pageIndex:'',
-                currentPage5:1,  //
+                currentPage5:1,//
                 sizesTwo:10,  //
                 totalTwo:50, //
                 selected:false, //上传升级包管理员选择分组
                 optionsvalue:[],//分组数据
                 selectedOptions:[],//选中分组数据
                 type:'', //升级包类型
-                typetwo:'', //升级包适用范围
+                typetwo:2, //升级包适用范围
                 textarea:'', //描述
                 typedata:'', //升级包适用范围是否显示
                 percentageType:false, //进度条显示
@@ -725,7 +730,7 @@
                     if(that.sites[0].upgradeType=='2'){
                         that.upgradeType = 'tsba'
                     }
-                    that.valuethree = that.sites[0].upgradeOrder
+                    that.typetwo = that.sites[0].upgradeOrder
                     that.upgradeFileId = that.sites[0].id
                     $('#upgrademyModal').modal('show')
                 }

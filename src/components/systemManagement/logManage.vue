@@ -205,10 +205,7 @@
                     label:'用户'
                 },{
                     value:'1',
-                    label:'部门'
-                },{
-                    value:'2',
-                    label:'角色'
+                    label:'组织'
                 }],
                 optionsthree:[{
                     value:'0',

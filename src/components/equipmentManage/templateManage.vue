@@ -882,7 +882,7 @@
                 radio2:0,
                 lookoverstatus:{},
                 lookoverlan:true,
-                activeNames:'1',
+                activeNames:'1', 
                 classes:[{value: '0',label: 'tsbg'},{value: '1',label: 'tsbc'},{value: '2',label: 'tsba'}],
                 classesvalue:'',
                 classestwo:[{value: '0',label: '指定设备'},{value: '1',label: '指定设备分组'},{value: '2',label: '指定设备型号'}],
@@ -890,8 +890,8 @@
                 templatename:'',
                 templateId:'',
                 //tsbc,tsba,黑白名单
-                panelTable:[], //黑名单
-                panelTabletwo:[], //白名单
+                panelTable:[], //白名单
+                panelTabletwo:[], //黑名单
                 paaelMAC:false,
                 panelinput:'',
                 panel:"1",
@@ -942,10 +942,10 @@
                     wifi2ApLaunchPower:'27dBm',
                     wifi2ApEncryptionMode:'1',
                     wifi2ApKeyAuth:'',
-                    wifi2StaEncryptionMode:'0',
+                    wifi2StaEncryptionMode:'',
                     // wifi2StaPriority:'1',
                     wifi2StaKeyAuth:"",
-                    wifi2StaSSID:'',
+                    wifi2StaSSID:'0',
 
                     wifi5Enable:1,
                     wifi5ApSSID:'',
@@ -1087,6 +1087,8 @@
                 this.panelTable = [];
                 this.panelTabletwo = [];
                 this.sizesdata = [];
+                this.paaelMAC = false;
+                this.panelinput = ''
                 that.radio2 = 0;
                 $('.myModalLabel').text('添加模板')
                 $('#addmyModal').modal('show');
@@ -1119,9 +1121,9 @@
             //点击修改模板按钮
             revamptemplate(val){
                 var that = this;
-                this.panelTable = [];
-                this.panelTabletwo = [];
                 that.multipleTable = [];
+                this.paaelMAC = false;
+                this.panelinput = ''
                 this.sizesdata = [];
                 $('.myModalLabel').text('修改模板')
                 that.Administrator = false;
@@ -1256,17 +1258,24 @@
                                 // that.multipleTable=data.result.order
                             }
                             if(val.templateType=='1'||val.templateType=='2'){
-                                that.panel = data.result.configInfo.listType;
-                                var array = [];
-                                array = data.result.configInfo.listContent.split(",");
-                                var arr = {};
-                                for(var i=0;i<array.length;i++){
-                                    arr.MAC = array[i]
-                                    if(data.result.configInfo.listType=='0'){
-                                        that.panelTable.push(arr)
-                                    }
-                                    if(data.result.configInfo.listType=='1'){
-                                        that.panelTabletwo.push(arr)
+                                that.panelTable = [];
+                                that.panelTabletwo = [];
+                                if(data.result.configInfo.listContent==''){
+                                    
+                                }else{
+                                    that.panel = data.result.configInfo.listType;
+                                    var array = [];
+                                    array = data.result.configInfo.listContent.split(",");
+                                    console.log(array)
+                                    var arr = {};
+                                    for(var i=0;i<array.length;i++){
+                                        arr.MAC = array[i]
+                                        if(data.result.configInfo.listType=='0'){
+                                            that.panelTable.push(arr)
+                                        }
+                                        if(data.result.configInfo.listType=='1'){
+                                            that.panelTabletwo.push(arr)
+                                        }
                                     }
                                 }
                             }
@@ -1435,6 +1444,12 @@
             nextstep(){
                 //中文验证
                 var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+                //IP
+                var IP = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/
+                //子网掩码
+                var exp=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
+                //DNS
+                var DNSS=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
                 var that = this;
                 // that.uploadscope()
                 //tsbg
@@ -1448,13 +1463,51 @@
                         return;
                     }
                     if(that.tsbgcollcate.ipType=='STATIC'){
-                        if(that.tsbgcollcate.wanIP==''||that.tsbgcollcate.wanSubnetmask==''){
-                            this.$message({
-                                message: '必填字段不能为空',
+                        if(!IP.test(that.tsbgcollcate.wanIP)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(!exp.test(that.tsbgcollcate.wanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbgcollcate.wanGateway==''){}else{
+                            if(!IP.test(that.tsbgcollcate.wanGateway)){
+                                that.$message({
+                                    message: '请输入正确的网关地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbgcollcate.wanDNS1==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbgcollcate.wanDNS2==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbgcollcate.ipType=='PPPOE'){
@@ -1466,8 +1519,44 @@
                             });
                             return;
                         }
+                        if(that.tsbgcollcate.wanPPPoEDNS1==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanPPPoEDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbgcollcate.wanPPPoEDNS2==''){}else{
+                            if(!DNSS.test(that.tsbgcollcate.wanPPPoEDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
                     }
-                    if(that.tsbgcollcate.lanIp==''||that.tsbgcollcate.lanSubnetmask==''||that.tsbgcollcate.lanStartAddress==''){
+                    if(!IP.test(that.tsbgcollcate.lanIp)){
+                        that.$message({
+                            message: '请输入正确的IP地址',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(!exp.test(that.tsbgcollcate.lanSubnetmask)){
+                        that.$message({
+                            message: '请输入正确的子网掩码',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbgcollcate.lanStartAddress==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -1475,7 +1564,7 @@
                         });
                         return;
                     }
-                    if(that.tsbgcollcate.lanEndAddress==''||that.tsbgcollcate.lanGateway==''||that.tsbgcollcate.lanDNS1==''){
+                    if(that.tsbgcollcate.lanEndAddress==''){
                         this.$message({
                             message: '必填字段不能为空',
                             type: 'error',
@@ -1483,9 +1572,17 @@
                         });
                         return;
                     }
-                    if(that.tsbgcollcate.lanDNS2==''){
+                    if(!IP.test(that.tsbgcollcate.lanGateway)){
+                        that.$message({
+                            message: '请输入正确的网关地址',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(!DNSS.test(that.tsbgcollcate.lanDNS1)||!DNSS.test(that.tsbgcollcate.lanDNS2)){
                         this.$message({
-                            message: '必填字段不能为空',
+                            message: '请输入正确的DNS',
                             type: 'error',
                             showClose: true,
                         });
@@ -1524,7 +1621,7 @@
                         if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
                             if(that.tsbccollcate.wifi2ApKeyAuth==''){
                                 this.$message({
-                                    message: '必填字段不能为空',
+                                    message: '加密方式非NONE时,认证秘钥不能为空',
                                     type: 'error',
                                     showClose: true,
                                 });
@@ -1590,7 +1687,7 @@
                         if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
                             if(that.tsbccollcate.wifi5ApKeyAuth==''){
                                 this.$message({
-                                    message: '必填字段不能为空',
+                                    message: '加密方式非NONE时,认证秘钥不能为空',
                                     type: 'error',
                                     showClose: true,
                                 });
@@ -1636,13 +1733,51 @@
                         }
                     }
                     if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
-                            this.$message({
-                                message: '必填字段不能为空',
+                        if(!IP.test(that.tsbctsbacaollcate.wanIP)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                            if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                that.$message({
+                                    message: '请输入正确的网关地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbctsbacaollcate.ipType=='PPPOE'){
@@ -1653,6 +1788,26 @@
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     that.showtype = '2'
@@ -1669,13 +1824,51 @@
                         return;
                     }
                     if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
-                            this.$message({
-                                message: '必填字段不能为空',
+                        if(!IP.test(that.tsbctsbacaollcate.wanIP)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                            if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                that.$message({
+                                    message: '请输入正确的网关地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbctsbacaollcate.ipType=='PPPOE'){
@@ -1686,6 +1879,26 @@
                                 showClose: true,
                             });
                             return;
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                that.$message({
+                                    message: '请输入正确的DNS地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                         }
                     }
                     if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
@@ -1703,6 +1916,42 @@
                             showClose: true,
                         });
                         return;
+                    }
+                    if(that.tsbacaollcate.wifi2EncryptionMode=='0'){}else{
+                        if(that.tsbacaollcate.wifi2KeyAuth==''){
+                            this.$message({
+                                message: '加密方式非NONE时,认证秘钥不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
+                            this.$message({
+                                message: '认证秘钥不能有中文字符',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                    }
+                    if(that.tsbacaollcate.wifi5EncryptionMode=='0'){}else{
+                        if(that.tsbacaollcate.wifi5KeyAuth==''){
+                            this.$message({
+                                message: '加密方式非NONE时,认证秘钥不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(result.test(that.tsbacaollcate.wifi5KeyAuth)){
+                            this.$message({
+                                message: '认证秘钥不能有中文字符',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
                     }
                     if(that.valuetwo=='TSBA221'){}else{
                         if(that.tsbacaollcate.wifi5SSID==''){
@@ -1725,23 +1974,21 @@
                 var equipmentIds = []; //设备ID
                 var groupids = []; //设备组ID
                 var url = '';
+                var array = [];
                 if(this.configType=='0'){
                     //中文验证
-                var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
-                var that = this;
-                // that.uploadscope()
-                //tsbg
-                if(this.radio2=='0'){
-                    if(that.templateName==''||that.valuetwo==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbgcollcate.ipType=='STATIC'){
-                        if(that.tsbgcollcate.wanIP==''||that.tsbgcollcate.wanSubnetmask==''){
+                    var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+                    //IP
+                    var IP = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/
+                    //子网掩码
+                    var exp=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
+                    //DNS
+                    var DNSS=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
+                    var that = this;
+                    // that.uploadscope()
+                    //tsbg
+                    if(this.radio2=='0'){
+                        if(that.templateName==''||that.valuetwo==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1749,71 +1996,56 @@
                             });
                             return;
                         }
-                    }
-                    if(that.tsbgcollcate.ipType=='PPPOE'){
-                        if(that.tsbgcollcate.wanPPPoEUsername==''||that.tsbgcollcate.wanPPPoEPassword==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
+                        if(that.tsbgcollcate.ipType=='STATIC'){
+                            if(!IP.test(that.tsbgcollcate.wanIP)){
+                                that.$message({
+                                    message: '请输入正确的IP地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(!exp.test(that.tsbgcollcate.wanSubnetmask)){
+                                that.$message({
+                                    message: '请输入正确的子网掩码',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbgcollcate.wanGateway==''){}else{
+                                if(!IP.test(that.tsbgcollcate.wanGateway)){
+                                    that.$message({
+                                        message: '请输入正确的网关地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbgcollcate.wanDNS1==''){}else{
+                                if(!DNSS.test(that.tsbgcollcate.wanDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbgcollcate.wanDNS2==''){}else{
+                                if(!DNSS.test(that.tsbgcollcate.wanDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
                         }
-                    }
-                    if(that.tsbgcollcate.lanIp==''||that.tsbgcollcate.lanSubnetmask==''||that.tsbgcollcate.lanStartAddress==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbgcollcate.lanEndAddress==''||that.tsbgcollcate.lanGateway==''||that.tsbgcollcate.lanDNS1==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbgcollcate.lanDNS2==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                }
-                //tsbc
-                if(this.radio2=='1'){
-                    if(that.templateName==''||that.valuetwo==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbccollcate.wifi2WorkMode=='AP'){
-                        if(that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi2ApKeyAuth==''){
+                        if(that.tsbgcollcate.ipType=='PPPOE'){
+                            if(that.tsbgcollcate.wanPPPoEUsername==''||that.tsbgcollcate.wanPPPoEPassword==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -1821,19 +2053,79 @@
                                 });
                                 return;
                             }
-                            if(result.test(that.tsbccollcate.wifi2ApKeyAuth)){
-                                this.$message({
-                                    message: '认证秘钥不能有中文字符',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
+                            if(that.tsbgcollcate.wanPPPoEDNS1==''){}else{
+                                if(!DNSS.test(that.tsbgcollcate.wanPPPoEDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
                             }
+                            if(that.tsbgcollcate.wanPPPoEDNS2==''){}else{
+                                if(!DNSS.test(that.tsbgcollcate.wanPPPoEDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(!IP.test(that.tsbgcollcate.lanIp)){
+                            that.$message({
+                                message: '请输入正确的IP地址',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(!exp.test(that.tsbgcollcate.lanSubnetmask)){
+                            that.$message({
+                                message: '请输入正确的子网掩码',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbgcollcate.lanStartAddress==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbgcollcate.lanEndAddress==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(!IP.test(that.tsbgcollcate.lanGateway)){
+                            that.$message({
+                                message: '请输入正确的网关地址',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(!DNSS.test(that.tsbgcollcate.lanDNS1)||!DNSS.test(that.tsbgcollcate.lanDNS2)){
+                            this.$message({
+                                message: '请输入正确的DNS',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
                         }
                     }
-                    if(that.tsbccollcate.wifi2WorkMode=='Station'){
-                        // that.tsbccollcate.wifi2StaPriority==''||
-                        if(that.tsbccollcate.wifi2StaSSID==''){
+                    //tsbc
+                    if(this.radio2=='1'){
+                        if(that.templateName==''||that.valuetwo==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1841,74 +2133,8 @@
                             });
                             return;
                         }
-                        if(that.tsbccollcate.wifi2StaEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi2StaKeyAuth==''){
-                                this.$message({
-                                    message: '必填字段不能为空',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
-                            }
-                            if(result.test(that.tsbccollcate.wifi2StaKeyAuth)){
-                                this.$message({
-                                    message: '认证秘钥不能有中文字符',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
-                            }
-                        }
-                        
-                    }
-                    if(that.tsbccollcate.wifi5WorkMode=='AP'){
-                        if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi5ApKeyAuth==''){
-                                this.$message({
-                                    message: '必填字段不能为空',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
-                            }
-                            if(result.test(that.tsbccollcate.wifi5ApKeyAuth)){
-                                this.$message({
-                                    message: '认证秘钥不能有中文字符',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
-                            }
-                        }
-                    }
-                    if(that.tsbccollcate.wifi5WorkMode=='Station'){
-                        // that.tsbccollcate.wifi5StaPriority==''||
-                        if(that.tsbccollcate.wifi5StaKeyAuth==''||that.tsbccollcate.wifi5StaSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi5StaKeyAuth==''){
+                        if(that.tsbccollcate.wifi2WorkMode=='AP'){
+                            if(that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -1916,18 +2142,212 @@
                                 });
                                 return;
                             }
-                            if(result.test(that.tsbccollcate.wifi5StaKeyAuth)){
+                            if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
                                 this.$message({
-                                    message: '认证秘钥不能有中文字符',
+                                    message: '必填字段不能为空',
                                     type: 'error',
                                     showClose: true,
                                 });
                                 return;
                             }
+                            if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi2ApKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(result.test(that.tsbccollcate.wifi2ApKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
                         }
+                        if(that.tsbccollcate.wifi2WorkMode=='Station'){
+                            // that.tsbccollcate.wifi2StaPriority==''||
+                            if(that.tsbccollcate.wifi2StaSSID==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbccollcate.wifi2StaEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi2StaKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(result.test(that.tsbccollcate.wifi2StaKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            
+                        }
+                        if(that.tsbccollcate.wifi5WorkMode=='AP'){
+                            if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi5ApKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(result.test(that.tsbccollcate.wifi5ApKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(that.tsbccollcate.wifi5WorkMode=='Station'){
+                            // that.tsbccollcate.wifi5StaPriority==''||
+                            if(that.tsbccollcate.wifi5StaKeyAuth==''||that.tsbccollcate.wifi5StaSSID==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi5StaKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(result.test(that.tsbccollcate.wifi5StaKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.ipType=='STATIC'){
+                            if(!IP.test(that.tsbctsbacaollcate.wanIP)){
+                                that.$message({
+                                    message: '请输入正确的IP地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
+                                that.$message({
+                                    message: '请输入正确的子网掩码',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                                if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                    that.$message({
+                                        message: '请输入正确的网关地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.ipType=='PPPOE'){
+                            if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        that.showtype = '2'
+                        that.uploadscope()
                     }
-                    if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
+                    //tsba
+                    if(this.radio2=='2'){
+                        if(that.templateName==''||that.valuetwo==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1935,9 +2355,85 @@
                             });
                             return;
                         }
-                    }
-                    if(that.tsbctsbacaollcate.ipType=='PPPOE'){
-                        if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                        if(that.tsbctsbacaollcate.ipType=='STATIC'){
+                            if(!IP.test(that.tsbctsbacaollcate.wanIP)){
+                                that.$message({
+                                    message: '请输入正确的IP地址',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
+                                that.$message({
+                                    message: '请输入正确的子网掩码',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                                if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                    that.$message({
+                                        message: '请输入正确的网关地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(that.tsbctsbacaollcate.ipType=='PPPOE'){
+                            if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1945,22 +2441,7 @@
                             });
                             return;
                         }
-                    }
-                    that.showtype = '2'
-                    that.uploadscope()
-                }
-                //tsba
-                if(this.radio2=='2'){
-                    if(that.templateName==''||that.valuetwo==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(that.tsbctsbacaollcate.wanIP==''||that.tsbctsbacaollcate.wanSubnetmask==''){
+                        if(that.tsbacaollcate.wifi2Channel==''||that.tsbacaollcate.wifi2LaunchPower==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1968,9 +2449,7 @@
                             });
                             return;
                         }
-                    }
-                    if(that.tsbctsbacaollcate.ipType=='PPPOE'){
-                        if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                        if(that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5Bandwidth==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
@@ -1978,42 +2457,17 @@
                             });
                             return;
                         }
+                        if(that.tsbacaollcate.wifi5Channel==''||that.tsbacaollcate.wifi5LaunchPower==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }                   
+                        that.showtype = '2'
+                        that.uploadscope()
                     }
-                    if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi2Channel==''||that.tsbacaollcate.wifi2LaunchPower==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5Bandwidth==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi5Channel==''||that.tsbacaollcate.wifi5LaunchPower==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }                   
-                    that.showtype = '2'
-                    that.uploadscope()
-                }
                 }
                 if(that.radio2=='0'){
                     if(that.addrelative == '0'){url='template/addTsbgTemplate'}
@@ -2026,12 +2480,18 @@
                     $.extend(data,that.tsbccollcate,that.tsbctsbacaollcate)
                     data.listType = that.panel
                     if(that.panel=='0'){
+                        for(var i=0;i<that.panelTable.length;i++){
+                            array.push(that.panelTable[i].MAC)
+                        }
                         //白名单
-                        data.listContent = that.panelTabletwo.join(',')
+                        data.listContent = array.join(',')
                     }
                     if(that.panel=='1'){
+                        for(var i=0;i<that.panelTabletwo.length;i++){
+                            array.push(that.panelTabletwo[i].MAC)
+                        }
                         //黑名单
-                        data.listContent = that.panelTable.join(',')
+                        data.listContent = array.join(',')
                     }
                 }
                 if(that.radio2=='2'){
@@ -2040,12 +2500,18 @@
                     $.extend(data,that.tsbacaollcate,that.tsbctsbacaollcate)
                     data.listType = that.panel
                     if(that.panel=='0'){
+                        for(var i=0;i<that.panelTable.length;i++){
+                            array.push(that.panelTable[i].MAC)
+                        }
                         //白名单
-                        data.listContent = that.panelTabletwo.join(',')
+                        data.listContent = array.join(',')
                     }
                     if(that.panel=='1'){
+                        for(var i=0;i<that.panelTabletwo.length;i++){
+                            array.push(that.panelTabletwo[i].MAC)
+                        }
                         //黑名单
-                        data.listContent = that.panelTable.join(',')
+                        data.listContent = array.join(',')
                     }
                 }
                 if(that.valuethree=='0'){
@@ -2229,13 +2695,15 @@
             //黑白名单
             paaelMACS(){
                 this.paaelMAC = true;
+                this.panelinput = ''
             },
             //添加黑白名单
             panelMACT(){
                 var data = {}
-                if(this.panelinput==''){
+                var reg_name=/[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}/
+                if(!reg_name.test(this.panelinput)){
                     this.$message({
-                        message: 'MAC不能为空',
+                        message: '请输入正确的MAC地址',
                         type: 'error',
                         showClose: true,
                     });

@@ -172,8 +172,8 @@
                                 </el-table>
                                 <div class="block">
                                     <el-pagination
-                                    @size-change="handleSizeChange"
-                                    @current-change="handleCurrentChange"
+                                    @size-change="handleSizeChange2"
+                                    @current-change="handleCurrentChange2"
                                     :current-page="pageIndex2"
                                     :page-sizes="[10, 20, 30, 50]"
                                     :page-size="pageSize2"
@@ -301,6 +301,12 @@
                                 var two = 100 - data.result[i].cpuUsageRate;
                                 var ECdata = that.$echarts.init($('.dataStatistics_top>div').eq(i)[0])
                                 ECdata.setOption({
+                                    title : {
+                                        text: data.result[i].MAC,
+                                        subtext: '设备MAC',
+                                        x:'left',
+                                        textStyle: {fontSize:14,fontWeight:'bold'}
+                                    },
                                     tooltip: {
                                         trigger: 'item',
                                         formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -308,6 +314,7 @@
                                     legend: {
                                         orient: 'vertical',
                                         x: 'left',
+                                        y: 'bottom',
                                         data:['cpu使用率','cpu剩余率']
                                     },
                                     series: [
@@ -341,6 +348,12 @@
                                         }
                                     ]
                                 })
+                            }
+                            for(var i=0;i<data.result.length;i++){
+                                $('#EC'+i).append('<div style="position:absolute;left:5px;top:42px;">'
+                                +"<ul style='list-style:none;width:100%;text-align: left;font-size:14px;color: #B4B4B4;padding:0;'>"
+                                +"<li>CPU:"+data.result[i].cpuUsageRate+"%</li>"+"<li>内存:"+data.result[i].memoryUsageRate+"%</li>"+
+                                "<li>负载:"+data.result[i].load+"</li>"+"<li>用户:"+data.result[i].ueSum+"</li>"+"</ul>"+'</div>')
                             }
                         }else{
                             that.errorCode(data.errorCode)
@@ -385,6 +398,14 @@
             },
             //查询页面搜索
             tableDataSG(){
+                this.readytwo()
+            },
+            handleSizeChange2(val){
+                this.pageSize2 = val
+                this.readytwo()
+            },
+            handleCurrentChange2(val){
+                this.pageIndex2 = val
                 this.readytwo()
             },
             readytwo(){
@@ -444,16 +465,14 @@
                             if(data.errorCode=='0'){
                                 var one = [];
                                 var two = [];
+                                var array = data.links.split(',')
+                                console.log(array)
                                 for(var i=0;i<data.result.length;i++){
                                     one.push(data.result[i].ts)
-                                    if(data.result[i].currentTnw=='eth0.1'){
-                                        two.push(0)
-                                    }
-                                    if(data.result[i].currentTnw=='ath0'){
-                                        two.push(1)
-                                    }
-                                    if(data.result[i].currentTnw=='ath2'){
-                                        two.push(2)
+                                    for(var j=0;j<array.length;j++){
+                                        if(data.result[i].originalTnw==array[j]){
+                                            two.push(j)
+                                        }
                                     }
                                 }
                                 $('#query').css('width',width).css('height',height);
@@ -485,11 +504,36 @@
                                             name:'时间',
                                             data: one //时间
                                         },
+                                        axisLabel:{
+                                            interval: 0,  
+                                            formatter:function(value)  
+                                            {  
+                                                var ret = "";//拼接加\n返回的类目项  
+                                                var maxLength = 10;//每项显示文字个数  
+                                                var valLength = value.length;//X轴类目项的文字个数  
+                                                var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数  
+                                                if (rowN > 1)//如果类目项的文字大于3,  
+                                                {  
+                                                    for (var i = 0; i < rowN; i++) {  
+                                                        var temp = "";//每次截取的字符串  
+                                                        var start = i * maxLength;//开始截取的位置  
+                                                        var end = start + maxLength;//结束截取的位置  
+                                                        //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧  
+                                                        temp = value.substring(start, end) + "\n";  
+                                                        ret += temp; //凭借最终的字符串  
+                                                    }  
+                                                    return ret;  
+                                                }  
+                                                else {  
+                                                    return value;  
+                                                }  
+                                            }  
+                                        },
                                         yAxis : [
                                             {
                                                 type : 'category',
                                                 name:'接口',
-                                                data: ['eth0.1','ath0','ath2']
+                                                data: array
                                             }
                                         ],
                                         series: [
@@ -526,12 +570,14 @@
                         if(data.errorCode=='0'){
                             that.options2 = data.result[0].children
                             that.value2 = data.result[0].children[0].value
-                            // that.ready()
                         }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
+            }else{
+                that.value2 = sessionStorage.departmentId
+                that.ready()
             }
         },
     }
@@ -541,8 +587,8 @@
 .dataStatistics_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;padding-left: 10px;}
 .dataStatistics_nav>i{font-size: 23px;}
 .dataStatistics_main{position:absolute;top:55px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;background-color: #FFFFFF;border: 1px solid #c4c4c4;border-radius: 0 0 4px 4px;}
-.dataStatistics_top{width: 100%;height: 180px;display: flex;flex-wrap:wrap;margin-top: 10px;justify-content: center;overflow: auto;}
-.dataStatistics_bottom{width: 100%;height: auto;position: absolute;top:180px;bottom: 0;}
+.dataStatistics_top{width: 100%;height: 195px;display: flex;flex-wrap:wrap;margin-top: 5px;justify-content: center;overflow: auto;}
+.dataStatistics_bottom{width: 100%;height: auto;position: absolute;top:195px;bottom: 0;}
 .dataStatistics_bottom_top{margin-bottom:5px;text-align: left;padding-left:10px;}
 .dataStatistics_bottom_top>span{display: inline-block;margin-left:20px; }
 .dataStatistics_bottom_center{position:absolute;left:0;right:12px;height:1px;background: black;}

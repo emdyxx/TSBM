@@ -44,10 +44,10 @@
                                     <h4 class="modal-title" id="myModalLabel">添加设备</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
+                                    <!-- <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
                                     <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#f4ea2a;margin-right:20px;">tsbg</i>
-                                    <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1afa29;">tsba</i>
-                                    <div style="margin-top:30px;">
+                                    <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1afa29;">tsba</i> -->
+                                    <div>
                                         <el-radio-group v-model.lazy="radio2" @change="selected">
                                             <el-radio :label="1">tsbc</el-radio>
                                             <el-radio :label="0">tsbg</el-radio>

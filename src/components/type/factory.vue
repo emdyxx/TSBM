@@ -65,7 +65,7 @@ export default {
             serverurl:localStorage.serverurl,
             select: false ,
             options: [],
-            value: '1',
+            value: '',
             EquipmentCount:{}, //设备统计信息
         }
     },
@@ -96,9 +96,9 @@ export default {
                 success:function(data){
                     if(data.errorCode=='0'){
                         that.EquipmentCount = data.result
-                        var tsbc = data.result.tsbcOnline + data.result.tsbcSum
-                        var tsba = data.result.tsbaOnline + data.result.tsbaSum
-                        var tsbg = data.result.tsbgOnline + data.result.tsbgSum
+                        var tsbc = data.result.tsbcSum
+                        var tsba = data.result.tsbaSum
+                        var tsbg = data.result.tsbgSum
                         myChartthree.setOption({
                             title : {
                                 text: '',
@@ -138,210 +138,216 @@ export default {
                     }
                 }
             })
-            //获取2.4G频谱信道分布图
-            $.ajax({
-                type:'get',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'statistics/getwifi2ChannelCount',
-                data:data,
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        var datasort = [];
-                        var datas = [];
-                        for(var i=0;i<data.result.length;i++){
-                            if(data.result[i].wifi2Channel==i+1){
-                                datasort.push(data.result[i])
+            setTimeout(function(){
+                //获取2.4G频谱信道分布图
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'statistics/getwifi2ChannelCount',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            var datasort = [];
+                            var datas = [];
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].wifi2Channel==i+1){
+                                    datasort.push(data.result[i])
+                                }
                             }
-                        }
-                        for(var i=0;i<datasort.length;i++){
-                            if(datasort[i].wifi2Channel==''){
+                            for(var i=0;i<datasort.length;i++){
+                                if(datasort[i].wifi2Channel==''){
 
-                            }else{
-                                datas.push(datasort[i].total)
-                            } 
+                                }else{
+                                    datas.push(datasort[i].total)
+                                } 
+                            }
+                            myCharttwo.setOption({
+                                color: ['#3398DB'],
+                                tooltip : {
+                                    trigger: 'axis',
+                                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '20%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                xAxis : [
+                                    {
+                                        type : 'category',
+                                        data : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11','12','13'],
+                                        axisTick: {
+                                            alignWithLabel: true
+                                        },
+                                        name:'无线频率'
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'value',
+                                        name:'设备数量',
+                                        max:10,
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'使用数量',
+                                        type:'bar',
+                                        barWidth: '35%',
+                                        data:datas
+                                    }
+                                ]
+                            })
                         }
-                        myCharttwo.setOption({
-                            color: ['#3398DB'],
-                            tooltip : {
-                                trigger: 'axis',
-                                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                                }
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '20%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            xAxis : [
-                                {
-                                    type : 'category',
-                                    data : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11','12','13'],
-                                    axisTick: {
-                                        alignWithLabel: true
-                                    },
-                                    name:'无线频率'
-                                }
-                            ],
-                            yAxis : [
-                                {
-                                    type : 'value',
-                                    name:'设备数量',
-                                    max:10,
-                                }
-                            ],
-                            series : [
-                                {
-                                    name:'使用数量',
-                                    type:'bar',
-                                    barWidth: '35%',
-                                    data:datas
-                                }
-                            ]
-                        })
                     }
-                }
-            })
-            //获取2.5G频谱信道分布图
-            $.ajax({
-                type:'get',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'statistics/getwifi5ChannelCount',
-                data:data,
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        var datas = [];
-                        data.result.sort(function(a,b){
-                            return Number(a.wifi5Channel) > Number(b.wifi5Channel)
-                        })
-                        for(var i=0;i<data.result.length;i++){
-                            if(data.result[i].wifi5Channel==''){
+                })
+            },200)
+            setTimeout(function(){
+                //获取2.5G频谱信道分布图
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'statistics/getwifi5ChannelCount',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            var datas = [];
+                            data.result.sort(function(a,b){
+                                return Number(a.wifi5Channel) > Number(b.wifi5Channel)
+                            })
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].wifi5Channel==''){
 
-                            }else{
-                                datas.push(data.result[i].total)
-                            } 
+                                }else{
+                                    datas.push(data.result[i].total)
+                                } 
+                            }
+                            myChartfour.setOption({
+                                color: ['#3398DB'],
+                                tooltip : {
+                                    trigger: 'axis',
+                                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                    }
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '20%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                xAxis : [
+                                    {
+                                        type : 'category',
+                                        data : ['36', '40', '44', '48', '149', '153', '157', '161', '165'],
+                                        axisTick: {
+                                            alignWithLabel: true
+                                        },
+                                        name:'无线频率'
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'value',
+                                        name:'设备数量',
+                                        max:10,
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'使用数量',
+                                        type:'bar',
+                                        barWidth: '35%',
+                                        data:datas
+                                    }
+                                ]
+                            })
                         }
-                        myChartfour.setOption({
-                            color: ['#3398DB'],
-                            tooltip : {
-                                trigger: 'axis',
-                                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                                }
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '20%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            xAxis : [
-                                {
-                                    type : 'category',
-                                    data : ['36', '40', '44', '48', '149', '153', '157', '161', '165'],
-                                    axisTick: {
-                                        alignWithLabel: true
-                                    },
-                                    name:'无线频率'
-                                }
-                            ],
-                            yAxis : [
-                                {
-                                    type : 'value',
-                                    name:'设备数量',
-                                    max:10,
-                                }
-                            ],
-                            series : [
-                                {
-                                    name:'使用数量',
-                                    type:'bar',
-                                    barWidth: '35%',
-                                    data:datas
-                                }
-                            ]
-                        })
                     }
-                }
-            })
-            //获取虚拟链路统计数据
-            $.ajax({
-                type:'get',
-                async:true,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'statistics/getTsbcVirtuaLinkCount',
-                data:data,
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        var one = '';var two = '';var three = '';
-                        for(var i='0';i<data.result.length;i++){
-                            if(data.result[i].currentLink=='ath0'){
-                                if(data.result[i].sum==''){
-                                    one = 0
-                                }else{
-                                    one = data.result[i].sum
-                                }
-                            }
-                            if(data.result[i].currentLink=='ath1'){
-                                if(data.result[i].sum==''){
-                                    two = 0
-                                }else{
-                                    two = data.result[i].sum
-                                }
-                            }
-                            if(data.result[i].currentLink=='eth0.1'){
-                                if(data.result[i].sum==''){
-                                    three = 0
-                                }else{
-                                    three = data.result[i].sum
-                                }
-                            }
-                        }
-                        myChartone.setOption({
-                            title : {
-                                text: '',
-                                subtext: '',
-                                x:'center'
-                            },
-                            tooltip : {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                orient: 'vertical',
-                                left: 'left',
-                                data: ['2G','5G','ETH']
-                            },
-                            series : [
-                                {
-                                    name: '使用数量',
-                                    type: 'pie',
-                                    radius : '55%',
-                                    center: ['50%', '60%'],
-                                    data:[
-                                        {value:one, name:'2G'},
-                                        {value:two, name:'5G'},
-                                        {value:three, name:'ETH'}
-                                    ],
-                                    itemStyle: {
-                                        emphasis: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
+                })  
+            },400)
+            setTimeout(function(){
+                //获取虚拟链路统计数据
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'statistics/getTsbcVirtuaLinkCount',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            var one = '';var two = '';var three = '';
+                            for(var i='0';i<data.result.length;i++){
+                                if(data.result[i].currentLink=='ath0'){
+                                    if(data.result[i].sum==''){
+                                        one = 0
+                                    }else{
+                                        one = data.result[i].sum
                                     }
                                 }
-                            ]
-                        })
+                                if(data.result[i].currentLink=='ath1'){
+                                    if(data.result[i].sum==''){
+                                        two = 0
+                                    }else{
+                                        two = data.result[i].sum
+                                    }
+                                }
+                                if(data.result[i].currentLink=='eth0.1'){
+                                    if(data.result[i].sum==''){
+                                        three = 0
+                                    }else{
+                                        three = data.result[i].sum
+                                    }
+                                }
+                            }
+                            myChartone.setOption({
+                                title : {
+                                    text: '',
+                                    subtext: '',
+                                    x:'center'
+                                },
+                                tooltip : {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient: 'vertical',
+                                    left: 'left',
+                                    data: ['2G','5G','ETH']
+                                },
+                                series : [
+                                    {
+                                        name: '使用数量',
+                                        type: 'pie',
+                                        radius : '55%',
+                                        center: ['50%', '60%'],
+                                        data:[
+                                            {value:one, name:'2G'},
+                                            {value:two, name:'5G'},
+                                            {value:three, name:'ETH'}
+                                        ],
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
+                                        }
+                                    }
+                                ]
+                            })
+                        }
                     }
-                }
-            })
+                })
+            },600)
         },
         //部门change事件
         echartstype(){

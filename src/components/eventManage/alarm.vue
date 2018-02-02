@@ -116,6 +116,12 @@
                         </template>  
                     </el-table-column>
                     <el-table-column
+                    prop="model"
+                    label="设备型号"
+                    align='center'
+                    width='180'>
+                    </el-table-column>
+                    <el-table-column
                     prop="ts"
                     label="告警时间"
                     align='center'>
@@ -154,7 +160,7 @@
                                     <tr>
                                         <td>设备名称</td>
                                         <td>{{detail.nickname}}</td>
-                                        <td>MAC地址</td>
+                                        <td>设备MAC</td>
                                         <td>{{detail.MAC}}</td>
                                     </tr>
                                     <tr>
@@ -165,8 +171,8 @@
                                             <span v-if="detail.level=='3'">三级</span>
                                             <span v-if="detail.level=='4'">四级</span>
                                         </td>
-                                        <td>设备类型</td>
-                                        <td>{{detail.type}}</td>
+                                        <td>TSBG MAC</td>
+                                        <td>{{detail.senderMAC}}</td>
                                     </tr>
                                     <tr>
                                         <td>告警时间</td>
@@ -176,7 +182,7 @@
                                     </tr>
                                     <tr>
                                         <td>IP地址</td>
-                                        <td>{{detail.lanIPX}}</td>
+                                        <td>{{detail.IP}}</td>
                                         <td>启动时间</td>
                                         <td>{{detail.startTime}}</td>
                                     </tr>
@@ -272,7 +278,7 @@
                         level:that.value,
                         type:that.value2,
                         MAC:that.MAC,
-                        hardwareVersion:that.hardwareVersion
+                        model:that.hardwareVersion
                     },
                     success:function(data){
                         if(data.errorCode=='0'){

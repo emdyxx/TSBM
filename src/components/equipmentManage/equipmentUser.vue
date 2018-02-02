@@ -1,7 +1,7 @@
 <template>
     <div class="equipmentUser">
         <div class="equipmentUser_nav">
-            设备管理<i class="iconfont icon-icon"></i>终端用户
+            终端管理<i class="iconfont icon-icon"></i>终端用户
         </div>
         <div class="equipmentUser_main">
             <el-tabs type="border-card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
@@ -77,7 +77,7 @@
                             prop="terminalType"
                             label="终端类型"
                             align='center'
-                            width="80">
+                            width="100">
                             </el-table-column>
                             <el-table-column
                             prop="updateTime"
@@ -572,7 +572,7 @@
                     pageSize=that.pageSize;
                     url='terminal/getAllTerminalList';
                     data.equipmentMAC=that.search.equipmentMAC
-                    data.ueMAC=that.search.ueMAC
+                    data.terminalMAC=that.search.terminalMAC
                 }
                 if(that.activeName=='2'){
                     pageIndex=that.pageIndex2;
@@ -580,7 +580,7 @@
                     url='terminal/getUeList';
                     data.equipmentMAC=that.search.equipmentMAC
                     data.authStatus = that.Authenticationvalue
-                    data.staMAC=that.search.staMAC
+                    data.ueMAC=that.search.ueMAC
                 }
                 if(that.activeName=='3'){
                     pageIndex=that.pageIndex3;
@@ -724,15 +724,7 @@
             addUser(){
                 var that = this;
                 var url = '';
-                var data = {
-                    departmentId:that.add.departmentId,
-                    ueMAC:that.add.ueMAC,
-                    authPwd:that.add.authPwd,
-                    ueType:that.add.ueType,
-                    nickname:that.add.nickname,
-                    remark:that.add.remark,
-                    ueIP:that.add.ueIP
-                };
+                var data = {};
                 if(that.add.ueMAC==''||that.add.ueType==''||that.add.nickname==''){
                     that.$message({
                         message: '温馨提示:必填数据不能为空',
@@ -753,12 +745,18 @@
                     }
                 }else{data.pwdType = '1'}
                 if(this.checkedtwo == false){data.autoIP = '0'}else{data.autoIP = '1'}
-                
                 if(this.statustype == '0'){url = 'terminal/addUe'}
                 if(this.statustype == '1'){
                     url = 'terminal/editUe';
                     data.id = that.SelectionChange[0].id
                 }
+                data.departmentId=that.add.departmentId,
+                data.ueMAC=that.add.ueMAC,
+                data.authPwd=that.add.authPwd,
+                data.ueType=that.add.ueType,
+                data.nickname=that.add.nickname,
+                data.remark=that.add.remark,
+                data.ueIP=that.add.ueIP
 
                 $.ajax({
                     type:'post',

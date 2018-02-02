@@ -28,7 +28,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" @click='imageSubmit' class="btn btn-primary">上传</button>
+                            <button type="button" @click='imageSubmit' class="btn btn-primary imageSubmit">上传</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -64,13 +64,13 @@
                                 <div>
                                     <el-radio-group v-model.lazy="radio2" @change="selectedmap">
                                         <el-radio :label="0">
-                                            <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png" alt="">
+                                            tsbg
                                         </el-radio>
                                         <el-radio :label="1">
-                                            <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png" alt="">
+                                            tsbc
                                         </el-radio>
                                         <el-radio :label="2">
-                                            <img style="width:20px;" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png" alt="">
+                                            tsba
                                         </el-radio>
                                     </el-radio-group>
                                 </div>
@@ -166,6 +166,9 @@
                 handleCurrent:[], //选中设备
                 mapcood:{},
                 mapcoordinate:[],
+                getZoom:11, //地图缩放级别
+                getlng:120.203479,
+                getlat:30.20003,
             }
         },
         mounted(){
@@ -226,7 +229,7 @@
                         }
                     }
                 }
-            },
+            }, 
             //管理员选择厂区change事件
             handleChange(val){
                 var that = this;
@@ -282,6 +285,7 @@
                 var formdate = new FormData();
                 var number;
                 var url='';
+                $('.imageSubmit').attr('disabled',true)
                 if(this.type=='1'){
                     number = this.sites.length
                     formdate.append("file", this.$refs.img1.files[0]);
@@ -313,9 +317,11 @@
                             showClose: true,
                         });
                         $('#myModal').modal('hide')
+                        $('.imageSubmit').removeAttr('disabled')
                         that.ready()
                     }else{
                         that.errorCode(res.errorCode)
+                        $('.imageSubmit').removeAttr('disabled')
                     }
                 }).fail(function(res) {
                 });
@@ -414,7 +420,7 @@
                         setTimeout(function(){
                             // 百度地图API功能
                             var map = new BMap.Map("allmap");    // 创建Map实例
-                            map.centerAndZoom(new BMap.Point(120.203479,30.20003), 11);  // 初始化地图,设置中心点坐标和地图级别
+                            map.centerAndZoom(new BMap.Point(120.203479,30.20003), that.getZoom);  // 初始化地图,设置中心点坐标和地图级别
                             map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
                             map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
                             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
@@ -432,9 +438,9 @@
                             success:function(data){
                                 that.mapcoordinate = data.result
                                 setTimeout(function(){
-                                        // 百度地图API功能
+                                        // 百度地图API功能  
                                         var map = new BMap.Map("allmap");    // 创建Map实例
-                                        map.centerAndZoom(new BMap.Point(120.203479,30.20003), 11);  // 初始化地图,设置中心点坐标和地图级别
+                                        map.centerAndZoom(new BMap.Point(that.getlng,that.getlat), that.getZoom);  // 初始化地图,设置中心点坐标和地图级别
                                         map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
                                         map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
                                         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
@@ -452,6 +458,7 @@
                                                             });
                                                         }else{
                                                             that.mapcood = e
+                                                            console.log()
                                                             if(localStorage.addequipments==false){
                                                                 that.$message({
                                                                     message: '您无此权限',
@@ -459,6 +466,9 @@
                                                                 });
                                                             }else{
                                                                 $('#myModalWIFIMap').modal('show')
+                                                                that.getZoom = map.getZoom()
+                                                                that.getlng = that.mapcood.lng
+                                                                that.getlat = that.mapcood.lat
                                                                 that.selectedmap()
                                                             }
                                                         } 
@@ -557,7 +567,7 @@
                             setTimeout(function(){
                                     // 百度地图API功能
                                     var map = new BMap.Map("allmap");    // 创建Map实例
-                                    map.centerAndZoom(new BMap.Point(120.203479,30.20003), 11);  // 初始化地图,设置中心点坐标和地图级别
+                                    map.centerAndZoom(new BMap.Point(that.getlng,that.getlat), that.getZoom);  // 初始化地图,设置中心点坐标和地图级别
                                     map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
                                     map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
                                     map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
@@ -594,6 +604,9 @@
                                                         });
                                                     }else{
                                                         $('#myModalWIFIMap').modal('show')
+                                                        that.getZoom = map.getZoom()
+                                                        that.getlng = that.mapcood.lng
+                                                        that.getlat = that.mapcood.lat
                                                         that.selectedmap()
                                                     }
                                                 } 

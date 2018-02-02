@@ -107,6 +107,7 @@ export default {
             }
             if(data.errorCode=='0'){
               sessionStorage.userName = data.result[0].userName
+              sessionStorage.id = data.result[0].id
               sessionStorage.departmentId = data.result[0].departmentId //判断是否是管理员字段
               that.$router.push({'path':'/index'})
             }
@@ -136,7 +137,7 @@ export default {
   display: -webkit-flex;
   justify-content: center;
   align-items: center;
-  background-image: url('http://192.168.70.83/TSBM-Manager/img/images/111.jpg');
+  background-image: url('http://192.168.10.211/TSBM-Manager/img/images/111.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
