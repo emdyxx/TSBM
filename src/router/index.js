@@ -393,7 +393,7 @@ export default new Router({
       component: index,
       children:[
         {//图表页面
-          path:'/echarts',
+          path:'/',
           name:'echarts',
           component:echarts,
           children:[

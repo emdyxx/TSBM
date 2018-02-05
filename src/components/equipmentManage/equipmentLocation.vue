@@ -492,17 +492,17 @@
                                         }
                                         map.addContextMenu(menu);
 
-                                        var greenA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var greenC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var greenG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var greenA = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var greenC = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var greenG = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
 
-                                        var offlineA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var offlineC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var offlineG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var offlineA = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var offlineC = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var offlineG = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
 
-                                        var redA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var redC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var redG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var redA = new BMap.Icon(localStorage.serverurl+"img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var redC = new BMap.Icon(localStorage.serverurl+"img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                        var redG = new BMap.Icon(localStorage.serverurl+"img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
                                         var marker = new Array();
                                         for(var i=0;i<that.mapcoordinate.length;i++){
                                             var point = new BMap.Point(that.mapcoordinate[i].coord.split(",")[0],that.mapcoordinate[i].coord.split(",")[1]);
@@ -618,17 +618,17 @@
                                     }
                                     map.addContextMenu(menu);
 
-                                    var greenA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                    var greenC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                    var greenG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenA = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenC = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenG = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
 
-                                    var offlineA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                    var offlineC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                    var offlineG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineA = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineC = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineG = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
 
-                                    var redA = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                    var redC = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                    var redG = new BMap.Icon("http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redA = new BMap.Icon(localStorage.serverurl+"img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redC = new BMap.Icon(localStorage.serverurl+"img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redG = new BMap.Icon(localStorage.serverurl+"img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
                                     var marker = new Array();
                                     for(var i=0;i<that.mapcoordinate.length;i++){
                                         var point = new BMap.Point(that.mapcoordinate[i].coord.split(",")[0],that.mapcoordinate[i].coord.split(",")[1]);

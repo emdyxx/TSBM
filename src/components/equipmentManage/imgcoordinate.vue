@@ -12,19 +12,19 @@
                     <img :src=imgUrl alt="" @mouseup="uplift" style="width: 100%;height: 100%;opacity: 0.6;">
                     <template v-for="(item,key) in imgdata">
                         <template v-if='item.equipmentType=="0"'>
-                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineG.png">
-                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenG.png">
-                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redG.png">
+                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineG.png'">
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/greenG.png'">
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'TSBM-Manager/img/mapimg/redG.png'">
                         </template>
                         <template v-if='item.equipmentType=="1"'>
-                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineC.png">
-                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenC.png">
-                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redC.png">
+                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineC.png'">
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src=serverurl+'img/mapimg/greenC.png'>
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src=serverurl+'img/mapimg/redC.png'>
                         </template>
                         <template v-if='item.equipmentType=="2"'>
-                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/offlineA.png">
-                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/greenA.png">
-                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" src="http://192.168.70.83/TSBM-Manager/img/mapimg/redA.png">
+                            <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineA.png'">
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/greenA.png'">
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/redA.png'">
                         </template>
                     </template>
                     <div class="contextmenu" :style="styleObject" v-if="opction">

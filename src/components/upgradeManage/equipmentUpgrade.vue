@@ -171,15 +171,15 @@
                 <div class="equipmentUpgrade_bottom_top">
                     <div class="equipmentUpgrade_formtwo">
                         <span>文件名称:</span>
-                        <input type="text" v-model.lazy="searchfilename" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="searchfilename" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>软件版本号:</span>
-                        <input type="text" v-model.lazy="softwareversion" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="softwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>硬件版本号:</span>
-                        <input type="text" v-model.lazy="hardwareversion" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="hardwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>升级包状态:</span>

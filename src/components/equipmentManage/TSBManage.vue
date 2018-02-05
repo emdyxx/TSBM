@@ -127,7 +127,7 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -260,7 +260,7 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -391,7 +391,7 @@
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
                             <span>硬件版本:</span>
-                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -2303,6 +2303,7 @@
                                     array = data.result.configInfo.listContent.split(",");
                                     var arr = {};
                                     for(var i=0;i<array.length;i++){
+                                        arr = {}
                                         arr.MAC = array[i]
                                         if(data.result.configInfo.listType=='0'){
                                             that.panelTable.push(arr)
@@ -2386,9 +2387,9 @@
                 var array = [];
                 var IP = /^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/
                 //子网掩码
-                var exp=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
+                var exp=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/;
                 //DNS
-                var DNSS=/^(254|252|248|240|224|192|128|0)\.0\.0\.0|255\.(254|252|248|240|224|192|128|0)\.0\.0|255\.255\.(254|252|248|240|224|192|128|0)\.0|255\.255\.255\.(254|252|248|240|224|192|128|0)$/;
+                var DNSS=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/;
                 if(that.lookoverType=='0'){
                     if(that.tsbgcollcate.ipType=='STATIC'){
                         if(!IP.test(that.tsbgcollcate.wanIP)){

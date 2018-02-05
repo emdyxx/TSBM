@@ -11,7 +11,7 @@
                     <div class="logManage_main_top">
                         <div class="logManage_form">
                             <span>用户名:</span>
-                            <input type="text" v-model.lazy="username"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                            <input type="text" v-model.lazy="username"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                         </div>
                         <div class="logManage_form">
                             <span>用户登录IP:</span>
@@ -86,7 +86,7 @@
                     <div class="logManage_main_top">
                         <div class="logManage_form">
                             <span>用户名:</span>
-                            <input type="text" v-model.lazy="usernametwo"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                            <input type="text" v-model.lazy="usernametwo"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                         </div>
                         <div class="logManage_form">
                             <span>日志类型:</span>

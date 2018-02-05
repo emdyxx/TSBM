@@ -99,11 +99,11 @@
                             <div class="inquire_top_main">
                                 <div class="inquire_formtwo">
                                     <span>MAC:</span>
-                                    <input v-model.lazy="MAC" type="text" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
+                                    <input v-model.lazy="MAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
                                 </div>
                                 <div class="inquire_formtwo">
                                     <span>型号:</span>
-                                    <input v-model.lazy="type" type="text" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入型号">
+                                    <input v-model.lazy="type" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入型号">
                                 </div>
                                 <div class="inquire_formtwo">
                                     <span>请选择时间范围:</span>

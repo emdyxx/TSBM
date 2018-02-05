@@ -72,7 +72,7 @@
                     </div> -->
                     <div class="departmentManage_formtwo">
                         <span>组织名称:</span>
-                        <input type="text" v-model.lazy="departmentName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
+                        <input type="text" v-model.lazy="departmentName"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
                     </div>
                     <!-- <div class="departmentManage_formtwo">
                         <span>地址:</span>

@@ -440,7 +440,6 @@ export default {
           for(var i=0;i<that.sites.length;i++){
             that.sites[i].id = String(that.sites[i].id)
           }
-          that.$router.push({'path':'/factory'})
         }else{
           that.errorCode(data.errorCode)
         }

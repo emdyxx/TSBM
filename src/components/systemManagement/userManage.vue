@@ -20,15 +20,15 @@
                         <div class="modal-body">
                             <div class="userManage_form">
                                 <span><i class="required">*</i>用户名:</span>
-                                <input type="text" v-model.lazy="userManageUsername" id="userManageUsername" maxlength="10" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                                <input type="text" v-model.lazy="userManageUsername" id="userManageUsername" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>密码:</span>
-                                <input type="text" v-model.lazy="userManagePassword" id="userManagePasswordture" maxlength="10" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入密码">
+                                <input type="text" v-model.lazy="userManagePassword" id="userManagePasswordture" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入密码">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>姓名:</span>
-                                <input type="text" v-model.lazy="userManageName" maxlength="10" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入姓名">
+                                <input type="text" v-model.lazy="userManageName" maxlength="20" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入姓名">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>性别:</span>
@@ -91,11 +91,11 @@
                 <div class="userManage_bottom_top">
                     <div class="userManage_formtwo">
                         <span>用户名:</span>
-                        <input type="text" v-model.lazy="username" maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="username" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="userManage_formtwo">
                         <span>姓名:</span>
-                        <input type="text" v-model.lazy="fullName"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户姓名">
+                        <input type="text" v-model.lazy="fullName"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户姓名">
                     </div>
                     <div class="userManage_formtwo">
                         <span>组织:</span>
