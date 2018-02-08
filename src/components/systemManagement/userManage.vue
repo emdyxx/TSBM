@@ -20,7 +20,7 @@
                         <div class="modal-body">
                             <div class="userManage_form">
                                 <span><i class="required">*</i>用户名:</span>
-                                <input type="text" v-model.lazy="userManageUsername" id="userManageUsername" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                                <input type="text" v-model.lazy="userManageUsername" id="userManageUsername" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'').replace(.replace(/^[\u4E00-\u9FA5]{1,10}$/,''),'')" placeholder="请输入用户名">
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>密码:</span>
@@ -390,6 +390,14 @@
                 if(result.test(this.userManagePassword)){
                     that.$message({
                         message: '密码字段不能有中文',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                if(this.userManagePassword.length<6){
+                    that.$message({
+                        message: '密码字段不得小于6位',
                         type: 'error',
                         showClose: true,
                     });

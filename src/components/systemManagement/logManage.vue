@@ -267,6 +267,7 @@
            },
            //登录日志搜索
            LoginSearch(){
+               this.pageIndex = 1
                this.ready();
            },
            //登录日志选择条数事件
@@ -317,6 +318,7 @@
            },
            //操作日志搜索
            operation(){
+               this.pageIndextwo = 1
                this.readytwo();
            },
            //操作日志选择条数事件

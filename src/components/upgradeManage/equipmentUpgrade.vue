@@ -1,7 +1,7 @@
 <template>
     <div class="equipmentUpgrade">
         <div class="equipmentUpgrade_nav">
-            升级管理<i class="iconfont icon-icon"></i>设备升级
+            设备管理<i class="iconfont icon-icon"></i>设备升级包
         </div>
         <div class="equipmentUpgrade_main">
             <div class="equipmentUpgrade_top">
@@ -556,6 +556,13 @@
                         return;
                     }
                 }
+                if(that.$refs.imgs.files[0]==''||that.$refs.imgs.files[0]==undefined){
+                    that.$message({
+                        type: 'error',
+                        message: '升级文件包不能为空!'
+                    });
+                    return;
+                }
                 that.percentageType = true;
                 setTimeout(function(){that.percentage=65},900)
                 var xhr = new XMLHttpRequest();
@@ -678,7 +685,8 @@
                             upgradeFileId:that.upgradeFileId,
                             upgradeOrder:that.typetwo,
                             equipmentIds:equipmentIds.join(','),
-                            groupids:groupids.join(',')
+                            groupids:groupids.join(','),
+                            summary:that.textarea,
                         },
                         success:function(data){
                             if(data.errorCode=='0'){

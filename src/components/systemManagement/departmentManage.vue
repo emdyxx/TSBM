@@ -40,19 +40,19 @@
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>地址:</span>
-                                <input type="text" v-model.lazy='departmentManageAddress' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
+                                <input type="text" v-model.lazy='departmentManageAddress' class="form-control" maxlength="50" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>电话:</span>
-                                <input type="text" v-model.lazy='departmentManagePhone' class="form-control" maxlength="16" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
+                                <input type="text" v-model.lazy='departmentManagePhone' class="form-control" maxlength="25" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>负责人:</span>
-                                <input type="text" v-model.lazy='departmentManagePrincipal' class="form-control" maxlength="15" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入负责人">
+                                <input type="text" v-model.lazy='departmentManagePrincipal' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入负责人">
                             </div>
                             <div class="departmentManage_form">
                                 <span><i class="required">*</i>邮箱:</span>
-                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="100" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
+                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="150" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -80,7 +80,7 @@
                     </div> -->
                     <div class="departmentManage_formtwo">
                         <span>联系电话:</span>
-                        <input type="text" v-model.lazy="phone"  maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入联系电话">
+                        <input type="text" v-model.lazy="phone"  maxlength="25" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入联系电话">
                     </div>
                     <el-button type="primary" icon="search" @click="tissueSearch" style="height:30px;" size='small'>搜索</el-button>
                 </div>
@@ -372,9 +372,9 @@
             //删除
             departmentManageDelete(){
                 var that= this;
-                if(that.sites.length==0){
+                if(that.sites.length==0||that.sites.length>=2){
                     that.$message({
-                        message: '请选择至少一条数据进行删除',
+                        message: '请选择一条数据进行删除',
                         type: 'error',
                         showClose: true,
                     });
@@ -384,11 +384,10 @@
                 for(var i=0;i<that.sites.length;i++){
                     userIds.push(that.sites[i].id)
                 }
-                that.$confirm('确认删除', '提示', {
+                that.$prompt('请输入登录密码确认删除', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
+                }).then(({ value }) => {
                     $.ajax({
                         type:'post',
                         async:true,
@@ -396,7 +395,8 @@
                         xhrFields:{withCredentials:true},
                         url:that.serverurl+'department/delDepartment',
                         data:{
-                            dpartmentIds:userIds.join(',')
+                            userPassword:value,
+                            dpartmentId:userIds.join(',')
                         },
                         success:function(data){
                             if(data.errorCode=='0'){

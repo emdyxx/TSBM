@@ -1,7 +1,7 @@
 <template>
     <div class="equipmentGroup">
         <div class="equipmentGroup_nav">
-            系统管理<i class="iconfont icon-icon"></i>分组管理
+            设备管理<i class="iconfont icon-icon"></i>分组管理
         </div>
         <div class='equipmentGroup_main'>
             <div class='equipmentGroup_top'>
@@ -530,7 +530,7 @@
 .equipmentGroup_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 .equipmentGroup_bottom_left{width: 200px;height: 100%;border-right: 1px solid #c4c4c4;}
 .equipmentGroup_bottom_left>div{border: none;text-align: left;}
-.equipmentGroup_bottom_right{position: absolute;left: 200px;right: 0;height: 100%;overflow: auto;}
+.equipmentGroup_bottom_right{position: absolute;left: 200px;right: 1px;height: 100%;width:auto;overflow: auto;}
 .equipmentGroup_bottom_right_left{position: absolute;left: 0;width: 45%;height: 100%;padding: 5px;}
 .equipmentGroup_bottom_right_center{position: absolute;left: 45%;width: 10%;height: 100%;}
 .equipmentGroup_bottom_right_right{position: absolute;left: 55%;width: 45%;height: 100%;padding: 5px;}

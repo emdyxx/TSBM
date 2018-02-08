@@ -10,7 +10,7 @@
             <div class="imgcoordinate_A_bottom">
                 <div class="imgcoordinate">
                     <img :src=imgUrl alt="" @mouseup="uplift" style="width: 100%;height: 100%;opacity: 0.6;">
-                    <template v-for="(item,key) in imgdata">
+                    <template v-for="item in imgdata">
                         <template v-if='item.equipmentType=="0"'>
                             <img v-if='item.online=="0"' :key="item.id" :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineG.png'">
                             <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/greenG.png'">
@@ -18,8 +18,8 @@
                         </template>
                         <template v-if='item.equipmentType=="1"'>
                             <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineC.png'">
-                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src=serverurl+'img/mapimg/greenC.png'>
-                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src=serverurl+'img/mapimg/redC.png'>
+                            <img v-if='item.online=="1"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/greenC.png'">
+                            <img v-if='item.online=="2"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/redC.png'">
                         </template>
                         <template v-if='item.equipmentType=="2"'>
                             <img v-if='item.online=="0"' :key="item.id" :title=item.MAC  @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineA.png'">

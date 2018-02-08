@@ -61,7 +61,7 @@
                             width="160">
                             </el-table-column>
                             <el-table-column
-                            prop="wanIPX"
+                            prop="wanIP"
                             label="ip地址"
                             align='center'
                             width="180">
@@ -184,7 +184,7 @@
                             width="160">
                             </el-table-column>
                             <el-table-column
-                            prop="wanIPX"
+                            prop="wanIP"
                             label="ip地址"
                             align='center'
                             width="160">
@@ -315,7 +315,7 @@
                             width="160">
                             </el-table-column>
                             <el-table-column
-                            prop="wanIPX"
+                            prop="wanIP"
                             label="ip地址"
                             align='center'
                             width="140">
@@ -446,7 +446,7 @@
                             width="160">
                             </el-table-column>
                             <el-table-column
-                            prop="wanIPX"
+                            prop="wanIP"
                             label="ip地址"
                             align='center'
                             width="180">
@@ -725,7 +725,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>ip地址:</td>
-                                                <td>{{lookdata.wanIPX}}</td>
+                                                <td>{{lookdata.wanIP}}</td>
                                                 <td>链接速率</td>
                                                 <td>{{lookdata.linkSpeed}}</td>
                                             </tr>
@@ -775,7 +775,7 @@
                                             </tr>
                                             <tr>
                                                 <td>ip地址:</td>
-                                                <td>{{lookdata.wanIPX}} </td>
+                                                <td>{{lookdata.wanIP}} </td>
                                                 <td>连接链路:</td>
                                                 <td>{{lookdata.currentLink}} </td>
                                             </tr>
@@ -874,7 +874,7 @@
                                             </tr>
                                             <tr>
                                                 <td>ip地址:</td>
-                                                <td>{{lookdata.wanIPX}} </td>
+                                                <td>{{lookdata.wanIP}} </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1040,10 +1040,10 @@
                                                     <tr>
                                                         <td><i class="required">*</i>用户名:</td>
                                                         <td>
-                                                            <input type="text" v-model.lazy="tsbgcollcate.wanPPPoEUsername" placeholder="请输入PPPoE用户名" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
+                                                            <input type="text" v-model.lazy="tsbgcollcate.wanPPPoEUsername" placeholder="请输入PPPoE用户名" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')">
                                                         </td>
                                                         <td><i class="required">*</i>密码:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPoE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPoE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>DNS1:</td>
@@ -1103,15 +1103,15 @@
                                         <!-- tsbc WIFI设置(2G) -->
                                         <div class="basicstatus_top">
                                             <div>
-                                                <el-radio-group v-model.lazy="tsbccollcate.wifi2Enable">
+                                                <el-radio-group v-model="tsbccollcate.wifi2Enable" @change="TSBCwifi2Enable2G">
                                                     <el-radio :label="1">启用</el-radio>
                                                     <el-radio :label="0">不启用</el-radio>
                                                 </el-radio-group>
                                             </div>
                                             工作模式:
-                                            <select v-model.lazy="tsbccollcate.wifi2WorkMode">
+                                            <select v-model="tsbccollcate.wifi2WorkMode" @change="tsbcwifi2WorkMode2g">
                                                 <option value="AP">AP</option>
-                                                <option value="Station">Station</option>
+                                                <option value="STA">STA</option>
                                             </select>
                                         </div>
                                         <div class="basicstatus_center"></div>
@@ -1120,19 +1120,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" style="width:110px;height:29px;">
-                                                                <option value="ht20">HT20</option>
-                                                                <option value="ht40">HT40</option>
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" class="tsbc2GselectAP" style="width:110px;height:29px;">
+                                                                <option value="HT20">HT20</option>
+                                                                <option value="HT40">HT40</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>信道:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi2ApChannel" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApChannel" class="tsbc2GselectAP" style="width:110px;height:29px;">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
@@ -1150,29 +1150,27 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi2ApLaunchPower" style="width:110px;height:29px;">
-                                                                <option value="Auto">Auto</option>
-                                                                <option value="27dBm">27 dBm</option>
-                                                                <option value="24dBm">24 dBm</option>
-                                                                <option value="20dBm">20 dBm</option>
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApLaunchPower" class="tsbc2GselectAP" style="width:110px;height:29px;">
+                                                                <option value="auto">auto</option>
+                                                                <option v-for="item in maxPower2G" :key="item.id" :value="item.maxPower">{{item.maxPower}}dBm</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi2ApEncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2ApEncryptionMode" class="tsbc2GselectAP" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
                                                         </td>
-                                                        <td>认证秘钥:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i v-if="tsbccollcate.wifi2ApEncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model.lazy="tsbccollcate.wifi2ApHideSSID">
+                                                            <el-radio-group v-model.lazy="tsbccollcate.wifi2ApHideSSID" :disabled='tsbc2Gradio'>
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -1181,23 +1179,23 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div v-if="tsbccollcate.wifi2WorkMode=='Station'" class="basicstatus_bottom">
+                                        <div v-if="tsbccollcate.wifi2WorkMode=='STA'" class="basicstatus_bottom">
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi2StaEncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi2StaEncryptionMode" class="tsbc2GselectSta" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><i class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i v-if="tsbccollcate.wifi2StaEncryptionMode=='1'" class="required">*</i>认证秘钥</td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
@@ -1222,15 +1220,15 @@
                                         <!-- tsbc WIFI设置(5G)-->
                                         <div class="basicstatus_top">
                                             <div>
-                                                <el-radio-group v-model.lazy="tsbccollcate.wifi5Enable">
+                                                <el-radio-group v-model.lazy="tsbccollcate.wifi5Enable" @change="TSBCwifi5Enable5G">
                                                     <el-radio :label="1">启用</el-radio>
                                                     <el-radio :label="0">不启用</el-radio>
                                                 </el-radio-group>
                                             </div>
                                             工作模式:
-                                            <select v-model.lazy="tsbccollcate.wifi5WorkMode">
+                                            <select v-model.lazy="tsbccollcate.wifi5WorkMode" @change="tsbcwifi2WorkMode5g">
                                                 <option value="AP">AP</option>
-                                                <option value="Station">Station</option>
+                                                <option value="STA">STA</option>
                                             </select>
                                         </div>
                                         <div class="basicstatus_center"></div>
@@ -1239,19 +1237,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" style="width:110px;height:29px;" name="" id="">
-                                                                <option value="ht20">HT20</option>
-                                                                <option value="ht40">HT40</option>
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
+                                                                <option value="HT20">HT20</option>
+                                                                <option value="HT40">HT40</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>信道:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi5ApChannel" style="width:110px;height:29px;" name="" id="">
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApChannel" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="36">36</option>
                                                                 <option value="40">40</option>
                                                                 <option value="44">44</option>
@@ -1265,24 +1263,22 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi5ApLaunchPower" style="width:110px;height:29px;" name="" id="">
-                                                                <option value="Auto">Auto</option>
-                                                                <option value="27dBm">27 dBm</option>
-                                                                <option value="24dBm">24 dBm</option>
-                                                                <option value="20dBm">20 dBm</option>
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApLaunchPower" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
+                                                                <option value="auto">auto</option>
+                                                                <option v-for="item in maxPower5G" :key="item.id" :value="item.maxPower">{{item.maxPower}}dBm</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi5ApEncryptionMode" style="width:110px;height:29px;" name="" id="">
+                                                            <select v-model.lazy="tsbccollcate.wifi5ApEncryptionMode" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
                                                         </td>
-                                                        <td>认证秘钥:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i v-if="tsbccollcate.wifi5ApEncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -1296,23 +1292,23 @@
                                                 </tbody>
                                             </table>
                                         </div>    
-                                        <div v-if="tsbccollcate.wifi5WorkMode=='Station'" class="basicstatus_bottom">
+                                        <div v-if="tsbccollcate.wifi5WorkMode=='STA'" class="basicstatus_bottom">
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbccollcate.wifi5StaEncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbccollcate.wifi5StaEncryptionMode" class="tsbc5GselectSta" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA/WPA2</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td><i class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i v-if="tsbccollcate.wifi5StaEncryptionMode=='1'" class="required">*</i>认证秘钥</td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
@@ -1370,9 +1366,9 @@
                                                 <tbody>
                                                     <tr>
                                                        <td><i class="required">*</i>用户名:</td>
-                                                       <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEUsername" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE用户名" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td> 
+                                                       <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEUsername" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE用户名" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td> 
                                                        <td><i class="required">*</i>密码:</td> 
-                                                       <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>  
+                                                       <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>  
                                                     </tr>
                                                     <tr>
                                                         <td>DNS1:</td>
@@ -1386,7 +1382,7 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi2G=='1'" title="2.4G配置" name="8" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi2Enable">
+                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi2Enable" @change="TSBAwifi2Enable2G">
                                                 <el-radio :label="1">启用</el-radio>
                                                 <el-radio :label="0">不启用</el-radio>
                                             </el-radio-group>
@@ -1397,19 +1393,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" style="width:110px;height:29px;">
-                                                                <option value="ht20">HT20</option>
-                                                                <option value="ht40">HT40</option>
+                                                            <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" class="tsba2Gselect" style="width:110px;height:29px;">
+                                                                <option value="HT20">HT20</option>
+                                                                <option value="HT40">HT40</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>信道</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi2Channel" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi2Channel" class="tsba2Gselect" style="width:110px;height:29px;">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
                                                                 <option value="3">3</option>
@@ -1427,11 +1423,9 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi2LaunchPower" style="width:110px;height:29px;">
-                                                                <option value="Auto">Auto</option>
-                                                                <option value="27dBm">27 dBm</option>
-                                                                <option value="24dBm">24 dBm</option>
-                                                                <option value="20dBm">20 dBm</option>
+                                                            <select v-model.lazy="tsbacaollcate.wifi2LaunchPower" class="tsba2Gselect" style="width:110px;height:29px;">
+                                                                <option value="auto">auto</option>
+                                                                <option v-for="item in maxPower2G" :key="item.id" :value="item.maxPower">{{item.maxPower}}dBm</option>
                                                             </select>
                                                         </td>
                                                         
@@ -1439,18 +1433,18 @@
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi2EncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi2EncryptionMode" class="tsba2Gselect" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA2</option>
                                                             </select>
                                                         </td>
-                                                        <td>认证秘钥:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i v-if="tsbacaollcate.wifi2EncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi2HideSSID">
+                                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi2HideSSID" :disabled="tsba2Gradio">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -1462,7 +1456,7 @@
                                     </el-collapse-item>
                                     <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'" title="5G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
-                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi5Enable">
+                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi5Enable" @change="TSBAwifi5Enable5G">
                                                 <el-radio :label="1">启用</el-radio>
                                                 <el-radio :label="0">不启用</el-radio>
                                             </el-radio-group>
@@ -1473,19 +1467,19 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi5Bandwidth" style="width:110px;height:29px;">
-                                                                <option value="ht20">HT20</option>
-                                                                <option value="ht40">HT40</option>
+                                                            <select v-model.lazy="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
+                                                                <option value="HT20">HT20</option>
+                                                                <option value="HT40">HT40</option>
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>信道</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi5Channel" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi5Channel" class="tsba5Gselect" style="width:110px;height:29px;">
                                                                 <option value="36">36</option>
                                                                 <option value="40">40</option>
                                                                 <option value="44">44</option>
@@ -1499,11 +1493,9 @@
                                                         </td>
                                                         <td><i class="required">*</i>发射功率:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi5LaunchPower" style="width:110px;height:29px;">
-                                                                <option value="Auto">Auto</option>
-                                                                <option value="27dBm">27 dBm</option>
-                                                                <option value="24dBm">24 dBm</option>
-                                                                <option value="20dBm">20 dBm</option>
+                                                            <select v-model.lazy="tsbacaollcate.wifi5LaunchPower" class="tsba5Gselect" style="width:110px;height:29px;">
+                                                                <option value="auto">auto</option>
+                                                                <option v-for="item in maxPower5G" :key="item.id" :value="item.maxPower">{{item.maxPower}}dBm</option>
                                                             </select>
                                                         </td>
                                                         
@@ -1511,18 +1503,18 @@
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
                                                         <td>
-                                                            <select v-model.lazy="tsbacaollcate.wifi5EncryptionMode" style="width:110px;height:29px;">
+                                                            <select v-model.lazy="tsbacaollcate.wifi5EncryptionMode" class="tsba5Gselect" style="width:110px;height:29px;">
                                                                 <option value="0">NONE</option>
                                                                 <option value="1">WPA2</option>
                                                             </select>
                                                         </td>
-                                                        <td>认证秘钥:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i v-if="tsbacaollcate.wifi5EncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
                                                         <td>
-                                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi5HideSSID">
+                                                            <el-radio-group v-model.lazy="tsbacaollcate.wifi5HideSSID" :disabled="tsba5Gradio">
                                                                 <el-radio :label="1">隐藏</el-radio>
                                                                 <el-radio :label="0">不隐藏</el-radio>
                                                             </el-radio-group>
@@ -1688,6 +1680,12 @@
         name: 'index',
         data () {
             return {
+                tsbc2Gradio:false,
+                tsbc5Gradio:false,
+                tsba2Gradio:false,
+                tsba5Gradio:false,
+                maxPower2G:[], //2G发射功率
+                maxPower5G:[],  //5G发射功率
                 //按钮权限
                 configurationtype:false, //设备配置
                 managetype:false,  //设备管理
@@ -1740,7 +1738,7 @@
                             
                 radio:'2',
                 tsbginput:'',
-                upgradeoptions:[{value:'0',label:'ht20'},{value:'1',label:'ht40'}],
+                upgradeoptions:[{value:'0',label:'HT20'},{value:'1',label:'HT40'}],
                 templatechecked:true,
 
                 //tsbc,tsba,黑白名单
@@ -1779,9 +1777,9 @@
                     wifi2Enable:1,
                     wifi2WorkMode:'AP',
                     wifi2ApHideSSID:1,
-                    wifi2ApBandwidth:"ht20",
+                    wifi2ApBandwidth:"HT20",
                     wifi2ApChannel:'5',
-                    wifi2ApLaunchPower:'27dBm',
+                    wifi2ApLaunchPower:'0',
                     wifi2ApEncryptionMode:'1',
                     wifi2ApKeyAuth:'',
                     wifi2StaEncryptionMode:'0',
@@ -1793,9 +1791,9 @@
                     wifi5ApSSID:'',
                     wifi5WorkMode:'AP',
                     wifi5ApHideSSID:1,
-                    wifi5ApBandwidth:'ht20',
+                    wifi5ApBandwidth:'HT20',
                     wifi5ApChannel:'161',
-                    wifi5ApLaunchPower:'20dBm',
+                    wifi5ApLaunchPower:'0',
                     wifi5ApEncryptionMode:'1',
                     wifi5ApKeyAuth:'',
                     wifi5StaEncryptionMode:'0',
@@ -1819,18 +1817,18 @@
                     status:1,
                     wifi2Enable:1,
                     wifi2SSID:"",
-                    wifi2Bandwidth:'ht20',
+                    wifi2Bandwidth:'HT20',
                     wifi2Channel:'1',
-                    wifi2LaunchPower:'24dBm',
+                    wifi2LaunchPower:'0',
                     wifi2EncryptionMode:'0',
                     wifi2KeyAuth:'',
                     wifi2HideSSID:1,
 
                     wifi5Enable:1,
                     wifi5SSID:"",
-                    wifi5Bandwidth:'ht20',
+                    wifi5Bandwidth:'HT20',
                     wifi5Channel:'153',
-                    wifi5LaunchPower:'24dBm',
+                    wifi5LaunchPower:'0',
                     wifi5EncryptionMode:'0',
                     wifi5KeyAuth:'',
                     wifi5HideSSID:1,
@@ -1871,7 +1869,9 @@
                                     that.groupingtype = true
                                 }
                                 if(data.result[i].code=='setDepartment'){
-                                    that.groupingtypeadd = true
+                                    if(sessionStorage.departmentId=='1'){
+                                        that.groupingtypeadd = true
+                                    }
                                 }
                                 if(data.result[i].code=='delEquipment'){
                                     that.groupingtypedelete = true
@@ -1885,6 +1885,130 @@
             },200)
         },
         methods:{
+            //TSBCwifi2Enable2G  启用不启用change事件
+            TSBCwifi2Enable2G(){
+                if(this.tsbccollcate.wifi2Enable=='0'){
+                    if(this.tsbccollcate.wifi2WorkMode=='AP'){
+                        for(var i=0;i<$('.tsbc2GinputAP').length;i++){
+                            $('.tsbc2GinputAP').eq(i).attr("disabled","disabled");
+                        }
+                        for(var i=0;i<$('.tsbc2GselectAP').length;i++){
+                            $('.tsbc2GselectAP').eq(i).attr("disabled","disabled");
+                        }
+                        this.tsbc2Gradio = true
+                    }else{
+                        for(var i=0;i<$('.tsbc2GinputSta').length;i++){
+                            $('.tsbc2GinputSta').eq(i).attr("disabled","disabled");
+                        }
+                        for(var i=0;i<$('.tsbc2GselectSta').length;i++){
+                            $('.tsbc2GselectSta').eq(i).attr("disabled","disabled");
+                        }
+                    }
+                }else{
+                    if(this.tsbccollcate.wifi2WorkMode=='AP'){
+                        for(var i=0;i<$('.tsbc2GinputAP').length;i++){
+                            $('.tsbc2GinputAP').eq(i).removeAttr("disabled");
+                        }
+                        for(var i=0;i<$('.tsbc2GselectAP').length;i++){
+                            $('.tsbc2GselectAP').eq(i).removeAttr("disabled");
+                        }
+                        this.tsbc2Gradio = false
+                    }else{
+                        for(var i=0;i<$('.tsbc2GinputSta').length;i++){
+                            $('.tsbc2GinputSta').eq(i).removeAttr("disabled");
+                        }
+                        for(var i=0;i<$('.tsbc2GselectSta').length;i++){
+                            $('.tsbc2GselectSta').eq(i).removeAttr("disabled");
+                        }
+                    }
+                }
+            },
+            //TSBCwifi5Enable5G  启用不启用change事件
+            TSBCwifi5Enable5G(){
+                if(this.tsbccollcate.wifi5Enable=='0'){
+                    if(this.tsbccollcate.wifi5WorkMode=='AP'){
+                        for(var i=0;i<$('.tsbc5GinputAP').length;i++){
+                            $('.tsbc5GinputAP').eq(i).attr("disabled","disabled");
+                        }
+                        for(var i=0;i<$('.tsbc5GselectAP').length;i++){
+                            $('.tsbc5GselectAP').eq(i).attr("disabled","disabled");
+                        }
+                        this.tsbc5Gradio = true
+                    }else{
+                        for(var i=0;i<$('.tsbc5GinputSta').length;i++){
+                            $('.tsbc5GinputSta').eq(i).attr("disabled","disabled");
+                        }
+                        for(var i=0;i<$('.tsbc5GselectSta').length;i++){
+                            $('.tsbc5GselectSta').eq(i).attr("disabled","disabled");
+                        }
+                    }
+                }else{
+                    if(this.tsbccollcate.wifi5WorkMode=='AP'){
+                        for(var i=0;i<$('.tsbc5GinputAP').length;i++){
+                            $('.tsbc5GinputAP').eq(i).removeAttr("disabled");
+                        }
+                        for(var i=0;i<$('.tsbc5GselectAP').length;i++){
+                            $('.tsbc5GselectAP').eq(i).removeAttr("disabled");
+                        }
+                        this.tsbc5Gradio = false
+                    }else{
+                        for(var i=0;i<$('.tsbc5GinputSta').length;i++){
+                            $('.tsbc5GinputSta').eq(i).removeAttr("disabled");
+                        }
+                        for(var i=0;i<$('.tsbc5GselectSta').length;i++){
+                            $('.tsbc5GselectSta').eq(i).removeAttr("disabled");
+                        }
+                    }
+                }
+            },
+            //tsbc2G AP Sta  chage事件
+            tsbcwifi2WorkMode2g(){
+                this.TSBCwifi2Enable2G()
+            },
+            //tsbc5G AP Sta  chage事件
+            tsbcwifi2WorkMode5g(){
+                this.TSBCwifi5Enable5G()
+            },
+            //TSBAwifi2Enable2G  启用不启用change事件
+            TSBAwifi2Enable2G(){
+                if(this.tsbacaollcate.wifi2Enable=='0'){
+                    for(var i=0;i<$('.tsba2Ginput').length;i++){
+                        $('.tsba2Ginput').eq(i).attr("disabled","disabled");
+                    }
+                    for(var i = 0;i<$('.tsba2Gselect').length;i++){
+                        $('.tsba2Gselect').eq(i).attr("disabled","disabled");
+                    }
+                    this.tsba2Gradio = true
+                }else{
+                    for(var i=0;i<$('.tsba2Ginput').length;i++){
+                        $('.tsba2Ginput').eq(i).removeAttr("disabled");
+                    }
+                    for(var i = 0;i<$('.tsba2Gselect').length;i++){
+                        $('.tsba2Gselect').eq(i).removeAttr("disabled");
+                    }
+                    this.tsba2Gradio = false
+                }
+            },
+            //TSBAwifi5Enable5G  启用不启用change事件
+            TSBAwifi5Enable5G(){
+                if(this.tsbacaollcate.wifi5Enable=='0'){
+                    for(var i=0;i<$('.tsba5Ginput').length;i++){
+                        $('.tsba5Ginput').eq(i).attr("disabled","disabled");
+                    }
+                    for(var i = 0;i<$('.tsba5Gselect').length;i++){
+                        $('.tsba5Gselect').eq(i).attr("disabled","disabled");
+                    }
+                    this.tsba5Gradio = true
+                }else{
+                    for(var i=0;i<$('.tsba5Ginput').length;i++){
+                        $('.tsba5Ginput').eq(i).removeAttr("disabled");
+                    }
+                    for(var i = 0;i<$('.tsba5Gselect').length;i++){
+                        $('.tsba5Gselect').eq(i).removeAttr("disabled");
+                    }
+                    this.tsba5Gradio = false
+                }
+            },
             //所有条数事件
             sizechange(val){
                 this.pageSize = val
@@ -2166,6 +2290,8 @@
                                 that.lookoverlan = false
                                 return false;
                             }else{
+                                that.maxPower2G = []
+                                that.maxPower5G = []
                                 that.lookoverstatus = data.result[0]
                                 var WAN = []
                                 if(that.lookoverstatus!=''){
@@ -2178,13 +2304,38 @@
                                         that.lookoverlan = true
                                     }
                                 }
+                                var maxPower2G = {};
+                                var maxPower5G = {};
+                                for(var i=0;i<Number(data.result[0].maxPower2G)+1;i++){
+                                    maxPower2G = {}
+                                    maxPower2G.maxPower = i
+                                    that.maxPower2G.push(maxPower2G)
+                                }
+                                for(var i=0;i<Number(data.result[0].maxPower5G)+1;i++){
+                                    maxPower5G = {}
+                                    maxPower5G.maxPower = i
+                                    that.maxPower5G.push(maxPower5G)
+                                }
                             }
-                            
                         }else{
                             that.errorCode(data.errorCode)
                         }
                     }
                 })
+                // $.ajax({
+                //     type:'get',
+                //     async:true,
+                //     dataType:'json',
+                //     xhrFields:{withCredentials:true},
+                //     url:that.serverurl+'equipment/getEquipmentModelInfo',
+                //     data:{
+                //         type:data.result.templateType,
+                //         model:data.result.model
+                //     }, 
+                //     success:function(data){
+                        
+                //     }
+                // })
                 //配置基本数据请求
                 $.ajax({
                     type:'get',
@@ -2296,7 +2447,10 @@
                                 that.panelTable = [];
                                 that.panelTabletwo = [];
                                 if(data.result.configInfo.listContent==''){
-
+                                    setTimeout(function(){
+                                        that.panelTable = [];
+                                        that.panelTabletwo = [];
+                                    },500)
                                 }else{
                                     that.panel = data.result.configInfo.listType;
                                     var array = [];
@@ -2324,6 +2478,18 @@
                         }
                     }
                 })
+                if(val.type=='1'){
+                    this.tsbccollcate.wifi2Enable = 1
+                    this.tsbccollcate.wifi5Enable = 1
+                    this.TSBCwifi2Enable2G()
+                    this.TSBCwifi5Enable5G()
+                }
+                if(val.type=='2'){
+                    this.tsbacaollcate.wifi2Enable = 1
+                    this.tsbacaollcate.wifi5Enable = 1
+                    this.TSBAwifi2Enable2G()
+                    this.TSBAwifi5Enable5G()
+                }
                 setTimeout(function(){
                     console.log(that.lookoverlan)
                     $('#allocationModal').modal('show')
@@ -2519,25 +2685,9 @@
                     }
                 }
                 if(that.lookoverType=='1'){
-                    if(that.tsbccollcate.wifi2WorkMode=='AP'){
-                        if(that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi2ApKeyAuth==''){
+                    if(this.tsbccollcate.wifi2Enable=='1'){
+                        if(that.tsbccollcate.wifi2WorkMode=='AP'){
+                            if(that.tsbccollcate.wifi2ApBandwidth==''||that.tsbccollcate.wifi2ApChannel==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -2545,20 +2695,7 @@
                                 });
                                 return;
                             }
-                        }
-                    }
-                    if(that.tsbccollcate.wifi2WorkMode=='Station'){
-                        // that.tsbccollcate.wifi2StaPriority==''||
-                        if(that.tsbccollcate.wifi2StaSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi2StaEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi2StaKeyAuth==''){
+                            if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -2566,27 +2703,20 @@
                                 });
                                 return;
                             }
+                            if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi2ApKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
                         }
-                    }
-                    if(that.tsbccollcate.wifi5WorkMode=='AP'){
-                        if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi5ApKeyAuth==''){
+                        if(that.tsbccollcate.wifi2WorkMode=='STA'){
+                            // that.tsbccollcate.wifi2StaPriority==''||
+                            if(that.tsbccollcate.wifi2StaSSID==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -2594,26 +2724,65 @@
                                 });
                                 return;
                             }
+                            if(that.tsbccollcate.wifi2StaEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi2StaKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
                         }
                     }
-                    if(that.tsbccollcate.wifi5WorkMode=='Station'){
-                        // that.tsbccollcate.wifi5StaPriority==''||
-                        if(that.tsbccollcate.wifi5StaSSID==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){}else{
-                            if(that.tsbccollcate.wifi5StaKeyAuth==''){
+                    if(this.tsbccollcate.wifi5Enable=='1'){
+                        if(that.tsbccollcate.wifi5WorkMode=='AP'){
+                            if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
                                     showClose: true,
                                 });
                                 return;
+                            }
+                            if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi5ApKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+                        if(that.tsbccollcate.wifi5WorkMode=='STA'){
+                            if(that.tsbccollcate.wifi5StaSSID==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){}else{
+                                if(that.tsbccollcate.wifi5StaKeyAuth==''){
+                                    this.$message({
+                                        message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
                             }
                         }
                     }
@@ -2775,68 +2944,72 @@
                             }
                         }
                     }
-                    if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2Bandwidth==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi2Channel==''||that.tsbacaollcate.wifi2LaunchPower==''){
-                        this.$message({
-                            message: '必填字段不能为空',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }
-                    if(that.tsbacaollcate.wifi2EncryptionMode=='0'){}else{
-                        if(that.tsbacaollcate.wifi2KeyAuth==''){
-                            this.$message({
-                                message: '加密方式非NONE时,认证秘钥不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
-                            this.$message({
-                                message: '认证秘钥不能有中文字符',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                    }
-                    if(that.tsbacaollcate.wifi5EncryptionMode=='0'){}else{
-                        if(that.tsbacaollcate.wifi5KeyAuth==''){
-                            this.$message({
-                                message: '加密方式非NONE时,认证秘钥不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(result.test(that.tsbacaollcate.wifi5KeyAuth)){
-                            this.$message({
-                                message: '认证秘钥不能有中文字符',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                    }
-                    if(that.valuetwo=='TSBA221'){}else{
-                        if(that.tsbacaollcate.wifi5SSID==''){
+                    if(this.tsbacaollcate.wifi2Enable=='1'){
+                        if(that.tsbacaollcate.wifi2SSID==''||that.tsbacaollcate.wifi2LaunchPower==''||that.tsbacaollcate.wifi2EncryptionMode==''){
                             this.$message({
                                 message: '必填字段不能为空',
                                 type: 'error',
                                 showClose: true,
                             });
                             return;
-                        }   
-                    }        
+                        }
+                        if(that.tsbacaollcate.wifi2EncryptionMode=='0'){}else{
+                            if(that.tsbacaollcate.wifi2KeyAuth==''){
+                                this.$message({
+                                    message: '加密方式非NONE时,认证秘钥不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
+                                this.$message({
+                                    message: '认证秘钥不能有中文字符',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                    }
+                    if(this.tsbacaollcate.wifi5Enable=='1'){
+                        if(that.tsbacaollcate.wifi5EncryptionMode=='0'){}else{
+                            if(that.tsbacaollcate.wifi5KeyAuth==''){
+                                this.$message({
+                                    message: '加密方式非NONE时,认证秘钥不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(result.test(that.tsbacaollcate.wifi5KeyAuth)){
+                                this.$message({
+                                    message: '认证秘钥不能有中文字符',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                        }
+                        if(that.tsbacaollcate.wifi5SSID==''||that.tsbacaollcate.wifi5LaunchPower==''||that.tsbacaollcate.wifi5EncryptionMode==''){
+                            this.$message({
+                                message: '必填字段不能为空',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        } 
+                    }
+                    // if(that.valuetwo=='TSBA221'){}else{
+                    //     if(that.tsbacaollcate.wifi5SSID==''){
+                    //         this.$message({
+                    //             message: '必填字段不能为空',
+                    //             type: 'error',
+                    //             showClose: true,
+                    //         });
+                    //         return;
+                    //     }   
+                    // }        
                 }
                 if(that.lookoverType=='0'){
                     url='equipment/saveConfigTsbg'

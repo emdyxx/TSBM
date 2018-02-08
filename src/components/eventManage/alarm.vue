@@ -159,7 +159,14 @@
                                 <tbody>
                                     <tr>
                                         <td>设备名称</td>
-                                        <td>{{detail.nickname}}</td>
+                                        <td>
+                                            <span v-if="detail.nickname==''||detail.nickname==undefined">
+                                                {{detail.MAC}}
+                                            </span>
+                                            <span v-else>
+                                                {{detail.nickname}}
+                                            </span> 
+                                        </td>
                                         <td>设备MAC</td>
                                         <td>{{detail.MAC}}</td>
                                     </tr>
@@ -252,6 +259,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.detail = data.result
+                            // console.log(data.result.nickname)
                         }else{
                             that.errorCode(data.errorCode)
                         }
