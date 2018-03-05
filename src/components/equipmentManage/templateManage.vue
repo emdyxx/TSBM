@@ -221,7 +221,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if='tsbccollcate.wifi2ApEncryptionMode=="1"' class="required">*</i>认证秘钥:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -251,7 +251,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td><i v-if="tsbccollcate.wifi2StaEncryptionMode=='1'" class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
@@ -334,7 +334,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbccollcate.wifi5ApEncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -364,7 +364,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td><i v-if="tsbccollcate.wifi5StaEncryptionMode=='1'" class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
@@ -495,7 +495,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbacaollcate.wifi2EncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -526,7 +526,7 @@
                                                         <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                         <td><i class="required">*</i>信息带宽:</td>
                                                         <td>
-                                                            <select v-if="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
+                                                            <select v-model="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
                                                                 <option value="HT40">HT40</option>
                                                             </select>
@@ -565,7 +565,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbacaollcate.wifi5EncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -808,6 +808,12 @@
                             </template>  
                         </el-table-column>
                         <el-table-column
+                        prop="updateTime"
+                        label="生成时间"
+                        align='center'
+                        width="190">
+                        </el-table-column>
+                        <el-table-column
                         prop="summary"
                         label="描述"
                         align='center'>
@@ -815,7 +821,7 @@
                         <el-table-column
                         label="操作"
                         align='center'
-                        width="180">
+                        width="230">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0&&scope.row.configType=='1'">
                                     <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
@@ -828,7 +834,10 @@
                                 </span> 
                                 <span v-if="delatetemplate">
                                     <el-button @click="removetemplateT(scope.row)" type="primary" size="small">删除</el-button>
-                                </span>  
+                                </span>
+                                <span v-if="delatetemplate">
+                                    <el-button @click="details(scope.row)" type="primary" size="small">详情</el-button>
+                                </span>    
                             </template>  
                         </el-table-column>
                     </el-table>
@@ -845,6 +854,402 @@
                     </div>
                 </div>
             </div>
+            <!-- 查看详情模态框 -->
+            <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:780px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel" style="text-align:left;">模板详情</h4>
+                        </div>
+                        <div class="modal-body datailsbody">
+                            <!-- tsbg -->
+                            <div v-if="datailstype=='0'">
+                                <div class="datailsbody_top">
+                                    WAN配置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>IP类型</td>
+                                                <td>{{datailsdata.configInfo.ipType}}</td>
+                                                <td>设备型号</td>
+                                                <td>{{datailsdata.model}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>IP地址</td>
+                                                <td>{{datailsdata.configInfo.wanIP}}</td>
+                                                <td>子网掩码:</td>
+                                                <td>{{datailsdata.configInfo.wanSubnetmask}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>网关:</td>
+                                                <td>{{datailsdata.configInfo.wanGateway}}</td>
+                                                <td>主DNS:</td>
+                                                <td>{{datailsdata.configInfo.wanDNS1}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>辅DNS:</td>
+                                                <td>{{datailsdata.configInfo.wanDNS2}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
+                                                <td>用户名:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEUsername}}</td>
+                                                <td>密码:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEPassword}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
+                                                <td>DNS1:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
+                                                <td>DNS2:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top">
+                                    LAN配置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>IP地址</td>
+                                                <td>{{datailsdata.configInfo.lanIp}}</td>
+                                                <td>子网掩码</td>
+                                                <td>{{datailsdata.configInfo.lanSubnetmask}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>起始地址</td>
+                                                <td>{{datailsdata.configInfo.lanStartAddress}}</td>
+                                                <td>结束地址:</td>
+                                                <td>{{datailsdata.configInfo.lanEndAddress}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>网关地址:</td>
+                                                <td>{{datailsdata.configInfo.lanGateway}}</td>
+                                                <td>DNS1:</td>
+                                                <td>{{datailsdata.configInfo.lanDNS1}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>DNS2:</td>
+                                                <td>{{datailsdata.configInfo.lanDNS2}}</td>
+                                                <td>DHCP服务器:</td>
+                                                <td>{{datailsdata.configInfo.startDhcpServer}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- tsbc -->
+                            <div v-if="datailstype=='1'">
+                                <div class="datailsbody_top">
+                                    2.4G配置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
+                                                <td>工作模式</td>
+                                                <td>{{datailsdata.configInfo.wifi2WorkMode}}</td>
+                                                <td>设备型号</td>
+                                                <td>{{datailsdata.model}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
+                                                <td>SSID</td>
+                                                <td>{{datailsdata.configInfo.wifi2ApSSID}}</td>
+                                                <td>信息带宽:</td>
+                                                <td>{{datailsdata.configInfo.wifi2ApBandwidth}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
+                                                <td>信道:</td>
+                                                <td>{{datailsdata.configInfo.wifi2ApChannel}}</td>
+                                                <td>发射功率:</td>
+                                                <td>{{datailsdata.configInfo.wifi2ApLaunchPower}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
+                                                <td>加密方式:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi2ApEncryptionMode=='0'">NONE</span>
+                                                    <span v-else>WPA/WPA2</span>
+                                                </td>
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.wifi2ApKeyAuth}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
+                                                <td>隐藏SSID:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi2ApHideSSID=='0'">不隐藏</span>
+                                                    <span v-else>隐藏</span>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='STA'">
+                                                <td>SSID:</td>
+                                                <td>{{datailsdata.configInfo.wifi2StaSSID}}</td>
+                                                <td>加密方式:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi2StaEncryptionMode=='0'">NONE</span>
+                                                    <span v-else>WPA/WPA2</span>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi2WorkMode=='STA'">
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.wifi2StaKeyAuth}}</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top">
+                                    5G配置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
+                                                <td>工作模式</td>
+                                                <td style="width:75%">{{datailsdata.configInfo.wifi5WorkMode}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'"> 
+                                                <td>SSID</td>
+                                                <td>{{datailsdata.configInfo.wifi5ApSSID}}</td>
+                                                <td>信息带宽:</td>
+                                                <td>{{datailsdata.configInfo.wifi5ApBandwidth}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
+                                                <td>信道:</td>
+                                                <td>{{datailsdata.configInfo.wifi5ApChannel}}</td>
+                                                <td>发射功率:</td>
+                                                <td>{{datailsdata.configInfo.wifi5ApLaunchPower}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
+                                                <td>加密方式:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi5ApEncryptionMode=='0'">NONE</span>
+                                                    <span v-else>WPA/WPA2</span>
+                                                </td>
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.wifi5ApKeyAuth}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
+                                                <td>隐藏SSID:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi5ApHideSSID=='0'">不隐藏</span>
+                                                    <span v-else>隐藏</span>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='STA'">
+                                                <td>SSID:</td>
+                                                <td>{{datailsdata.configInfo.wifi5StaSSID}}</td>
+                                                <td>加密方式:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi5StaEncryptionMode=='0'">NONE</span>
+                                                    <span v-else>WPA/WPA2</span>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.wifi5WorkMode=='STA'">
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.wifi5StaKeyAuth}}</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top">
+                                    网络设置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>IP类型</td>
+                                                <td style="width:75%">{{datailsdata.configInfo.ipType}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>ip地址</td>
+                                                <td>{{datailsdata.configInfo.wanIP}}</td>
+                                                <td>子网掩码:</td>
+                                                <td>{{datailsdata.configInfo.wanSubnetmask}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>首选DNS:</td>
+                                                <td>{{datailsdata.configInfo.wanDNS1}}</td>
+                                                <td>备选DNS:</td>
+                                                <td>{{datailsdata.configInfo.wanDNS2}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>网关:</td>
+                                                <td>{{datailsdata.configInfo.wanGateway}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
+                                                <td>用户名:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEUsername}}</td>
+                                                <td>密码:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEPassword}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
+                                                <td>DNS1:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
+                                                <td>DNS2:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- tsba -->
+                            <div v-if="datailstype=='2'">
+                                <div class="datailsbody_top">
+                                    2.4G配置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>SSID</td>
+                                                <td>{{datailsdata.configInfo.wifi2SSID}}</td>
+                                                <td>信息带宽:</td>
+                                                <td>{{datailsdata.configInfo.wifi2Bandwidth}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>信道:</td>
+                                                <td>{{datailsdata.configInfo.wifi2Channel}}</td>
+                                                <td>发射功率:</td>
+                                                <td>{{datailsdata.configInfo.wifi2LaunchPower}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>加密方式:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi2EncryptionMode=='0'">NONE</span>
+                                                    <span v-else>WPA/WPA2</span>
+                                                </td>
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.wifi2KeyAuth}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>隐藏SSID:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi2HideSSID=='0'">不隐藏</span>
+                                                    <span v-else>隐藏</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top">
+                                    5G配置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>SSID</td>
+                                                <td>{{datailsdata.configInfo.wifi5SSID}}</td>
+                                                <td>信息带宽:</td>
+                                                <td>{{datailsdata.configInfo.wifi5Bandwidth}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>信道:</td>
+                                                <td>{{datailsdata.configInfo.wifi5Channel}}</td>
+                                                <td>发射功率:</td>
+                                                <td>{{datailsdata.configInfo.wifi5LaunchPower}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>加密方式:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi5EncryptionMode=='0'">NONE</span>
+                                                    <span v-else>WPA/WPA2</span>
+                                                </td>
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.wifi5KeyAuth}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>隐藏SSID:</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.wifi5HideSSID=='0'">不隐藏</span>
+                                                    <span v-else>隐藏</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top">
+                                    网络设置
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>IP类型</td>
+                                                <td style="width:75%">{{datailsdata.configInfo.ipType}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>ip地址</td>
+                                                <td>{{datailsdata.configInfo.wanIP}}</td>
+                                                <td>子网掩码:</td>
+                                                <td>{{datailsdata.configInfo.wanSubnetmask}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>首选DNS:</td>
+                                                <td>{{datailsdata.configInfo.wanDNS1}}</td>
+                                                <td>备选DNS:</td>
+                                                <td>{{datailsdata.configInfo.wanDNS2}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                                <td>网关:</td>
+                                                <td>{{datailsdata.configInfo.wanGateway}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
+                                                <td>用户名:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEUsername}}</td>
+                                                <td>密码:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEPassword}}</td>
+                                            </tr>
+                                            <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
+                                                <td>DNS1:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
+                                                <td>DNS2:</td>
+                                                <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- 黑白名单 -->
+                            <div>
+                                <div class="datailsbody_top">
+                                    黑白名单--当前模式>><span v-if="dataillisttype=='0'">白名单</span>
+                                    <span v-if="dataillisttype=='1'">黑名单</span>
+                                </div>
+                                <div class="datailsbody_center"></div>
+                                <div class="datailsbody_bottom">
+                                    <el-table
+                                    :data="datailstabledata"
+                                    border
+                                    stripe
+                                    tooltip-effect="dark"
+                                    style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                                        <el-table-column
+                                        prop="MAC"
+                                        label="MAC地址"
+                                        align='center'>
+                                        </el-table-column>    
+                                    </el-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div><!-- /.modal -->
         </div>
     </div>
 </template>
@@ -935,7 +1340,7 @@
                     wifi2Enable:1,
                     wifi2WorkMode:'AP',
                     wifi2ApHideSSID:1,
-                    wifi2ApBandwidth:"HT20",
+                    wifi2ApBandwidth:'HT20',
                     wifi2ApChannel:'5',
                     wifi2ApLaunchPower:'0',
                     wifi2ApEncryptionMode:'0',
@@ -991,6 +1396,11 @@
                     wifi5KeyAuth:'',
                     wifi5HideSSID:1,
                 },//tsba配置数据
+                // 查看详情
+                datailstype:'',
+                datailsdata:'',
+                datailstabledata:[],
+                dataillisttype:'',
             }
         },
         mounted(){
@@ -1030,6 +1440,42 @@
             },200)
         },
         methods:{
+            // 查看详情按钮
+            details(val){
+                var that = this
+                this.datailstype = val.templateType
+                $('#detailsModal').modal('show')
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'template/getTemplateInfo',
+                    data:{
+                        templateId:val.id
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.datailsdata = data.result
+                            if(data.result.configInfo.listContent==''){
+                                that.datailstabledata = [];
+                            }else{
+                                var array = [];
+                                array = data.result.configInfo.listContent.split(",");
+                                var arr = {};
+                                for(var i=0;i<array.length;i++){
+                                    arr = {}
+                                    arr.MAC = array[i]
+                                    that.datailstabledata.push(arr)
+                                }
+                                that.dataillisttype = data.result.configInfo.listType
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
             //TSBCwifi2Enable2G  启用不启用change事件
             TSBCwifi2Enable2G(){
                 if(this.tsbccollcate.wifi2Enable=='0'){
@@ -1789,7 +2235,7 @@
                                 });
                                 return;
                             }
-                            if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
+                            if(that.tsbccollcate.wifi2ApSSID==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -1805,6 +2251,14 @@
                                         showClose: true,
                                     });
                                     return;
+                                }
+                                if(that.tsbccollcate.wifi2ApKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
                                 }
                                 if(result.test(that.tsbccollcate.wifi2ApKeyAuth)){
                                     this.$message({
@@ -1834,6 +2288,14 @@
                                     });
                                     return;
                                 }
+                                if(that.tsbccollcate.wifi2StaKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
+                                }
                                 if(result.test(that.tsbccollcate.wifi2StaKeyAuth)){
                                     this.$message({
                                         message: '认证秘钥不能有中文字符',
@@ -1843,7 +2305,6 @@
                                     return;
                                 }
                             }
-                            
                         }
                     }
                     if(this.tsbccollcate.wifi5Enable=='1'){
@@ -1856,7 +2317,7 @@
                                 });
                                 return;
                             }
-                            if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
+                            if(that.tsbccollcate.wifi5ApSSID==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -1872,6 +2333,14 @@
                                         showClose: true,
                                     });
                                     return;
+                                }
+                                if(that.tsbccollcate.wifi5ApKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
                                 }
                                 if(result.test(that.tsbccollcate.wifi5ApKeyAuth)){
                                     this.$message({
@@ -1892,9 +2361,7 @@
                                 });
                                 return;
                             }
-                            if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){
-                                
-                            }else{
+                            if(that.tsbccollcate.wifi5StaEncryptionMode=='0'){}else{
                                 if(that.tsbccollcate.wifi5StaKeyAuth==''){
                                     this.$message({
                                         message: '必填字段不能为空',
@@ -1902,6 +2369,14 @@
                                         showClose: true,
                                     });
                                     return;
+                                }
+                                if(that.tsbccollcate.wifi5StaKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
                                 }
                                 if(result.test(that.tsbccollcate.wifi5StaKeyAuth)){
                                     this.$message({
@@ -2093,6 +2568,14 @@
                                 });
                                 return;
                             }
+                            if(that.tsbacaollcate.wifi2KeyAuth.length<6){
+                                this.$message({
+                                    message: '认证秘钥长度不能小于6位!',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                             if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
                                 this.$message({
                                     message: '认证秘钥不能有中文字符',
@@ -2116,6 +2599,14 @@
                             if(that.tsbacaollcate.wifi5KeyAuth==''){
                                 this.$message({
                                     message: '加密方式非NONE时,认证秘钥不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbacaollcate.wifi5KeyAuth.length<6){
+                                this.$message({
+                                    message: '认证秘钥长度不能小于6位!',
                                     type: 'error',
                                     showClose: true,
                                 });
@@ -2329,7 +2820,7 @@
                                     });
                                     return;
                                 }
-                                if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
+                                if(that.tsbccollcate.wifi2ApSSID==''){
                                     this.$message({
                                         message: '必填字段不能为空',
                                         type: 'error',
@@ -2341,6 +2832,14 @@
                                     if(that.tsbccollcate.wifi2ApKeyAuth==''){
                                         this.$message({
                                             message: '必填字段不能为空',
+                                            type: 'error',
+                                            showClose: true,
+                                        });
+                                        return;
+                                    }
+                                    if(that.tsbccollcate.wifi2ApKeyAuth.length<6){
+                                        this.$message({
+                                            message: '认证秘钥长度不能小于6位!',
                                             type: 'error',
                                             showClose: true,
                                         });
@@ -2375,6 +2874,14 @@
                                         });
                                         return;
                                     }
+                                    if(that.tsbccollcate.wifi2StaKeyAuth.length<6){
+                                        this.$message({
+                                            message: '认证秘钥长度不能小于6位!',
+                                            type: 'error',
+                                            showClose: true,
+                                        });
+                                        return;
+                                    }
                                     if(result.test(that.tsbccollcate.wifi2StaKeyAuth)){
                                         this.$message({
                                             message: '认证秘钥不能有中文字符',
@@ -2396,7 +2903,7 @@
                                     });
                                     return;
                                 }
-                                if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
+                                if(that.tsbccollcate.wifi5ApSSID==''){
                                     this.$message({
                                         message: '必填字段不能为空',
                                         type: 'error',
@@ -2408,6 +2915,14 @@
                                     if(that.tsbccollcate.wifi5ApKeyAuth==''){
                                         this.$message({
                                             message: '必填字段不能为空',
+                                            type: 'error',
+                                            showClose: true,
+                                        });
+                                        return;
+                                    }
+                                    if(that.tsbccollcate.wifi5ApKeyAuth.length<6){
+                                        this.$message({
+                                            message: '认证秘钥长度不能小于6位!',
                                             type: 'error',
                                             showClose: true,
                                         });
@@ -2436,6 +2951,14 @@
                                     if(that.tsbccollcate.wifi5StaKeyAuth==''){
                                         this.$message({
                                             message: '必填字段不能为空',
+                                            type: 'error',
+                                            showClose: true,
+                                        });
+                                        return;
+                                    }
+                                    if(that.tsbccollcate.wifi5StaKeyAuth.length<6){
+                                        this.$message({
+                                            message: '认证秘钥长度不能小于6位!',
                                             type: 'error',
                                             showClose: true,
                                         });
@@ -2630,6 +3153,32 @@
                                 });
                                 return;
                             }
+                            if(that.tsbacaollcate.wifi2EncryptionMode=='0'){}else{
+                                if(that.tsbacaollcate.wifi2KeyAuth==''){
+                                    this.$message({
+                                        message: '加密方式非NONE时,认证秘钥不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(that.tsbacaollcate.wifi2KeyAuth.length<6){
+                                    this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
                         }
                         if(this.tsbacaollcate.wifi5Enable=='1'){
                             if(that.tsbacaollcate.wifi5SSID==''){
@@ -2640,8 +3189,33 @@
                                 });
                                 return;
                             }   
-                        }
-                                     
+                            if(that.tsbacaollcate.wifi5EncryptionMode=='0'){}else{
+                                if(that.tsbacaollcate.wifi5KeyAuth==''){
+                                    this.$message({
+                                        message: '加密方式非NONE时,认证秘钥不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(that.tsbacaollcate.wifi5KeyAuth.length<6){
+                                    this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(result.test(that.tsbacaollcate.wifi5KeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                        }          
                         that.showtype = '2'
                         that.uploadscope()
                     }
@@ -2941,4 +3515,12 @@
 .basicstatus_bottom>table{width:100%;}
 .basicstatus_bottom>table tr{display: flex;}
 .basicstatus_bottom>table tr>td{width: 25%;text-align: center;line-height: 25px !important;}
+/* 详情 */
+.datailsbody>div{width: 100%;padding: 10px;}
+.datailsbody_top{text-align: left;font-size: 15px;font-weight: bold;}
+.datailsbody_center{width: 100%;background: #C1D9F3;height: 2px;margin-top: 8px;margin-bottom: 5px;}
+.datailsbody_bottom{margin-bottom: 10px;}
+.datailsbody_bottom>table{width:100%;}
+.datailsbody_bottom>table tr{display: flex;}
+.datailsbody_bottom>table tr>td{width: 25%;text-align: center;line-height: 25px !important;}
 </style>

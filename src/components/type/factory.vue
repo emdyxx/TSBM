@@ -11,7 +11,7 @@
             </el-select>
         </div>
         <div class="echarts_top">
-            <div>
+            <div @click="factorylink('3')">
                 <p>TSBC</p>
                 <p>{{EquipmentCount.tsbcOnline}}</p>
                 <p>在线设备</p>
@@ -19,7 +19,7 @@
                 <p>总计:{{EquipmentCount.tsbcSum}}</p>
             </div>
             <span><img src="../../assets/u91_seg0.png" alt=""></span>
-            <div>
+            <div @click="factorylink('4')">
                 <p>TSBA</p>
                 <p>{{EquipmentCount.tsbaOnline}}</p>
                 <p>在线设备</p>
@@ -27,7 +27,7 @@
                 <p>总计:{{EquipmentCount.tsbaSum}}</p>
             </div>
             <span><img src="../../assets/u91_seg0.png" alt=""></span>
-            <div>
+            <div @click="factorylink('2')">
                 <p>TSBG</p>
                 <p>{{EquipmentCount.tsbgOnline}}</p>
                 <p>在线设备</p>
@@ -96,6 +96,27 @@ export default {
                 success:function(data){
                     if(data.errorCode=='0'){
                         that.EquipmentCount = data.result
+                        if(that.EquipmentCount.tsbcSum == that.EquipmentCount.tsbcOnline){
+                            $('.echarts_top>div').eq(0).css('background-color','#99FF99')
+                        }else if(that.EquipmentCount.tsbcOnline=='0'){
+                            $('.echarts_top>div').eq(0).css('background-color','#f17070')
+                        }else{
+                            $('.echarts_top>div').eq(0).css('background-color','#eded7e')
+                        }
+                        if(that.EquipmentCount.tsbaSum == that.EquipmentCount.tsbaOnline){
+                            $('.echarts_top>div').eq(1).css('background-color','#99FF99')
+                        }else if(that.EquipmentCount.tsbaOnline=='0'){
+                            $('.echarts_top>div').eq(1).css('background-color','#f17070')
+                        }else{
+                            $('.echarts_top>div').eq(1).css('background-color','#eded7e')
+                        }
+                        if(that.EquipmentCount.tsbgSum == that.EquipmentCount.tsbgOnline){
+                            $('.echarts_top>div').eq(2).css('background-color','#99FF99')
+                        }else if(that.EquipmentCount.tsbgOnline=='0'){
+                            $('.echarts_top>div').eq(2).css('background-color','#f17070')
+                        }else{
+                            $('.echarts_top>div').eq(2).css('background-color','#eded7e')
+                        }
                         var tsbc = data.result.tsbcSum
                         var tsba = data.result.tsbaSum
                         var tsbg = data.result.tsbgSum
@@ -284,7 +305,7 @@ export default {
                     data:data,
                     success:function(data){
                         if(data.errorCode=='0'){
-                            var one = '';var two = '';var three = '';
+                            var one = '';var two = '';var three = '';var four = '';
                             for(var i='0';i<data.result.length;i++){
                                 if(data.result[i].currentLink=='ath0'){
                                     if(data.result[i].sum==''){
@@ -305,6 +326,13 @@ export default {
                                         three = 0
                                     }else{
                                         three = data.result[i].sum
+                                    }
+                                }
+                                if(data.result[i].currentLink=='eth0'){
+                                    if(data.result[i].sum==''){
+                                        four = 0
+                                    }else{
+                                        four = data.result[i].sum
                                     }
                                 }
                             }
@@ -332,7 +360,7 @@ export default {
                                         data:[
                                             {value:one, name:'2G'},
                                             {value:two, name:'5G'},
-                                            {value:three, name:'ETH'}
+                                            {value:three+four, name:'ETH'}
                                         ],
                                         itemStyle: {
                                             emphasis: {
@@ -352,6 +380,11 @@ export default {
         //部门change事件
         echartstype(){
             this.rendy()
+        },
+        //点击上册圆圈图标进行跳转
+        factorylink(val){
+            sessionStorage.menuId = 31
+            this.$router.push({path:'/TSBManage',query:{locationNum:val}})
         }
     },
     created(){
@@ -383,7 +416,8 @@ export default {
 .factory{width: 100%;height: 100%;}
 .echarts_type{position: absolute;width:150px;height: 36px;top:20px;}
 .echarts_top{width: 100%;height: 160px;display: flex;justify-content: center;}
-.echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../../assets/u43.png');background-repeat: no-repeat;}
+/* .echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;background-image: url('../../assets/u43.png');background-repeat: no-repeat;} */
+.echarts_top>div{display: inline-block;width: 160px;height: 160px;margin-top:10px;border-radius: 50%;border: 1px solid #9FA39F;box-shadow: 5px 5px 5px gray;cursor: pointer;}
 .echarts_top>span{display: inline-block;height: 100%;line-height: 160px;}
 .echarts_top>div>p{padding-right: 10px;color: black;margin-bottom: 0;}
 .echarts_top>div>p:nth-of-type(1){margin-top:15px;}

@@ -22,7 +22,7 @@ export default {
         console.log('版本:'+data.versionNumber)
       }
     })
-    localStorage.serverurl = 'http://192.168.10.211/TSBM-Manager/';
+    // localStorage.serverurl = 'http://192.168.10.211/TSBM-Manager/';
   }
 }
 </script>

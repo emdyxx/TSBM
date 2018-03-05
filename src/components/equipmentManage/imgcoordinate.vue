@@ -9,7 +9,7 @@
             </div>
             <div class="imgcoordinate_A_bottom">
                 <div class="imgcoordinate">
-                    <img :src=imgUrl alt="" @mouseup="uplift" style="width: 100%;height: 100%;opacity: 0.6;">
+                    <img :src=serverurl+imgUrl alt="" @mouseup="uplift" style="width: 100%;height: 100%;opacity: 0.6;">
                     <template v-for="item in imgdata">
                         <template v-if='item.equipmentType=="0"'>
                             <img v-if='item.online=="0"' :key="item.id" :title=item.MAC @mouseup="uplifttwo" :id=item.MAC :style="`left:${item.x}px;top:${item.y}px;`" class="img-i" :src="serverurl+'img/mapimg/offlineG.png'">
@@ -301,6 +301,7 @@
             },
             //添加WIFI提交
             ZBsubmit(){
+                var that = this;
                 if(this.handleCurrent.length>=2||this.handleCurrent.length==0){
                     that.$message({
                         message: '请选择一个设备进行保存',

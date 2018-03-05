@@ -430,7 +430,7 @@
                                 <input v-model.lazy="add.ueType" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue类型">
                             </div>
                             <div class="equipmentUser_form">
-                                <span><i class="required">*</i>ue昵称:</span>
+                                <span>ue昵称:</span>
                                 <input v-model.lazy="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue昵称">
                             </div>
                             <div class="equipmentUser_form">
@@ -467,7 +467,7 @@
             return {
                 //按钮权限
                 addtype:false,
-                deletetype:true,
+                deletetype:false,
                 delate:false,
                 approvetype:false,
                 serverurl:localStorage.serverurl,
@@ -543,6 +543,9 @@
                                 }
                                 if(data.result[i].code=='authUe'){
                                     that.approvetype = true
+                                }
+                                if(data.result[i].code=='editUe'){
+                                    that.deletetype = true
                                 }
                             }
                         }else{
@@ -620,14 +623,14 @@
                 })
             },
             //所有页面条数页数选择
-            SizeChange(){this.handleClick()},
-            CurrentChange(){this.handleClick()},
+            SizeChange(val){this.pageSize = val;this.handleClick()},
+            CurrentChange(val){this.pageIndex = val;this.handleClick()},
             //认证用户页面条数页数选择
-            SizeChange2(){this.handleClick()},
-            CurrentChange2(){this.handleClick()},
+            SizeChange2(val){this.pageSize2 = val;this.handleClick()},
+            CurrentChange2(val){this.pageIndex2 = val;this.handleClick()},
             //注册页面条数页数事件
-            SizeChange3(){this.handleClick()},
-            CurrentChange3(){this.handleClick()},
+            SizeChange3(val){this.pageSize3 = val;this.handleClick()},
+            CurrentChange3(val){this.pageIndex3 = val;this.handleClick()},
             //认证用户点击添加按钮
             approve(){
                 var that = this;
@@ -725,7 +728,7 @@
                 var that = this;
                 var url = '';
                 var data = {};
-                if(that.add.ueMAC==''||that.add.ueType==''||that.add.nickname==''){
+                if(that.add.ueMAC==''||that.add.ueType==''){
                     that.$message({
                         message: '温馨提示:必填数据不能为空',
                         type: 'error',
@@ -767,14 +770,14 @@
                     data:data,
                     success:function(data){
                         if(data.errorCode=='0'){
-                            if(that.statustype = '0'){
+                            if(that.statustype == '0'){
                                 that.$message({
                                     message: '保存成功',
                                     type: 'success',
                                     showClose: true,
                                 })
                             }
-                            if(that.statustype = '1'){
+                            if(that.statustype == '1'){
                                 that.$message({
                                     message: '修改成功',
                                     type: 'success',

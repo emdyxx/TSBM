@@ -37,9 +37,9 @@
         <div class="equipmentLocation_main">
             <el-tabs v-model.lazy="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane label="厂区定位" name='1' style="height:100%;overflow: auto;">
-                    <ul style="list-style: none;display: flex;display: -webkit-flex;flex-direction: row;flex-wrap: wrap;">
+                    <ul class="equipmentLocation_ul">
                         <li class="flex-item" v-for='(site,key) in sites' :key="site.id">
-                            <img :src=site.imgUrl @click="imgrouter(key)">
+                            <img :src=serverurl+site.imgUrl @click="imgrouter(key)">
                             <div class="img_bottom">
                                 <span v-if="deletetype" @click="imgdelete(key)">删除</span>
                                 <span v-if="revamp" @click="imgamend(key)">修改</span>
@@ -831,7 +831,11 @@
                             // that.options = data.result
                             // that.selectedOptions = data.result[0].value
                             that.options = data.result[0].children
-                            that.selectedOptions = data.result[0].children[0].value
+                            if(sessionStorage.departmentimgIds==''||sessionStorage.departmentimgIds==undefined){
+                                that.selectedOptions = data.result[0].children[0].value
+                            }else{
+                                that.selectedOptions = sessionStorage.departmentimgIds
+                            }
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -861,4 +865,6 @@
 .img_bottom>span{width: 50%;}
 .img_bottom>span:hover{background:#99A9BF;}
 #allmap{width: 100%;height: 100%;}
+
+.equipmentLocation_ul{display: flex;list-style: none;flex-direction: row;flex-wrap: wrap;}
 </style> 

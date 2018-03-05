@@ -20,8 +20,7 @@
           <el-button type="info" @click="login">登录</el-button>
           <hr>
           <h1>
-            <!-- <i class="iconfont icon-baidu"></i> -->
-            <img class="logo" src="../ASSETS/logo.jpg" alt="">
+            <img class="logo" src="../ASSETS/logo.png" alt="">
             <span>快越科技</span>
           </h1>
           <div>©2017 All Rights Reserved.</div>
@@ -158,6 +157,7 @@ export default {
   border-left: 120px solid #D8D8D8;
   border-right: 120px solid #D8D8D8;
   margin: 35px 0;
+  display: inline-block;
 }
 .login_popur>div{
   margin-top: 20px;

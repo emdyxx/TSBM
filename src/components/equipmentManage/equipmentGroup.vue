@@ -15,6 +15,7 @@
                 </div>
                 <div class="equipmentGroup_bottom_right">
                     <div class="equipmentGroup_bottom_right_left">
+                        <p style="margin: 0;">已分组设备</p>
                         <el-table
                             :data="dataleft"
                             border
@@ -53,11 +54,12 @@
                         </el-table>
                     </div>
                     <div class="equipmentGroup_bottom_right_center">
-                        <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">到左边</el-button></div>
-                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>到右边<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
+                        <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">加入组</el-button></div>
+                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>移出组<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
                         <div v-if="savegrouping" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>保存</el-button></div>
                     </div>
                     <div class="equipmentGroup_bottom_right_right">
+                        <p style="margin: 0;">未分组设备</p>
                         <el-table
                             :data="dataright"
                             border
@@ -115,7 +117,15 @@
                             </div>
                             <div class="userManage_form">
                                 <span><i class="required">*</i>硬件版本:</span>
-                                <input type="text" v-model.lazy="model" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                                <!-- <input type="text" v-model.lazy="model" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本"> -->
+                                <el-select v-model.lazy="modelval" placeholder="请选择硬件版本">
+                                    <el-option
+                                    v-for="item in model"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
                             </div>
                             <div class="userManage_form">
                                 <span>备注:</span>
@@ -155,7 +165,7 @@
                 level:'', //选中树的level等级
                 typemodel:'', //树的添加修改类型
                 groupName:'', //分组名称
-                model:'', //硬件版本
+                // model:'', //硬件版本
                 remark:'', //备注
 
                 dataleft:[],//左侧基本数据
@@ -164,6 +174,10 @@
                 rightchangedata:[],//右侧选中数据
                 leftdata:[],//往左侧移动数据id
                 rightdata:[],//往右侧移动数据id
+
+                model:[],//所有硬件版本号
+                modelval:0, //选中的硬件版本号
+                modellink:'',//左侧树选中的硬件版本
             }
         },
         mounted(){
@@ -204,9 +218,9 @@
         methods:{
             //最左侧树行列表点击事件
             handleNodeClick(data){
-                this.ready(data.groupId)
                 if(data.departmentId==''||data.departmentId==undefined){
                     this.groupId = data.groupId
+                    this.ready(this.groupId)
                 }
                 if(data.groupId==''||data.groupId==undefined){
                     this.departmentId = data.departmentId
@@ -217,8 +231,35 @@
                 this.rightdata = [];
                 this.level = data.level
                 this.groupName = data.groupName
-                this.model = data.model
+                this.modellink = data.model
                 this.remark = data.remark
+                
+            },
+            //获取所有硬件版本号
+            bodelTYpe(){
+                var that = this
+                this.model = [];
+                $.ajax({
+                    type:'get',
+                    async:false,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/getEquipmentModelInfo',
+                    data:{},
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            var modeldata = {}
+                            for(var i=0;i<data.result.length;i++){
+                                modeldata = {}
+                                modeldata.value = i
+                                modeldata.label = data.result[i].modelName
+                                that.model.push(modeldata)
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    } 
+                })
             },
             //添加分组
             addGroup(){
@@ -231,6 +272,7 @@
                     return;
                 }
                 $('#myModal').modal('show');
+                this.bodelTYpe()
                 this.typemodel = '1'
             },
             //修改分组
@@ -243,8 +285,14 @@
                     });
                     return;
                 }
-                $('#myModal').modal('show');
                 this.typemodel = '2'
+                $('#myModal').modal('show');
+                this.bodelTYpe()
+                for(var i=0;i<this.model.length;i++){
+                    if(this.modellink == this.model[i].label){
+                        this.modelval = i
+                    }
+                }
             },
             //删除分组
             removeGroup(){
@@ -294,7 +342,7 @@
                 var that = this;
                 var url = '';
                 var data = {};
-                if(this.groupName==''||this.model==''){
+                if(this.groupName==''){
                     this.$message({
                         message: '必填字段不能为空',
                         type: 'error',
@@ -303,7 +351,9 @@
                     return;
                 }
                 data.groupName = that.groupName
-                data.model = that.model
+                for(var i=0;i<this.model.length;i++){
+                    data.model = this.model[this.modelval].label
+                }
                 data.remark = that.remark
                 data.departmentId = that.departmentId
                 if(this.typemodel=='1'){
@@ -365,10 +415,11 @@
                 for(var i=0;i<this.dataright.length;i++){
                     for(var j=0;j<this.rightchangedata.length;j++){
                         if(this.dataright[i].id==this.rightchangedata[j].id){
-                            this.dataright.splice(i,1)
+                            this.rightchangedata.splice(j,1)
                         }
                     }
                 }
+                this.dataright = this.rightchangedata
                 for(var i=0;i<this.leftdata.length;i++){
                     for(var j=0;j<this.rightdata.length;j++){
                         if(this.leftdata[i]==this.rightdata[j]){
@@ -390,10 +441,11 @@
                 for(var i=0;i<this.dataleft.length;i++){
                     for(var j=0;j<this.leftchangedata.length;j++){
                         if(this.dataleft[i].id==this.leftchangedata[j].id){
-                            this.dataleft.splice(i,1)
+                            this.leftchangedata.splice(j,1)
                         }
                     }
                 }
+                this.dataleft = this.leftchangedata
                 for(var i=0;i<this.rightdata.length;i++){
                     for(var j=0;j<this.leftdata.length;j++){
                         if(this.rightdata[i]==this.leftdata[j]){
@@ -538,5 +590,5 @@
 .required{color: red;}
 .userManage_form{display: flex;width: 280px;margin: 0 auto 10px;}
 .userManage_form>span{width: 85px;line-height: 34px;font-size: 15px;}
-.userManage_form>input{height: 31px;width: 75%;}
+.userManage_form>input{height: 36px;width: 71%;}
 </style>

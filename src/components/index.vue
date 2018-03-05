@@ -4,7 +4,7 @@
       <div class="index_nav_top" @click="echart">
         <div>
           <!-- <i class="iconfont icon-baidu"></i> -->
-          <img class="logo" src="../ASSETS/logo.jpg" alt="">
+          <img class="logo" src="../ASSETS/logo.png" alt="">
         </div>
         <span>TSBM-管理系统</span>
       </div>
@@ -446,6 +446,7 @@ export default {
       },
     });
     var url = localStorage.serverurl.split('//');
+    console.log(url)
     url = 'ws://'+url[1]
     var ws = new WebSocket(url+'webscoketAlarm');
     ws.onopen = function(){}

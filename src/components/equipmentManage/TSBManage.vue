@@ -8,7 +8,7 @@
                 <el-tab-pane label="所有" name='1' style="height:100%;">
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>硬件版本:</span>
+                            <span>设备型号:</span>
                             <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
@@ -43,6 +43,19 @@
                             </el-table-column>
                             <el-table-column
                             align='center'
+                            label="设备图片"
+                            width="160">
+                                <template scope="scope">
+                                    <span v-if="scope.row.imageBase64==''">
+                                        <img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAYEBQUFBAYFBQUHBgYHCQ8KCQgICRMNDgsPFhMXFxYTFRUYGyMeGBohGhUVHikfISQlJygnGB0rLismLiMmJyYBBgcHCQgJEgoKEiYZFRkmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJv/AABEIAEYAYQMBEQACEQEDEQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AO3+DPw18Ea78NdG1bV9BjvL65ErSzPNICxErqOAwHQAVpKTTA7X/hT/AMN/+hWg/wC/0v8A8VU8zAP+FP8Aw3/6FaD/AL/S/wDxVHMwD/hT/wAN/wDoVoP+/wBL/wDFUczAP+FP/Df/AKFaD/v9L/8AFUczAP8AhT/w3/6FaD/v9L/8VRzMA/4U/wDDf/oVoP8Av9L/APFUczAP+FP/AA3/AOhWg/7/AEv/AMVRzMA/4U/8N/8AoVoP+/0v/wAVRzMA/wCFP/Df/oVoP+/0v/xVHMwD/hT/AMN/+hWg/wC/0v8A8VRzMDn/AIg/CrwDYeBfEF/Y+Hore6tNPnnhlSaTKOiFgeWx1FNSdwPhDUGZ7+5d2LM0rEknJJyamW4H6E/s+/8AJH/D3+5N/wCj5KqfxAdD491DVdN8PPcaMrNdtKkQ2afLeFVY7S2yJg2FB3EjOAD8pJAqVuB514U8RalB4Y0/RtAGoSSi9WwMAFnJLbwLDM37lCyGNsRKc3QyN3Rzwba11A9B+H962oaBBdwWN3a6XMiyWTahfPc3UqtklpNxbbz93943B/hxioe4GJ8TvF0OmafNaaT4z0jS9UidI5LZ3ie53OyBcB3wgG7LFkb5SSNuN1OK8gNrwjqEc009qdU8Q6lIV8wPq+jtZqgBwQrfZ4lJORwcnjjgGkwLHjiW+h0SJtO1GbTp5L+zgM8KRuwSW5jjfAkVlztc4464+lCA870291bVPHf9gahP4g1exlLS21y18dNNvbBBmYi2EfnB3IC7gABjaSfNC30uB3Xw6W6i0jULW5vrm9Ftqt5DC91MZnWJZmCKXb5mwO7EntnAFQwG+KtcudF8S6AWluG026S5jube3sZLp3YKrIwEas4xhge2G57ENK6Ag+HEOrWVvqFlf+HbnSYXvbm7iea4hcN5txI4QLHI+3CFM9BktgcZIwLnxP8A+Sb+Kf8AsE3X/opqUd0B+bF9/wAftx/10b+dEt2B+hX7Pv8AyR/w9/uTf+j5KqfxAdhrGhaVrTRf2tafbYos/wCjTOzQPnH34s7JMYBG5Tg8jBqU7AeI6brOr6HbNDY3OhWMmlLKlnBLaxbTF9rKuUC3hkG/uxhHC4BHU6WuB7tpVjb6RpFnptuzfZrG3SCNpDk7EUKMn1wKy3A5bUFm8WzR3EFuW0CyR54DIMDUp9pCEKesK5JBP322svygFq2ApaV8QfBukeB7OWbxJp7T2Ompvs5LxPtJdIxmMoTu35GMEZzRytsC98SNTgh8J2N091DZJPqWnstxcHEUWLmOTc+SvygIc8j6ihbgcXqF74AXxBFd6n4m06+s4raS4k1W312Fbs3IwMkQqswyjMqrE+zAI8scGq1sB2HwovbO90zWzYXv2+2h1m4jW680SedwjF9y8HJbPHHP4VMgH3ltceKfE8F7perXenWGkQzQi+s0ib7RO7KGRDKjqVQR4YhfvNgHKOAbIB/gu1Wx8T+KrGO91G4hglthFHe30tyIlMIYhTIzEZYsT+HoMD2QFv4n/wDJN/FP/YJuv/RTUo7oD82L7/j9uP8Aro386JbsD9Cv2ff+SP8Ah7/cm/8AR8lVP4gPQ6gDJn0bw7OjaZLpunlXmF81t5SDdIGB80qOp3AZbv0NO7A0Ibu0mkMcN1DI4LAqkgJ+U7W4HoeD6HikBNQAUANkSORdsiK6hg2GGQCCCD9QQDQA2WaGJo1llSNpX2RhmALtgnA9TgE49jQBHZWVpZCcWlukH2iZp5dgxvkbqx9SaALCgKAqgADgAdqAK9vZWttc3V1BAsc146vO46yMqhQT9FUD8KAMH4n/APJN/FP/AGCbr/0U1OO6A/Ni+/4/bj/ro386JbsD9Cv2ff8Akj/h7/cm/wDR8lVP4gPQ6gClFBLHrNxcFN0U8Eah8jKshbIPsQ4Ixno2ccZAOIufBuvw393d2F9E0V1LPLJaC8ltWcyTs3E6IXjG0Qk7R1jI6OTVXQHY6hY3lzoQsjcpLebIw05Xyw7KQS2BnbnBOO1IDhdd8I+OZH1GbSNdieS7kmZYr3UrpY41aZWj2+XgxlUGPkIHGDkFs0mgKl3pHxI1HUNfREFkS0H2S5n1ORLe5UACRdsL74jkAhlCEhcEDc+S6A9G1G1ubiwtLUqJZPPgeSR2Hy7HVy3QZOU4wOpHAGcSA3xLr+keGtJl1bW76OztIv4nPLHsqjqxPoKErgfJfxR+M2v+LLz7No80+jaPDJvhSGQpNKR0aRlPryFHA9yAa2jBIR6N8IfjtFemLRPHE8dvck7YdUOEjf0EvZT/ALXA9cYyZlDsM9b+JpDfDXxSykEHSLogjv8AumrOO4H5s33/AB+3H/XRv50S3YH6Ffs+/wDJH/D3+5N/6Pkqp/EB6HUAFABQAUAFABQBw/xN+JWgeArL/TJBdapKm630+JsO4zjcx52L15PXBxnFVGLYHx9478a69431b+0Nbut4TIgt4xtigUnOFH5ZJyTgZPArdJIRzVMAoA9E8K/FTW9I8Iat4Rvy2paVfWM1tAJG/eWjNGVG0905GVPTHGOQZcU3cDwy+/4/bj/ro386wluxn6Ffs+/8kf8AD3+5N/6Pkqp/EB6HUAFAFHWtW03Q9Nm1PV72Kys4Fy8srYA9h6k9gOT2oSuBYsrq2vrSK8sriK5tplDxyxOGVwe4I4NAE1AHiPxg+N9n4e87RPCckN/q4G2W7GHhtiR27O49OgPXJBWtIwvuB8salfXmp301/qF1LdXc7b5ZpWLM59ya2EVqACgAoAKAOQvv+P24/wCujfzrmluxn6Ffs+/8kf8AD3+5N/6Pkqp/EB6HUAcn8Q/Hmg+BdJN7qs2+4kB+zWUZHmzn2HZfVjwPc4BpRbA+O/iN4/17x3qn2rVJvKtI2P2axjP7uEf+zN6sf0HFbqKQjU+FfxS1zwHdiFS1/osjZmsJG4H+1Gf4W/Q9+xClFMDqvix8cr/xJFJo/hZZ9L0p1xLO523E4I5XgkIvUYBJPqASKmMLbgeJ1oAUAFABQAUAFAHIX3/H7cf9dG/nXNLdjPpv4cftD+H/AAh4N0/w5caRcXj2PmL9ohkwsgaRmBwVyPvY/Cqdm73A29V/aq0g6fMulaBKl6VxE9zITGp9SFGT9Mj60rLuB89694um1/VJtU1nVZb28mOXlkU/kBjAA7AYArVSihGd/ath/wA9/wDxxv8ACnzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxA528ZWvJ2Rg6GRirAHBGevNYPcZ//9k=' alt="" style="width:130px;height:70px;">
+                                    </span>
+                                    <span v-else>
+                                        <img :src=scope.row.imageBase64 alt="" style="width:130px;height:70px;">
+                                    </span>
+                                </template>  
+                            </el-table-column>
+                            <el-table-column
+                            align='center'
                             label="设备名称"
                             width="160">
                                 <template scope="scope">
@@ -57,19 +70,19 @@
                             <el-table-column
                             prop="MAC"
                             align='center'
-                            label="MAC"
+                            label="设备MAC"
                             width="160">
                             </el-table-column>
                             <el-table-column
                             prop="wanIP"
                             label="ip地址"
                             align='center'
-                            width="180">
+                            width="150">
                             </el-table-column>
                             <el-table-column
                             label="状态"
                             align='center'
-                            width="120">
+                            width="80">
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
                                         在线
@@ -81,7 +94,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="model"
-                            label="硬件版本"
+                            label="设备型号"
                             align='center'
                             width="140">
                             </el-table-column>
@@ -89,16 +102,22 @@
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="140">
+                            width="175">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
                             label="在线时长"
                             align='center'
-                            width="220">
+                            width="200">
                             </el-table-column>
                             <el-table-column
                             prop="departmentName"
+                            align='center'
+                            label="归属组织"
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
+                            prop="groupName"
                             align='center'
                             label="归属分组"
                             width="120">
@@ -126,7 +145,7 @@
                 <el-tab-pane label="TSBG" name='2'>
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>硬件版本:</span>
+                            <span>设备型号:</span>
                             <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
@@ -166,6 +185,19 @@
                             </el-table-column>
                             <el-table-column
                             align='center'
+                            label="设备图片"
+                            width="160">
+                                <template scope="scope">
+                                    <span v-if="scope.row.imageBase64==''">
+                                        <img src='data:image/jpeg;base64,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' alt="" style="width:130px;height:70px;">
+                                    </span>
+                                    <span v-else>
+                                        <img :src=scope.row.imageBase64 alt="" style="width:130px;height:70px;">
+                                    </span>
+                                </template>  
+                            </el-table-column>
+                            <el-table-column
+                            align='center'
                             label="设备名称"
                             width="160">
                                 <template scope="scope">
@@ -180,14 +212,14 @@
                             <el-table-column
                             prop="MAC"
                             align='center'
-                            label="MAC"
+                            label="设备MAC"
                             width="160">
                             </el-table-column>
                             <el-table-column
                             prop="wanIP"
                             label="ip地址"
                             align='center'
-                            width="160">
+                            width="150">
                             </el-table-column>
                             <el-table-column
                             label="状态"
@@ -204,7 +236,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="model"
-                            label="硬件版本"
+                            label="设备型号"
                             align='center'
                             width="140">
                             </el-table-column>
@@ -212,7 +244,7 @@
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="120">
+                            width="175">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
@@ -222,6 +254,12 @@
                             </el-table-column>
                             <el-table-column
                             prop="departmentName"
+                            align='center'
+                            label="归属组织"
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
+                            prop="groupName"
                             align='center'
                             label="归属分组"
                             width="120">
@@ -259,7 +297,7 @@
                 <el-tab-pane label="TSBC" name='3'>
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>硬件版本:</span>
+                            <span>设备型号:</span>
                             <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
@@ -297,6 +335,19 @@
                             </el-table-column>
                             <el-table-column
                             align='center'
+                            label="设备图片"
+                            width="160">
+                                <template scope="scope">
+                                    <span v-if="scope.row.imageBase64==''">
+                                        <img src='data:image/jpeg;base64,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' alt="" style="width:130px;height:70px;">
+                                    </span>
+                                    <span v-else>
+                                        <img :src=scope.row.imageBase64 alt="" style="width:130px;height:70px;">
+                                    </span>
+                                </template>  
+                            </el-table-column>
+                            <el-table-column
+                            align='center'
                             label="设备名称"
                             width="160">
                                 <template scope="scope">
@@ -312,6 +363,12 @@
                             prop="tsbgMAC"
                             align='center'
                             label="TSBG设备MAC"
+                            width="160">
+                            </el-table-column>
+                            <el-table-column
+                            prop="MAC"
+                            align='center'
+                            label="设备MAC"
                             width="160">
                             </el-table-column>
                             <el-table-column
@@ -335,7 +392,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="model"
-                            label="硬件版本"
+                            label="设备型号"
                             align='center'
                             width="140">
                             </el-table-column>
@@ -343,7 +400,7 @@
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="120">
+                            width="175">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
@@ -353,6 +410,12 @@
                             </el-table-column>
                             <el-table-column
                             prop="departmentName"
+                            align='center'
+                            label="归属组织"
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
+                            prop="groupName"
                             align='center'
                             label="归属分组"
                             width="120">
@@ -390,7 +453,7 @@
                 <el-tab-pane label="TSBA" name='4'>
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>硬件版本:</span>
+                            <span>设备型号:</span>
                             <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
                         </div>
                         <div class="TSBManage_formtwo">
@@ -428,6 +491,19 @@
                             </el-table-column>
                             <el-table-column
                             align='center'
+                            label="设备图片"
+                            width="160">
+                                <template scope="scope">
+                                    <span v-if="scope.row.imageBase64==''">
+                                        <img src='data:image/jpeg;base64,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' alt="" style="width:130px;height:70px;">
+                                    </span>
+                                    <span v-else>
+                                        <img :src=scope.row.imageBase64 alt="" style="width:130px;height:70px;">
+                                    </span>
+                                </template>  
+                            </el-table-column>
+                            <el-table-column
+                            align='center'
                             label="设备名称"
                             width="160">
                                 <template scope="scope">
@@ -440,9 +516,15 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            prop="tsbgMAC"
+                            align='center'
+                            label="TSBG设备MAC"
+                            width="160">
+                            </el-table-column>
+                            <el-table-column
                             prop="MAC"
                             align='center'
-                            label="MAC"
+                            label="设备MAC"
                             width="160">
                             </el-table-column>
                             <el-table-column
@@ -466,7 +548,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="model"
-                            label="硬件版本"
+                            label="设备型号"
                             align='center'
                             width="140">
                             </el-table-column>
@@ -474,7 +556,7 @@
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="142">
+                            width="175">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
@@ -484,6 +566,12 @@
                             </el-table-column>
                             <el-table-column
                             prop="departmentName"
+                            align='center'
+                            label="归属组织"
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
+                            prop="groupName"
                             align='center'
                             label="归属分组"
                             width="120">
@@ -1165,7 +1253,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbccollcate.wifi2ApEncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApKeyAuth" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -1195,7 +1283,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td><i v-if="tsbccollcate.wifi2StaEncryptionMode=='1'" class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaKeyAuth" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
@@ -1278,7 +1366,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbccollcate.wifi5ApEncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApKeyAuth" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -1308,7 +1396,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td><i v-if="tsbccollcate.wifi5StaEncryptionMode=='1'" class="required">*</i>认证秘钥</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaKeyAuth" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td><i class="required">*</i>优先级</td>
@@ -1439,7 +1527,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbacaollcate.wifi2EncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2KeyAuth" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -1509,7 +1597,7 @@
                                                             </select>
                                                         </td>
                                                         <td><i v-if="tsbacaollcate.wifi5EncryptionMode=='1'" class="required">*</i>认证秘钥:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5KeyAuth" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入认证秘钥" min="6" max="64" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>隐藏SSID</td>
@@ -1604,6 +1692,12 @@
                                     <div>
                                         <span>设备昵称:</span>
                                         <input v-model.lazy="managedata.nickname" type="text" placeholder="请输入设备昵称" style="width:146px;display:inline-block;" class="form-control logManage_main_input">
+                                    </div>
+                                    <div>
+                                        <span>设备图片</span>
+                                        <div class="container">
+                                            
+                                        </div>
                                     </div>
                                     <div>
                                         <span>备注信息:</span>
@@ -2556,6 +2650,8 @@
                 var exp=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/;
                 //DNS
                 var DNSS=/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/;
+                //中文验证
+                var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
                 if(that.lookoverType=='0'){
                     if(that.tsbgcollcate.ipType=='STATIC'){
                         if(!IP.test(that.tsbgcollcate.wanIP)){
@@ -2695,7 +2791,7 @@
                                 });
                                 return;
                             }
-                            if(that.tsbccollcate.wifi2ApLaunchPower==''||that.tsbccollcate.wifi2ApSSID==''){
+                            if(that.tsbccollcate.wifi2ApSSID==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -2706,7 +2802,23 @@
                             if(that.tsbccollcate.wifi2ApEncryptionMode=='0'){}else{
                                 if(that.tsbccollcate.wifi2ApKeyAuth==''){
                                     this.$message({
-                                        message: '必填字段不能为空',
+                                        message: '加密方式非NONE时,认证秘钥不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(that.tsbccollcate.wifi2ApKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
+                                }
+                                if(result.test(that.tsbccollcate.wifi2ApKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
                                         type: 'error',
                                         showClose: true,
                                     });
@@ -2733,6 +2845,22 @@
                                     });
                                     return;
                                 }
+                                if(that.tsbccollcate.wifi2StaKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
+                                }
+                                if(result.test(that.tsbccollcate.wifi2StaKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
                             }
                         }
                     }
@@ -2746,7 +2874,7 @@
                                 });
                                 return;
                             }
-                            if(that.tsbccollcate.wifi5ApLaunchPower==''||that.tsbccollcate.wifi5ApSSID==''){
+                            if(that.tsbccollcate.wifi5ApSSID==''){
                                 this.$message({
                                     message: '必填字段不能为空',
                                     type: 'error',
@@ -2757,7 +2885,23 @@
                             if(that.tsbccollcate.wifi5ApEncryptionMode=='0'){}else{
                                 if(that.tsbccollcate.wifi5ApKeyAuth==''){
                                     this.$message({
-                                        message: '必填字段不能为空',
+                                        message: '加密方式非NONE时,认证秘钥不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(that.tsbccollcate.wifi5ApKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
+                                }
+                                if(result.test(that.tsbccollcate.wifi5ApKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
                                         type: 'error',
                                         showClose: true,
                                     });
@@ -2778,6 +2922,22 @@
                                 if(that.tsbccollcate.wifi5StaKeyAuth==''){
                                     this.$message({
                                         message: '必填字段不能为空',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                                if(that.tsbccollcate.wifi5StaKeyAuth.length<6){
+                                   this.$message({
+                                        message: '认证秘钥长度不能小于6位!',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return; 
+                                }
+                                if(result.test(that.tsbccollcate.wifi5StaKeyAuth)){
+                                    this.$message({
+                                        message: '认证秘钥不能有中文字符',
                                         type: 'error',
                                         showClose: true,
                                     });
@@ -2962,6 +3122,14 @@
                                 });
                                 return;
                             }
+                            if(that.tsbacaollcate.wifi2KeyAuth.length<6){
+                                this.$message({
+                                    message: '认证秘钥长度不能小于6位!',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
                             if(result.test(that.tsbacaollcate.wifi2KeyAuth)){
                                 this.$message({
                                     message: '认证秘钥不能有中文字符',
@@ -2977,6 +3145,14 @@
                             if(that.tsbacaollcate.wifi5KeyAuth==''){
                                 this.$message({
                                     message: '加密方式非NONE时,认证秘钥不能为空',
+                                    type: 'error',
+                                    showClose: true,
+                                });
+                                return;
+                            }
+                            if(that.tsbacaollcate.wifi5KeyAuth.length<6){
+                                this.$message({
+                                    message: '认证秘钥长度不能小于6位!',
                                     type: 'error',
                                     showClose: true,
                                 });
@@ -3011,6 +3187,7 @@
                     //     }   
                     // }        
                 }
+                
                 if(that.lookoverType=='0'){
                     url='equipment/saveConfigTsbg'
                     data = that.tsbgcollcate
@@ -3478,6 +3655,12 @@
         },
         created(){
             var that = this
+            var url=location.href; 
+            if(url.indexOf("?")!=-1) {
+                var vars = url.split("?");
+                var locationNum = vars[1].split("=");
+                this.activeName = locationNum[1]
+            }
             this.handleClick();
         },
         beforeDestroy(){
@@ -3524,5 +3707,8 @@
 .state_two>div{display: flex;}
 .state_two>div>span:nth-of-type(1){width: 25px;height: 25px;border: 1px solid #797979;}
 .state_two>div>span:nth-of-type(2){font-size: 13px;line-height: 25px;padding-left: 10px;}
+
+/* 管理--设备图片裁切 */
+
 </style>
 

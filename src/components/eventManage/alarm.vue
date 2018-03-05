@@ -38,6 +38,8 @@
                     <el-input v-model.lazy="hardwareVersion" size='small' style="width:110px;" placeholder="请输入设备型号"></el-input>
                 </span>
                 <el-button @click="alertsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
+                <el-button v-if="partRead" @click="partRead" style="margin-left:10px;" type="primary" size='small'>标为已读</el-button>
+                <el-button v-if="wholeRead" @click="wholeRead" style="margin-left:10px;" type="primary" size='small'>全部标为已读</el-button>
             </div>
             <div class="alarm_bottom"
             v-loading.body='loading'
@@ -211,6 +213,8 @@
         name: 'index',
         data () {
             return {
+                partRead:false,
+                wholeRead:false,
                 serverurl:localStorage.serverurl,
                 loading:false,
                 sites:[],
@@ -227,6 +231,36 @@
                 hardwareVersion:'',
                 detail:{},
             }
+        },
+        mounted(){
+            var that = this;
+            setTimeout(function(){
+                //请求用户操作权限
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'system/getUserPrivilege',
+                    data:{
+                        menuId:sessionStorage.menuId
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='readAlarm'){
+                                    that.partRead = true
+                                }
+                                if(data.result[i].code=='readAllAlarm'){
+                                    that.wholeRead = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },200)
         },
         methods:{
             //选中行的change事件
@@ -296,6 +330,70 @@
                         }else{
                             that.errorCode(data.errorCode)
                             that.loading = false
+                        }
+                    }
+                })
+            },
+            //标为已读
+            partRead(){
+                var that = this;
+                if(this.sites.length==''){
+                    that.$message({
+                        message: '请选择数据进行操作!',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                var array = [];
+                for(var i=0;i<this.sites.length;i++){
+                    array.push(this.sites[i].id)
+                }
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'event/editAlarmStatus',
+                    data:{
+                        alarmIds:array.join(',')
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '设置成功',
+                                type: 'success',
+                                showClose: true,
+                            });
+                            that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
+            },
+            //全部标为已读
+            wholeRead(){
+                var that = this;
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'event/editAllAlarmStatus',
+                    data:{
+                        level:that.value
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '设置成功',
+                                type: 'success',
+                                showClose: true,
+                            });
+                            that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
                         }
                     }
                 })

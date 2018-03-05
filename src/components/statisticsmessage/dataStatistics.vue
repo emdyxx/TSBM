@@ -183,8 +183,8 @@
                                 </div>
                             </div>
                             <!-- style="display:flex;justify-content: center;align-items: center;" -->
-                            <div v-if="isActive=='1'">
-                                <div id="query"></div>
+                            <div v-if="isActive=='1'" style="width:100%;height:100%;">
+                                <div v-if="isActive=='1'" id="query" style="width:100%;height:100%;"></div>
                             </div>
                         </div>
                     </el-tab-pane>
@@ -381,8 +381,10 @@
             Active(val){
                 if(val=='0'){
                     this.isActive = val
+                    $('#query>div').css('display','none')
                 }
                 if(val=='1'){
+                    this.isActive = val
                     //必须指定时间段和MAC
                     if(this.MAC==''||this.startTime==''||this.endTime==''){
                         this.$message({
@@ -392,7 +394,6 @@
                         });
                         return;
                     }
-                    this.isActive = val
                     this.readytwo()
                 }
             },
@@ -446,8 +447,9 @@
                         });
                         return;
                     }
-                    var width = $('.dataStatistics_main').width();
-                    var height  = $('.dataStatistics_main').height ();
+                    var width = $('.inquire_bottom').width();
+                    var height  = $('.inquire_bottom').height ();
+                    console.log(width,height)
                     $.ajax({
                         type:'get',
                         async:true,
@@ -477,11 +479,9 @@
                                 }
                                 $('#query').css('width',width).css('height',height);
                                 var query = that.$echarts.init(document.getElementById('query'));
+                                $('#query>div').css('display','')
                                 query.setOption(
                                     {
-                                        title: {
-                                            text: 'Step Line'
-                                        },
                                         tooltip: {
                                             trigger: 'axis'
                                         },
@@ -604,5 +604,5 @@
 .inquire_top_type{margin-top:10px;margin-left:10px;cursor: pointer;font-size: 15px;}
 .nativeone{color: #8391a5;}
 .nativetwo{color: #555555;}
-#query{width: 700px;height: 400px;}
+#query{width: 100%;height: 100%;}
 </style>
