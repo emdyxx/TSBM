@@ -198,8 +198,13 @@
                                 if(data.result[i].code=='locEquipment'){
                                     localStorage.addequipments = true
                                 }
+                                else{
+                                    localStorage.addequipments = false
+                                }
                                 if(data.result[i].code=='removeEquipment'){
                                     localStorage.Deleteequipments = true
+                                }else{
+                                    localStorage.Deleteequipments = false
                                 }
                             }
                         }else{
@@ -458,8 +463,7 @@
                                                             });
                                                         }else{
                                                             that.mapcood = e
-                                                            console.log()
-                                                            if(localStorage.addequipments==false){
+                                                            if(localStorage.addequipments=='false'){
                                                                 that.$message({
                                                                     message: '您无此权限',
                                                                     showClose: true,
@@ -474,7 +478,7 @@
                                                         } 
                                                     }else{
                                                         that.mapcood = e
-                                                        if(localStorage.addequipments==false){
+                                                        if(localStorage.addequipments=='false'){
                                                             that.$message({
                                                                 message: '您无此权限',
                                                                 showClose: true,
@@ -585,7 +589,7 @@
                                                         });
                                                     }else{
                                                         that.mapcood = e
-                                                        if(localStorage.addequipments==false){
+                                                        if(localStorage.addequipments=='false'){
                                                             that.$message({
                                                                 message: '您无此权限',
                                                                 showClose: true,
@@ -597,7 +601,7 @@
                                                     } 
                                                 }else{
                                                     that.mapcood = e
-                                                    if(localStorage.addequipments==false){
+                                                    if(localStorage.addequipments=='false'){
                                                         that.$message({
                                                             message: '您无此权限',
                                                             showClose: true,
@@ -686,7 +690,7 @@
                     var type = e.target.getLabel().content
                     var menuTwo = new BMap.ContextMenu();
                     menuTwo.addItem(new BMap.MenuItem('删除设备',function(e){
-                        if(localStorage.Deleteequipments == false){
+                        if(localStorage.Deleteequipments == 'false'){
                             that.$message({
                                 message: '您无此权限',
                                 showClose: true,

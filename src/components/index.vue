@@ -16,7 +16,7 @@
           <el-button @click="shortcut(1)">设备概览</el-button>
           <el-button @click="shortcut(2)">设备列表</el-button>
           <el-button @click="shortcut(3)">地图定位</el-button>
-          <el-button @click="shortcut(4)">数据统计</el-button>
+          <el-button @click="shortcut(4)">统计数据</el-button>
         </div>
         <div class="index_main_top_right">
           <el-badge :value=value class="item" style="line-height:0;margin-right:30px;cursor: pointer;">

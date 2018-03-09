@@ -449,7 +449,6 @@
                     }
                     var width = $('.inquire_bottom').width();
                     var height  = $('.inquire_bottom').height ();
-                    console.log(width,height)
                     $.ajax({
                         type:'get',
                         async:true,
@@ -468,7 +467,6 @@
                                 var one = [];
                                 var two = [];
                                 var array = data.links.split(',')
-                                console.log(array)
                                 for(var i=0;i<data.result.length;i++){
                                     one.push(data.result[i].ts)
                                     for(var j=0;j<array.length;j++){
@@ -477,6 +475,7 @@
                                         }
                                     }
                                 }
+                                console.log(one,two,array)
                                 $('#query').css('width',width).css('height',height);
                                 var query = that.$echarts.init(document.getElementById('query'));
                                 $('#query>div').css('display','')

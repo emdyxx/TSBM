@@ -239,6 +239,16 @@
                         width="140">
                         </el-table-column>
                         <el-table-column
+                        label="适用范围"
+                        align='center'
+                        width="120">
+                            <template scope="scope">
+                                <span v-if="scope.row.upgradeOrder=='0'">指定设备</span>
+                                <span v-if="scope.row.upgradeOrder=='1'">指定设备分组</span>
+                                <span v-if="scope.row.upgradeOrder=='2'">指定设备型号</span>      
+                            </template>  
+                        </el-table-column>
+                        <el-table-column
                         label="状态"
                         align='center'
                         width="120">

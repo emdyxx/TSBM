@@ -142,6 +142,17 @@
                     </div>
                 </div>
             </div>
+            <el-dialog title="删除组织" :visible.sync="dialogFormVisible" style="width:700px;margin: 0 auto;text-align: left;">
+                <el-form>
+                    <el-form-item label="请输入密码" :label-width="formLabelWidth">
+                        <el-input v-model="password" style="width:186px" type='password' auto-complete="off" placeholder="请输入密码"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogFormVisibleSubmit">确 定</el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -155,6 +166,9 @@
                 // address:'',
                 phone:'',
                 serverurl:localStorage.serverurl,
+                dialogFormVisible:false,// 删除分组显示与否
+                formLabelWidth: '100px',
+                password:'',// 删除分组密码
                 //权限
                 add:false,
                 remove:false,
@@ -380,43 +394,38 @@
                     });
                     return;
                 }
+                that.dialogFormVisible = true;
+            },
+            dialogFormVisibleSubmit(){
+                var that = this;
                 var userIds = [];
                 for(var i=0;i<that.sites.length;i++){
                     userIds.push(that.sites[i].id)
                 }
-                that.$prompt('请输入登录密码确认删除', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(({ value }) => {
-                    $.ajax({
-                        type:'post',
-                        async:true,
-                        dataType:'json',
-                        xhrFields:{withCredentials:true},
-                        url:that.serverurl+'department/delDepartment',
-                        data:{
-                            userPassword:value,
-                            dpartmentId:userIds.join(',')
-                        },
-                        success:function(data){
-                            if(data.errorCode=='0'){
-                                that.$message({
-                                    message: '删除成功',
-                                    type: 'success',
-                                    showClose: true,
-                                });
-                                that.ready()
-                            }else{
-                                that.errorCode(data.errorCode)
-                            }
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'department/delDepartment',
+                    data:{
+                        userPassword:that.password,
+                        dpartmentId:userIds.join(',')
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.$message({
+                                message: '删除成功',
+                                type: 'success',
+                                showClose: true,
+                            });
+                            that.dialogFormVisible = false;
+                            that.ready()
+                        }else{
+                            that.errorCode(data.errorCode)
                         }
-                    })
-                }).catch(() => {
-                    that.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });          
-                });
+                    }
+                })
             },
             //选中行的change事件
             handleSelectionChange(val){

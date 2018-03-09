@@ -38,8 +38,8 @@
                     <el-input v-model.lazy="hardwareVersion" size='small' style="width:110px;" placeholder="请输入设备型号"></el-input>
                 </span>
                 <el-button @click="alertsearch" style="margin-left:10px;" type="primary" size='small'>搜索</el-button>
-                <el-button v-if="partRead" @click="partRead" style="margin-left:10px;" type="primary" size='small'>标为已读</el-button>
-                <el-button v-if="wholeRead" @click="wholeRead" style="margin-left:10px;" type="primary" size='small'>全部标为已读</el-button>
+                <el-button v-if="partReadType" @click="partRead" style="margin-left:10px;" type="primary" size='small'>标为已读</el-button>
+                <el-button v-if="wholeReadType" @click="wholeRead" style="margin-left:10px;" type="primary" size='small'>全部标为已读</el-button>
             </div>
             <div class="alarm_bottom"
             v-loading.body='loading'
@@ -213,8 +213,8 @@
         name: 'index',
         data () {
             return {
-                partRead:false,
-                wholeRead:false,
+                partReadType:false,
+                wholeReadType:false,
                 serverurl:localStorage.serverurl,
                 loading:false,
                 sites:[],
@@ -249,10 +249,10 @@
                         if(data.errorCode=='0'){
                             for(var i=0;i<data.result.length;i++){
                                 if(data.result[i].code=='readAlarm'){
-                                    that.partRead = true
+                                    that.partReadType = true
                                 }
                                 if(data.result[i].code=='readAllAlarm'){
-                                    that.wholeRead = true
+                                    that.wholeReadType = true
                                 }
                             }
                         }else{

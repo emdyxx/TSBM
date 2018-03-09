@@ -200,7 +200,7 @@
             //设备坐标删除
             addWIFItwo(){
                 var that = this
-                if(localStorage.Deleteequipments==false){
+                if(localStorage.Deleteequipments=='false'){
                     that.$message({
                         type: 'error',
                         message: '您无此权限'
@@ -288,7 +288,8 @@
             },
             //添加wifi弹窗
             addWIFI(){
-                if(localStorage.addequipments == false){
+                var that = this
+                if(localStorage.addequipments == 'false'){
                     that.$message({
                         type: 'error',
                         message: '您无此权限'
