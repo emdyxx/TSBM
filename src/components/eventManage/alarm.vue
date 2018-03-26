@@ -191,7 +191,7 @@
                                     </tr>
                                     <tr>
                                         <td>IP地址</td>
-                                        <td>{{detail.IP}}</td>
+                                        <td>{{detail.wanIP}}</td>
                                         <td>启动时间</td>
                                         <td>{{detail.startTime}}</td>
                                     </tr>

@@ -372,6 +372,13 @@ Vue.prototype.errorCode = function(code){
           showClose: true,
       });
     }
+    if(code=='2040'){
+      this.$message({
+          message: '密码错误',
+          type: 'error',
+          showClose: true,
+      });
+    }
     if(code=='3001'){
       this.$message({
           message: '发送配置失败',

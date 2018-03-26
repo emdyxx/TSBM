@@ -172,6 +172,7 @@ export default {
                         if(data.errorCode=='0'){
                             var datasort = [];
                             var datas = [];
+                            var datastwo = [];
                             for(var i=0;i<data.result.length;i++){
                                 if(data.result[i].wifi2Channel==i+1){
                                     datasort.push(data.result[i])
@@ -182,8 +183,10 @@ export default {
 
                                 }else{
                                     datas.push(datasort[i].total)
+                                    datastwo.push(datasort[i].total)
                                 } 
                             }
+                            
                             myCharttwo.setOption({
                                 color: ['#3398DB'],
                                 tooltip : {
@@ -212,7 +215,7 @@ export default {
                                     {
                                         type : 'value',
                                         name:'设备数量',
-                                        max:10,
+                                        max:datastwo[datastwo.length],
                                     }
                                 ],
                                 series : [
@@ -240,6 +243,7 @@ export default {
                     success:function(data){
                         if(data.errorCode=='0'){
                             var datas = [];
+                            var datastwo = [];
                             data.result.sort(function(a,b){
                                 return Number(a.wifi5Channel) > Number(b.wifi5Channel)
                             })
@@ -248,6 +252,7 @@ export default {
 
                                 }else{
                                     datas.push(data.result[i].total)
+                                    datastwo.push(data.result[i].total)
                                 } 
                             }
                             myChartfour.setOption({
@@ -278,7 +283,7 @@ export default {
                                     {
                                         type : 'value',
                                         name:'设备数量',
-                                        max:10,
+                                        max:datastwo[datastwo.length],
                                     }
                                 ],
                                 series : [

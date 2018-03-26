@@ -4,7 +4,7 @@
           <h1>TSBM-管理系统</h1>
           <el-input v-model.lazy="username" placeholder="用户名" required='required'></el-input>
           <el-input v-model.lazy="password" type='password' placeholder="密码" required></el-input>
-          <div class="login_popur_yzm">
+          <!-- <div class="login_popur_yzm">
               <div>
                 <el-input v-model.lazy="verificationcode" placeholder="请输入验证码" required></el-input>
               </div>
@@ -16,7 +16,7 @@
                     <i @click="verification" class="iconfont icon-shuaxin1"></i>
                   </div>
               </div>
-          </div>
+          </div> -->
           <el-button type="info" @click="login">登录</el-button>
           <hr>
           <h1>
@@ -42,12 +42,12 @@ export default {
     }
   },
   mounted(){
-    $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
+    // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
   },
   methods:{
-    verification(){
-      $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
-    },  
+    // verification(){
+    //   $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
+    // },  
     login(){
         var that = this;
         if(this.username==''){
@@ -66,14 +66,14 @@ export default {
             });
             return;
         }
-        if(this.verificationcode==''){
-            this.$message({
-              message: '验证码不能为空',
-              type: 'warning',
-              showClose: true,
-            });
-            return;
-        }
+        // if(this.verificationcode==''){
+        //     this.$message({
+        //       message: '验证码不能为空',
+        //       type: 'warning',
+        //       showClose: true,
+        //     });
+        //     return;
+        // }
         $.ajax({
           type:'post',
           async:true,
@@ -83,7 +83,7 @@ export default {
           data:{
             username:that.username,
             userPwd:that.password,
-            verification:that.verificationcode
+            // verification:that.verificationcode
           },
           success:function(data){
             if(data.errorCode=='2001'){
@@ -92,7 +92,7 @@ export default {
                 type: 'error',
                 showClose: true,
               });
-              $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
+              // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
               return;
             }
             if(data.errorCode=='2004'){

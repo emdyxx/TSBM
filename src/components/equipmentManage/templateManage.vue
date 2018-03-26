@@ -763,7 +763,7 @@
                         </el-table-column>
                         <el-table-column
                         prop="departmentName"
-                        label="所属部门"
+                        label="所属组织"
                         align='center'
                         width="120">
                         </el-table-column>
@@ -2695,6 +2695,30 @@
                             } 
                         }  
                     }       
+                    if(that.tsbctsbacaollcate.ipType==''||that.tsbacaollcate.ipType==undefined||that.tsbacaollcate.ipType==NaN){
+                        this.$message({
+                            message: '模板配置错误,请重新配置',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbacaollcate.wifi2Enable==''||that.tsbacaollcate.wifi2Enable==undefined||that.tsbacaollcate.wifi2Enable==NaN){
+                        this.$message({
+                            message: '模板配置错误,请重新配置',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    } 
+                    if(that.tsbacaollcate.wifi5Enable==''||that.tsbacaollcate.wifi5Enable==undefined||that.tsbacaollcate.wifi5Enable==NaN){
+                        this.$message({
+                            message: '模板配置错误,请重新配置',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }          
                     that.showtype = '2'
                     that.uploadscope()
                 }
@@ -3275,6 +3299,30 @@
                                 }
                             }  
                         }   
+                        if(that.tsbctsbacaollcate.ipType==''||that.tsbacaollcate.ipType==undefined||that.tsbacaollcate.ipType==NaN){
+                            this.$message({
+                                message: '模板配置错误,请重新配置',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        }
+                        if(that.tsbacaollcate.wifi2Enable==''||that.tsbacaollcate.wifi2Enable==undefined||that.tsbacaollcate.wifi2Enable==NaN){
+                            this.$message({
+                                message: '模板配置错误,请重新配置',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                        } 
+                        if(that.tsbacaollcate.wifi5Enable==''||that.tsbacaollcate.wifi5Enable==undefined||that.tsbacaollcate.wifi5Enable==NaN){
+                            this.$message({
+                                message: '模板配置错误,请重新配置',
+                                type: 'error',
+                                showClose: true,
+                            });
+                            return;
+                    }         
                         that.showtype = '2'
                         that.uploadscope()
                     }

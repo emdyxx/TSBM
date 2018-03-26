@@ -416,7 +416,7 @@
                             </div>
                             <div class="equipmentUser_form">
                                 <span><i class="required">*</i>ue设备MAC:</span>
-                                <input v-model.lazy="add.ueMAC" id="ueMAC" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
+                                <input v-model.lazy="add.ueMAC" id="ueMAC" type="text" maxlength="17" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入ue设备MAC">
                             </div>
                             <div class="equipmentUser_form">
                                 <el-checkbox v-model.lazy="checked" @change='Autopassword' style="margin-left:20px;color: #555555;">使用默认密码</el-checkbox>

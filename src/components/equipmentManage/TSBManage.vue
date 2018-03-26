@@ -46,11 +46,11 @@
                             label="设备图片"
                             width="160">
                                 <template scope="scope">
-                                    <span v-if="scope.row.imageBase64==''">
+                                    <span v-if="scope.row.imageUrl==''">
                                         <img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAYEBQUFBAYFBQUHBgYHCQ8KCQgICRMNDgsPFhMXFxYTFRUYGyMeGBohGhUVHikfISQlJygnGB0rLismLiMmJyYBBgcHCQgJEgoKEiYZFRkmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJv/AABEIAEYAYQMBEQACEQEDEQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AO3+DPw18Ea78NdG1bV9BjvL65ErSzPNICxErqOAwHQAVpKTTA7X/hT/AMN/+hWg/wC/0v8A8VU8zAP+FP8Aw3/6FaD/AL/S/wDxVHMwD/hT/wAN/wDoVoP+/wBL/wDFUczAP+FP/Df/AKFaD/v9L/8AFUczAP8AhT/w3/6FaD/v9L/8VRzMA/4U/wDDf/oVoP8Av9L/APFUczAP+FP/AA3/AOhWg/7/AEv/AMVRzMA/4U/8N/8AoVoP+/0v/wAVRzMA/wCFP/Df/oVoP+/0v/xVHMwD/hT/AMN/+hWg/wC/0v8A8VRzMDn/AIg/CrwDYeBfEF/Y+Hore6tNPnnhlSaTKOiFgeWx1FNSdwPhDUGZ7+5d2LM0rEknJJyamW4H6E/s+/8AJH/D3+5N/wCj5KqfxAdD491DVdN8PPcaMrNdtKkQ2afLeFVY7S2yJg2FB3EjOAD8pJAqVuB514U8RalB4Y0/RtAGoSSi9WwMAFnJLbwLDM37lCyGNsRKc3QyN3Rzwba11A9B+H962oaBBdwWN3a6XMiyWTahfPc3UqtklpNxbbz93943B/hxioe4GJ8TvF0OmafNaaT4z0jS9UidI5LZ3ie53OyBcB3wgG7LFkb5SSNuN1OK8gNrwjqEc009qdU8Q6lIV8wPq+jtZqgBwQrfZ4lJORwcnjjgGkwLHjiW+h0SJtO1GbTp5L+zgM8KRuwSW5jjfAkVlztc4464+lCA870291bVPHf9gahP4g1exlLS21y18dNNvbBBmYi2EfnB3IC7gABjaSfNC30uB3Xw6W6i0jULW5vrm9Ftqt5DC91MZnWJZmCKXb5mwO7EntnAFQwG+KtcudF8S6AWluG026S5jube3sZLp3YKrIwEas4xhge2G57ENK6Ag+HEOrWVvqFlf+HbnSYXvbm7iea4hcN5txI4QLHI+3CFM9BktgcZIwLnxP8A+Sb+Kf8AsE3X/opqUd0B+bF9/wAftx/10b+dEt2B+hX7Pv8AyR/w9/uTf+j5KqfxAdhrGhaVrTRf2tafbYos/wCjTOzQPnH34s7JMYBG5Tg8jBqU7AeI6brOr6HbNDY3OhWMmlLKlnBLaxbTF9rKuUC3hkG/uxhHC4BHU6WuB7tpVjb6RpFnptuzfZrG3SCNpDk7EUKMn1wKy3A5bUFm8WzR3EFuW0CyR54DIMDUp9pCEKesK5JBP322svygFq2ApaV8QfBukeB7OWbxJp7T2Ompvs5LxPtJdIxmMoTu35GMEZzRytsC98SNTgh8J2N091DZJPqWnstxcHEUWLmOTc+SvygIc8j6ihbgcXqF74AXxBFd6n4m06+s4raS4k1W312Fbs3IwMkQqswyjMqrE+zAI8scGq1sB2HwovbO90zWzYXv2+2h1m4jW680SedwjF9y8HJbPHHP4VMgH3ltceKfE8F7perXenWGkQzQi+s0ib7RO7KGRDKjqVQR4YhfvNgHKOAbIB/gu1Wx8T+KrGO91G4hglthFHe30tyIlMIYhTIzEZYsT+HoMD2QFv4n/wDJN/FP/YJuv/RTUo7oD82L7/j9uP8Aro386JbsD9Cv2ff+SP8Ah7/cm/8AR8lVP4gPQ6gDJn0bw7OjaZLpunlXmF81t5SDdIGB80qOp3AZbv0NO7A0Ibu0mkMcN1DI4LAqkgJ+U7W4HoeD6HikBNQAUANkSORdsiK6hg2GGQCCCD9QQDQA2WaGJo1llSNpX2RhmALtgnA9TgE49jQBHZWVpZCcWlukH2iZp5dgxvkbqx9SaALCgKAqgADgAdqAK9vZWttc3V1BAsc146vO46yMqhQT9FUD8KAMH4n/APJN/FP/AGCbr/0U1OO6A/Ni+/4/bj/ro386JbsD9Cv2ff8Akj/h7/cm/wDR8lVP4gPQ6gClFBLHrNxcFN0U8Eah8jKshbIPsQ4Ixno2ccZAOIufBuvw393d2F9E0V1LPLJaC8ltWcyTs3E6IXjG0Qk7R1jI6OTVXQHY6hY3lzoQsjcpLebIw05Xyw7KQS2BnbnBOO1IDhdd8I+OZH1GbSNdieS7kmZYr3UrpY41aZWj2+XgxlUGPkIHGDkFs0mgKl3pHxI1HUNfREFkS0H2S5n1ORLe5UACRdsL74jkAhlCEhcEDc+S6A9G1G1ubiwtLUqJZPPgeSR2Hy7HVy3QZOU4wOpHAGcSA3xLr+keGtJl1bW76OztIv4nPLHsqjqxPoKErgfJfxR+M2v+LLz7No80+jaPDJvhSGQpNKR0aRlPryFHA9yAa2jBIR6N8IfjtFemLRPHE8dvck7YdUOEjf0EvZT/ALXA9cYyZlDsM9b+JpDfDXxSykEHSLogjv8AumrOO4H5s33/AB+3H/XRv50S3YH6Ffs+/wDJH/D3+5N/6Pkqp/EB6HUAFABQAUAFABQBw/xN+JWgeArL/TJBdapKm630+JsO4zjcx52L15PXBxnFVGLYHx9478a69431b+0Nbut4TIgt4xtigUnOFH5ZJyTgZPArdJIRzVMAoA9E8K/FTW9I8Iat4Rvy2paVfWM1tAJG/eWjNGVG0905GVPTHGOQZcU3cDwy+/4/bj/ro386wluxn6Ffs+/8kf8AD3+5N/6Pkqp/EB6HUAFAFHWtW03Q9Nm1PV72Kys4Fy8srYA9h6k9gOT2oSuBYsrq2vrSK8sriK5tplDxyxOGVwe4I4NAE1AHiPxg+N9n4e87RPCckN/q4G2W7GHhtiR27O49OgPXJBWtIwvuB8salfXmp301/qF1LdXc7b5ZpWLM59ya2EVqACgAoAKAOQvv+P24/wCujfzrmluxn6Ffs+/8kf8AD3+5N/6Pkqp/EB6HUAcn8Q/Hmg+BdJN7qs2+4kB+zWUZHmzn2HZfVjwPc4BpRbA+O/iN4/17x3qn2rVJvKtI2P2axjP7uEf+zN6sf0HFbqKQjU+FfxS1zwHdiFS1/osjZmsJG4H+1Gf4W/Q9+xClFMDqvix8cr/xJFJo/hZZ9L0p1xLO523E4I5XgkIvUYBJPqASKmMLbgeJ1oAUAFABQAUAFAHIX3/H7cf9dG/nXNLdjPpv4cftD+H/AAh4N0/w5caRcXj2PmL9ohkwsgaRmBwVyPvY/Cqdm73A29V/aq0g6fMulaBKl6VxE9zITGp9SFGT9Mj60rLuB89694um1/VJtU1nVZb28mOXlkU/kBjAA7AYArVSihGd/ath/wA9/wDxxv8ACnzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxA528ZWvJ2Rg6GRirAHBGevNYPcZ//9k=' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=scope.row.imageBase64 alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -132,8 +132,8 @@
                         <div class="block">
                             <el-pagination
                             @size-change="sizechange"
-                            @current-change="currentchange"
-                            :current-page="pageIndex"
+                            @current-change="currentchange1"
+                            :current-page="pageIndex1"
                             :page-sizes="[10, 20, 30, 50]"
                             :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
@@ -188,11 +188,11 @@
                             label="设备图片"
                             width="160">
                                 <template scope="scope">
-                                    <span v-if="scope.row.imageBase64==''">
+                                    <span v-if="scope.row.imageUrl==''">
                                         <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=scope.row.imageBase64 alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -284,8 +284,8 @@
                         <div class="block">
                             <el-pagination
                             @size-change="sizechange"
-                            @current-change="currentchange"
-                            :current-page="pageIndex"
+                            @current-change="currentchange2"
+                            :current-page="pageIndex2"
                             :page-sizes="[10, 20, 30, 50]"
                             :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
@@ -338,11 +338,11 @@
                             label="设备图片"
                             width="160">
                                 <template scope="scope">
-                                    <span v-if="scope.row.imageBase64==''">
+                                    <span v-if="scope.row.imageUrl==''">
                                         <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=scope.row.imageBase64 alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -440,8 +440,8 @@
                         <div class="block">
                             <el-pagination
                             @size-change="sizechange"
-                            @current-change="currentchange"
-                            :current-page="pageIndex"
+                            @current-change="currentchange3"
+                            :current-page="pageIndex3"
                             :page-sizes="[10, 20, 30, 50]"
                             :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
@@ -494,11 +494,11 @@
                             label="设备图片"
                             width="160">
                                 <template scope="scope">
-                                    <span v-if="scope.row.imageBase64==''">
+                                    <span v-if="scope.row.imageUrl==''">
                                         <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=scope.row.imageBase64 alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -596,8 +596,8 @@
                         <div class="block">
                             <el-pagination
                             @size-change="sizechange"
-                            @current-change="currentchange"
-                            :current-page="pageIndex"
+                            @current-change="currentchange4"
+                            :current-page="pageIndex4"
                             :page-sizes="[10, 20, 30, 50]"
                             :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
@@ -1694,16 +1694,6 @@
                                         <input v-model.lazy="managedata.nickname" type="text" placeholder="请输入设备昵称" style="width:146px;display:inline-block;" class="form-control logManage_main_input">
                                     </div>
                                     <div>
-                                        <span>设备图片</span>
-                                        <div class="container">
-                                            <label for="myCropper-input">
-                                                <img :src=imgCropperData.imgSrc>
-                                                <input id="myCropper-input" type="file" :accept="imgCropperData.accept" ref="inputer" @change="handleFile">
-                                                <i class="el-icon-plus avatar-uploader-icon"></i>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div>
                                         <span>备注信息:</span>
                                         <el-input
                                         type="textarea"
@@ -1804,7 +1794,10 @@
                 data:[],
                 total:10,
                 pageSize:10,
-                pageIndex:1,
+                pageIndex1:1,
+                pageIndex2:1,
+                pageIndex3:1,
+                pageIndex4:1,
                 username:'',
                 userIP:'',
                 value:'',
@@ -1990,43 +1983,6 @@
             },200)
         },
         methods:{
-            // 点击选择图片
-            btnClick () {
-                let that = this;
-                // 模拟input点击选择文件
-                document.getElementById('myCropper-input').click();
-            },
-            handleFile(e){
-                let that = this;
-                let inputDOM = this.$refs.inputer;
-                // 通过DOM取文件数据
-                that.file = inputDOM.files[0];
-                // 判断文件格式
-                if (that.imgCropperData.accept.indexOf(that.file.type) == -1) {
-                    that.$message({
-                        message: '格式错误:您选择的图片格式不正确！',
-                        type:'error',
-                        showClose: true,
-                    });
-                    return;
-                }
-                console.log(that.file.size)
-                // 判断文件大小限制
-                if (that.file.size > 1053153) {
-                    that.$message({
-                        message: '超出限制:您选择的图片过大，请选择1MB以内的图片！',
-                        type:'error',
-                        showClose: true,
-                    });
-                    return;
-                }
-                var reader = new FileReader();
-                // 将图片将转成 base64 格式
-                reader.readAsDataURL(that.file);
-                reader.onload = function () {
-                    that.imgCropperData.imgSrc = this.result;
-                }
-            },   
             //TSBCwifi2Enable2G  启用不启用change事件
             TSBCwifi2Enable2G(){
                 if(this.tsbccollcate.wifi2Enable=='0'){
@@ -2157,13 +2113,30 @@
                 this.ready()
             },
             //所有页数事件
-            currentchange(val){
-                this.pageIndex = val
+            currentchange1(val){
+                this.pageIndex1 = val
+                this.ready()
+            },
+            currentchange2(val){
+                this.pageIndex2 = val
+                this.ready()
+            },
+            currentchange3(val){
+                this.pageIndex3 = val
+                this.ready()
+            },
+            currentchange4(val){
+                this.pageIndex4 = val
                 this.ready()
             },
             //页面数据渲染
             ready(){
-                var that = this
+                var that = this;
+                var index = ''
+                if(this.activeName=='1'){index=this.pageIndex1}
+                if(this.activeName=='2'){index=this.pageIndex2}
+                if(this.activeName=='3'){index=this.pageIndex3}
+                if(this.activeName=='4'){index=this.pageIndex4}
                 $.ajax({
                     type:'get',
                     async:true,
@@ -2171,7 +2144,7 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'equipment/getEquipmentList',
                     data:{
-                        pageIndex:that.pageIndex,
+                        pageIndex:index,
                         pageSize:that.pageSize,
                         type:that.activeNamevalue,
                         model:that.username,
@@ -2600,7 +2573,6 @@
                             that.showconfigdata = data.result;
                             delete that.showconfigdata.order;
                             delete that.showconfigdata.configInfo;
-                            
                         }else{
                             that.errorCode(data.errorCode)
                         }
@@ -3062,7 +3034,9 @@
                         }
                     }
                 }
+                
                 if(that.lookoverType=='2'){
+                    console.log(that.lookoverType,that.tsbctsbacaollcate.ipType,that.tsbacaollcate.wifi2Enable,that.tsbacaollcate.wifi5Enable)
                     if(that.tsbctsbacaollcate.ipType=='STATIC'){
                         if(!IP.test(that.tsbctsbacaollcate.wanIP)){
                             that.$message({
@@ -3214,7 +3188,31 @@
                             });
                             return;
                         } 
-                    }      
+                    }
+                    if(that.tsbctsbacaollcate.ipType==''||that.tsbacaollcate.ipType==undefined||that.tsbacaollcate.ipType==NaN){
+                        this.$message({
+                            message: '模板配置错误,请重新配置',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                    if(that.tsbacaollcate.wifi2Enable==''||that.tsbacaollcate.wifi2Enable==undefined||that.tsbacaollcate.wifi2Enable==NaN){
+                        this.$message({
+                            message: '模板配置错误,请重新配置',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    } 
+                    if(that.tsbacaollcate.wifi5Enable==''||that.tsbacaollcate.wifi5Enable==undefined||that.tsbacaollcate.wifi5Enable==NaN){
+                        this.$message({
+                            message: '模板配置错误,请重新配置',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }         
                 }
                 
                 if(that.lookoverType=='0'){
@@ -3292,7 +3290,6 @@
                 if(val=='0'){
                     data.flag = 'SAVE';
                     data.nickname = that.managedata.nickname
-                    data.imageBase64 = that.imgCropperData.imgSrc
                     data.remark = that.managedata.remark
                 }
                 if(val=='1'){
@@ -3629,7 +3626,10 @@
             handleClick(tab){
                 var that = this
                 this.pageSize = 10;
-                this.pageIndex = 1;
+                this.pageIndex1 = 1;
+                this.pageIndex2 = 1;
+                this.pageIndex3 = 1;
+                this.pageIndex4 = 1;
                 that.username = '';
                 that.userIP = '';
                 that.value = '';

@@ -19,10 +19,20 @@ export default {
       success:function(data){
         localStorage.serverurl = data.url;
         localStorage.versionNumber = data.versionNumber
+
+      }
+    })
+    $.ajax({
+      type:'post',
+      async:true,
+      xhrFields:{withCredentials:true},
+      url:'/TSBM-Manager/json/versionNumber.json',
+      dataType:'json',
+      success:function(data){
+        localStorage.versionNumber = data.versionNumber
         console.log('版本:'+data.versionNumber)
       }
     })
-    // localStorage.serverurl = 'http://192.168.10.211/TSBM-Manager/';
   }
 }
 </script>

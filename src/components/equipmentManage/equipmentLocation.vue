@@ -198,13 +198,8 @@
                                 if(data.result[i].code=='locEquipment'){
                                     localStorage.addequipments = true
                                 }
-                                else{
-                                    localStorage.addequipments = false
-                                }
                                 if(data.result[i].code=='removeEquipment'){
                                     localStorage.Deleteequipments = true
-                                }else{
-                                    localStorage.Deleteequipments = false
                                 }
                             }
                         }else{
