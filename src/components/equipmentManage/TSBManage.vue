@@ -28,14 +28,15 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                     </div>
-                    <div class="TSBManage_main_bottom">
+                    <div class="TSBManage_main_bottom"> 
                         <el-table
                             ref="multipleTable"
                             :data="data"
                             border
                             stripe
                             tooltip-effect="dark"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            max-height='530'
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -176,8 +177,9 @@
                             border
                             stripe
                             tooltip-effect="dark"
+                            max-height='530'
                             @selection-change="handleSelectionChange"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -326,8 +328,9 @@
                             border
                             stripe
                             tooltip-effect="dark"
+                            max-height='530'
                             @selection-change="handleSelectionChange"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -482,8 +485,9 @@
                             border
                             stripe
                             tooltip-effect="dark"
+                            max-height='530'
                             @selection-change="handleSelectionChange"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -1107,17 +1111,17 @@
                                                             <input type="text" v-model.lazy="tsbgcollcate.wanIP" placeholder="请输入IP地址" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')">
                                                         </td>
                                                         <td><i class="required">*</i>子网掩码:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>网关:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td>主DNS:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>辅DNS:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1131,13 +1135,13 @@
                                                             <input type="text" v-model.lazy="tsbgcollcate.wanPPPoEUsername" placeholder="请输入PPPoE用户名" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')">
                                                         </td>
                                                         <td><i class="required">*</i>密码:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPoE密码" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPoE密码" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>DNS1:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td>DNS2:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1209,7 +1213,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
                                                         <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" class="tsbc2GselectAP" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
@@ -1326,7 +1330,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
                                                         <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入SSID" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="HT20">HT20</option>
@@ -1482,7 +1486,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
                                                         <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" class="tsba2Gselect" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
@@ -1556,7 +1560,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
                                                         <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
@@ -3689,7 +3693,9 @@
             if(url.indexOf("?")!=-1) {
                 var vars = url.split("?");
                 var locationNum = vars[1].split("=");
-                this.activeName = locationNum[1]
+                if(locationNum[1]=='1'||locationNum[1]=='2'||locationNum[1]=='3'||locationNum[1]=='4'){
+                    this.activeName = locationNum[1]
+                }   
             }
             this.handleClick();
         },
@@ -3717,6 +3723,7 @@
 .TSBManage_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
 .TSBManage_main_top{width: 100%;height: 40px;display: flex;justify-content: center;}
 .TSBManage_main_bottom{width: 100%;height:auto;position: absolute;top:39px;bottom:10px;}
+
 .TSBManage_main_top>div{display: flex;margin-top: 4px;}
 .TSBManage_main_top>div>span{width: 37%;line-height: 30px;}
 .TSBManage_main_top>div>input{height: 30px;width: 110px;}

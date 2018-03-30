@@ -50,7 +50,8 @@
                     border
                     stripe
                     tooltip-effect="dark"
-                    style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                    max-height='530'
+                    style="width: 100%;margin-bottom:10px;"
                     @selection-change="handleSelectionChange">
                     <el-table-column
                     type="selection"
@@ -62,6 +63,19 @@
                     align='center'
                     label="设备MAC"
                     width="180">
+                    </el-table-column>
+                    <el-table-column
+                    align='center'
+                    label="设备昵称"
+                    width="180">
+                        <template scope="scope">
+                            <span v-if="scope.row.nickname==''">
+                                {{scope.row.MAC}}
+                            </span>
+                            <span v-else>
+                                {{scope.row.nickname}}
+                            </span>
+                        </template>  
                     </el-table-column>
                     <el-table-column
                     prop="content"
@@ -293,7 +307,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.detail = data.result
-                            // console.log(data.result.nickname)
+                            that.ready()
                         }else{
                             that.errorCode(data.errorCode)
                         }

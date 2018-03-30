@@ -177,7 +177,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
                                                         <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" placeholder="请输入SSID" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" class="tsbc2GselectAP" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
@@ -279,7 +279,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
                                                         <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" placeholder="请输入SSID" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
                                                                 <option value="HT20">HT20</option>
@@ -435,7 +435,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
                                                         <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" class="tsba2Gselect" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
@@ -509,7 +509,7 @@
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
                                                         <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" placeholder="请输入ssid" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
-                                                        <td><i class="required">*</i>信息带宽:</td>
+                                                        <td><i class="required">*</i>信道带宽:</td>
                                                         <td>
                                                             <select v-model="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
                                                                 <option value="HT20">HT20</option>
@@ -573,7 +573,7 @@
                                             </select>
                                             <el-button @click="paaelMACS" type="primary" size='small' style="margin-left:15px;">添加</el-button>
                                             <div style="display:inline-block;" v-if="paaelMAC">
-                                                <el-input v-model="panelinput" maxlength='17' size='small'  style="width:156px;margin-left:15px;" placeholder="请输入MAC"></el-input>
+                                                <el-input v-model="panelinput" size='small'  style="width:156px;margin-left:15px;" placeholder="请输入MAC"></el-input>
                                                 <el-button @click="panelMACT" type="primary" size='small' style="margin-left:5px;">确认</el-button>
                                             </div>
                                         </div>
@@ -947,7 +947,7 @@
                                             <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
                                                 <td>SSID</td>
                                                 <td>{{datailsdata.configInfo.wifi2ApSSID}}</td>
-                                                <td>信息带宽:</td>
+                                                <td>信道带宽:</td>
                                                 <td>{{datailsdata.configInfo.wifi2ApBandwidth}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
@@ -1003,7 +1003,7 @@
                                             <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'"> 
                                                 <td>SSID</td>
                                                 <td>{{datailsdata.configInfo.wifi5ApSSID}}</td>
-                                                <td>信息带宽:</td>
+                                                <td>信道带宽:</td>
                                                 <td>{{datailsdata.configInfo.wifi5ApBandwidth}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
@@ -1100,7 +1100,7 @@
                                             <tr>
                                                 <td>SSID</td>
                                                 <td>{{datailsdata.configInfo.wifi2SSID}}</td>
-                                                <td>信息带宽:</td>
+                                                <td>信道带宽:</td>
                                                 <td>{{datailsdata.configInfo.wifi2Bandwidth}}</td>
                                             </tr>
                                             <tr>
@@ -1138,7 +1138,7 @@
                                             <tr>
                                                 <td>SSID</td>
                                                 <td>{{datailsdata.configInfo.wifi5SSID}}</td>
-                                                <td>信息带宽:</td>
+                                                <td>信道带宽:</td>
                                                 <td>{{datailsdata.configInfo.wifi5Bandwidth}}</td>
                                             </tr>
                                             <tr>
@@ -1248,10 +1248,6 @@
                                             border
                                             tooltip-effect="dark">
                                             <el-table-column
-                                            type="selection"
-                                            width="55">
-                                            </el-table-column>
-                                            <el-table-column
                                             prop="nickname"
                                             align='center'
                                             label="设备昵称"
@@ -1276,10 +1272,6 @@
                                             :data="datailsdata.order"
                                             border
                                             tooltip-effect="dark">
-                                            <el-table-column
-                                            type="selection"
-                                            width="55">
-                                            </el-table-column>
                                             <el-table-column
                                             prop="groupName"
                                             align='center'

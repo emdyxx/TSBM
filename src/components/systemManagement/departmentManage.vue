@@ -420,6 +420,7 @@
                                 showClose: true,
                             });
                             that.dialogFormVisible = false;
+                            that.password = ''
                             that.ready()
                         }else{
                             that.errorCode(data.errorCode)

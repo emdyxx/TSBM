@@ -277,7 +277,19 @@
             },
             //上传图片change事件
             images(){
-                this.imgPreview(this.$refs.img1.files[0])
+                var type = this.$refs.img1.files[0].name.split('.')
+                console.log(type[1])
+                if(type[1]=='png'||type[1]=='PNG'||type[1]=='jpg'||type[1]=='JPG'||type[1]=='jpeg'){
+                    this.imgPreview(this.$refs.img1.files[0])   
+                }else{
+                    this.$message({
+                        message: '图片格式错误',
+                        type:'error',
+                        showClose: true,
+                    });
+                    this.imageUrl = ''
+                }
+                
             },
             //上传图片接口
             imageSubmit(){
@@ -318,6 +330,7 @@
                         });
                         $('#myModal').modal('hide')
                         $('.imageSubmit').removeAttr('disabled')
+                        that.imageUrl = ''
                         that.ready()
                     }else{
                         that.errorCode(res.errorCode)
@@ -360,6 +373,7 @@
             uploadingimg(){
                 this.type='1'
                 $('#myModal').modal('show')
+                this.imageUrl = ''
             },
             //页面图片修改
             imgamend(key){

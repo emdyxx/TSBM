@@ -35,7 +35,8 @@
                             border
                             stripe
                             tooltip-effect="dark"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            max-height='530'
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -167,8 +168,9 @@
                             border
                             stripe
                             tooltip-effect="dark"
+                            max-height='530'
                             @selection-change="handleSelectionChange"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -308,8 +310,9 @@
                             :data="tableData3"
                             border
                             stripe
+                            max-height='530'
                             tooltip-effect="dark"
-                            style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                            style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
                             align='center'
@@ -425,12 +428,12 @@
                                 <span><i class="required">*</i>认证密码:</span>
                                 <input v-model.lazy="add.authPwd" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入认证密码">
                             </div>
-                            <div class="equipmentUser_form">
+                            <!-- <div class="equipmentUser_form">
                                 <span><i class="required">*</i>ue类型:</span>
                                 <input v-model.lazy="add.ueType" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue类型">
-                            </div>
+                            </div> -->
                             <div class="equipmentUser_form">
-                                <span>ue昵称:</span>
+                                <span>设备名称:</span>
                                 <input v-model.lazy="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue昵称">
                             </div>
                             <div class="equipmentUser_form">
@@ -643,7 +646,7 @@
                 $('#ueIP').attr('disabled',false)
                 this.add.ueMAC = ''
                 this.add.authPwd = ''
-                this.add.ueType = ''
+                // this.add.ueType = ''
                 this.add.nickname = ''
                 this.add.remark = ''
                 this.add.ueIP = ''
@@ -709,10 +712,22 @@
                 }
                 this.add.ueMAC = this.SelectionChange[0].ueMAC
                 this.add.authPwd = this.SelectionChange[0].authPwd
-                this.add.ueType = this.SelectionChange[0].ueType
+                // this.add.ueType = this.SelectionChange[0].ueType
                 this.add.nickname = this.SelectionChange[0].nickname
                 this.add.remark = this.SelectionChange[0].remark
                 this.add.ueIP = this.SelectionChange[0].ueIP
+                if(this.SelectionChange[0].pwdType=='0'){
+                    that.checked = false
+                }else{
+                    that.checked = true
+                }
+                if(this.SelectionChange[0].autoIP=='0'){
+                    that.checkedtwo = false
+                }else{
+                    that.checkedtwo = true
+                }
+                that.Autopassword()
+                that.AutoIP()
                 if(this.SelectionChange[0].pwdType=='1'){
                     this.checked = true
                     $('#authPwd').attr('disabled',true)
@@ -726,14 +741,23 @@
             //认证用户保存
             addUser(){
                 var that = this;
+                var reg_name=/[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}/
                 var url = '';
                 var data = {};
-                if(that.add.ueMAC==''||that.add.ueType==''){
+                if(that.add.ueMAC==''){
                     that.$message({
                         message: '温馨提示:必填数据不能为空',
                         type: 'error',
                         showClose: true,
                     })
+                    return;
+                }
+                if(!reg_name.test(that.add.ueMAC)){
+                    this.$message({
+                        message: '请输入正确的MAC地址',
+                        type: 'error',
+                        showClose: true,
+                    });
                     return;
                 }
                 if(this.checked == false){
@@ -756,11 +780,10 @@
                 data.departmentId=that.add.departmentId,
                 data.ueMAC=that.add.ueMAC,
                 data.authPwd=that.add.authPwd,
-                data.ueType=that.add.ueType,
+                // data.ueType=that.add.ueType,
                 data.nickname=that.add.nickname,
                 data.remark=that.add.remark,
                 data.ueIP=that.add.ueIP
-
                 $.ajax({
                     type:'post',
                     async:true,

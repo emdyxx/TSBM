@@ -201,7 +201,8 @@
                         border
                         stripe
                         tooltip-effect="dark"
-                        style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;"
+                        max-height='530'
+                        style="width: 100%;margin-bottom:10px;"
                         @selection-change="handleSelectionChange">
                         <el-table-column
                         type="selection"

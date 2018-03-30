@@ -398,10 +398,12 @@
             //左侧数据选中change事件
             SelectionChangeLeft(val){
                 this.leftchangedata = val
+                console.log(val)
             },
             //右侧数据选中change事件
             SelectionChangeRight(val){
                 this.rightchangedata = val
+                console.log(val)
             },
             //点击到左边
             theleft(){
@@ -415,11 +417,11 @@
                 for(var i=0;i<this.dataright.length;i++){
                     for(var j=0;j<this.rightchangedata.length;j++){
                         if(this.dataright[i].id==this.rightchangedata[j].id){
-                            this.rightchangedata.splice(j,1)
+                            this.dataright.splice(i,1)
                         }
                     }
                 }
-                this.dataright = this.rightchangedata
+                // this.dataright = this.rightchangedata
                 for(var i=0;i<this.leftdata.length;i++){
                     for(var j=0;j<this.rightdata.length;j++){
                         if(this.leftdata[i]==this.rightdata[j]){
@@ -441,11 +443,10 @@
                 for(var i=0;i<this.dataleft.length;i++){
                     for(var j=0;j<this.leftchangedata.length;j++){
                         if(this.dataleft[i].id==this.leftchangedata[j].id){
-                            this.leftchangedata.splice(j,1)
+                            this.dataleft.splice(i,1)
                         }
                     }
                 }
-                this.dataleft = this.leftchangedata
                 for(var i=0;i<this.rightdata.length;i++){
                     for(var j=0;j<this.leftdata.length;j++){
                         if(this.rightdata[i]==this.leftdata[j]){

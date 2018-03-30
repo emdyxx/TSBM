@@ -302,8 +302,8 @@
                                 var ECdata = that.$echarts.init($('.dataStatistics_top>div').eq(i)[0])
                                 ECdata.setOption({
                                     title : {
-                                        text: data.result[i].MAC,
-                                        subtext: '设备MAC',
+                                        text: data.result[i].nickname,
+                                        subtext: '设备昵称',
                                         x:'left',
                                         textStyle: {fontSize:14,fontWeight:'bold'}
                                     },
@@ -352,8 +352,9 @@
                             for(var i=0;i<data.result.length;i++){
                                 $('#EC'+i).append('<div style="position:absolute;left:5px;top:42px;">'
                                 +"<ul style='list-style:none;width:100%;text-align: left;font-size:14px;color: #B4B4B4;padding:0;'>"
-                                +"<li>CPU:"+data.result[i].cpuUsageRate+"%</li>"+"<li>内存:"+data.result[i].memoryUsageRate+"%</li>"+
-                                "<li>负载:"+data.result[i].load+"</li>"+"<li>用户:"+data.result[i].ueSum+"</li>"+"</ul>"+'</div>')
+                                +"<li>设备MAC"+data.result[i].MAC+"</li>"+"<li>CPU:"+data.result[i].cpuUsageRate+"%</li>"
+                                +"<li>内存:"+data.result[i].memoryUsageRate+"%</li>"+"<li>负载:"+data.result[i].load+"</li>"
+                                +"<li>用户:"+data.result[i].ueSum+"</li>"+"</ul>"+'</div>')
                             }
                         }else{
                             that.errorCode(data.errorCode)
