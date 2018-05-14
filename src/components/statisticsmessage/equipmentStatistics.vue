@@ -16,7 +16,7 @@ export default {
     mounted(){
         var that = this;
         // setTimeout(function(){
-             that.$router.push({'path':'/factory'})
+            //  that.$router.push({'path':'/factory'})
         //  },200)
         // if(sessionStorage.departmentId=='1'){
             // this.$router.push({'path':'/factory'})

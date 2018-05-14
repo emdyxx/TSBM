@@ -17,7 +17,7 @@
                   </div>
               </div>
           </div> -->
-          <el-button type="info" @click="login">登录</el-button>
+          <el-button :loading='loginbutton' type="info" @click="login">登录</el-button>
           <hr>
           <h1>
             <img class="logo" src="../ASSETS/logo.png" alt="">
@@ -38,7 +38,8 @@ export default {
         password:'',
         verificationcode:'',
         serverurl:localStorage.serverurl,
-        onkeyType:'0'
+        onkeyType:'0',
+        loginbutton:false
     }
   },
   mounted(){
@@ -74,10 +75,11 @@ export default {
         //     });
         //     return;
         // }
+        that.loginbutton = true
         $.ajax({
           type:'post',
           async:true,
-          url:that.serverurl+'login',
+          url:localStorage.serverurl+'login',
           dataType:'json',
           xhrFields:{withCredentials:true},
           data:{
@@ -86,6 +88,7 @@ export default {
             // verification:that.verificationcode
           },
           success:function(data){
+            that.loginbutton = false
             if(data.errorCode=='2001'){
               that.$message({
                 message: '验证码错误',
@@ -117,11 +120,11 @@ export default {
   created(){
     var that = this
     window.onkeydown = function(e){
-        if(e.keyCode==13){
-          if(that.onkeyType=='0'){
-            that.login()
-          }
+      if(e.keyCode==13){
+        if(that.onkeyType=='0'){
+          that.login()
         }
+      }
     }
   }
 }

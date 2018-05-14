@@ -18,7 +18,6 @@ export default {
       dataType:'json',
       success:function(data){
         localStorage.serverurl = data.url;
-        localStorage.versionNumber = data.versionNumber
       }
     })
     $.ajax({

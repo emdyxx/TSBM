@@ -4,7 +4,7 @@
             终端管理<i class="iconfont icon-icon"></i>终端用户
         </div>
         <div class="equipmentUser_main">
-            <el-tabs type="border-card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
+            <el-tabs type="border-card" v-model.lazy="activeName" v-loading="loading" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
                 <el-tab-pane label="所有" name='1'>
                     <div class="equipmentUser_top">
                         <div class="equipmentUser_formtwo">
@@ -101,7 +101,7 @@
                             <el-table-column
                             prop="departmentName"
                             align='center'
-                            label="归属分组"
+                            label="归属组织"
                             width="120">
                             </el-table-column>
                             <el-table-column
@@ -202,6 +202,12 @@
                             width="180">
                             </el-table-column>
                             <el-table-column
+                            prop="tsbgBind"
+                            label="绑定tsbgMAC"
+                            align='center'
+                            width="180">
+                            </el-table-column>
+                            <el-table-column
                             label="在线状态"
                             align='center'
                             width='100'>
@@ -246,9 +252,21 @@
                             width="180">
                             </el-table-column>
                             <el-table-column
+                            prop="bandwidth"
+                            label="带宽"
+                            align='center'
+                            width="80">
+                            </el-table-column>
+                            <el-table-column
+                            prop="allowTime"
+                            label="有效时间"
+                            align='center'
+                            width="200">
+                            </el-table-column>
+                            <el-table-column
                             prop="departmentName"
                             align='center'
-                            label="归属分组"
+                            label="归属组织"
                             width="120">
                             </el-table-column>
                             <el-table-column
@@ -324,6 +342,12 @@
                             align='center'
                             width="180">
                             </el-table-column>
+                            <!-- <el-table-column
+                            prop="tsbgBind"
+                            label="绑定tsbgMAC"
+                            align='center'
+                            width="180">
+                            </el-table-column> -->
                             <el-table-column
                             label="在线状态"
                             align='center'
@@ -350,7 +374,6 @@
                                     </span>
                                 </template>  
                             </el-table-column>
-                            </el-table-column>
                             <el-table-column
                             prop="updateTime"
                             label="更新时间"
@@ -371,7 +394,7 @@
                             <el-table-column
                             prop="departmentName"
                             align='center'
-                            label="归属分组"
+                            label="归属组织"
                             width="120">
                             </el-table-column>
                             <el-table-column
@@ -428,10 +451,25 @@
                                 <span><i class="required">*</i>认证密码:</span>
                                 <input v-model.lazy="add.authPwd" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入认证密码">
                             </div>
-                            <!-- <div class="equipmentUser_form">
-                                <span><i class="required">*</i>ue类型:</span>
-                                <input v-model.lazy="add.ueType" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue类型">
-                            </div> -->
+                            <div class="equipmentUser_form">
+                                <span style="width: 350px;">绑定tsbgMAC:</span>
+                                <input v-model.lazy="add.tsbgBind" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入绑定tsbgMAC">
+                            </div>
+                            <div class="equipmentUser_form">
+                                <span>带宽:</span>
+                                <el-input-number v-model="add.bandwidth" :min="0" :max="100000" label="描述文字"></el-input-number>
+                                <!-- <input v-model.lazy="add.tsbgBind" type="number" maxlength="50" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入带宽"> -->
+                            </div>
+                            <div class="equipmentUser_form">
+                                <span>有效时间:</span>
+                                <el-date-picker
+                                v-model="add.allowTime"
+                                type="datetime"
+                                @change="times"
+                                placeholder="选择日期时间"
+                                range-separator='~'>
+                                </el-date-picker>
+                            </div>
                             <div class="equipmentUser_form">
                                 <span>设备名称:</span>
                                 <input v-model.lazy="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ue昵称">
@@ -440,7 +478,7 @@
                                 <el-checkbox v-model.lazy="checkedtwo" @change='AutoIP' style="margin-left:20px;color: #555555;">自动获取IP</el-checkbox>
                             </div>
                             <div class="equipmentUser_form">
-                                <span>ueIP:</span>
+                                <span><i class="required">*</i>ueIP:</span>
                                 <input v-model.lazy="add.ueIP" id="ueIP" type="text" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ueIP">
                             </div>
                             <div class="equipmentUser_form">
@@ -455,7 +493,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" @click="addUser" class="btn btn-primary">保存</button>
+                            <button type="button" @click="addUser" class="btn btn-primary addUsers">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -511,15 +549,19 @@
                 add:{
                     ueMAC:'',
                     authPwd:'',
+                    tsbgBind:'',
                     ueType:'',
                     nickname:'',
                     remark:'',
                     ueIP:'',
                     departmentId:'',
+                    bandwidth:'',
+                    allowTime:'',
                 },
 
                 statustype:'0',
                 SelectionChange:[], //认证用户选取的数据
+                loading:false
             }
         },
         mounted(){
@@ -573,6 +615,7 @@
                 var pageSize = '';
                 var url = '';
                 var data = {}
+                that.loading = true
                 if(that.activeName=='1'){
                     pageIndex=that.pageIndex;
                     pageSize=that.pageSize;
@@ -606,6 +649,7 @@
                     url:that.serverurl+url,
                     data:data,
                     success:function(data){
+                        that.loading = false
                         if(data.errorCode=='0'){
                             if(that.activeName=='1'){
                                 that.tableData = data.rows;
@@ -646,10 +690,12 @@
                 $('#ueIP').attr('disabled',false)
                 this.add.ueMAC = ''
                 this.add.authPwd = ''
-                // this.add.ueType = ''
+                this.add.tsbgBind=''
                 this.add.nickname = ''
                 this.add.remark = ''
                 this.add.ueIP = ''
+                this.add.bandwidth = ''
+                this.add.allowTime = ''
                 if(sessionStorage.departmentId=='1'){
                     that.selected = true
                     //管理员登录请求selected下拉框数据
@@ -712,10 +758,12 @@
                 }
                 this.add.ueMAC = this.SelectionChange[0].ueMAC
                 this.add.authPwd = this.SelectionChange[0].authPwd
-                // this.add.ueType = this.SelectionChange[0].ueType
+                this.add.tsbgBind = this.SelectionChange[0].tsbgBind
                 this.add.nickname = this.SelectionChange[0].nickname
                 this.add.remark = this.SelectionChange[0].remark
                 this.add.ueIP = this.SelectionChange[0].ueIP
+                this.add.bandwidth = Number(this.SelectionChange[0].bandwidth)
+                this.add.allowTime = this.SelectionChange[0].allowTime
                 if(this.SelectionChange[0].pwdType=='0'){
                     that.checked = false
                 }else{
@@ -738,9 +786,15 @@
                 }
                 $('#ueMAC').attr('disabled',true)
             },
+            times(val){
+                var type = val.split('~')
+                this.add.allowTime = type[0]
+            },
             //认证用户保存
             addUser(){
                 var that = this;
+                //中文验证
+                var result = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
                 var reg_name=/[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}:[A-F\d]{2}/
                 var url = '';
                 var data = {};
@@ -752,9 +806,28 @@
                     })
                     return;
                 }
+                if(that.add.tsbgBind==''){
+
+                }
+                else if(!reg_name.test(that.add.tsbgBind)){
+                    that.$message({
+                        message: '温馨提示:请输入正确的MAC地址',
+                        type: 'error',
+                        showClose: true,
+                    })
+                    return;
+                }
                 if(!reg_name.test(that.add.ueMAC)){
                     this.$message({
                         message: '请输入正确的MAC地址',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                if(result.test(that.add.authPwd)){
+                    this.$message({
+                        message: '认证密码不能有中文字符!',
                         type: 'error',
                         showClose: true,
                     });
@@ -770,20 +843,38 @@
                         })
                         return;  
                     }
-                }else{data.pwdType = '1'}
-                if(this.checkedtwo == false){data.autoIP = '0'}else{data.autoIP = '1'}
+                }else{
+                    data.pwdType = '1'
+                }
+                console.log(this.checkedtwo)
+                if(this.checkedtwo == false){
+                    data.autoIP = '0'
+                    if(that.add.ueIP==''){
+                        that.$message({
+                            message: '温馨提示:ueIP不能为空',
+                            type: 'error',
+                            showClose: true,
+                        })
+                        return;  
+                    }
+                }else{
+                    data.autoIP = '1'
+                }
                 if(this.statustype == '0'){url = 'terminal/addUe'}
                 if(this.statustype == '1'){
                     url = 'terminal/editUe';
                     data.id = that.SelectionChange[0].id
                 }
-                data.departmentId=that.add.departmentId,
-                data.ueMAC=that.add.ueMAC,
-                data.authPwd=that.add.authPwd,
-                // data.ueType=that.add.ueType,
-                data.nickname=that.add.nickname,
-                data.remark=that.add.remark,
+                data.departmentId=that.add.departmentId
+                data.ueMAC=that.add.ueMAC
+                data.authPwd=that.add.authPwd
+                data.tsbgBind=that.add.tsbgBind
+                data.nickname=that.add.nickname
+                data.remark=that.add.remark
                 data.ueIP=that.add.ueIP
+                data.bandwidth=this.add.bandwidth
+                data.allowTime=this.add.allowTime
+                $('.addUsers').attr('disabled',true)
                 $.ajax({
                     type:'post',
                     async:true,
@@ -792,6 +883,7 @@
                     url:that.serverurl+url,
                     data:data,
                     success:function(data){
+                        $('.addUsers').attr('disabled',false)
                         if(data.errorCode=='0'){
                             if(that.statustype == '0'){
                                 that.$message({
@@ -892,7 +984,7 @@
                     return;
                 }
                 if(that.activeName == '2'){url='terminal/delUe';data.ueIds = val.id}
-                if(that.activeName == '3'){url='/terminal/delSta';data.staIds = val.id}
+                if(that.activeName == '3'){url='terminal/delSta';data.staIds = val.id}
                 that.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',

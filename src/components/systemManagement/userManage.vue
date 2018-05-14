@@ -80,7 +80,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" @click="addRelaSubmit">提交更改</button>
+                            <button type="button" class="btn btn-primary addbutton" @click="addRelaSubmit">提交更改</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -207,7 +207,7 @@
                     label:'roleName'
                 },
                 disabledcascader:false,
-                disabledradio:false,
+                disabledradio:false
             }
         },
         mounted(){
@@ -437,6 +437,7 @@
                 if(that.selectedOptions3.length==3){
                     departmentId = that.selectedOptions3[2]
                 }
+                $('.addbutton').attr('disabled',true)
                 //opinion位1则为添加,为2则为修改
                 if(this.opinion=='1'){
                     $.ajax({
@@ -457,6 +458,7 @@
                             privilegeType:that.radio2
                         },
                         success:function(data){
+                            $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '添加成功',
@@ -493,6 +495,7 @@
                             privilegeType:that.radio2
                         },
                         success:function(data){
+                            $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '修改成功',

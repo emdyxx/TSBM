@@ -57,7 +57,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" @click="departmentManageSubmit">提交更改</button>
+                            <button type="button" class="btn btn-primary addbutton" @click="departmentManageSubmit">提交更改</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -319,6 +319,7 @@
                     });
                     return;
                 }
+                $('.addbutton').attr('disabled',true)
                 if(this.option=='1'){
                     $.ajax({
                         type:'post',
@@ -336,6 +337,7 @@
                             principal:that.departmentManagePrincipal
                         },
                         success:function(data){
+                            $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '添加成功',
@@ -368,6 +370,7 @@
                             principal:that.departmentManagePrincipal
                         },
                         success:function(data){
+                            $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '修改成功',

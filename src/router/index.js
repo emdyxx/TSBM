@@ -14,7 +14,8 @@ import logManage from '@/components/systemManagement/logManage'  // 日志管理
 import TSBManage from '@/components/equipmentManage/TSBManage'  //设备管理-->TSB管理
 import equipmentGroup from '@/components/equipmentManage/equipmentGroup'  //设备管理-->分组管理
 import equipmentLocation from '@/components/equipmentManage/equipmentLocation' //设备管理-->设备定位
-import equipmentUser from '@/components/equipmentManage/equipmentUser' //设备管理-->终端用户
+import equipmentUser from '@/components/equipmentManage/equipmentUser' //终端管理-->终端用户
+import terminalRegister from '@/components/equipmentManage/terminalRegister' //终端管理-->终端注册
 import imgcoordinate from '@/components/equipmentManage/imgcoordinate'  //设备管理-->设备定位单张图片路由页面
 import authManage from '@/components/equipmentManage/authManage'   //设备管理-->认证管理
 import templateManage from '@/components/equipmentManage/templateManage'   //设备管理-->模板管理
@@ -405,6 +406,11 @@ export default new Router({
           component:echarts,
           children:[
             {//工厂数据
+              path:'/',
+              name:'factory',
+              component:factory,
+            },
+            {//工厂数据
               path:'/factory',
               name:'factory',
               component:factory,
@@ -446,10 +452,15 @@ export default new Router({
           name: 'equipmentLocation',
           component: equipmentLocation,
         },
-        {// 设备管理-->终端用户
+        {// 终端管理-->终端用户
           path: '/equipmentUser',
           name: 'equipmentUser',
           component: equipmentUser
+        },
+        {// 终端管理-->终端注册
+          path: '/terminalRegister',
+          name: 'terminalRegister',
+          component: terminalRegister
         },
         {//设备管理-->设备定位单张图片路由页面
           path: '/imgcoordinate',

@@ -15,7 +15,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">上传升级包</h4>
+                            <h4 class="modal-title" id="myModalLabel" style="text-align:left;">上传升级包</h4>
                         </div>
                         <div class="modal-body">
                             <div class="upload_div" v-if="uploadtype==false">
@@ -47,7 +47,7 @@
                                     <input type="text" v-model.lazy="softwareVer" disabled>
                                 </div> 
                                 <div>
-                                    <span>硬件版本号:</span>
+                                    <span>软件型号:</span>
                                     <input type="text" v-model.lazy="hardwareVer" disabled>
                                 </div> 
                                 <div>
@@ -159,8 +159,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button v-if="uploadtype===false" @click="nextstep" type="button" class="btn btn-primary">下一步</button>
-                            <button v-if="uploadtype" @click="uploadsave" type="button" class="btn btn-primary">保存</button>
+                            <button v-if="uploadtype===false" @click="nextstep" type="button" class="btn btn-primary nextsteps">下一步</button>
+                            <button v-if="uploadtype" @click="uploadsave" type="button" class="btn btn-primary uploadsaves">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -178,7 +178,7 @@
                         <input type="text" v-model.lazy="softwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
-                        <span>硬件版本号:</span>
+                        <span>软件型号:</span>
                         <input type="text" v-model.lazy="hardwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
@@ -219,7 +219,7 @@
                         prop="softwareVer"
                         label="软件版本号"
                         align='center'
-                        width="120">
+                        width="210">
                         </el-table-column>
                         <el-table-column
                         prop="md5"
@@ -234,8 +234,8 @@
                         width="140">
                         </el-table-column>
                         <el-table-column
-                        prop="hardwareVer"
-                        label="硬件版本号"
+                        prop="modelVer"
+                        label="软件型号"
                         align='center'
                         width="140">
                         </el-table-column>
@@ -266,7 +266,8 @@
                         <el-table-column
                         label="操作"
                         align='center'
-                        width="90">
+                        width="90"
+                        v-if="operationtype==true">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0">
                                     <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
@@ -582,6 +583,7 @@
                 if(sessionStorage.departmentId=='1'){
                     fd.append("departmentId", that.selectedOptions[0]);
                 }
+                $('.nextsteps').attr('disabled',true)
                 $.ajax({
                     url: that.serverurl+'upgrade/uploadUpgradeFile',
                     type: 'POST',
@@ -592,6 +594,7 @@
                     xhrFields:{withCredentials:true},
                     contentType: false
                 }).done(function(data) {
+                    $('.nextsteps').attr('disabled',false)
                     if(data.errorCode=='0'){
                         that.percentage = 100  //进度条
                         that.$message({
@@ -605,7 +608,7 @@
                         that.uploadtype = true;
                         that.fileName = data.result.fileName;
                         that.softwareVer = data.result.softwareVer;
-                        that.hardwareVer = data.result.hardwareVer;
+                        that.hardwareVer = data.result.modelVer;
                         that.md5 = data.result.md5;
                         that.filePath = data.result.filePath;
                         that.fileUrl = data.result.fileUrl;
@@ -625,7 +628,7 @@
                         that.errorCode(data.errorCode)
                     }
                 }).fail(function(res) {
-
+                    $('.nextsteps').attr('disabled',false)
                 });
             },
             //升级包上传点击保存
@@ -649,6 +652,7 @@
                 for(var i=0;i<that.sitesthr.length;i++){
                     groupids.push(that.sitesthr[i].id)
                 }
+                $('.uploadsaves').attr('disabled',true)
                 if(this.opctions=='0'){
                     $.ajax({
                         type:'post',
@@ -665,13 +669,14 @@
                             upgradeOrder:that.typetwo,
                             md5:that.md5,
                             softwareVer:that.softwareVer,
-                            hardwareVer:that.hardwareVer,
+                            modelVer:that.hardwareVer,
                             status:that.value,
                             summary:that.textarea,
                             equipmentIds:equipmentIds.join(','),
                             groupids:groupids.join(',')
                         },
                         success:function(data){
+                            $('.uploadsaves').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '保存成功',
@@ -700,6 +705,7 @@
                             summary:that.textarea,
                         },
                         success:function(data){
+                            $('.uploadsaves').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
                                     message: '保存成功',
@@ -736,7 +742,7 @@
                     that.uploadtype = true;
                     that.fileName = that.sites[0].fileName
                     that.softwareVer = that.sites[0].softwareVer
-                    that.hardwareVer = that.sites[0].hardwareVer
+                    that.hardwareVer = that.sites[0].modelVer
                     that.md5 = that.sites[0].md5
                     that.value = that.sites[0].status
                     that.textarea = that.sites[0].summary
@@ -893,7 +899,7 @@
                         pageSize:sessionStorage.pageSize,
                         fileName:that.searchfilename,
                         softwareVer:that.softwareversion,
-                        hardwareVer:that.hardwareversion,
+                        modalVer:that.hardwareversion,
                         status:that.value4
                     },
                     success:function(data){

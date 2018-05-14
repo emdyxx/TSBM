@@ -65,7 +65,7 @@ export default {
             serverurl:localStorage.serverurl,
             select: false ,
             options: [],
-            value: '',
+            value: '1',
             EquipmentCount:{}, //设备统计信息
         }
     },

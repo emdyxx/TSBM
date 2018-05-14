@@ -48,7 +48,7 @@
                             <el-table-column
                             prop="model"
                             align='center'
-                            label="硬件版本"
+                            label="产品型号"
                             show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
@@ -92,7 +92,7 @@
                             <el-table-column
                             prop="model"
                             align='center'
-                            label="硬件版本"
+                            label="产品型号"
                             show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
@@ -134,7 +134,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" @click="saveGroup" class="btn btn-primary">提交更改</button>
+                            <button type="button" @click="saveGroup" class="btn btn-primary saveGroups">提交更改</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -272,6 +272,8 @@
                     return;
                 }
                 $('#myModal').modal('show');
+                this.groupName = ''
+                this.remark = ''
                 this.bodelTYpe()
                 this.typemodel = '1'
             },
@@ -363,6 +365,7 @@
                     url='equipment/editGroups'
                     data.groupId = that.groupId
                 }
+                $('.saveGroups').attr('disabled',true)
                 $.ajax({
                     type:'post',
                     async:false,
@@ -371,6 +374,7 @@
                     url:that.serverurl+url,
                     data:data,
                     success:function(data){
+                        $('.saveGroups').attr('disabled',false)
                         if(data.errorCode=='0'){
                             if(that.typemodel=='1'){
                                 that.$message({

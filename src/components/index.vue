@@ -445,24 +445,36 @@ export default {
         }
       },
     });
-    var url = localStorage.serverurl.split('//');
+
+    var result = ''
+    var url = window.location.href;
     console.log(url)
-    url = 'ws://'+url[1]
-    var ws = new WebSocket(url+'webscoketAlarm');
+    // var url = 'http://192.168.10.211/TSBM-Manager/#/index';
+    url = url.split('//')
+    url = url[1].split('/');
+    for(var i = 0;i<url.length;i++){
+        if(url[i]=='TSBM-Manager'){
+          result = 'ws://'+url[0]+'/TSBM-Manager'
+        }else if(result==''){
+          result = 'ws://'+url[0]
+        }
+    }
+    console.log(url)
+    var ws = new WebSocket(result+'/webscoketAlarm');
     ws.onopen = function(){}
     ws.onmessage = function (evt){
       var data = JSON.parse(evt.data)
       that.value = data.alarmTotal
     }
     ws.onclose = function (evt){
-      ws = new WebSocket(url+'webscoketAlarm');
+      ws = new WebSocket(result+'/webscoketAlarm');
     }
     window.onkeydown = function(e){
-        if(e.keyCode==13){
-          if(that.onkeyType=='1'){
-            return;
-          }
+      if(e.keyCode==13){
+        if(that.onkeyType=='1'){
+          return;
         }
+      }
     }
   }
 }

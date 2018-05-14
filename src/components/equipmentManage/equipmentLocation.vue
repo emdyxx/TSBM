@@ -289,7 +289,6 @@
                     });
                     this.imageUrl = ''
                 }
-                
             },
             //上传图片接口
             imageSubmit(){
