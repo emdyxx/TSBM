@@ -73,12 +73,20 @@
                                     align='center'
                                     show-overflow-tooltip>
                                     </el-table-column>
-                                    <!-- <el-table-column
-                                    prop=""
-                                    label="在线时间"
+                                    <el-table-column
+                                    prop="online"
+                                    label="状态"
                                     align='center'
                                     show-overflow-tooltip>
-                                    </el-table-column> -->
+                                        <template scope="scope">
+                                            <span v-if="scope.row.online=='0'">
+                                                离线
+                                            </span>
+                                            <span v-else>
+                                                在线
+                                            </span>
+                                        </template> 
+                                    </el-table-column>
                                 </el-table>
                                 <div class="block">
                                     <el-pagination
@@ -293,6 +301,7 @@
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
+                            $(".dataStatistics_top").children().remove();
                             for(var i=0;i<data.result.length;i++){
                                 $('.dataStatistics_top').append('<div style="width: 33%;height: 180px;display: flex;justify-content: center;" id='+"EC"+i+'></div>')
                             }

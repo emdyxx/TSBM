@@ -233,7 +233,6 @@
                 this.groupName = data.groupName
                 this.modellink = data.model
                 this.remark = data.remark
-                
             },
             //获取所有硬件版本号
             bodelTYpe(){
@@ -425,7 +424,6 @@
                         }
                     }
                 }
-                // this.dataright = this.rightchangedata
                 for(var i=0;i<this.leftdata.length;i++){
                     for(var j=0;j<this.rightdata.length;j++){
                         if(this.leftdata[i]==this.rightdata[j]){

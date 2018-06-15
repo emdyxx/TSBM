@@ -19,6 +19,7 @@ import terminalRegister from '@/components/equipmentManage/terminalRegister' //�
 import imgcoordinate from '@/components/equipmentManage/imgcoordinate'  //设备管理-->设备定位单张图片路由页面
 import authManage from '@/components/equipmentManage/authManage'   //设备管理-->认证管理
 import templateManage from '@/components/equipmentManage/templateManage'   //设备管理-->模板管理
+import equipmentArea from '@/components/equipmentManage/equipmentArea'   //设备管理-->模板管理
 
 import equipmentUpgrade from '@/components/upgradeManage/equipmentUpgrade'  //升级管理-->设备升级
 import alarm from '@/components/eventManage/alarm'  //事件管理-->告警信息
@@ -476,6 +477,11 @@ export default new Router({
           path: '/templateManage',
           name: 'templateManage',
           component: templateManage,
+        },
+        {// 设备管理-->区域管理
+          path: '/equipmentArea',
+          name: 'equipmentArea',
+          component: equipmentArea,
         },
         {//升级管理-->设备升级
           path: '/equipmentUpgrade',

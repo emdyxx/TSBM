@@ -41,9 +41,7 @@
                 <el-button v-if="partReadType" @click="partRead" style="margin-left:10px;" type="primary" size='small'>标为已读</el-button>
                 <el-button v-if="wholeReadType" @click="wholeRead" style="margin-left:10px;" type="primary" size='small'>全部标为已读</el-button>
             </div>
-            <div class="alarm_bottom"
-            v-loading.body='loading'
-            element-loading-text="拼命加载中">
+            <div class="alarm_bottom">
                 <el-table
                     ref="multipleTable"
                     :data="tableData3"
@@ -230,7 +228,6 @@
                 partReadType:false,
                 wholeReadType:false,
                 serverurl:localStorage.serverurl,
-                loading:false,
                 sites:[],
                 // checked:false,
                 value:'',
@@ -321,7 +318,6 @@
             //页面渲染
             ready(){
                 var that = this;
-                that.loading = true
                 $.ajax({
                     type:'get',
                     async:true,
@@ -340,10 +336,8 @@
                         if(data.errorCode=='0'){
                             that.tableData3 = data.rows
                             that.total = data.total
-                            that.loading = false
                         }else{
                             that.errorCode(data.errorCode)
-                            that.loading = false
                         }
                     }
                 })

@@ -59,11 +59,12 @@
                                     <el-collapse-item v-if="radio2=='0'&&lookoverlan==true" title="WAN配置" name="2" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
-                                            <select class="form-control logManage_main_input" v-model.lazy="tsbgcollcate.ipType" style="width:168px;">
+                                            <select v-model.lazy="tsbgcollcate.ipType" style="width:110px;height:29px;">
                                                 <option value="STATIC">STATIC</option>
                                                 <option value="DHCP">DHCP</option>
                                                 <option value="PPPOE">PPPOE</option>
                                             </select>
+                                            <span v-if="tsbgcollcate.ipType=='STATIC'" style="color:red;margin-left:30px;">STATIC模式下只能指定设备</span>
                                         </div>
                                         <div class="basicstatus_center"></div>
                                         <div v-if="tsbgcollcate.ipType=='STATIC'" class="basicstatus_bottom">
@@ -258,7 +259,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="radio2=='1'&&lookoverstatus.wifi5G!=''" title="5G配置" name="6" style="text-align:left;">
+                                    <el-collapse-item v-if="radio2=='1'&&lookoverstatus.wifi5G!=''" title="5.8G配置" name="6" style="text-align:left;">
                                         <!-- tsbc WIFI设置(5G)-->
                                         <div class="basicstatus_top">
                                             <div>
@@ -365,6 +366,7 @@
                                                 <option value="DHCP">DHCP</option>
                                                 <option value="PPPOE">PPPOE</option>
                                             </select>
+                                            <span v-if="tsbctsbacaollcate.ipType=='STATIC'" style="color:red;margin-left:30px;">STATIC模式下只能指定设备</span>
                                         </div>
                                         <div class="basicstatus_center"></div>
                                         <div v-if="tsbctsbacaollcate.ipType=='STATIC'" class="basicstatus_bottom">
@@ -483,7 +485,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="radio2=='2'&&lookoverstatus.wifi5G!=''" title="5G配置" name="9" style="text-align:left;">
+                                    <el-collapse-item v-if="radio2=='2'&&lookoverstatus.wifi5G!=''" title="5.8G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <el-radio-group v-model="tsbacaollcate.wifi5Enable" @change="TSBAwifi5Enable5G">
                                                 <el-radio :label="1">启用</el-radio>
@@ -690,8 +692,14 @@
                                     <span>指定设备类型:</span>
                                     <select @change="uploadscope" v-model.lazy='valuethree' style="width:126px;height:26px;">
                                         <option value="0">指定设备</option>
-                                        <option value="1">指定分组</option>
-                                        <option value="2">指定型号</option>
+                                        <template v-if="radio2=='0'">
+                                            <option value="1" v-if="tsbgcollcate.ipType=='DHCP'||tsbctsbacaollcate.ipType=='PPPOE'">指定分组</option>
+                                            <option value="2" v-if="tsbgcollcate.ipType=='DHCP'||tsbctsbacaollcate.ipType=='PPPOE'">指定型号</option>
+                                        </template>
+                                        <template v-if="radio2=='1'||radio2=='2'">
+                                            <option value="1" v-if="tsbctsbacaollcate.ipType=='DHCP'||tsbctsbacaollcate.ipType=='PPPOE'">指定分组</option>
+                                            <option value="2" v-if="tsbctsbacaollcate.ipType=='DHCP'||tsbctsbacaollcate.ipType=='PPPOE'">指定型号</option>
+                                        </template>
                                     </select>
                                 </div>
                                 <div v-if="valuethree==0" style="flex-direction: column;">
@@ -720,7 +728,7 @@
                                         </el-table-column>
                                         <el-table-column
                                         prop="model"
-                                        label="硬件版本"
+                                        label="软件型号"
                                         align='center'>
                                         </el-table-column>
                                     </el-table>
@@ -1015,7 +1023,8 @@
                                             <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
                                                 <td>信道:</td>
                                                 <td>
-                                                    <span>{{datailsdata.configInfo.wifi2ApChannel}}</span>
+                                                    <span v-if="datailsdata.configInfo.wifi2ApChannel=='0'">auto</span>
+                                                    <span v-else>{{datailsdata.configInfo.wifi2ApChannel}}</span>
                                                 </td>
                                                 <td>发射功率:</td>
                                                 <td>{{datailsdata.configInfo.wifi2ApLaunchPower}}</td>
@@ -1073,7 +1082,8 @@
                                             <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
                                                 <td>信道:</td>
                                                 <td>
-                                                    <span>{{datailsdata.configInfo.wifi5ApChannel}}</span>
+                                                    <span v-if="datailsdata.configInfo.wifi5ApChannel=='0'">auto</span>
+                                                    <span v-else>{{datailsdata.configInfo.wifi5ApChannel}}</span>
                                                 </td>
                                                 <td>发射功率:</td>
                                                 <td>{{datailsdata.configInfo.wifi5ApLaunchPower}}</td>
@@ -1156,11 +1166,11 @@
                             </div>
                             <!-- tsba -->
                             <div v-if="datailstype=='2'">
-                                <div class="datailsbody_top">
+                                <div class="datailsbody_top"  v-if="datailstype=='2'&&lookoverstatus.wifi2G!=''">
                                     2.4G配置
                                 </div>
-                                <div class="datailsbody_center"></div>
-                                <div class="datailsbody_bottom">
+                                <div class="datailsbody_center"  v-if="datailstype=='2'&&lookoverstatus.wifi2G!=''"></div>
+                                <div class="datailsbody_bottom"  v-if="datailstype=='2'&&lookoverstatus.wifi2G!=''">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
@@ -1172,7 +1182,8 @@
                                             <tr>
                                                 <td>信道:</td>
                                                 <td>
-                                                    <span>{{datailsdata.configInfo.wifi2Channel}}</span>
+                                                    <span v-if="datailsdata.configInfo.wifi2Channel=='0'">auto</span>
+                                                    <span v-else>{{datailsdata.configInfo.wifi2Channel}}</span>
                                                 </td>
                                                 <td>发射功率:</td>
                                                 <td>{{datailsdata.configInfo.wifi2LaunchPower}}</td>
@@ -1196,11 +1207,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="datailsbody_top">
-                                    5G配置
+                                <div class="datailsbody_top" v-if="datailstype=='2'&&lookoverstatus.wifi5G!=''">
+                                    5.8G配置
                                 </div>
-                                <div class="datailsbody_center"></div>
-                                <div class="datailsbody_bottom">
+                                <div class="datailsbody_center" v-if="datailstype=='2'&&lookoverstatus.wifi5G!=''"></div>
+                                <div class="datailsbody_bottom" v-if="datailstype=='2'&&lookoverstatus.wifi5G!=''">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
@@ -1212,7 +1223,8 @@
                                             <tr>
                                                 <td>信道:</td>
                                                 <td>
-                                                    <span>{{datailsdata.configInfo.wifi5Channel}}</span>
+                                                    <span v-if="datailsdata.configInfo.wifi5Channel=='0'">auto</span>
+                                                    <span v-else>{{datailsdata.configInfo.wifi5Channel}}</span>
                                                 </td>
                                                 <td>发射功率:</td>
                                                 <td>{{datailsdata.configInfo.wifi5LaunchPower}}</td>
@@ -1243,7 +1255,7 @@
                                 <div class="datailsbody_bottom">
                                     <table class="table table-bordered">
                                         <tbody>
-                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                            <tr>
                                                 <td>IP类型</td>
                                                 <td style="width:75%">{{datailsdata.configInfo.ipType}}</td>
                                             </tr>
@@ -1274,6 +1286,72 @@
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
                                                 <td>DNS2:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top" v-if="datailstype=='2'&&lookoverstatus.doubleWifi!=''">双SSID配置</div>
+                                <div class="datailsbody_center" v-if="datailstype=='2'&&lookoverstatus.doubleWifi!=''"></div>
+                                <div class="datailsbody_bottom" v-if="datailstype=='2'&&lookoverstatus.doubleWifi!=''">
+                                    <span v-if="lookoverstatus.wifi2G!=''">2.4G</span>
+                                    <table class="table table-bordered" v-if="lookoverstatus.wifi2G!=''">
+                                        <tbody>
+                                            <tr>
+                                                <td>ssid:</td>
+                                                <td>
+                                                    <span>{{datailsdata.configInfo.doubleWifi2SSID}}</span>
+                                                </td>
+                                                <td>加密方式</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.doubleWifi2EncryptionMode=='0'">NONE</span>
+                                                    <span v-if="datailsdata.configInfo.doubleWifi2EncryptionMode=='1'">WPA2</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.doubleWifi2KeyAuth}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span v-if="lookoverstatus.wifi5G!=''">5.8G</span>
+                                    <table class="table table-bordered" v-if="lookoverstatus.wifi5G!=''">
+                                        <tbody>
+                                            <tr>
+                                                <td>ssid:</td>
+                                                <td>
+                                                    <span>{{datailsdata.configInfo.doubleWifi5SSID}}</span>
+                                                </td>
+                                                <td>加密方式</td>
+                                                <td>
+                                                    <span v-if="datailsdata.configInfo.doubleWifi5EncryptionMode=='0'">NONE</span>
+                                                    <span v-if="datailsdata.configInfo.doubleWifi5EncryptionMode=='1'">WPA2</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>认证秘钥:</td>
+                                                <td>{{datailsdata.configInfo.doubleWifi5KeyAuth}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="datailsbody_top" v-if="datailstype=='2'&&lookoverstatus.portal!=''">portal认证</div>
+                                <div class="datailsbody_center" v-if="datailstype=='2'&&lookoverstatus.portal!=''"></div>
+                                <div class="datailsbody_bottom" v-if="datailstype=='2'&&lookoverstatus.portal!=''">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>认证IP:</td>
+                                                <td>
+                                                    <span>{{datailsdata.configInfo.portalIP}}</span>
+                                                </td>
+                                                <td>端口1</td>
+                                                <td>
+                                                    {{datailsdata.configInfo.portalPortHttp}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>端口2:</td>
+                                                <td>{{datailsdata.configInfo.portalPortHttps}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1331,7 +1409,7 @@
                                             </el-table-column>
                                             <el-table-column
                                             prop="model"
-                                            label="硬件版本"
+                                            label="软件型号"
                                             align='center'>
                                             </el-table-column>
                                         </el-table>
@@ -1350,7 +1428,7 @@
                                             </el-table-column>
                                             <el-table-column
                                             prop="model"
-                                            label="硬件版本"
+                                            label="软件型号"
                                             align='center'>
                                             </el-table-column>
                                         </el-table>
@@ -1569,6 +1647,35 @@
                 this.datailstype = val.templateType
                 $('#detailsModal').modal('show')
                 that.datailstabledata = [];
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/getEquipmentModelInfo',
+                    data:{
+                        type:val.templateType,
+                        model:val.model
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.lookoverstatus = data.result[0]
+                            var WAN = []
+                            if(data.result[0].WAN!=''){
+                                WAN = data.result[0].WAN.split(',');
+                            }else{
+                                that.lookoverlan = false
+                            }
+                            for(var i=0;i<WAN.length;i++){
+                                if(WAN[i]=='1'){
+                                    that.lookoverlan = true
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
                 $.ajax({
                     type:'get',
                     async:true,
@@ -3890,10 +3997,19 @@
                 }
                 if(that.valuethree=='0'){
                     //指定设备
-                    for(var i = 0;i<that.sizesdata.length;i++){
-                        equipmentIds.push(that.sizesdata[i].id)
+                    if(that.sizesdata.length>1){
+                        that.$message({
+                            message: 'STATIC模式下只能选择一台设备!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }else{
+                        for(var i = 0;i<that.sizesdata.length;i++){
+                            equipmentIds.push(that.sizesdata[i].id)
+                        }
+                        data.equipmentIds = equipmentIds.join(',')
                     }
-                    data.equipmentIds = equipmentIds.join(',')
                 }
                 if(that.valuethree=='1'){
                     //指定分组

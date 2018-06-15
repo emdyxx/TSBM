@@ -94,7 +94,7 @@
                                 </template>    
                             </el-table-column>
                             <el-table-column
-                            prop="model"
+                            prop="productModel"
                             label="产品型号"
                             align='center'
                             width="140">
@@ -166,7 +166,7 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBG设备分组</el-button>
-                        <el-button v-if="groupingtypeadd" @click="affiliation" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">设备归属</el-button>
+                        <el-button v-if="groupingtypeadd" @click="affiliation(2)" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">设备归属</el-button>
                         <el-button v-if="groupingtypedelete" @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
                     </div>
                     <!-- 设备列表 -->
@@ -237,7 +237,7 @@
                                 </template>    
                             </el-table-column>
                             <el-table-column
-                            prop="model"
+                            prop="productModel"
                             label="产品型号"
                             align='center'
                             width="140">
@@ -319,6 +319,7 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBC设备分组</el-button>
+                        <el-button v-if="groupingtypeadd" @click="affiliation(3)" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">设备归属</el-button>
                         <el-button v-if="groupingtypedelete" @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
@@ -394,7 +395,7 @@
                             </template>    
                             </el-table-column>
                             <el-table-column
-                            prop="model"
+                            prop="productModel"
                             label="产品型号"
                             align='center'
                             width="140">
@@ -476,6 +477,7 @@
                         </div>
                         <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
                         <el-button v-if="groupingtype" type="primary" @click="machinegrouping" icon='document ' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">TSBA设备分组</el-button>
+                        <el-button v-if="groupingtypeadd" @click="affiliation(4)" type="primary" size="mini" style="margin:4px 5px;height:29px;font-size:15px;">设备归属</el-button>
                         <el-button v-if="groupingtypedelete" @click="removeequipment" type='primary' size='small' style="margin:4px 5px;height:29px;font-size:15px;">删除设备</el-button>
                     </div>
                     <div class="TSBManage_main_bottom">
@@ -551,7 +553,7 @@
                             </template>    
                             </el-table-column>
                             <el-table-column
-                            prop="model"
+                            prop="productModel"
                             label="产品型号"
                             align='center'
                             width="140">
@@ -886,7 +888,8 @@
                                                 <td>{{lookdata.wifi2WorkMode}}</td>
                                                 <td>信道</td>
                                                 <td>
-                                                    <span>{{lookdata.wifi2ApChannel}}</span>
+                                                    <span v-if="lookdata.wifi2ApChannel=='0'">auto</span>
+                                                    <span v-else>{{lookdata.wifi2ApChannel}}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -922,7 +925,8 @@
                                                 <td>{{lookdata.wifi5WorkMode}}</td>
                                                 <td>信道</td>
                                                 <td>
-                                                    <span>{{lookdata.wifi5ApChannel}}</span>
+                                                    <span v-if="lookdata.wifi5ApChannel=='0'">auto</span>
+                                                    <span v-else>{{lookdata.wifi5ApChannel}}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1004,17 +1008,18 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="basicstatus_top">
-                                    RADIO(2G)
+                                <div class="basicstatus_top" v-if="lookoverType=='2'&&lookoverstatus.wifi2G=='1'">
+                                    RADIO(2.4G)
                                 </div>
-                                <div class="basicstatus_center"></div>
-                                <div class="basicstatus_bottom">
+                                <div class="basicstatus_center" v-if="lookoverType=='2'&&lookoverstatus.wifi2G=='1'"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverType=='2'&&lookoverstatus.wifi2G=='1'">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
                                                 <td>信道:</td>
                                                 <td>
-                                                    <span>{{lookdata.wifi2Channel}}</span>
+                                                    <span v-if="lookdata.wifi2Channel=='0'">auto</span>
+                                                    <span v-else>{{lookdata.wifi2Channel}}</span>
                                                 </td>
                                                 <td>发射功率</td>
                                                 <td>{{lookdata.wifi2LaunchPower}}</td>
@@ -1044,17 +1049,18 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="basicstatus_top">
-                                    RADIO(5G)
+                                <div class="basicstatus_top" v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'">
+                                    RADIO(5.8G)
                                 </div>
-                                <div class="basicstatus_center"></div>
-                                <div class="basicstatus_bottom">
+                                <div class="basicstatus_center" v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
                                                 <td>信道:</td>
                                                 <td>
-                                                    <span>{{lookdata.wifi5Channel}}</span>
+                                                    <span v-if="lookdata.wifi5Channel=='0'">auto</span>
+                                                    <span v-else>{{lookdata.wifi5Channel}}</span>
                                                 </td>
                                                 <td>发射功率</td>
                                                 <td>{{lookdata.wifi5LaunchPower}}</td>
@@ -1080,6 +1086,72 @@
                                             <tr>
                                                 <td>连接用户:</td>
                                                 <td>{{lookdata.wifi5connectUser}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="basicstatus_top" v-if="lookoverType=='2'&&lookoverstatus.doubleWifi!=''">双SSID配置</div>
+                                <div class="basicstatus_center" v-if="lookoverType=='2'&&lookoverstatus.doubleWifi!=''"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverType=='2'&&lookoverstatus.doubleWifi!=''">
+                                    <span v-if="lookoverstatus.wifi2G=='1'">2.4G</span>
+                                    <table class="table table-bordered" v-if="lookoverstatus.wifi2G=='1'">
+                                        <tbody>
+                                            <tr>
+                                                <td>ssid:</td>
+                                                <td>
+                                                    <span>{{lookdata.doubleWifi2SSID}}</span>
+                                                </td>
+                                                <td>加密方式</td>
+                                                <td>
+                                                    <span v-if="lookdata.doubleWifi2EncryptionMode=='0'">NONE</span>
+                                                    <span v-if="lookdata.doubleWifi2EncryptionMode=='1'">WPA2</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>认证秘钥:</td>
+                                                <td>{{lookdata.doubleWifi2KeyAuth}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <span v-if="lookoverstatus.wifi5G=='1'">5.8G</span>
+                                    <table class="table table-bordered" v-if="lookoverstatus.wifi5G=='1'">
+                                        <tbody>
+                                            <tr>
+                                                <td>ssid:</td>
+                                                <td>
+                                                    <span>{{lookdata.doubleWifi5SSID}}</span>
+                                                </td>
+                                                <td>加密方式</td>
+                                                <td>
+                                                    <span v-if="lookdata.doubleWifi5EncryptionMode=='0'">NONE</span>
+                                                    <span v-if="lookdata.doubleWifi5EncryptionMode=='1'">WPA2</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>认证秘钥:</td>
+                                                <td>{{lookdata.doubleWifi5KeyAuth}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="basicstatus_top" v-if="lookoverType=='2'&&lookoverstatus.portal!=''">portal认证</div>
+                                <div class="basicstatus_center" v-if="lookoverType=='2'&&lookoverstatus.portal!=''"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverType=='2'&&lookoverstatus.portal!=''">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>认证IP:</td>
+                                                <td>
+                                                    <span>{{lookdata.portalIP}}</span>
+                                                </td>
+                                                <td>端口1</td>
+                                                <td>
+                                                    {{lookdata.portalPortHttp}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>端口2:</td>
+                                                <td>{{lookdata.portalPortHttps}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1317,7 +1389,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi5G=='1'" title="5G配置" name="6" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverstatus.wifi5G=='1'" title="5.8G配置" name="6" style="text-align:left;">
                                         <!-- tsbc WIFI设置(5G)-->
                                         <div class="basicstatus_top">
                                             <div>
@@ -1531,7 +1603,6 @@
                                                                 <option v-for="item in maxPower2G" :key="item.id" :value="item.maxPower">{{item.maxPower}}dBm</option>
                                                             </select>
                                                         </td>
-                                                        
                                                     </tr>
                                                     <tr>
                                                         <td><i class="required">*</i>加密方式:</td>
@@ -1557,7 +1628,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'" title="5G配置" name="9" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverType=='2'&&lookoverstatus.wifi5G=='1'" title="5.8G配置" name="9" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <el-radio-group v-model.lazy="tsbacaollcate.wifi5Enable" @change="TSBAwifi5Enable5G">
                                                 <el-radio :label="1">启用</el-radio>
@@ -1709,7 +1780,7 @@
                                             </select>
                                             <el-button @click="paaelMACS" type="primary" size='small' style="margin-left:15px;">添加</el-button>
                                             <div style="display:inline-block;" v-if="paaelMAC">
-                                                <el-input v-model.lazy="panelinput" size='small' style="width:156px;margin-left:15px;" placeholder="请输入MAC"></el-input>
+                                                <el-input v-model.lazy="panelinput" size='small' maxlength=17 style="width:156px;margin-left:15px;" placeholder="请输入MAC"></el-input>
                                                 <el-button @click="panelMACT" type="primary" size='small' style="margin-left:5px;">确认</el-button>
                                             </div>
                                         </div>
@@ -2406,7 +2477,7 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'equipment/setEquipmentDepartment',
                     data:{
-                        // type: that.sites[0].type,
+                        type: that.sites[0].type,
                         equipmentIds: ids.join(','),
                         departmentId: that.affiliationupload[0].id
                     },
@@ -2429,6 +2500,42 @@
                 var that = this;
                 var url = '';
                 this.lookoverType = val.type
+                //权限接口
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/getEquipmentModelInfo',
+                    data:{
+                        model:val.model,
+                        type:val.type
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            if(data.result.length==0){
+                                that.lookoverstatus = {}
+                                that.lookoverlan = false
+                                return false;
+                            }else{
+                                that.lookoverstatus = data.result[0]
+                                var WAN = []
+                                if(that.lookoverstatus!=''){
+                                    WAN = data.result[0].WAN.split(',');
+                                }else{
+                                    that.lookoverlan = false
+                                }
+                                for(var i=0;i<WAN.length;i++){
+                                    if(WAN[i]=='1'){
+                                        that.lookoverlan = true
+                                    }
+                                }
+                            }
+                        }else{
+                            that.errorCode(data.errorCode)
+                        }
+                    }
+                })
                 $.ajax({
                     type:'get',
                     async:true,
@@ -2641,12 +2748,16 @@
                                 if(data.result.configInfo.wifi2ApLaunchPower==''||data.result.configInfo.wifi2ApLaunchPower==undefined||data.result.configInfo.wifi2ApLaunchPower==NaN){
                                     that.tsbccollcate.wifi2ApLaunchPower = '1'
                                 }else{
-                                    that.tsbccollcate.wifi2ApLaunchPower = data.result.configInfo.wifi2ApLaunchPower
+                                    if(data.result.configInfo.wifi2ApLaunchPower>that.maxPower2G.length){
+                                        that.tsbccollcate.wifi2ApLaunchPower = that.maxPower2G.length
+                                    }else{
+                                        that.tsbccollcate.wifi2ApLaunchPower = data.result.configInfo.wifi2ApLaunchPower
+                                    }
                                 }
-                                if(data.result.configInfo.wifi2ApEncryptionMode==''||data.result.configInfo.wifi2ApEncryptionMode==undefined||data.result.configInfo.wifi2ApEncryptionMode==NaN){
-                                    that.tsbccollcate.wifi2ApEncryptionMode = '0'
-                                }else{
+                                if(data.result.configInfo.wifi2ApEncryptionMode=='0'||data.result.configInfo.wifi2ApEncryptionMode=='1'){
                                     that.tsbccollcate.wifi2ApEncryptionMode = data.result.configInfo.wifi2ApEncryptionMode
+                                }else{
+                                    that.tsbccollcate.wifi2ApEncryptionMode = '0'
                                 }
                                 if(data.result.configInfo.wifi2StaEncryptionMode==''||data.result.configInfo.wifi2StaEncryptionMode==undefined||data.result.configInfo.wifi2StaEncryptionMode==NaN){
                                     that.tsbccollcate.wifi2StaEncryptionMode = '0'
@@ -2687,14 +2798,18 @@
                                     }
                                 }
                                 if(data.result.configInfo.wifi5ApLaunchPower==''||data.result.configInfo.wifi5ApLaunchPower==undefined||data.result.configInfo.wifi5ApLaunchPower==NaN){
-                                    that.tsbccollcate.wifi2ApLaunchPower = '1'
+                                    that.tsbccollcate.wifi5ApLaunchPower = '1'
                                 }else{
-                                    that.tsbccollcate.wifi5ApLaunchPower = data.result.configInfo.wifi5ApLaunchPower
+                                     if(data.result.configInfo.wifi5ApLaunchPower>that.maxPower5G.length){
+                                        that.tsbccollcate.wifi5ApLaunchPower = that.maxPower5G.length
+                                    }else{
+                                        that.tsbccollcate.wifi5ApLaunchPower = data.result.configInfo.wifi5ApLaunchPower
+                                    }
                                 }
-                                if(data.result.configInfo.wifi5ApEncryptionMode==''||data.result.configInfo.wifi5ApEncryptionMode==undefined||data.result.configInfo.wifi5ApEncryptionMode==NaN){
-                                    that.tsbccollcate.wifi5ApEncryptionMode = '0'
-                                }else{
+                                if(data.result.configInfo.wifi5ApEncryptionMode=='0'||data.result.configInfo.wifi5ApEncryptionMode=='1'){
                                     that.tsbccollcate.wifi5ApEncryptionMode = data.result.configInfo.wifi5ApEncryptionMode
+                                }else{
+                                    that.tsbccollcate.wifi5ApEncryptionMode = '0'
                                 }
                                 if(data.result.configInfo.wifi5StaEncryptionMode==''||data.result.configInfo.wifi5StaEncryptionMode==undefined||data.result.configInfo.wifi5StaEncryptionMode==NaN){
                                     that.tsbccollcate.wifi5StaEncryptionMode = '0'
@@ -2710,7 +2825,6 @@
                                 that.radio2 = Number(data.result.templateType)
                                 that.templateName = data.result.templateName
                                 that.summary = data.result.summary
-
                                 if(data.result.configInfo.ipType==''||data.result.configInfo.ipType==undefined||data.result.configInfo.ipType==NaN){
                                     that.tsbctsbacaollcate.ipType = 'DHCP'
                                 }else{
@@ -2725,7 +2839,6 @@
                                 that.tsbctsbacaollcate.wanPPPoEPassword = data.result.configInfo.wanPPPoEPassword
                                 that.tsbctsbacaollcate.wanPPPoEDNS1 = data.result.configInfo.wanPPPoEDNS1
                                 that.tsbctsbacaollcate.wanPPPoEDNS2 = data.result.configInfo.wanPPPoEDNS2
-
                                 if(data.result.configInfo.wifi2Enable==''||data.result.configInfo.wifi2Enable==undefined||data.result.configInfo.wifi2Enable==NaN){
                                     that.tsbacaollcate.wifi2Enable = 0
                                 }else{
@@ -2748,12 +2861,16 @@
                                 if(data.result.configInfo.wifi2LaunchPower==''||data.result.configInfo.wifi2LaunchPower==undefined||data.result.configInfo.wifi2LaunchPower==NaN){
                                     that.tsbacaollcate.wifi2LaunchPower = '1'
                                 }else{
-                                    that.tsbacaollcate.wifi2LaunchPower = data.result.configInfo.wifi2LaunchPower
+                                    if(data.result.configInfo.wifi2LaunchPower>that.maxPower2G.length){
+                                        that.tsbacaollcate.wifi2LaunchPower = that.maxPower2G.length 
+                                    }else{
+                                        that.tsbacaollcate.wifi2LaunchPower = data.result.configInfo.wifi2LaunchPower
+                                    }
                                 }
-                                if(data.result.configInfo.wifi2EncryptionMode==''||data.result.configInfo.wifi2EncryptionMode==undefined||data.result.configInfo.wifi2EncryptionMode==NaN){
-                                    that.tsbacaollcate.wifi2EncryptionMode = '1'
-                                }else{
+                                if(data.result.configInfo.wifi2EncryptionMode=='0'||data.result.configInfo.wifi2EncryptionMode=='1'){
                                     that.tsbacaollcate.wifi2EncryptionMode = data.result.configInfo.wifi2EncryptionMode
+                                }else{
+                                    that.tsbacaollcate.wifi2EncryptionMode = '0'
                                 }
                                 if(data.result.configInfo.wifi2HideSSID==''||data.result.configInfo.wifi2HideSSID==undefined||data.result.configInfo.wifi2HideSSID==NaN){
                                     that.tsbacaollcate.wifi2HideSSID = 1
@@ -2762,8 +2879,6 @@
                                 }
                                 that.tsbacaollcate.wifi2SSID = data.result.configInfo.wifi2SSID
                                 that.tsbacaollcate.wifi2KeyAuth = data.result.configInfo.wifi2KeyAuth
-
-
                                 if(data.result.configInfo.wifi5Enable==''||data.result.configInfo.wifi5Enable==undefined||data.result.configInfo.wifi5Enable==NaN){
                                     that.tsbacaollcate.wifi5Enable = 0
                                 }else{
@@ -2786,12 +2901,16 @@
                                 if(data.result.configInfo.wifi5LaunchPower==''||data.result.configInfo.wifi5LaunchPower==undefined||data.result.configInfo.wifi5LaunchPower==NaN){
                                     that.tsbacaollcate.wifi5LaunchPower = '1'
                                 }else{
-                                    that.tsbacaollcate.wifi5LaunchPower = data.result.configInfo.wifi5LaunchPower
+                                    if(data.result.configInfo.wifi5LaunchPower>that.maxPower5G.length){
+                                        that.tsbacaollcate.wifi5LaunchPower = that.maxPower5G.length 
+                                    }else{
+                                        that.tsbacaollcate.wifi5LaunchPower = data.result.configInfo.wifi5LaunchPower
+                                    }
                                 }
-                                if(data.result.configInfo.wifi5EncryptionMode==''||data.result.configInfo.wifi5EncryptionMode==undefined||data.result.configInfo.wifi5EncryptionMode==NaN){
-                                    that.tsbacaollcate.wifi5EncryptionMode = '1'
-                                }else{
+                                if(data.result.configInfo.wifi5EncryptionMode=='0'||data.result.configInfo.wifi5EncryptionMode=='1'){
                                     that.tsbacaollcate.wifi5EncryptionMode = data.result.configInfo.wifi5EncryptionMode
+                                }else{
+                                    that.tsbacaollcate.wifi5EncryptionMode = '0'
                                 }
                                 if(data.result.configInfo.wifi5HideSSID==''||data.result.configInfo.wifi5HideSSID==undefined||data.result.configInfo.wifi5HideSSID==NaN||data.result.configInfo.wifi5HideSSID=='80'){
                                     that.tsbacaollcate.wifi5HideSSID = 1
@@ -2828,7 +2947,7 @@
                             if(val.type=='1'||val.type=='2'){
                                 that.panelTable = [];
                                 that.panelTabletwo = [];
-                                if(data.result.configInfo.listContent==''){
+                                if(data.result.configInfo.listContent==''||data.result.configInfo.listContent==undefined||data.result.configInfo.listContent==NaN){
                                     setTimeout(function(){
                                         that.panelTable = [];
                                         that.panelTabletwo = [];

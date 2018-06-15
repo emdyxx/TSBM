@@ -46,9 +46,10 @@ export default {
     // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
   },
   methods:{
-    // verification(){
-    //   $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
-    // },  
+    verification(){
+      // window.location.href=localStorage.serverurl+'getVerifyToken?rnd=' + Math.random()
+      // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
+    },  
     login(){
         var that = this;
         if(this.username==''){
@@ -67,14 +68,6 @@ export default {
             });
             return;
         }
-        // if(this.verificationcode==''){
-        //     this.$message({
-        //       message: '验证码不能为空',
-        //       type: 'warning',
-        //       showClose: true,
-        //     });
-        //     return;
-        // }
         that.loginbutton = true
         $.ajax({
           type:'post',
@@ -139,7 +132,7 @@ export default {
   display: -webkit-flex;
   justify-content: center;
   align-items: center;
-  background-image: url('http://192.168.10.211/TSBM-Manager/img/images/111.jpg');
+  background-image: url('/TSBM-Manager/img/images/background.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }

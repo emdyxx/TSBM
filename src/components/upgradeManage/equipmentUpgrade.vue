@@ -222,20 +222,8 @@
                         width="210">
                         </el-table-column>
                         <el-table-column
-                        prop="md5"
-                        label="MD5"
-                        align='center'
-                        width="320">
-                        </el-table-column>
-                        <el-table-column
                         prop="departmentName"
                         label="组织"
-                        align='center'
-                        width="140">
-                        </el-table-column>
-                        <el-table-column
-                        prop="modelVer"
-                        label="软件型号"
                         align='center'
                         width="140">
                         </el-table-column>
