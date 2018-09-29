@@ -3,28 +3,29 @@
     <div class="index_nav">
       <div class="index_nav_top" @click="echart">
         <div>
-          <!-- <i class="iconfont icon-baidu"></i> -->
           <img class="logo" src="../ASSETS/logo.png" alt="">
         </div>
-        <span>TSBM-管理系统</span>
+        <span>{{$t('index.system')}}</span>
       </div>
       <div class="index_main_top">
-        <div class="index_main_top_left">
-          <span>版本号:{{versionNumber}}</span>
-        </div>
         <div class="index_main_top_center">
-          <el-button @click="shortcut(1)">设备概览</el-button>
-          <el-button @click="shortcut(2)">设备列表</el-button>
-          <el-button @click="shortcut(3)">地图定位</el-button>
-          <el-button @click="shortcut(4)">统计数据</el-button>
+          <el-button @click="shortcut(1)">{{$t('index.EquipmentOverview')}}</el-button>
+          <el-button @click="shortcut(2)">{{$t('index.Theequipmentlist')}}</el-button>
+          <el-button @click="shortcut(3)">{{$t('index.orientationofmap')}}</el-button>
+          <el-button @click="shortcut(4)">{{$t('index.statisticaldata')}}</el-button>
         </div>
         <div class="index_main_top_right">
-          <el-badge :value=value class="item" style="line-height:0;margin-right:30px;cursor: pointer;">
+          <el-badge :value=value class="item" style="line-height:0;margin-right:20px;cursor: pointer;">
             <i @click="shortcut(5)" class="iconfont icon-jinggao"></i>
           </el-badge>
+          <!-- <div>
+            
+          </div> -->
           <el-dropdown trigger="click" style="cursor: pointer;" @command="handleCommand">
             <span class="el-dropdown-link" style="color: white;font-size:16px;">
-              {{username}}<i class="el-icon-arrow-down el-icon--right"></i>
+              <span style="margin-right:20px;">{{$t('index.versionnumber')}}:{{versionNumber}}</span>
+              <span>{{username}}</span>
+              <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu style="margin-top:0px;">
               <el-dropdown-item command="a">个人设置</el-dropdown-item>
@@ -59,6 +60,7 @@
                 <i v-else-if="site.menuName=='终端管理'" style="font-size:15px;left:-2px;" class="left_i iconfont icon-shebeishengji "></i>
                 <i v-else-if="site.menuName=='事件管理'" style="font-size:22px;left:-4px;" class="left_i iconfont icon-shijian"></i>
                 <i v-else-if="site.menuName=='统计信息'" style="font-size:19px;left:-4px;" class="left_i iconfont icon-gailan"></i>
+                <i v-else-if="site.menuName=='物联网数据'" style="font-size:26px;left:-4px;" class="left_i iconfont icon-wulianwang"></i>
                 <span slot="title">{{site.menuName}}</span>
               </template> 
               <el-menu-item-group>
@@ -94,37 +96,6 @@
                       </label> 
                     </form>
                     <button style="margin-left:150px;" type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
-                    <!-- <el-collapse v-model.lazy="activeName" accordion>
-                      <el-collapse-item title="密码修改" name="1">
-                        <form class="systemsettingspsd">
-                            <label for="" style="margin-top:8px;">
-                              原始密码:
-                              <input type="password" v-model.lazy="oldPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入原密码" required>
-                            </label>
-                            <label for="">
-                              新密码:&#12288
-                              <input type="password" v-model.lazy="newPassword" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入新密码" required>
-                            </label>
-                            <label for="">
-                              确认密码:
-                              <input type="password" v-model.lazy="newPasswordTwo" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="确认新密码" required>
-                            </label> 
-                         </form>
-                         <button style="margin-left:150px;" type="button" @click="revampPassword" class="btn btn-primary">提交更改</button>
-                      </el-collapse-item>
-                      <el-collapse-item title="常用菜单设置" name="2">
-                        <el-tree
-                          :data="data2"
-                          show-checkbox
-                          node-key="id"
-                          accordion
-                          :default-checked-keys=checked
-                          :props="defaultProps"
-                          ref="tree">
-                        </el-tree>
-                        <button style="margin-left:150px;margin-top:5px;" type="button" @click="revampPasswordtwo" class="btn btn-primary">提交更改</button>
-                      </el-collapse-item>
-                    </el-collapse> -->
                   </div>
               </div><!-- /.modal-content -->
           </div>
@@ -189,7 +160,7 @@ export default {
               that.data2 = data.result
               that.data2.splice(0,1)
             }else{
-              that.error_code(data.errorCode)
+              that.errorCode(data)
             }
           }
         })
@@ -210,84 +181,6 @@ export default {
             }
           }
         })
-      }
-    },
-    listclick(data,key){
-      $('.left_i_JT').css({transform:'rotate(0deg)'})
-      $('.left_i_JT').eq(key).css({transform:'rotate(90deg)'})
-      //frequentlyUsedMenu 常用菜单
-      if(data=='frequentlyUsedMenu'){
-        this.frequentlyUsedMenu = !this.frequentlyUsedMenu
-        this.systemManage = false
-        this.equipmentManage = false
-        this.upgradeManage = false
-        this.eventManage = false
-        this.statisticsInfo = false
-      }
-      //systemManage 系统管理
-      if(data=='systemManage'){
-        this.systemManage = !this.systemManage
-        this.frequentlyUsedMenu = false
-        this.equipmentManage = false
-        this.upgradeManage = false
-        this.eventManage = false
-        this.statisticsInfo = false
-      }
-      //equipmentManage  设备管理
-      if(data=='equipmentManage'){
-        this.equipmentManage = !this.equipmentManage
-        this.frequentlyUsedMenu = false
-        this.systemManage = false
-        this.upgradeManage = false
-        this.eventManage = false
-        this.statisticsInfo = false
-      }
-      //upgradeManage  升级管理
-      if(data=='upgradeManage'){
-        this.upgradeManage = !this.upgradeManage
-        this.frequentlyUsedMenu = false
-        this.systemManage = false
-        this.equipmentManage = false
-        this.eventManage = false
-        this.statisticsInfo = false
-      }
-      //eventManage  事件管理
-      if(data=='eventManage'){
-        this.eventManage = !this.eventManage
-        this.frequentlyUsedMenu = false
-        this.systemManage = false
-        this.equipmentManage = false
-        this.upgradeManage = false
-        this.statisticsInfo = false
-      }
-      //statisticsInfo 统计信息
-      if(data=='statisticsInfo'){
-        this.statisticsInfo = !this.statisticsInfo
-        this.frequentlyUsedMenu = false
-        this.systemManage = false
-        this.equipmentManage = false
-        this.upgradeManage = false
-        this.eventManage = false
-      }
-    },
-    fun(site){
-      if(site=='frequentlyUsedMenu'){
-        return this.frequentlyUsedMenu;
-      }
-      if(site=='systemManage'){
-        return this.systemManage;
-      }
-      if(site=='equipmentManage'){
-        return this.equipmentManage;
-      }
-      if(site=='upgradeManage'){
-        return this.upgradeManage;
-      }
-      if(site=='eventManage'){
-        return this.eventManage;
-      }
-      if(site=='statisticsInfo'){
-        return this.statisticsInfo
       }
     },
     bgcolor(name,id,url){
@@ -339,7 +232,7 @@ export default {
             $('#systemsettings').modal('hide')
             that.$router.push({'path':'/'})
           }else{
-            that.error_code(data.errorCode)
+            that.errorCode(data)
           }
         }
       })
@@ -377,7 +270,7 @@ export default {
             });
             $('#systemsettings').modal('hide')
           }else{
-            that.error_code(data.errorCode)
+            that.errorCode(data)
           }
         }
       })
@@ -441,7 +334,7 @@ export default {
             that.sites[i].id = String(that.sites[i].id)
           }
         }else{
-          that.errorCode(data.errorCode)
+          that.errorCode(data)
         }
       },
     });
@@ -492,7 +385,6 @@ export default {
 .index_nav_top>span{position: relative;left: -15px;top:20px;}
 .icon-jinggao{display: inline-block;line-height: 25px;font-size:25px;color: #486d93;text-shadow: 0.5px 0.5px #b4c7da, -0.5px -0.5px #375471;}
 
-.index_main_top_left{position: absolute;right: 180px;height: 70px;line-height: 70px;color: white;font-size: 16px;}
 .index_main_top_center{position: absolute;height: 70px;line-height: 70px;left: 10px;}
 
 .index_main_top_right{position: absolute;right: 2%;height: 70px;line-height: 70px;}

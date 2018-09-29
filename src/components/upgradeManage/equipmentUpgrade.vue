@@ -29,7 +29,7 @@
                                     </el-cascader>
                                 </div> 
                                 <div>
-                                    <span>文件名称:</span>
+                                    <span>升级包名称:</span>
                                     <input type="file" ref="imgs" name="file" id="file_name">
                                 </div> 
                                 <div v-if="percentageType" style="padding-left:30px">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="upload_div" v-if="uploadtype">
                                 <div>
-                                    <span>文件名称:</span>
+                                    <span>升级包名称:</span>
                                     <input type="text" v-model.lazy="fileName" disabled>
                                 </div> 
                                 <div>
@@ -170,17 +170,17 @@
             element-loading-text="拼命加载中">
                 <div class="equipmentUpgrade_bottom_top">
                     <div class="equipmentUpgrade_formtwo">
-                        <span>文件名称:</span>
-                        <input type="text" v-model.lazy="searchfilename" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <span>升级包名称:</span>
+                        <input type="text" v-model.lazy="searchfilename" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入升级包名称">
                     </div>
                     <div class="equipmentUpgrade_formtwo">
                         <span>软件版本号:</span>
-                        <input type="text" v-model.lazy="softwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                        <input type="text" v-model.lazy="softwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入软件版本号">
                     </div>
-                    <div class="equipmentUpgrade_formtwo">
+                    <!-- <div class="equipmentUpgrade_formtwo">
                         <span>软件型号:</span>
-                        <input type="text" v-model.lazy="hardwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                    </div>
+                        <input type="text" v-model.lazy="hardwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入软件型号">
+                    </div> -->
                     <div class="equipmentUpgrade_formtwo">
                         <span>升级包状态:</span>
                         <el-select v-model.lazy="value4" size='small' clearable placeholder="请选择">
@@ -202,7 +202,7 @@
                         stripe
                         tooltip-effect="dark"
                         max-height='530'
-                        style="width: 100%;margin-bottom:10px;"
+                        style="width: 100%;"
                         @selection-change="handleSelectionChange">
                         <el-table-column
                         type="selection"
@@ -233,8 +233,8 @@
                         width="120">
                             <template scope="scope">
                                 <span v-if="scope.row.upgradeOrder=='0'">指定设备</span>
-                                <span v-if="scope.row.upgradeOrder=='1'">指定设备分组</span>
-                                <span v-if="scope.row.upgradeOrder=='2'">指定设备型号</span>      
+                                <span v-if="scope.row.upgradeOrder=='1'">指定分组</span>
+                                <span v-if="scope.row.upgradeOrder=='2'">指定型号</span>      
                             </template>  
                         </el-table-column>
                         <el-table-column
@@ -254,7 +254,7 @@
                         <el-table-column
                         label="操作"
                         align='center'
-                        width="90"
+                        width="160"
                         v-if="operationtype==true">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0">
@@ -263,6 +263,9 @@
                                 <span v-if="scope.row.status==1">
                                     <el-button type="primary" @click="startusing(scope.row)" size="small">启用</el-button>
                                 </span>   
+                                <span v-if="setUpgradeBatch">
+                                    <el-button @click="LowerHair(scope.row)" type="primary" size='small'>批量下发</el-button>
+                                </span>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -280,6 +283,145 @@
                 </div>
             </div>
         </div>
+        <!-- 批量下发模态框1 -->
+        <div class="modal fade" id="LowerHairModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">升级包批量下发</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="BatchUpgrades">
+                            <div>
+                                <!-- 指定设备,指定型号 -->
+                                <el-table
+                                    ref="multipleTable"
+                                    :data="BatchUpgradesData"
+                                    border
+                                    style="width:100%;"
+                                    tooltip-effect="dark"
+                                    @selection-change="handleSelectionChange1">
+                                    <el-table-column
+                                    type="selection"
+                                    align='center'
+                                    width="55">
+                                    </el-table-column>
+                                    <el-table-column
+                                    align='center'
+                                    label="设备昵称"
+                                    width="155">
+                                        <template scope="scope">
+                                            <span v-if="scope.row.nickname==''">
+                                                {{scope.row.MAC}}
+                                            </span>
+                                            <span v-else>
+                                                {{scope.row.nickname}}
+                                            </span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="MAC"
+                                    label="MAC"
+                                    align='center'
+                                    width="155">
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="model"
+                                    label="型号"
+                                    align='center'>
+                                    </el-table-column>
+                                </el-table>
+                                <div>
+                                    <el-pagination
+                                    @size-change="BatchUpgradesSizeChange"
+                                    @current-change="BatchUpgradesIndexChange"
+                                    :current-page="BatchUpgradesIndex"
+                                    :page-sizes="[10, 20, 30, 50]"
+                                    :page-size="BatchUpgradesSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="BatchUpgradesTotal">
+                                    </el-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">确定</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div>
+        </div><!-- /.modal -->
+        <!-- 批量下发模态框2 -->
+        <div class="modal fade" id="LowerHairModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">升级包批量下发</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="BatchUpgrades">
+                            <div>
+                                <el-table
+                                    ref="multipleTable"
+                                    :data="tableData2"
+                                    border
+                                    style="width:100%;"
+                                    tooltip-effect="dark"
+                                    @selection-change="handleSelectionChange2">
+                                    <el-table-column
+                                    type="selection"
+                                    align='center'
+                                    width="55">
+                                    </el-table-column>
+                                    <el-table-column
+                                    align='center'
+                                    label="设备昵称"
+                                    width="155">
+                                        <template scope="scope">
+                                            <span v-if="scope.row.nickname==''">
+                                                {{scope.row.MAC}}
+                                            </span>
+                                            <span v-else>
+                                                {{scope.row.nickname}}
+                                            </span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="MAC"
+                                    label="MAC"
+                                    align='center'
+                                    width="155">
+                                    </el-table-column>
+                                    <el-table-column
+                                    prop="model"
+                                    label="型号"
+                                    align='center'>
+                                    </el-table-column>
+                                </el-table>
+                                <div>
+                                    <el-pagination
+                                    @size-change="BatchUpgradesSizeChange2"
+                                    @current-change="BatchUpgradesIndexChange2"
+                                    :current-page="BatchUpgradesIndex2"
+                                    :page-sizes="[10, 20, 30, 50]"
+                                    :page-size="BatchUpgradesSize2"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="BatchUpgradesTotal2">
+                                    </el-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">确定</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div>
+        </div><!-- /.modal -->
     </div>
 </template>
 <script>
@@ -292,6 +434,7 @@
                 revamp:false,
                 remove:false,
                 operationtype:false,
+                setUpgradeBatch:false,
                 serverurl:localStorage.serverurl,
                 loading:false,
                 tableData4:[],
@@ -338,6 +481,20 @@
                 sitesthr:[],
                 opctions:'',
                 upgradeFileId:'',
+                //指定型号,指定设备
+                BatchUpgradesData:[],
+                BatchUpgradesIndex:1,
+                BatchUpgradesSize:10,
+                BatchUpgradesTotal:10,
+                //指定分组
+                tableData2:[],
+                BatchUpgradesIndex2:1,
+                BatchUpgradesSize2:10,
+                BatchUpgradesTotal2:10,
+                typeData:0,
+                BatchUpgradesVal:'',
+                dataSize1:[],
+                dataSize2:[],
             }
         },
         mounted(){
@@ -368,15 +525,166 @@
                                 if(data.result[i].code=='setFirmwareStatus'){
                                     that.operationtype = true
                                 }
+                                if(data.result[i].code=='setUpgradeBatch'){
+                                    that.setUpgradeBatch = true
+                                }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
             },200)
         },
         methods:{
+            //点击批量下发按钮
+            LowerHair(val){
+                var that = this;
+                if(val.status=='1'){
+                    that.$message({
+                        message: '升级包禁用状态下不可升级!',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                if(val.upgradeOrder=='0'||val.upgradeOrder=='2'){
+                    this.typeData = val.upgradeOrder
+                    $('#LowerHairModal').modal('show')
+                }else if(val.upgradeOrder=='1'){
+                    this.typeData = val.upgradeOrder
+                    $('#LowerHairModal2').modal('show')
+                }else{
+                    that.$message({
+                        message: '没有指定使用范围,不可批量升级!',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                console.log(this.typeData)
+                that.BatchUpgradesVal = val
+                that.BatchUpgradesReady(val)
+            },
+            //获取 设备列表
+            BatchUpgradesReady(val){
+                var that = this;
+                var data={};
+                data.id = val.id
+                if(that.typeData=='0'||that.typeData=='2'){
+                    data.pageIndex = that.BatchUpgradesIndex
+                    data.pageSize = that.BatchUpgradesSize
+                }
+                if(that.typeData=='1'){
+                    data.pageIndex = that.BatchUpgradesIndex2
+                    data.pageSize = that.BatchUpgradesSize2
+                }
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/getEquipmentByUpgradeFile',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            if(that.typeData=='0'||that.typeData=='2'){
+                                that.BatchUpgradesData = data.rows
+                                that.BatchUpgradesTotal = data.total
+                            }
+                            if(that.typeData=='1'){
+                                that.tableData2 = data.rows
+                                that.BatchUpgradesTotal2 = data.total
+                            }
+                        }else{
+                            that.errorCode(data)
+                        }
+                    }
+                })
+            },
+            //批量升级  指定设备,指定型号
+            handleSelectionChange1(val){
+                this.dataSize1 = val
+            },
+            BatchUpgradesSizeChange(val){
+                this.BatchUpgradesSize = val
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            BatchUpgradesIndexChange(val){
+                this.BatchUpgradesIndex = val
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            //批量升级  指定分组
+            handleSelectionChange2(val){
+                this.dataSize2 = val
+            },
+            BatchUpgradesSizeChange2(val){
+                this.BatchUpgradesSize2 = val
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            BatchUpgradesIndexChange2(val){
+                this.BatchUpgradesIndex2 = val
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            //批量升级确定按钮
+            BatchUpgradesSubmit(){
+                var that = this;
+                var data = {}
+                var arr = []
+                if(that.typeData=='0'||that.typeData=='2'){
+                    if(that.dataSize1.length=='0'){
+                        that.$message({
+                            message: '请选择设备进行操作!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                }
+                if(that.typeData=='1'){
+                    if(that.dataSize2.length=='0'){
+                        that.$message({
+                            message: '请选择分组进行操作!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                }
+                if(that.typeData=='0'||that.typeData=='2'){
+                    for(var i = 0;i<that.dataSize1.length;i++){
+                        arr.push(that.dataSize1[i].id)
+                    }
+                }
+                if(that.typeData=='1'){
+                    for(var i = 0;i<that.dataSize2.length;i++){
+                        arr.push(that.dataSize2[i].id)
+                    }
+                }
+                data.upgradeFileId = that.BatchUpgradesVal.id
+                data.equipmentIds = arr.join(',')
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'upgrade/setBatchUpgrade',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            $('#LowerHairModal').modal('hide')
+                            $('#LowerHairModal2').modal('hide')
+                            that.$message({
+                                message: '批量下发成功!',
+                                type: 'success',
+                                showClose: true,
+                            });
+                        }else{
+                            that.errorCode(data)
+                        }
+                    }
+                })  
+            },
             //列表选中行的change事件
             handleSelectionChange(val){
                 this.sites = val
@@ -456,7 +764,7 @@
                             if(data.errorCode=='0'){
                                 that.tableData6 = data.result
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -534,9 +842,9 @@
                         data:{},
                         success:function(data){
                             if(data.errorCode=='0'){
-                                that.optionsvalue = data.result[0].children
+                                that.optionsvalue = data.result
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -609,11 +917,12 @@
                         if(data.result.upgradeType=='2'){
                             that.upgradeType = 'tsba'
                         }
+                        that.textarea = ''
                         that.percentage = 0  //进度条
                     }else{
                         that.percentageType = false;
                         that.percentage = 0  //进度条
-                        that.errorCode(data.errorCode)
+                        that.errorCode(data)
                     }
                 }).fail(function(res) {
                     $('.nextsteps').attr('disabled',false)
@@ -673,7 +982,7 @@
                                 $('#upgrademyModal').modal('hide');
                                 that.ready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -702,7 +1011,7 @@
                                 $('#upgrademyModal').modal('hide');
                                 that.ready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -788,7 +1097,7 @@
                                     })
                                     that.ready()
                                 }else{
-                                    that.errorCode(data.errorCode)
+                                    that.errorCode(data)
                                 }
                             }
                         })
@@ -833,7 +1142,7 @@
                             });
                             that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -868,7 +1177,7 @@
                             });
                             that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -887,7 +1196,7 @@
                         pageSize:sessionStorage.pageSize,
                         fileName:that.searchfilename,
                         softwareVer:that.softwareversion,
-                        modalVer:that.hardwareversion,
+                        // modalVer:that.hardwareversion,
                         status:that.value4
                     },
                     success:function(data){
@@ -895,7 +1204,7 @@
                             that.tableData4 = data.rows
                             that.total = data.total
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -925,10 +1234,12 @@
 .equipmentUpgrade_bottom_top>div>span{width: 40%;line-height: 30px;}
 .equipmentUpgrade_bottom_top>div>input{height: 30px;width: 121px;}
 .equipmentUpgrade_bottom_top>div>div{height: 30px;width: 140px;}
-.equipmentUpgrade_bottom_bottom{position: absolute;top:40px;bottom: 0;width: 100%;padding: 10px;}
+.equipmentUpgrade_bottom_bottom{position: absolute;top:40px;bottom: 0;width: 100%;padding: 5px;overflow: auto;}
 .upload_div{width: 450px;margin:0 auto;}
 .upload_div>div{display: flex;margin-bottom: 5px;}
 .upload_div>div>span{display:inline-block;line-height: 30px;width:35%;}
 .upload_div>div>div{width: 75%;}
 .upload_div>div>input{height: 26px;}
+.BatchUpgrades{width: 100%;height:auto;max-height:350px;position: relative;}
+.BatchUpgrades>div{width: 100%;}
 </style>          

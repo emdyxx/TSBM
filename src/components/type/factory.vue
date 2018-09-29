@@ -405,11 +405,10 @@ export default {
                 data:{},
                 success:function(data){
                     if(data.errorCode=='0'){
-                        that.options = data.result[0].children
-                        var data = {value:'1',label:'所有数据'}
-                        that.options.unshift(data)
+                        that.options = data.result
+                        that.value = data.result[0].value
                     }else{
-                        that.errorCode(data.errorCode)
+                        that.errorCode(data)
                     }
                 }
             })

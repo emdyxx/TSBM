@@ -1,29 +1,19 @@
 <template>
   <div class="login">
+    <!-- <div class="login_left">
+      <span class="point1" @click="point1">中文</span>/<span class="point2" @click="point2">En</span>
+    </div> -->
     <div class="login_popur">
-          <h1>TSBM-管理系统</h1>
-          <el-input v-model.lazy="username" placeholder="用户名" required='required'></el-input>
-          <el-input v-model.lazy="password" type='password' placeholder="密码" required></el-input>
-          <!-- <div class="login_popur_yzm">
-              <div>
-                <el-input v-model.lazy="verificationcode" placeholder="请输入验证码" required></el-input>
-              </div>
-              <div class="login_popur_yzm_two">
-                  <div>
-                    <img id="codeimg" @click="verification" src='' alt="">
-                  </div>
-                  <div>
-                    <i @click="verification" class="iconfont icon-shuaxin1"></i>
-                  </div>
-              </div>
-          </div> -->
-          <el-button :loading='loginbutton' type="info" @click="login">登录</el-button>
+          <h1><span>{{$t('login.system')}}</span></h1>
+          <el-input v-model.lazy="username" :placeholder="$t('login.userName')" required='required'></el-input>
+          <el-input v-model.lazy="password" type='password' :placeholder="$t('login.passwords')" required></el-input>
+          <el-button :loading='loginbutton' type="info" @click="login">{{$t('login.login')}}</el-button>
           <hr>
           <h1>
             <img class="logo" src="../ASSETS/logo.png" alt="">
-            <span>快越科技</span>
+            <span>{{$t('login.name')}}</span>
           </h1>
-          <div>©2017 All Rights Reserved.</div>
+          <div style='margin:25px;'>©2017 All Rights Reserved.</div>
     </div>
   </div>
 </template>
@@ -40,16 +30,36 @@ export default {
         serverurl:localStorage.serverurl,
         onkeyType:'0',
         loginbutton:false
-    }
+    } 
   },
   mounted(){
-    // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
+    
   },
-  methods:{
-    verification(){
-      // window.location.href=localStorage.serverurl+'getVerifyToken?rnd=' + Math.random()
-      // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
-    },  
+  methods:{ 
+    point1(){
+      $('.login_left>span').css({
+        "opacity":0.6,
+        "font-weight":0
+      })
+      $('.point1').css({
+        "opacity":1,
+        "font-weight":700
+      })
+      localStorage.setItem('locale', 'zh')
+      this.$i18n.locale = localStorage.getItem('locale')
+    },
+    point2(){
+      $('.login_left>span').css({
+        "opacity":0.6,
+        "font-weight":0
+      })
+      $('.point2').css({
+        "opacity":1,
+        "font-weight":700
+      })
+      localStorage.setItem('locale', 'en')
+      this.$i18n.locale = localStorage.getItem('locale')
+    },
     login(){
         var that = this;
         if(this.username==''){
@@ -78,33 +88,16 @@ export default {
           data:{
             username:that.username,
             userPwd:that.password,
-            // verification:that.verificationcode
           },
           success:function(data){
             that.loginbutton = false
-            if(data.errorCode=='2001'){
-              that.$message({
-                message: '验证码错误',
-                type: 'error',
-                showClose: true,
-              });
-              // $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
-              return;
-            }
-            if(data.errorCode=='2004'){
-                that.$message({
-                  message: '账号密码错误',
-                  type: 'error',
-                  showClose: true,
-                });
-                $('#codeimg').attr('src',localStorage.serverurl+'getVerifyToken?rnd=' + Math.random())
-              return;
-            }
             if(data.errorCode=='0'){
               sessionStorage.userName = data.result[0].userName
               sessionStorage.id = data.result[0].id
               sessionStorage.departmentId = data.result[0].departmentId //判断是否是管理员字段
               that.$router.push({'path':'/index'})
+            }else{
+              that.errorCode(data)
             }
           }
         })
@@ -112,6 +105,10 @@ export default {
   },
   created(){
     var that = this
+    if(localStorage.locale==undefined||localStorage.locale==null||localStorage.locale==''){
+      localStorage.setItem('locale', 'zh')
+      this.$i18n.locale = localStorage.getItem('locale')
+    }
     window.onkeydown = function(e){
       if(e.keyCode==13){
         if(that.onkeyType=='0'){
@@ -136,9 +133,12 @@ export default {
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
+.login_left{position: absolute;top:30px;left: 40px;}
+.login_left>span:nth-of-type(1){opacity:1;font-weight: 700;}
+.login_left>span{cursor: pointer;opacity: 0.6;font-size: 15px;display: inline-block;padding: 5px;}
 .login_popur{
   width: 500px;
-  height: 455px;
+  height: 435px;
   padding: 0 30px;
   box-shadow: 5px 5px 15px black;
   border-radius: 15px;

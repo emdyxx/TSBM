@@ -57,7 +57,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" @click="roleManageSubmit">提交更改</button>
+                            <button type="button" class="btn btn-primary" @click="roleManageSubmit">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -300,7 +300,7 @@
                                 that.ready()
                                 return;
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -330,7 +330,7 @@
                                 that.ready()
                                 return;
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -375,7 +375,7 @@
                                 that.ready()
                                 return;
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }    
                         }
                     })
@@ -402,7 +402,7 @@
                         if(data.errorCode=='0'){
                             that.regions = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                })
@@ -421,7 +421,7 @@
                         if(data.errorCode=='0'){
                             that.options = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                })
@@ -485,7 +485,7 @@
                             that.currentPage4 = Number(sessionStorage.pageIndex)
                             that.loading = false;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -517,7 +517,7 @@
                         //     }
                         // }
                     }else{
-                        that.errorCode(data.errorCode)
+                        that.errorCode(data)
                     }
                 }
             })

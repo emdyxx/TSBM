@@ -5,9 +5,9 @@
         </div>
         <div class='equipmentArea_main'>
             <div class="equipmentArea_top">
-                <el-button @click="add(0)" type="primary" icon="plus " size="small">添加区域</el-button>
-                <el-button @click="add(1)" type="primary" icon="edit" size="small">修改区域</el-button>
-                <el-button @click="add(2)" type="primary" icon="delete" size="small">删除区域</el-button>
+                <el-button v-if="saveArea" @click="add(0)" type="primary" icon="plus " size="small">添加区域</el-button>
+                <el-button v-if="editArea" @click="add(1)" type="primary" icon="edit" size="small">修改区域</el-button>
+                <el-button v-if="deleteArea" @click="add(2)" type="primary" icon="delete" size="small">删除区域</el-button>
             </div>
             <div class="equipmentArea_bottom">
                 <div class="equipmentArea_bottom_left">
@@ -75,7 +75,7 @@
                     <div class="equipmentArea_bottom_right_center">
                         <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">加入组</el-button></div>
                         <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>移出组<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
-                        <div style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>保存</el-button></div>
+                        <div v-if="setEquipmentArea" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>保存</el-button></div>
                     </div>
                     <div class="equipmentArea_bottom_right_right">
                         <p style="margin: 0;">未划分区域设备</p>
@@ -152,7 +152,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" @click="addSubmit" class="btn btn-primary">提交更改</button>
+                        <button type="button" @click="addSubmit" class="btn btn-primary">保存</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -164,6 +164,11 @@
         name: 'index',
         data () {
             return {
+                saveArea:false,
+                editArea:false,
+                deleteArea:false,
+                setEquipmentArea:false,
+                serverurl:localStorage.serverurl,
                 dataTree:[],
                 defaultProps:{
                     children: 'groups',
@@ -200,15 +205,30 @@
                     async:true,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:localStorage.serverurl+'system/getUserPrivilege',
+                    url:that.serverurl+'system/getUserPrivilege',
                     data:{
                         menuId:sessionStorage.menuId
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
+                            // saveArea   editArea  deleteArea  setEquipmentArea
+                            for(var i=0;i<data.result.length;i++){
+                                if(data.result[i].code=='saveArea'){
+                                    that.saveArea = true
+                                }
+                                if(data.result[i].code=='editArea'){
+                                    that.editArea = true
+                                }
+                                if(data.result[i].code=='deleteArea'){
+                                    that.deleteArea = true
+                                }
+                                if(data.result[i].code=='setEquipmentArea'){
+                                    that.setEquipmentArea = true
+                                }
+                            }
                             
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -221,15 +241,15 @@
                 $.ajax({
                     type:'get',
                     async:true,
-                    url:localStorage.serverurl+'equipment/getAreaTree',
+                    url:that.serverurl+'equipment/getAreaTree',
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:{},
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.dataTree = data.result[0].groups	
+                            that.dataTree = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -292,7 +312,7 @@
                         $.ajax({
                             type:'post',
                             async:true,
-                            url:localStorage.serverurl+'equipment/delArea',
+                            url:that.serverurl+'equipment/delArea',
                             dataType:'json',
                             xhrFields:{withCredentials:true},
                             data:{
@@ -306,7 +326,7 @@
                                     });  
                                     that.ready();
                                 }else{
-                                    that.errorCode(data.errorCode)
+                                    that.errorCode(data)
                                 }
                             }
                         })
@@ -346,16 +366,16 @@
                     level:level
                 }
                 if(that.addType=='0'){
-                    url='/equipment/saveArea'
+                    url='equipment/saveArea'
                 }
                 if(that.addType=='1'){
-                    url='/equipment/editArea'
+                    url='equipment/editArea'
                     data.areaId = that.leftTreeChange.areaId
                 }
                 $.ajax({
                     type:'post',
                     async:true,
-                    url:localStorage.serverurl+url,
+                    url:that.serverurl+url,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:data,
@@ -368,9 +388,8 @@
                                 type: 'success',
                                 showClose: true,
                             });
-                            
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -386,7 +405,7 @@
                 $.ajax({
                     type:'get',
                     async:true,
-                    url:localStorage.serverurl+'equipment/getEquipmentByArea',
+                    url:that.serverurl+'equipment/getEquipmentByArea',
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:{
@@ -401,7 +420,7 @@
                             that.dataleft = data.rows;
                             that.leftTotal = data.total;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -412,7 +431,7 @@
                 $.ajax({
                     type:'get',
                     async:true,
-                    url:localStorage.serverurl+'equipment/getCanAreaedEquipment',
+                    url:that.serverurl+'equipment/getCanAreaedEquipment',
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     data:{
@@ -427,7 +446,7 @@
                             that.dataright = data.rows
                             that.rightTotal = data.total;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -521,7 +540,7 @@
                     async:false,
                     dataType:'json',
                     xhrFields:{withCredentials:true},
-                    url:localStorage.serverurl+'equipment/setEquipmentArea',
+                    url:that.serverurl+'equipment/setEquipmentArea',
                     data:{
                         addEquipmentIds:that.leftdata.join(','),
                         removeEquipmentIds:that.rightdata.join(','),
@@ -540,7 +559,7 @@
                             that.leftdata = [];
                             that.rightdata = [];
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })

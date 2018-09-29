@@ -203,7 +203,7 @@
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -248,7 +248,7 @@
                             if(data.errorCode=='0'){
                                 that.sites = data.result
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -363,7 +363,7 @@
                         if(data.errorCode=='0'){
                             that.sites = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -407,7 +407,7 @@
                                 });
                                 that.ready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -740,7 +740,7 @@
                             });
                             that.readytwo()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -766,7 +766,7 @@
                             that.opctionsdata = data.rows
                             that.total = data.total
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -817,7 +817,7 @@
                             that.readytwo()
                             $('#myModalWIFIMap').modal('hide')
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -842,14 +842,14 @@
                         if(data.errorCode=='0'){
                             // that.options = data.result
                             // that.selectedOptions = data.result[0].value
-                            that.options = data.result[0].children
+                            that.options = data.result
                             if(sessionStorage.departmentimgIds==''||sessionStorage.departmentimgIds==undefined){
-                                that.selectedOptions = data.result[0].children[0].value
+                                that.selectedOptions = data.result[0].value
                             }else{
                                 that.selectedOptions = sessionStorage.departmentimgIds
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -858,7 +858,6 @@
                 this.ready()
             }
         }
-        
     }
 </script>
 <style scoped>

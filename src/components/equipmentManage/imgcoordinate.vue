@@ -230,7 +230,7 @@
                                     that.opctiontwo = false;
                                     that.ready()
                                 }else{
-                                    that.errorCode(data.errorCode)
+                                    that.errorCode(data)
                                 }
                             }
                         })
@@ -281,7 +281,7 @@
                             that.opctionsdata = data.rows
                             that.total = data.total
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -334,7 +334,7 @@
                             $('#myModalWIFI').modal('hide')
                             that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -380,7 +380,7 @@
                             //     }
                             // }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })

@@ -80,7 +80,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary addbutton" @click="addRelaSubmit">提交更改</button>
+                            <button type="button" class="btn btn-primary addbutton" @click="addRelaSubmit">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -238,7 +238,7 @@
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -317,7 +317,7 @@
                             that.currentPage4 = Number(sessionStorage.pageIndex)
                             that.loading = false;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -469,7 +469,7 @@
                                 that.ready()
                                 return;
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                             
                         }
@@ -506,7 +506,7 @@
                                 that.ready()
                                 return;
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -601,7 +601,7 @@
                                 that.ready()
                                 return;
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -638,7 +638,7 @@
                 //         if(data.errorCode=='0'){
                 //             that.optionstwo = data.result
                 //         }else{
-                //             that.errorCode(data.errorCode)
+                //             that.errorCode(data)
                 //         }
                 //     }
                 // })

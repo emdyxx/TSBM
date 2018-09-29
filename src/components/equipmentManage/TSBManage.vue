@@ -2,14 +2,24 @@
   <div class="TSBManage">
         <div class="TSBManage_nav">
             设备管理<i class="iconfont icon-icon"></i>TSB管理
+            <el-cascader
+                :options="optionsAreaId"
+                v-model="selectedOptionsArea"
+                :props="propsArea"
+                clearable	
+                style="line-height:20px;"
+                :show-all-levels="false"
+                :change-on-select='changeonselect'
+                @change="handleChange">
+            </el-cascader>
         </div>
         <div class="TSBManage_main">
             <el-tabs v-model.lazy="activeName" type="card" @tab-click="handleClick">
                 <el-tab-pane label="所有" name='1' style="height:100%;">
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>设备型号:</span>
-                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <span>产品型号:</span>
+                            <input type="text" v-model.lazy="username" maxlength="20" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入产品型号">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -35,7 +45,7 @@
                             border
                             stripe
                             tooltip-effect="dark"
-                            max-height='530'
+                            max-height='630'
                             style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
@@ -48,17 +58,17 @@
                             width="160">
                                 <template scope="scope">
                                     <span v-if="scope.row.imageUrl==''">
-                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                 </template>  
                             </el-table-column>
                             <el-table-column
                             align='center'
                             label="设备名称"
-                            width="160">
+                            width="165">
                                 <template scope="scope">
                                     <span v-if="scope.row.nickname==''">
                                         {{scope.row.MAC}}
@@ -72,11 +82,11 @@
                             prop="MAC"
                             align='center'
                             label="设备MAC"
-                            width="160">
+                            width="165">
                             </el-table-column>
                             <el-table-column
                             prop="wanIP"
-                            label="ip地址"
+                            label="IP地址"
                             align='center'
                             width="150">
                             </el-table-column>
@@ -94,6 +104,12 @@
                                 </template>    
                             </el-table-column>
                             <el-table-column
+                            prop="areaName"
+                            label="区域"
+                            align='center'
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
                             prop="productModel"
                             label="产品型号"
                             align='center'
@@ -103,11 +119,11 @@
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="175">
+                            width="190">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
-                            label="在线时长"
+                            label="运行时间"
                             align='center'
                             width="200">
                             </el-table-column>
@@ -146,8 +162,8 @@
                 <el-tab-pane label="TSBG" name='2'>
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>设备型号:</span>
-                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <span>产品型号:</span>
+                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入产品型号">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -177,7 +193,7 @@
                             border
                             stripe
                             tooltip-effect="dark"
-                            max-height='530'
+                            max-height='630'
                             @selection-change="handleSelectionChange"
                             style="width: 100%;margin-bottom:10px;">
                             <el-table-column
@@ -191,10 +207,10 @@
                             width="160">
                                 <template scope="scope">
                                     <span v-if="scope.row.imageUrl==''">
-                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -212,6 +228,12 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            prop="areaName"
+                            label="区域"
+                            align='center'
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
                             prop="MAC"
                             align='center'
                             label="设备MAC"
@@ -219,7 +241,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="wanIP"
-                            label="ip地址"
+                            label="IP地址"
                             align='center'
                             width="150">
                             </el-table-column>
@@ -250,7 +272,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
-                            label="在线时长"
+                            label="运行时间"
                             align='center'
                             width="200">
                             </el-table-column>
@@ -299,8 +321,8 @@
                 <el-tab-pane label="TSBC" name='3'>
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>设备型号:</span>
-                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <span>产品型号:</span>
+                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入产品型号">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -329,7 +351,7 @@
                             border
                             stripe
                             tooltip-effect="dark"
-                            max-height='530'
+                            max-height='630'
                             @selection-change="handleSelectionChange"
                             style="width: 100%;margin-bottom:10px;">
                             <el-table-column
@@ -343,10 +365,10 @@
                             width="160">
                                 <template scope="scope">
                                     <span v-if="scope.row.imageUrl==''">
-                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAYEBQUFBAYFBQUHBgYHCQ8KCQgICRMNDgsPFhMXFxYTFRUYGyMeGBohGhUVHikfISQlJygnGB0rLismLiMmJyYBBgcHCQgJEgoKEiYZFRkmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJv/AABEIAEYAYQMBEQACEQEDEQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AO3+DPw18Ea78NdG1bV9BjvL65ErSzPNICxErqOAwHQAVpKTTA7X/hT/AMN/+hWg/wC/0v8A8VU8zAP+FP8Aw3/6FaD/AL/S/wDxVHMwD/hT/wAN/wDoVoP+/wBL/wDFUczAP+FP/Df/AKFaD/v9L/8AFUczAP8AhT/w3/6FaD/v9L/8VRzMA/4U/wDDf/oVoP8Av9L/APFUczAP+FP/AA3/AOhWg/7/AEv/AMVRzMA/4U/8N/8AoVoP+/0v/wAVRzMA/wCFP/Df/oVoP+/0v/xVHMwD/hT/AMN/+hWg/wC/0v8A8VRzMDn/AIg/CrwDYeBfEF/Y+Hore6tNPnnhlSaTKOiFgeWx1FNSdwPhDUGZ7+5d2LM0rEknJJyamW4H6E/s+/8AJH/D3+5N/wCj5KqfxAdD491DVdN8PPcaMrNdtKkQ2afLeFVY7S2yJg2FB3EjOAD8pJAqVuB514U8RalB4Y0/RtAGoSSi9WwMAFnJLbwLDM37lCyGNsRKc3QyN3Rzwba11A9B+H962oaBBdwWN3a6XMiyWTahfPc3UqtklpNxbbz93943B/hxioe4GJ8TvF0OmafNaaT4z0jS9UidI5LZ3ie53OyBcB3wgG7LFkb5SSNuN1OK8gNrwjqEc009qdU8Q6lIV8wPq+jtZqgBwQrfZ4lJORwcnjjgGkwLHjiW+h0SJtO1GbTp5L+zgM8KRuwSW5jjfAkVlztc4464+lCA870291bVPHf9gahP4g1exlLS21y18dNNvbBBmYi2EfnB3IC7gABjaSfNC30uB3Xw6W6i0jULW5vrm9Ftqt5DC91MZnWJZmCKXb5mwO7EntnAFQwG+KtcudF8S6AWluG026S5jube3sZLp3YKrIwEas4xhge2G57ENK6Ag+HEOrWVvqFlf+HbnSYXvbm7iea4hcN5txI4QLHI+3CFM9BktgcZIwLnxP8A+Sb+Kf8AsE3X/opqUd0B+bF9/wAftx/10b+dEt2B+hX7Pv8AyR/w9/uTf+j5KqfxAdhrGhaVrTRf2tafbYos/wCjTOzQPnH34s7JMYBG5Tg8jBqU7AeI6brOr6HbNDY3OhWMmlLKlnBLaxbTF9rKuUC3hkG/uxhHC4BHU6WuB7tpVjb6RpFnptuzfZrG3SCNpDk7EUKMn1wKy3A5bUFm8WzR3EFuW0CyR54DIMDUp9pCEKesK5JBP322svygFq2ApaV8QfBukeB7OWbxJp7T2Ompvs5LxPtJdIxmMoTu35GMEZzRytsC98SNTgh8J2N091DZJPqWnstxcHEUWLmOTc+SvygIc8j6ihbgcXqF74AXxBFd6n4m06+s4raS4k1W312Fbs3IwMkQqswyjMqrE+zAI8scGq1sB2HwovbO90zWzYXv2+2h1m4jW680SedwjF9y8HJbPHHP4VMgH3ltceKfE8F7perXenWGkQzQi+s0ib7RO7KGRDKjqVQR4YhfvNgHKOAbIB/gu1Wx8T+KrGO91G4hglthFHe30tyIlMIYhTIzEZYsT+HoMD2QFv4n/wDJN/FP/YJuv/RTUo7oD82L7/j9uP8Aro386JbsD9Cv2ff+SP8Ah7/cm/8AR8lVP4gPQ6gDJn0bw7OjaZLpunlXmF81t5SDdIGB80qOp3AZbv0NO7A0Ibu0mkMcN1DI4LAqkgJ+U7W4HoeD6HikBNQAUANkSORdsiK6hg2GGQCCCD9QQDQA2WaGJo1llSNpX2RhmALtgnA9TgE49jQBHZWVpZCcWlukH2iZp5dgxvkbqx9SaALCgKAqgADgAdqAK9vZWttc3V1BAsc146vO46yMqhQT9FUD8KAMH4n/APJN/FP/AGCbr/0U1OO6A/Ni+/4/bj/ro386JbsD9Cv2ff8Akj/h7/cm/wDR8lVP4gPQ6gClFBLHrNxcFN0U8Eah8jKshbIPsQ4Ixno2ccZAOIufBuvw393d2F9E0V1LPLJaC8ltWcyTs3E6IXjG0Qk7R1jI6OTVXQHY6hY3lzoQsjcpLebIw05Xyw7KQS2BnbnBOO1IDhdd8I+OZH1GbSNdieS7kmZYr3UrpY41aZWj2+XgxlUGPkIHGDkFs0mgKl3pHxI1HUNfREFkS0H2S5n1ORLe5UACRdsL74jkAhlCEhcEDc+S6A9G1G1ubiwtLUqJZPPgeSR2Hy7HVy3QZOU4wOpHAGcSA3xLr+keGtJl1bW76OztIv4nPLHsqjqxPoKErgfJfxR+M2v+LLz7No80+jaPDJvhSGQpNKR0aRlPryFHA9yAa2jBIR6N8IfjtFemLRPHE8dvck7YdUOEjf0EvZT/ALXA9cYyZlDsM9b+JpDfDXxSykEHSLogjv8AumrOO4H5s33/AB+3H/XRv50S3YH6Ffs+/wDJH/D3+5N/6Pkqp/EB6HUAFABQAUAFABQBw/xN+JWgeArL/TJBdapKm630+JsO4zjcx52L15PXBxnFVGLYHx9478a69431b+0Nbut4TIgt4xtigUnOFH5ZJyTgZPArdJIRzVMAoA9E8K/FTW9I8Iat4Rvy2paVfWM1tAJG/eWjNGVG0905GVPTHGOQZcU3cDwy+/4/bj/ro386wluxn6Ffs+/8kf8AD3+5N/6Pkqp/EB6HUAFAFHWtW03Q9Nm1PV72Kys4Fy8srYA9h6k9gOT2oSuBYsrq2vrSK8sriK5tplDxyxOGVwe4I4NAE1AHiPxg+N9n4e87RPCckN/q4G2W7GHhtiR27O49OgPXJBWtIwvuB8salfXmp301/qF1LdXc7b5ZpWLM59ya2EVqACgAoAKAOQvv+P24/wCujfzrmluxn6Ffs+/8kf8AD3+5N/6Pkqp/EB6HUAcn8Q/Hmg+BdJN7qs2+4kB+zWUZHmzn2HZfVjwPc4BpRbA+O/iN4/17x3qn2rVJvKtI2P2axjP7uEf+zN6sf0HFbqKQjU+FfxS1zwHdiFS1/osjZmsJG4H+1Gf4W/Q9+xClFMDqvix8cr/xJFJo/hZZ9L0p1xLO523E4I5XgkIvUYBJPqASKmMLbgeJ1oAUAFABQAUAFAHIX3/H7cf9dG/nXNLdjPpv4cftD+H/AAh4N0/w5caRcXj2PmL9ohkwsgaRmBwVyPvY/Cqdm73A29V/aq0g6fMulaBKl6VxE9zITGp9SFGT9Mj60rLuB89694um1/VJtU1nVZb28mOXlkU/kBjAA7AYArVSihGd/ath/wA9/wDxxv8ACnzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxAP7VsP8Anv8A+ON/hRzxA528ZWvJ2Rg6GRirAHBGevNYPcZ//9k=' alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -364,6 +386,12 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            prop="areaName"
+                            label="区域"
+                            align='center'
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
                             prop="tsbgMAC"
                             align='center'
                             label="TSBG设备MAC"
@@ -377,7 +405,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="wanIP"
-                            label="ip地址"
+                            label="IP地址"
                             align='center'
                             width="140">
                             </el-table-column>
@@ -404,11 +432,11 @@
                             prop="softwareVersion"
                             label="软件版本"
                             align='center'
-                            width="175">
+                            width="190">
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
-                            label="在线时长"
+                            label="运行时间"
                             align='center'
                             width="220">
                             </el-table-column>
@@ -457,8 +485,8 @@
                 <el-tab-pane label="TSBA" name='4'>
                     <div class="TSBManage_main_top">
                         <div class="TSBManage_formtwo">
-                            <span>设备型号:</span>
-                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本">
+                            <span>产品型号:</span>
+                            <input type="text" v-model.lazy="username" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入产品型号">
                         </div>
                         <div class="TSBManage_formtwo">
                             <span>MAC:</span>
@@ -487,7 +515,7 @@
                             border
                             stripe
                             tooltip-effect="dark"
-                            max-height='530'
+                            max-height='630'
                             @selection-change="handleSelectionChange"
                             style="width: 100%;margin-bottom:10px;">
                             <el-table-column
@@ -501,10 +529,10 @@
                             width="160">
                                 <template scope="scope">
                                     <span v-if="scope.row.imageUrl==''">
-                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img src='data:image/jpeg;base64,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' alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                     <span v-else>
-                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:110px;min-width:70px;max-height:70px;">
+                                        <img :src=serverurl+scope.row.imageUrl alt="" style="max-width:80px;min-width:40px;max-height:40px;">
                                     </span>
                                 </template>  
                             </el-table-column>
@@ -522,6 +550,12 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            prop="areaName"
+                            label="区域"
+                            align='center'
+                            width="120">
+                            </el-table-column>
+                            <el-table-column
                             prop="tsbgMAC"
                             align='center'
                             label="TSBG设备MAC"
@@ -535,7 +569,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="wanIP"
-                            label="ip地址"
+                            label="IP地址"
                             align='center'
                             width="180">
                             </el-table-column>
@@ -566,7 +600,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="timeRun"
-                            label="在线时长"
+                            label="运行时间"
                             align='center'
                             width="220">
                             </el-table-column>
@@ -818,7 +852,7 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
-                                                <td>ip地址:</td>
+                                                <td>IP地址:</td>
                                                 <td>{{lookdata.wanIP}}</td>
                                                 <td>链接速率</td>
                                                 <td>{{lookdata.linkSpeed}}</td>
@@ -868,7 +902,7 @@
                                                 <td>{{lookdata.MAC}} </td>
                                             </tr>
                                             <tr>
-                                                <td>ip地址:</td>
+                                                <td>IP地址:</td>
                                                 <td>{{lookdata.wanIP}} </td>
                                                 <td>连接链路:</td>
                                                 <td>{{lookdata.currentLink}} </td>
@@ -876,11 +910,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="basicstatus_top">
+                                <div class="basicstatus_top" v-if="lookoverstatus.wifi2G=='1'"> 
                                     RADIO(2G)
                                 </div>
-                                <div class="basicstatus_center"></div>
-                                <div class="basicstatus_bottom">
+                                <div class="basicstatus_center" v-if="lookoverstatus.wifi2G=='1'"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverstatus.wifi2G=='1'">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
@@ -913,11 +947,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="basicstatus_top">
+                                <div class="basicstatus_top" v-if="lookoverstatus.wifi5G=='1'">
                                     RADIO(5G)
                                 </div>
-                                <div class="basicstatus_center"></div>
-                                <div class="basicstatus_bottom">
+                                <div class="basicstatus_center" v-if="lookoverstatus.wifi5G=='1'"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverstatus.wifi5G=='1'">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
@@ -950,6 +984,46 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="basicstatus_top" v-if="lookoverType=='1'&&lookoverlan==true">
+                                    网络设置
+                                </div>
+                                <div class="basicstatus_center" v-if="lookoverType=='1'&&lookoverlan==true"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverType=='1'&&lookoverlan==true">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>IP类型:</td>
+                                                <td>{{lookdata.ipType}}</td>
+                                                <td>IP地址:</td>
+                                                <td>{{lookdata.wanIP}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='STATIC'">
+                                                <td>子网掩码:</td>
+                                                <td>{{lookdata.wanSubnetmask}} </td>
+                                                <td>网关:</td>
+                                                <td>{{lookdata.wanGateway}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='STATIC'">
+                                                <td>首选DNS:</td>
+                                                <td>{{lookdata.wanDNS1}} </td>
+                                                <td>备选DNS:</td>
+                                                <td>{{lookdata.wanDNS2}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='PPPOE'">
+                                                <td>用户名:</td>
+                                                <td>{{lookdata.wifi5SendPackage}}/{{lookdata.wanPPPoEUsername}} </td>
+                                                <td>密码:</td>
+                                                <td>{{lookdata.wifi5ReceivePackage}}/{{lookdata.wanPPPoEPassword}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='PPPOE'">
+                                                <td>DNS1:</td>
+                                                <td>{{lookdata.wifi5SendPackage}}/{{lookdata.wanPPPoEDNS1}} </td>
+                                                <td>DNS2:</td>
+                                                <td>{{lookdata.wifi5ReceivePackage}}/{{lookdata.wanPPPoEDNS2}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <!-- tsba常规信息 -->
                             <div v-if="lookoverType=='2'" class="basicstatus">
@@ -973,7 +1047,7 @@
                                                 <td>{{lookdata.MAC}} </td>
                                             </tr>
                                             <tr>
-                                                <td>ip地址:</td>
+                                                <td>IP地址:</td>
                                                 <td>{{lookdata.wanIP}} </td>
                                             </tr>
                                         </tbody>
@@ -1156,6 +1230,46 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="basicstatus_top" v-if="lookoverType=='2'&&lookoverlan==true">
+                                    网络设置
+                                </div>
+                                <div class="basicstatus_center" v-if="lookoverType=='2'&&lookoverlan==true"></div>
+                                <div class="basicstatus_bottom" v-if="lookoverType=='2'&&lookoverlan==true">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td>IP类型:</td>
+                                                <td>{{lookdata.ipType}}</td>
+                                                <td>IP地址:</td>
+                                                <td>{{lookdata.wanIP}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='STATIC'">
+                                                <td>子网掩码:</td>
+                                                <td>{{lookdata.wanSubnetmask}} </td>
+                                                <td>网关:</td>
+                                                <td>{{lookdata.wanGateway}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='STATIC'">
+                                                <td>首选DNS:</td>
+                                                <td>{{lookdata.wanDNS1}} </td>
+                                                <td>备选DNS:</td>
+                                                <td>{{lookdata.wanDNS2}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='PPPOE'">
+                                                <td>用户名:</td>
+                                                <td>{{lookdata.wifi5SendPackage}}/{{lookdata.wanPPPoEUsername}} </td>
+                                                <td>密码:</td>
+                                                <td>{{lookdata.wifi5ReceivePackage}}/{{lookdata.wanPPPoEPassword}} </td>
+                                            </tr>
+                                            <tr v-if="lookdata.ipType=='PPPOE'">
+                                                <td>DNS1:</td>
+                                                <td>{{lookdata.wifi5SendPackage}}/{{lookdata.wanPPPoEDNS1}} </td>
+                                                <td>DNS2:</td>
+                                                <td>{{lookdata.wifi5ReceivePackage}}/{{lookdata.wanPPPoEDNS2}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div><!-- /.modal-content -->
@@ -1253,12 +1367,12 @@
                                                     <tr>
                                                         <td><i class="required">*</i>网关地址:</td>
                                                         <td><input type="text" v-model="tsbgcollcate.lanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关地址" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td><i class="required">*</i>DNS1:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS服务器" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i class="required">*</i>主DNS:</td>
+                                                        <td><input type="text" v-model="tsbgcollcate.lanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><i class="required">*</i>DNS2:</td>
-                                                        <td><input type="text" v-model="tsbgcollcate.lanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS服务器" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i class="required">*</i>辅DNS:</td>
+                                                        <td><input type="text" v-model="tsbgcollcate.lanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>DHCP服务器:</td>
                                                         <td>
                                                             <el-radio-group v-model="tsbgcollcate.startDhcpServer">
@@ -1517,16 +1631,16 @@
                                             <table class="table table-bordered">
                                                 <tbody>
                                                     <tr>
-                                                        <td><i class="required">*</i>ip地址</td>
+                                                        <td><i class="required">*</i>IP地址</td>
                                                         <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanIP" class="inputType form-control logManage_main_input" placeholder="请输入ip地址" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>子网掩码:</td>
                                                         <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>首选DNS:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入首选DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td>备选DNS:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入备选DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>主DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>辅DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>网关:</td>
@@ -1545,10 +1659,10 @@
                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE密码" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>  
                                                     </tr>
                                                     <tr>
-                                                        <td>DNS1:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td>DNS2:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>主DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS1" placeholder="请输入主DNS" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>辅DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1772,7 +1886,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="lookoverType=='1'&&lookoverlan==true||lookoverType=='2'&&lookoverlan==true" title="黑白名单设置" name="10" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverstatus.blackWhiteList=='1'" title="黑白名单设置" name="10" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <select v-model.lazy="panel">
                                                 <option value="1">黑名单</option>
@@ -1893,7 +2007,7 @@
                                     <!-- tsbg设备重启 -->
                                     <div>
                                         <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                            <p>&#x3000&#x3000“可按下下面按钮 强制设备重新启动</p>
+                                            <p>&#x3000&#x3000可按下下面按钮 强制设备重新启动</p>
                                         </div>
                                         <el-button @click="configurationsave(5)" size='small' type="primary" style="margin:10px 0 15px 0;">重启</el-button>
                                         <div class="basicstatus_top">
@@ -1901,7 +2015,7 @@
                                         </div>
                                         <div class="basicstatus_center"></div>
                                         <div class="basicstatus_bottom" style="text-align:left;padding-left:20px;">
-                                            <p>&#x3000&#x3000“可按下下面按钮 重置设备</p>
+                                            <p>&#x3000&#x3000可按下下面按钮 重置设备</p>
                                         </div>
                                         <el-button @click="configurationsave(6)" size='small' type="primary" style="margin:10px 0 15px 0;">重置</el-button>
                                         <div class="basicstatus_center"></div>
@@ -1928,6 +2042,15 @@
         name: 'index',
         data () {
             return {
+                //区域
+                optionsAreaId:[],
+                selectedOptionsArea:[],
+                propsArea:{
+                    value: 'areaDepartmentId',
+                    children: 'groups',
+                    label:'label',
+                },
+                changeonselect:true,
                 tsbc2Gradio:false,
                 tsbc5Gradio:false,
                 tsba2Gradio:false,
@@ -2151,13 +2274,19 @@
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
             },200)
         },
         methods:{
+            //区域change事件
+            handleChange(val){
+                this.selectedOptionsArea = val;
+                console.log(val)
+                this.ready()
+            },
             //TSBCwifi2Enable2G  启用不启用change事件
             TSBCwifi2Enable2G(){
                 if(this.tsbccollcate.wifi2Enable=='0'){
@@ -2320,6 +2449,7 @@
             ready(){
                 var that = this;
                 var index = ''
+                var length = that.selectedOptionsArea.length
                 if(this.activeName=='1'){index=this.pageIndex1}
                 if(this.activeName=='2'){index=this.pageIndex2}
                 if(this.activeName=='3'){index=this.pageIndex3}
@@ -2336,14 +2466,15 @@
                         type:that.activeNamevalue,
                         model:that.username,
                         MAC:that.userIP,
-                        online:that.value
+                        online:that.value,
+                        areaId:that.selectedOptionsArea[length-1]
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.data=data.rows
                             that.total = data.total
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2386,8 +2517,9 @@
                                     type: 'success',
                                     message: '删除成功'
                                 }); 
+                                that.ready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -2429,7 +2561,7 @@
                             that.affiliationdata = data.rows
                             that.affiliationtotal = data.total
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2490,7 +2622,7 @@
                             $('#affiliationgrouping').modal('hide')
                             that.handleClick()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2526,13 +2658,15 @@
                                     that.lookoverlan = false
                                 }
                                 for(var i=0;i<WAN.length;i++){
-                                    if(WAN[i]=='1'){
+                                    if(WAN[i]=='1'||WAN[i]=='2'){
                                         that.lookoverlan = true
+                                    }else{
+                                        that.lookoverlan = false
                                     }
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2547,7 +2681,7 @@
                         if(data.errorCode=='0'){
                             that.lookdata = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2637,8 +2771,10 @@
                                     that.lookoverlan = false
                                 }
                                 for(var i=0;i<WAN.length;i++){
-                                    if(WAN[i]=='1'){
+                                    if(WAN[i]=='1'||WAN[i]=='2'){
                                         that.lookoverlan = true
+                                    }else{
+                                        that.lookoverlan = false
                                     }
                                 }
                                 var maxPower2G = {};
@@ -2655,7 +2791,7 @@
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2974,7 +3110,7 @@
                             delete that.showconfigdata.order;
                             delete that.showconfigdata.configInfo;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -3018,7 +3154,7 @@
                         if(data.errorCode=='0'){
                             that.manageoptions = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -3042,7 +3178,7 @@
                                 that.managedata.upgrade = true
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -3274,7 +3410,7 @@
                             }
                         }
                     }
-                    if(that.lookoverstatus.wifi5G=='1'){}else{
+                    if(that.lookoverstatus.wifi5G=='1'){
                         if(this.tsbccollcate.wifi5Enable=='1'){
                             if(that.tsbccollcate.wifi5WorkMode=='AP'){
                                 if(that.tsbccollcate.wifi5ApBandwidth==''||that.tsbccollcate.wifi5ApChannel==''){
@@ -3792,7 +3928,7 @@
                             })
                             $('#allocationModal').modal('hide')
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -3900,7 +4036,7 @@
                                 })
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -3951,7 +4087,7 @@
                             if(data.errorCode=='0'){
                                 that.groupingdata=data.result
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -3995,7 +4131,7 @@
                             that.dialogVisible = false;
                             that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -4043,12 +4179,12 @@
                                     if(data.errorCode=='0'){
                                         that.groupingdata = data.result
                                     }else{
-                                        that.errorCode(data.errorCode)
+                                        that.errorCode(data)
                                     }
                                 }
                             })
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -4099,7 +4235,7 @@
                             $('#tsbgmyModal').modal('hide')
                             that.handleClick();
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -4218,6 +4354,21 @@
                     this.activeName = locationNum[1]
                 }   
             }
+            $.ajax({
+                type:'get',
+                async:true,
+                url:localStorage.serverurl+'equipment/getAreaTree',
+                dataType:'json',
+                xhrFields:{withCredentials:true},
+                data:{},
+                success:function(data){
+                    if(data.errorCode=='0'){
+                        that.optionsAreaId = data.result
+                    }else{
+                        that.errorCode(data)
+                    }
+                }
+            })
             this.handleClick();
         },
         beforeDestroy(){

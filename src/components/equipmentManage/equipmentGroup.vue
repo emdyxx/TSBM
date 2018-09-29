@@ -134,7 +134,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" @click="saveGroup" class="btn btn-primary saveGroups">提交更改</button>
+                            <button type="button" @click="saveGroup" class="btn btn-primary saveGroups">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -209,7 +209,7 @@
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -255,14 +255,14 @@
                                 that.model.push(modeldata)
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     } 
                 })
             },
             //添加分组
             addGroup(){
-                if(this.level==''||this.level==undefined||this.level=='1'){
+                if(this.level==''||this.level==undefined){
                     this.$message({
                         message: '请选择组织添加分组',
                         type: 'error',
@@ -327,7 +327,7 @@
                                 });
                                 that.treeready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -392,7 +392,7 @@
                             $('#myModal').modal('hide');
                             that.treeready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -486,7 +486,7 @@
                             that.leftdata = [];
                             that.rightdata = [];
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -505,7 +505,7 @@
                         if(data.errorCode=='0'){
                             that.dataleft = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -520,7 +520,7 @@
                         if(data.errorCode=='0'){
                             that.dataright = data.result
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -537,13 +537,10 @@
                     data:{},
                     success:function(data){
                         if(data.errorCode=='0'){
-                            if(data.result[0].level=='1'){
-                                that.regions = data.result[0].sonDepartments
-                            }else{
-                                that.regions = data.result
-                            }
+                            that.regions = data.result
+                            console.log(that.regions)
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -562,13 +559,9 @@
                 data:{},
                 success:function(data){
                     if(data.errorCode=='0'){
-                        if(data.result[0].level=='1'){
-                            that.regions = data.result[0].sonDepartments
-                        }else{
-                            that.regions = data.result
-                        }
+                        that.regions = data.result
                     }else{
-                        that.errorCode(data.errorCode)
+                        that.errorCode(data)
                     }
                 }
             })

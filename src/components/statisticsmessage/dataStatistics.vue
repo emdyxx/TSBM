@@ -209,7 +209,7 @@
                 serverurl:localStorage.serverurl, 
                 activeName2: '0',
                 options2:[],
-                value2:'',
+                value2:'1',
                 selected:false,
                 //总览页面
                 options:[{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
@@ -282,7 +282,7 @@
                             that.totalSum = data.total
                             that.total = data.total
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -366,7 +366,7 @@
                                 +"<li>用户:"+data.result[i].ueSum+"</li>"+"</ul>"+'</div>')
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -442,7 +442,7 @@
                                 that.tableData = data.rows;
                                 that.total2 = data.total
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -556,7 +556,7 @@
                                     },
                                 )
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -577,10 +577,11 @@
                     data:{},
                     success:function(data){
                         if(data.errorCode=='0'){
-                            that.options2 = data.result[0].children
-                            that.value2 = data.result[0].children[0].value
+                            that.options2 = data.result
+                            that.value2 = data.result[0].value
+                            that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })

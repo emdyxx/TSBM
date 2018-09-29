@@ -44,7 +44,7 @@ export default {
             //                 that.$router.push({'path':'/factory'})
             //             }
             //         }else{
-            //             that.errorCode(data.errorCode)
+            //             that.errorCode(data)
             //         }
             //     }
             // })

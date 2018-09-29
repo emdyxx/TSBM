@@ -4,6 +4,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import echartss from 'echarts'
 
+
 import login from '@/components/login'  //登录页面
 import index from '@/components/index'  //首页
 import echarts from '@/components/statisticsmessage/equipmentStatistics'   //图表页面
@@ -27,21 +28,30 @@ import event from '@/components/eventManage/event'  //事件管理-->事件信�
 import equipmentStatistics from '@/components/statisticsmessage/equipmentStatistics'  //统计信息-->设备概览
 import factory from '@/components/type/factory'  //统计信息-->工厂
 
+import windLightFileList from '@/components/iotDataCenter/windLightFileList'  //物联网数据-->应用固件
+import windLightData from '@/components/iotDataCenter/windLightData'  //物联网数据-->内嵌页面
+
 import dataStatistics from '@/components/statisticsmessage/dataStatistics'  //统计信息-->统计数据
 
 Vue.use(Router)
 Vue.use(ElementUI)
 Vue.prototype.$echarts = echartss
 //请求错误码封装
-Vue.prototype.errorCode = function(code){
-    if(code=='1001'){
+Vue.prototype.errorCode = function(data){
+    if(data.errorCode=='1001'){
+      var msg = ''
+      if(localStorage.locale=='en'){
+        msg=data.errorMessage
+      }else{
+        msg='未知错误'
+      }
       this.$message({
-          message: '未知错误',
+          message: msg,
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='1002'){
+    if(data.errorCode=='1002'){
       this.$message({
           message: '会话超时,重新登录',
           type: 'error',
@@ -49,7 +59,7 @@ Vue.prototype.errorCode = function(code){
       });
       this.$router.push({'path':'/'})
     }
-    if(code=='1003'){
+    if(data.errorCode=='1003'){
       this.$message({
           message: '数据库错误',
           type: 'error',
@@ -57,196 +67,196 @@ Vue.prototype.errorCode = function(code){
       });
       this.loading = false
     }
-    if(code=='1004'){
+    if(data.errorCode=='1004'){
       this.$message({
           message: '未找到数据',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='1005'){
+    if(data.errorCode=='1005'){
       this.$message({
           message: '参数错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='1006'){
+    if(data.errorCode=='1006'){
       this.$message({
           message: '保存失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='1007'){
+    if(data.errorCode=='1007'){
       this.$message({
           message: '修改失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='1008'){
+    if(data.errorCode=='1008'){
       this.$message({
           message: '删除失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='1009'){
+    if(data.errorCode=='1009'){
       this.$message({
           message: '无权限',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2001'){
+    if(data.errorCode=='2001'){
       this.$message({
           message: '验证码错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2002'){
+    if(data.errorCode=='2002'){
       this.$message({
           message: '原始密码错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2003'){
+    if(data.errorCode=='2003'){
       this.$message({
           message: '用户名存在',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2004'){
+    if(data.errorCode=='2004'){
       this.$message({
           message: '用户认证失败，用户名或密码错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2005'){
+    if(data.errorCode=='2005'){
       this.$message({
           message: '用户被禁用，无法登陆',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2006'){
+    if(data.errorCode=='2006'){
       this.$message({
           message: '部门名称重复',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2007'){
+    if(data.errorCode=='2007'){
       this.$message({
           message: '角色名称重复',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2008'){
+    if(data.errorCode=='2008'){
       this.$message({
           message: '用户id为空',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2009'){
+    if(data.errorCode=='2009'){
       this.$message({
           message: '发送信息为空',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2010'){
+    if(data.errorCode=='2010'){
       this.$message({
           message: '信息发送失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2011'){
+    if(data.errorCode=='2011'){
       this.$message({
           message: '文件型式错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2012'){
+    if(data.errorCode=='2012'){
       this.$message({
           message: '文件类型为空',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2013'){
+    if(data.errorCode=='2013'){
       this.$message({
           message: '没有找到相对应的文件',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2014'){
+    if(data.errorCode=='2014'){
       this.$message({
           message: '图片存在',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2015'){
+    if(data.errorCode=='2015'){
       this.$message({
           message: '升级文件错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2016'){
+    if(data.errorCode=='2016'){
       this.$message({
           message: '升级文件MD5校验失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2017'){
+    if(data.errorCode=='2017'){
       this.$message({
           message: '升级文件上传失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2018'){
+    if(data.errorCode=='2018'){
       this.$message({
           message: '升级文件已经存在',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2019'){
+    if(data.errorCode=='2019'){
       this.$message({
           message: '设置升级文件状态失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2020'){
+    if(data.errorCode=='2020'){
       this.$message({
           message: '未查询到升级包信息',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2021'){
+    if(data.errorCode=='2021'){
       this.$message({
           message: '升级包信息修改失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2022'){
+    if(data.errorCode=='2022'){
       this.$message({
           message: '删除失败，升级包不存在或无权限',
           type: 'error',
@@ -254,28 +264,28 @@ Vue.prototype.errorCode = function(code){
       });
     }
 
-    if(code=='2023'){
+    if(data.errorCode=='2023'){
       this.$message({
           message: '未查询到模板信息',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2024'){
+    if(data.errorCode=='2024'){
       this.$message({
           message: '设置模板状态失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2025'){
+    if(data.errorCode=='2025'){
       this.$message({
           message: '保存模板配置信息失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2026'){
+    if(data.errorCode=='2026'){
       this.$message({
           message: '生成模板失败',
           type: 'error',
@@ -283,105 +293,112 @@ Vue.prototype.errorCode = function(code){
       });
     }
 
-    if(code=='2027'){
+    if(data.errorCode=='2027'){
       this.$message({
           message: '设备不是同一型号',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2028'){
+    if(data.errorCode=='2028'){
       this.$message({
           message: '设备型号与分组不一致',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2029'){
+    if(data.errorCode=='2029'){
       this.$message({
           message: '未获取到设备组',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2030'){
+    if(data.errorCode=='2030'){
       this.$message({
           message: '设备分组名称存在',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2031'){
+    if(data.errorCode=='2031'){
       this.$message({
           message: '设备不存在自己的模板',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2032'){
+    if(data.errorCode=='2032'){
       this.$message({
           message: 'ue（用户）不存在或无权限',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2033'){
+    if(data.errorCode=='2033'){
       this.$message({
           message: 'ue（用户）存在',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2034'){
+    if(data.errorCode=='2034'){
       this.$message({
           message: 'ue（用户）认证失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2035'){
+    if(data.errorCode=='2035'){
       this.$message({
           message: '设备不存在或无权限',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2036'){
+    if(data.errorCode=='2036'){
       this.$message({
           message: '移除设备分组失败',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2037'){
+    if(data.errorCode=='2037'){
       this.$message({
           message: '设备不是同一部门（用户组）',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2038'){
+    if(data.errorCode=='2038'){
       this.$message({
           message: '未查询到设备或升级包',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2039'){
+    if(data.errorCode=='2039'){
       this.$message({
           message: '设备与平面图不在同一部门',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='2040'){
+    if(data.errorCode=='2040'){
       this.$message({
           message: '密码错误',
           type: 'error',
           showClose: true,
       });
     }
-    if(code=='3001'){
+    if(data.errorCode=='2042'){
+      this.$message({
+          message: 'ueIp已存在',
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(data.errorCode=='3001'){
       this.$message({
           message: '发送配置失败',
           type: 'error',
@@ -502,6 +519,16 @@ export default new Router({
           path: '/dataStatistics',
           name: 'dataStatistics',
           component: dataStatistics,
+        },
+        {//物联网数据-->应用固件
+          path: '/windLightFileList',
+          name: 'windLightFileList',
+          component: windLightFileList,
+        },
+        {//物联网数据-->内嵌页面
+          path: '/windLightData',
+          name: 'windLightData',
+          component: windLightData,
         }
       ]
     },

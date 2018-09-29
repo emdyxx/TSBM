@@ -43,7 +43,7 @@
                                 <input type="text" v-model.lazy='departmentManageAddress' class="form-control" maxlength="50" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
                             </div>
                             <div class="departmentManage_form">
-                                <span><i class="required">*</i>电话:</span>
+                                <span><i class="required">*</i>联系电话:</span>
                                 <input type="text" v-model.lazy='departmentManagePhone' class="form-control" maxlength="25" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
                             </div>
                             <div class="departmentManage_form">
@@ -54,10 +54,13 @@
                                 <span><i class="required">*</i>邮箱:</span>
                                 <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="150" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
                             </div>
+                            <div class="departmentManage_form" style="justify-content: center;">
+                                <el-checkbox v-model="checked">是否使用云平台</el-checkbox>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary addbutton" @click="departmentManageSubmit">提交更改</button>
+                            <button type="button" class="btn btn-primary addbutton" @click="departmentManageSubmit">保存</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -118,9 +121,18 @@
                         </el-table-column>
                         <el-table-column
                         prop="phone"
-                        label="电话"
+                        label="联系电话"
                         align='center'
                         width="130">
+                        </el-table-column>
+                        <el-table-column
+                        label="是否使用云平台"
+                        align='center'
+                        width="140">
+                            <template scope="scope">
+                                <span v-if="scope.row.isCloud=='0'">否</span>
+                                <span v-if="scope.row.isCloud=='1'">是</span>    
+                            </template>
                         </el-table-column>
                         <el-table-column
                         prop="email"
@@ -188,6 +200,7 @@
                 departmentManagePhone:'',
                 departmentManagePrincipal:'',
                 departmentManageEmail:'',
+                checked:false,
             }
         },
         mounted(){
@@ -217,7 +230,7 @@
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -238,6 +251,7 @@
                 this.departmentManagePhone=''
                 this.departmentManagePrincipal=''
                 this.departmentManageEmail=''
+                this.checked = false
                 this.option = '1'
                 this.selectedOptions3=[];
                 // this.branchTree()
@@ -262,6 +276,12 @@
                 this.departmentManagePrincipal=that.sites[0].principal
                 this.departmentManageEmail=that.sites[0].email
                 this.option = '2'
+                if(that.sites[0].isCloud=='0'){
+                    this.checked = false
+                }
+                if(that.sites[0].isCloud=='1'){
+                    this.checked = true
+                }
                 // this.branchTree()
             },
             //获取所属部门的tree树列表
@@ -319,6 +339,13 @@
                     });
                     return;
                 }
+                var isCloud = ''
+                if(that.checked==false){
+                    isCloud = 0
+                }
+                if(that.checked==true){
+                    isCloud = 1
+                }
                 $('.addbutton').attr('disabled',true)
                 if(this.option=='1'){
                     $.ajax({
@@ -334,7 +361,8 @@
                             phone:that.departmentManagePhone,
                             email: that.departmentManageEmail,
                             address:that.departmentManageAddress,
-                            principal:that.departmentManagePrincipal
+                            principal:that.departmentManagePrincipal,
+                            isCloud:isCloud
                         },
                         success:function(data){
                             $('.addbutton').attr('disabled',false)
@@ -347,7 +375,7 @@
                                 $('#departmentManageModal').modal('hide')
                                 that.ready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -367,7 +395,8 @@
                             phone:that.departmentManagePhone,
                             email: that.departmentManageEmail,
                             address:that.departmentManageAddress,
-                            principal:that.departmentManagePrincipal
+                            principal:that.departmentManagePrincipal,
+                            isCloud:isCloud
                         },
                         success:function(data){
                             $('.addbutton').attr('disabled',false)
@@ -380,7 +409,7 @@
                                 $('#departmentManageModal').modal('hide')
                                 that.ready()
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -426,7 +455,7 @@
                             that.password = ''
                             that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -484,7 +513,7 @@
                             that.currentPage4 = Number(sessionStorage.pageIndex)
                             that.loading = false;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })

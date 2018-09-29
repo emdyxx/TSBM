@@ -138,12 +138,12 @@
                                                     <tr>
                                                         <td><i class="required">*</i>网关地址:</td>
                                                         <td><input type="text" v-model.lazy="tsbgcollcate.lanGateway" class="inputType form-control logManage_main_input" placeholder="请输入网关地址" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td><i class="required">*</i>DNS1:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS服务器" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i class="required">*</i>主DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><i class="required">*</i>DNS2:</td>
-                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS服务器" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td><i class="required">*</i>辅DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbgcollcate.lanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                         <td><i class="required">*</i>DHCP服务器:</td>
                                                         <td>
                                                             <el-radio-group v-model.lazy="tsbgcollcate.startDhcpServer">
@@ -358,7 +358,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="radio2=='1'||radio2=='2'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
+                                    <el-collapse-item v-if="radio2=='1'&&lookoverlan==true||radio2=='2'&&lookoverlan==true" title="网络设置" name="7" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             IP类型:
                                             <select v-model.lazy="tsbctsbacaollcate.ipType" style="width:110px;height:29px;" name="" id="">
@@ -379,10 +379,10 @@
                                                         <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanSubnetmask" class="inputType form-control logManage_main_input" placeholder="请输入子网掩码" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>首选DNS:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入首选DNS" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td>备选DNS:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入备选DNS" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>主DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS1" class="inputType form-control logManage_main_input" placeholder="请输入主DNS" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>辅DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>网关:</td>
@@ -401,10 +401,10 @@
                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEPassword" class="inputType form-control logManage_main_input" placeholder="请输入PPPOE密码" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>  
                                                     </tr>
                                                     <tr>
-                                                        <td>DNS1:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS1" placeholder="请输入DNS1" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
-                                                        <td>DNS2:</td>
-                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入DNS2" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>主DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS1" placeholder="请输入主DNS" class="inputType form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
+                                                        <td>辅DNS:</td>
+                                                        <td><input type="text" v-model.lazy="tsbctsbacaollcate.wanPPPoEDNS2" class="inputType form-control logManage_main_input" placeholder="请输入辅DNS" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -629,7 +629,7 @@
                                             </table>
                                         </div>
                                     </el-collapse-item>
-                                    <el-collapse-item v-if="radio2=='1'||radio2=='2'" title="黑白名单设置" name="10" style="text-align:left;">
+                                    <el-collapse-item v-if="lookoverstatus.blackWhiteList=='1'" title="黑白名单设置" name="10" style="text-align:left;">
                                         <div class="basicstatus_top">
                                             <select v-model.lazy="panel">
                                                 <option value="1">黑名单</option>
@@ -876,7 +876,7 @@
                         <el-table-column
                         label="操作"
                         align='center'
-                        width="230">
+                        width="310">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0&&scope.row.configType=='1'">
                                     <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
@@ -892,7 +892,10 @@
                                 </span>
                                 <span v-if="delatetemplate">
                                     <el-button @click="details(scope.row)" type="primary" size="small">详情</el-button>
-                                </span>    
+                                </span>  
+                                <span v-if="setTemplateBatch&&scope.row.configType=='1'">
+                                    <el-button @click="BatchUpgrades(scope.row)" type="primary" size="small">批量下发</el-button>
+                                </span>  
                             </template>  
                         </el-table-column>
                     </el-table>
@@ -920,18 +923,18 @@
                         <div class="modal-body datailsbody">
                             <!-- tsbg -->
                             <div v-if="datailstype=='0'">
-                                <div class="datailsbody_top">
+                                <div class="datailsbody_top" v-if="lookoverstatus.WAN!=''">
                                     WAN配置
                                 </div>
-                                <div class="datailsbody_center"></div>
-                                <div class="datailsbody_bottom">
+                                <div class="datailsbody_center" v-if="lookoverstatus.WAN!=''"></div>
+                                <div class="datailsbody_bottom" v-if="lookoverstatus.WAN!=''">
                                     <table class="table table-bordered">
                                         <tbody>
-                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                            <tr>
                                                 <td>IP类型</td>
                                                 <td>{{datailsdata.configInfo.ipType}}</td>
-                                                <td>设备型号</td>
-                                                <td>{{datailsdata.model}}</td>
+                                                <td v-if="datailsdata.configInfo.ipType=='STATIC'">设备型号</td>
+                                                <td v-if="datailsdata.configInfo.ipType=='STATIC'">{{datailsdata.model}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
                                                 <td>IP地址</td>
@@ -956,19 +959,19 @@
                                                 <td>{{datailsdata.configInfo.wanPPPoEPassword}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
-                                                <td>DNS1:</td>
+                                                <td>主DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
-                                                <td>DNS2:</td>
+                                                <td>辅DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="datailsbody_top">
+                                <div class="datailsbody_top" v-if="lookoverstatus.LAN!=''">
                                     LAN配置
                                 </div>
-                                <div class="datailsbody_center"></div>
-                                <div class="datailsbody_bottom">
+                                <div class="datailsbody_center" v-if="lookoverstatus.LAN!=''"></div>
+                                <div class="datailsbody_bottom" v-if="lookoverstatus.LAN!=''">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
@@ -986,11 +989,11 @@
                                             <tr>
                                                 <td>网关地址:</td>
                                                 <td>{{datailsdata.configInfo.lanGateway}}</td>
-                                                <td>DNS1:</td>
+                                                <td>主DNS:</td>
                                                 <td>{{datailsdata.configInfo.lanDNS1}}</td>
                                             </tr>
                                             <tr>
-                                                <td>DNS2:</td>
+                                                <td>辅DNS:</td>
                                                 <td>{{datailsdata.configInfo.lanDNS2}}</td>
                                                 <td>DHCP服务器:</td>
                                                 <td>{{datailsdata.configInfo.startDhcpServer}}</td>
@@ -1001,11 +1004,11 @@
                             </div>
                             <!-- tsbc -->
                             <div v-if="datailstype=='1'">
-                                <div class="datailsbody_top">
+                                <div class="datailsbody_top" v-if="lookoverstatus.wifi2G=='1'">
                                     2.4G配置
                                 </div>
-                                <div class="datailsbody_center"></div>
-                                <div class="datailsbody_bottom">
+                                <div class="datailsbody_center" v-if="lookoverstatus.wifi2G=='1'"></div>
+                                <div class="datailsbody_bottom" v-if="lookoverstatus.wifi2G=='1'">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr v-if="datailsdata.configInfo.wifi2WorkMode=='AP'">
@@ -1062,11 +1065,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="datailsbody_top">
+                                <div class="datailsbody_top" v-if="lookoverstatus.wifi5G=='1'">
                                     5G配置
                                 </div>
-                                <div class="datailsbody_center"></div>
-                                <div class="datailsbody_bottom">
+                                <div class="datailsbody_center" v-if="lookoverstatus.wifi5G=='1'"></div>
+                                <div class="datailsbody_bottom" v-if="lookoverstatus.wifi5G=='1'">
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr v-if="datailsdata.configInfo.wifi5WorkMode=='AP'">
@@ -1128,7 +1131,7 @@
                                 <div class="datailsbody_bottom">
                                     <table class="table table-bordered">
                                         <tbody>
-                                            <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
+                                            <tr>
                                                 <td>IP类型</td>
                                                 <td style="width:75%">{{datailsdata.configInfo.ipType}}</td>
                                             </tr>
@@ -1139,9 +1142,9 @@
                                                 <td>{{datailsdata.configInfo.wanSubnetmask}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
-                                                <td>首选DNS:</td>
+                                                <td>主DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanDNS1}}</td>
-                                                <td>备选DNS:</td>
+                                                <td>辅DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanDNS2}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
@@ -1155,9 +1158,9 @@
                                                 <td>{{datailsdata.configInfo.wanPPPoEPassword}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
-                                                <td>DNS1:</td>
+                                                <td>主DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
-                                                <td>DNS2:</td>
+                                                <td>辅DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
                                             </tr>
                                         </tbody>
@@ -1266,9 +1269,9 @@
                                                 <td>{{datailsdata.configInfo.wanSubnetmask}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
-                                                <td>首选DNS:</td>
+                                                <td>主DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanDNS1}}</td>
-                                                <td>备选DNS:</td>
+                                                <td>辅DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanDNS2}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='STATIC'">
@@ -1282,9 +1285,9 @@
                                                 <td>{{datailsdata.configInfo.wanPPPoEPassword}}</td>
                                             </tr>
                                             <tr v-if="datailsdata.configInfo.ipType=='PPPOE'">
-                                                <td>DNS1:</td>
+                                                <td>主DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS1}}</td>
-                                                <td>DNS2:</td>
+                                                <td>辅DNS:</td>
                                                 <td>{{datailsdata.configInfo.wanPPPoEDNS2}}</td>
                                             </tr>
                                         </tbody>
@@ -1358,7 +1361,7 @@
                                 </div>
                             </div>
                             <!-- 黑白名单 -->
-                            <div>
+                            <div v-if="datailstype=='1'||datailstype=='2'">
                                 <div class="datailsbody_top">
                                     黑白名单--当前模式>><span v-if="dataillisttype=='0'">白名单</span>
                                     <span v-if="dataillisttype=='1'">黑名单</span>
@@ -1439,6 +1442,182 @@
                     </div><!-- /.modal-content -->
                 </div>
             </div><!-- /.modal -->
+            <!-- 批量升级模态框1 -->
+            <div class="modal fade" id="BatchUpgradesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:700px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">设备批量升级</h4>
+                        </div>
+                        <div class="modal-body" style="overflow;auto;">
+                            <div class="BatchUpgrades">
+                                <div class="BatchUpgrades_bottom1" style="width:100%">
+                                    <!-- 指定设备,指定型号 -->
+                                    <el-table
+                                        ref="multipleTable"
+                                        :data="BatchUpgradesData"
+                                        border
+                                        style="width:100%;"
+                                        tooltip-effect="dark"
+                                        @selection-change="handleSelectionChangeTwo">
+                                        <el-table-column
+                                        type="selection"
+                                        align='center'
+                                        width="55">
+                                        </el-table-column>
+                                        <el-table-column
+                                        align='center'
+                                        label="设备昵称"
+                                        width="155">
+                                            <template scope="scope">
+                                                <span v-if="scope.row.nickname==''">
+                                                    {{scope.row.MAC}}
+                                                </span>
+                                                <span v-else>
+                                                    {{scope.row.nickname}}
+                                                </span>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="MAC"
+                                        label="MAC"
+                                        align='center'
+                                        width="155">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="model"
+                                        label="型号"
+                                        align='center'>
+                                        </el-table-column>
+                                    </el-table>
+                                    <div>
+                                        <el-pagination
+                                        @size-change="BatchUpgradesSizeChange"
+                                        @current-change="BatchUpgradesIndexChange"
+                                        :current-page="BatchUpgradesIndex"
+                                        :page-sizes="[10, 20, 30, 50]"
+                                        :page-size="BatchUpgradesSize"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="BatchUpgradesTotal">
+                                        </el-pagination>
+                                    </div>
+                                </div>
+                                <!-- <div class="BatchUpgrades_bottom2" style="width:100%" v-else>
+                                    <el-table
+                                        ref="multipleTable"
+                                        :data="tableData2"
+                                        border
+                                        tooltip-effect="dark"
+                                        style="width:100%;"
+                                        @selection-change="handleSelectionChange2">
+                                        <el-table-column
+                                        type="selection"
+                                        align='center'
+                                        width="55">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="groupName"
+                                        align='center'
+                                        label="分组名称"
+                                        width="140">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="model"
+                                        label="硬件版本"
+                                        align='center'>
+                                        </el-table-column>
+                                    </el-table>
+                                    <div>
+                                        <el-pagination
+                                        @size-change="BatchUpgradesSizeChange2"
+                                        @current-change="BatchUpgradesIndexChange2"
+                                        :current-page="BatchUpgradesIndex2"
+                                        :page-sizes="[10, 20, 30, 50]"
+                                        :page-size="BatchUpgradesSize2"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="BatchUpgradesTotal2">
+                                        </el-pagination>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">确定</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div><!-- /.modal -->
+            <!-- 批量升级模态框2 -->
+            <div class="modal fade" id="BatchUpgradesModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:700px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">设备批量升级</h4>
+                        </div>
+                        <div class="modal-body" style="overflow;auto;">
+                            <div class="BatchUpgrades">
+                                <div class="BatchUpgrades_bottom2" style="width:100%" >
+                                    <el-table
+                                        ref="multipleTable"
+                                        :data="tableData2"
+                                        border
+                                        tooltip-effect="dark"
+                                        style="width:100%;"
+                                        @selection-change="handleSelectionChange2">
+                                        <el-table-column
+                                        type="selection"
+                                        align='center'
+                                        width="55">
+                                        </el-table-column>
+                                        <el-table-column
+                                        align='center'
+                                        label="设备昵称"
+                                        width="155">
+                                            <template scope="scope">
+                                                <span v-if="scope.row.nickname==''">
+                                                    {{scope.row.MAC}}
+                                                </span>
+                                                <span v-else>
+                                                    {{scope.row.nickname}}
+                                                </span>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="MAC"
+                                        label="MAC"
+                                        align='center'
+                                        width="155">
+                                        </el-table-column>
+                                        <el-table-column
+                                        prop="model"
+                                        label="型号"
+                                        align='center'>
+                                        </el-table-column>
+                                    </el-table>
+                                    <div>
+                                        <el-pagination
+                                        @size-change="BatchUpgradesSizeChange2"
+                                        @current-change="BatchUpgradesIndexChange2"
+                                        :current-page="BatchUpgradesIndex2"
+                                        :page-sizes="[10, 20, 30, 50]"
+                                        :page-size="BatchUpgradesSize2"
+                                        layout="total, sizes, prev, pager, next, jumper"
+                                        :total="BatchUpgradesTotal2">
+                                        </el-pagination>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">确定</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div>
+            </div><!-- /.modal -->
         </div>
     </div>
 </template>
@@ -1458,6 +1637,7 @@
                 removetemplate:false,
                 delatetemplate:false,
                 startusing:false,
+                setTemplateBatch:false,
                 serverurl:localStorage.serverurl,
                 configType:'', //点击修改数据的模板类别                
                 addrelative:'0',  //判断添加修改
@@ -1602,6 +1782,19 @@
                 datailsdata:'',
                 datailstabledata:[], //黑白名单数据
                 dataillisttype:'', //黑白名单类型
+                //升级包批量下发
+                typeData:0,
+                BatchUpgradesData:[],
+                BatchUpgradesIndex:1,
+                BatchUpgradesSize:10,
+                BatchUpgradesTotal:10,
+                BatchUpgradesVal:'',
+                tableData2:[],
+                BatchUpgradesIndex2:1,
+                BatchUpgradesSize2:10,
+                BatchUpgradesTotal2:10,
+                dataSize1:[],
+                dataSize2:[],
             }
         },
         mounted(){
@@ -1632,9 +1825,12 @@
                                 if(data.result[i].code=='setTemplateStatus'){
                                     that.startusing = true
                                 }
+                                if(data.result[i].code=='setTemplateBatch'){
+                                    that.setTemplateBatch = true
+                                }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -1667,12 +1863,14 @@
                                 that.lookoverlan = false
                             }
                             for(var i=0;i<WAN.length;i++){
-                                if(WAN[i]=='1'){
+                                if(WAN[i]=='1'||WAN[i]=='2'){
                                     that.lookoverlan = true
+                                }else{
+                                    that.lookoverlan = false
                                 }
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -1702,7 +1900,155 @@
                                 that.dataillisttype = data.result.configInfo.listType
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
+                        }
+                    }
+                })
+            },
+            //批量下发按钮
+            BatchUpgrades(val){
+                var that = this;
+                if(val.status=='1'){
+                    that.$message({
+                        message: '模板在禁用状态下不能下发配置!',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                that.typeData = val.templateOrder
+                if(val.templateOrder=='0'||val.templateOrder=='2'){
+                    that.typeData = val.templateOrder
+                    $('#BatchUpgradesModal').modal('show')
+                }else if(val.templateOrder=='1'){
+                    that.typeData = val.templateOrder
+                    $('#BatchUpgradesModal2').modal('show')
+                }else{
+                    that.$message({
+                        message: '没有指定使用范围,不可批量下发模板!',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                that.BatchUpgradesVal = val
+                that.BatchUpgradesReady(val)
+            },
+            //获取下发设备
+            BatchUpgradesReady(val){
+                var that = this;
+                var data={};
+                data.id = val.id
+                if(that.typeData=='0'||that.typeData=='2'){
+                    data.pageIndex = that.BatchUpgradesIndex
+                    data.pageSize = that.BatchUpgradesSize
+                }
+                if(that.typeData=='1'){
+                    data.pageIndex = that.BatchUpgradesIndex2
+                    data.pageSize = that.BatchUpgradesSize2
+                }
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'template/getEquipmentByTemplate',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            if(that.typeData=='0'||that.typeData=='2'){
+                                that.BatchUpgradesData = data.rows
+                                that.BatchUpgradesTotal = data.total
+                            }
+                            if(that.typeData=='1'){
+                                that.tableData2 = data.rows
+                                that.BatchUpgradesTotal2 = data.total
+                            }
+                        }else{
+                            that.errorCode(data)
+                        }
+                    }
+                })
+            },
+            //批量下发 指定设备,指定型号
+            handleSelectionChangeTwo(val){
+                this.dataSize1 = val
+            },
+            BatchUpgradesSizeChange(val){
+                this.BatchUpgradesSize = val
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            BatchUpgradesIndexChange(val){
+                this.BatchUpgradesIndex = val
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            //批量下发 指定分组
+            handleSelectionChange2(val){
+                this.dataSize2 = val
+            },
+            BatchUpgradesSizeChange2(val){
+                this.BatchUpgradesSize2 = val;
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            BatchUpgradesIndexChange2(val){
+                this.BatchUpgradesIndex2 = val;
+                this.BatchUpgradesReady(this.BatchUpgradesVal)
+            },
+            //批量下发数据保存
+            BatchUpgradesSubmit(){
+                var that = this;
+                var data = {};
+                var arr = [];
+                if(that.typeData=='0'||that.typeData=='2'){
+                    if(that.dataSize1.length=='0'){
+                        that.$message({
+                            message: '请选择设备进行操作!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                }
+                if(that.typeData=='1'){
+                    if(that.dataSize2.length=='0'){
+                        that.$message({
+                            message: '请选择分组进行操作!',
+                            type: 'error',
+                            showClose: true,
+                        });
+                        return;
+                    }
+                }
+                if(that.typeData=='0'||that.typeData=='2'){
+                    for(var i = 0;i<that.dataSize1.length;i++){
+                        arr.push(that.dataSize1[i].id)
+                    }
+                }
+                if(that.typeData=='1'){
+                    for(var i = 0;i<that.dataSize2.length;i++){
+                        arr.push(that.dataSize2[i].id)
+                    }
+                }
+                data.templateId = that.BatchUpgradesVal.id
+                data.equipmentIds = arr.join(',')
+                $.ajax({
+                    type:'post',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'template/setBatchConfigTemplate',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            $('#BatchUpgradesModal').modal('hide')
+                            $('#BatchUpgradesModal2').modal('hide')
+                            that.$message({
+                                message: '批量下发成功!',
+                                type: 'success',
+                                showClose: true,
+                            });
+                        }else{
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -1950,10 +2296,10 @@
                         data:{},
                         success:function(data){
                             if(data.errorCode=='0'){
-                                that.options = data.result[0].children
-                                that.value = data.result[0].children[0].value
+                                that.options = data.result
+                                that.value = data.result[0].value
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -2019,8 +2365,10 @@
                                         that.lookoverlan = false
                                     }
                                     for(var i=0;i<WAN.length;i++){
-                                        if(WAN[i]=='1'){
+                                        if(WAN[i]=='1'||WAN[i]=='2'){
                                             that.lookoverlan = true
+                                        }else{
+                                            that.lookoverlan = false
                                         }
                                     }
                                 }
@@ -2342,7 +2690,7 @@
                             that.templateId = data.result.templateId;
                             that.realname = data.result.realname;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2373,7 +2721,7 @@
                                 });
                                 that.ready();
                             }else{
-                                that.errorCode(data.errorCode)
+                                that.errorCode(data)
                             }
                         }
                     })
@@ -2430,7 +2778,7 @@
                             }
                             that.ready()
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2459,7 +2807,7 @@
                                 that.optionstwo.push(type)
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2502,8 +2850,10 @@
                                 that.lookoverlan = false
                             }
                             for(var i=0;i<WAN.length;i++){
-                                if(WAN[i]=='1'){
+                                if(WAN[i]=='1'||WAN[i]=='2'){
                                     that.lookoverlan = true
+                                }else{
+                                    that.lookoverlan = false
                                 }
                             }
                             var maxPower2G = {};
@@ -2519,7 +2869,7 @@
                                 that.maxPower5G.push(maxPower5G)
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -2853,81 +3203,83 @@
                             }
                         }
                     }
-                    if(that.tsbctsbacaollcate.ipType=='STATIC'){
-                        if(!IP.test(that.tsbctsbacaollcate.wanIP)){
-                            that.$message({
-                                message: '请输入正确的IP地址',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
-                            that.$message({
-                                message: '请输入正确的子网掩码',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbctsbacaollcate.wanGateway==''){}else{
-                            if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                    if(that.valuetwo!='TSBC721'){
+                        if(that.tsbctsbacaollcate.ipType=='STATIC'){
+                            if(!IP.test(that.tsbctsbacaollcate.wanIP)){
                                 that.$message({
-                                    message: '请输入正确的网关地址',
+                                    message: '请输入正确的IP地址',
                                     type: 'error',
                                     showClose: true,
                                 });
                                 return;
                             }
-                        }
-                        if(that.tsbctsbacaollcate.wanDNS1==''){}else{
-                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                            if(!exp.test(that.tsbctsbacaollcate.wanSubnetmask)){
                                 that.$message({
-                                    message: '请输入正确的DNS地址',
+                                    message: '请输入正确的子网掩码',
                                     type: 'error',
                                     showClose: true,
                                 });
                                 return;
                             }
+                            if(that.tsbctsbacaollcate.wanGateway==''){}else{
+                                if(!IP.test(that.tsbctsbacaollcate.wanGateway)){
+                                    that.$message({
+                                        message: '请输入正确的网关地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanDNS1==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
+                            if(that.tsbctsbacaollcate.wanDNS2==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
+                            }
                         }
-                        if(that.tsbctsbacaollcate.wanDNS2==''){}else{
-                            if(!DNSS.test(that.tsbctsbacaollcate.wanDNS2)){
-                                that.$message({
-                                    message: '请输入正确的DNS地址',
+                        if(that.tsbctsbacaollcate.ipType=='PPPOE'){
+                            if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
+                                this.$message({
+                                    message: '必填字段不能为空',
                                     type: 'error',
                                     showClose: true,
                                 });
                                 return;
                             }
-                        }
-                    }
-                    if(that.tsbctsbacaollcate.ipType=='PPPOE'){
-                        if(that.tsbctsbacaollcate.wanPPPoEUsername==''||that.tsbctsbacaollcate.wanPPPoEPassword==''){
-                            this.$message({
-                                message: '必填字段不能为空',
-                                type: 'error',
-                                showClose: true,
-                            });
-                            return;
-                        }
-                        if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
-                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
-                                that.$message({
-                                    message: '请输入正确的DNS地址',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
+                            if(that.tsbctsbacaollcate.wanPPPoEDNS1==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS1)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
                             }
-                        }
-                        if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
-                            if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
-                                that.$message({
-                                    message: '请输入正确的DNS地址',
-                                    type: 'error',
-                                    showClose: true,
-                                });
-                                return;
+                            if(that.tsbctsbacaollcate.wanPPPoEDNS2==''){}else{
+                                if(!DNSS.test(that.tsbctsbacaollcate.wanPPPoEDNS2)){
+                                    that.$message({
+                                        message: '请输入正确的DNS地址',
+                                        type: 'error',
+                                        showClose: true,
+                                    });
+                                    return;
+                                }
                             }
                         }
                     }
@@ -3997,19 +4349,19 @@
                 }
                 if(that.valuethree=='0'){
                     //指定设备
-                    if(that.sizesdata.length>1){
-                        that.$message({
-                            message: 'STATIC模式下只能选择一台设备!',
-                            type: 'error',
-                            showClose: true,
-                        });
-                        return;
-                    }else{
+                    // if(that.sizesdata.length>1){
+                    //     that.$message({
+                    //         message: 'STATIC模式下只能选择一台设备!',
+                    //         type: 'error',
+                    //         showClose: true,
+                    //     });
+                    //     return;
+                    // }else{
                         for(var i = 0;i<that.sizesdata.length;i++){
                             equipmentIds.push(that.sizesdata[i].id)
                         }
                         data.equipmentIds = equipmentIds.join(',')
-                    }
+                    // }
                 }
                 if(that.valuethree=='1'){
                     //指定分组
@@ -4058,7 +4410,7 @@
                             $('#addmyModal').modal('hide');
                             that.ready();
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -4098,7 +4450,7 @@
                             that.tableData3 = data.rows;
                             that.total = data.total;
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -4156,7 +4508,7 @@
                                 },200)
                             }
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })
@@ -4264,4 +4616,9 @@
 .datailsbody_bottom>table{width:100%;}
 .datailsbody_bottom>table tr{display: flex;}
 .datailsbody_bottom>table tr>td{width: 25%;text-align: center;line-height: 25px !important;}
+/* 批量升级 */
+.BatchUpgrades{width: 100%;height:auto;max-height:350px;position: relative;};
+.BatchUpgrades>div{width: 100%;}
+/* .BatchUpgrades_top{height: 50px;text-align: center;line-height: 50px;} */
+/* .BatchUpgrades_bottom{width: 100%;} */
 </style>

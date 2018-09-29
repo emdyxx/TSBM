@@ -134,7 +134,7 @@
                             that.total = data.total
                             that.loading = false
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                 })

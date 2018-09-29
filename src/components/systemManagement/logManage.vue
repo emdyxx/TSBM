@@ -15,7 +15,7 @@
                         </div>
                         <div class="logManage_form">
                             <span>用户登录IP:</span>
-                            <input type="text" v-model.lazy="ipAddress" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
+                            <input type="text" v-model.lazy="ipAddress" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户登录IP">
                         </div>
                         <div class="logManage_form">
                             <span>登录状态:</span>
@@ -46,7 +46,7 @@
                             </el-table-column>  
                             <el-table-column
                             prop="ipAddress"
-                            label="ip"
+                            label="登录ip"
                             align='center'
                             width="180">
                             </el-table-column>
@@ -142,7 +142,7 @@
                             </el-table-column>
                             <el-table-column
                             prop="dataId"
-                            label="操作数据id"
+                            label="操作数据ID"
                             align='center'
                             width="180">
                             </el-table-column>
@@ -259,7 +259,7 @@
                             that.total = data.total
                             that.loading = false
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                             that.loading = false
                         }
                     }
@@ -311,7 +311,7 @@
                             that.totaltwo = data.total
                             that.loading = false
                         }else{
-                            that.errorCode(data.errorCode)
+                            that.errorCode(data)
                         }
                     }
                })

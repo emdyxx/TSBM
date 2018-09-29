@@ -138,7 +138,4 @@
 .userManage_formtwo{display: flex;margin:0 10px;}
 .userManage_formtwo>span{line-height: 30px;font-size: 15px;}
 .userManage_formtwo>input{width: 126px;height: 30px;}
-
-
-
 </style>
