@@ -1,11 +1,11 @@
 <template>
     <div class="imgcoordinate_A">
         <div class="imgcoordinate_nav">
-            设备管理<i class="iconfont icon-icon"></i>设备定位
+            {{$t('equipmentLocation.DeviceManagement')}}<i class="iconfont icon-icon"></i>{{$t('equipmentLocation.EquipmentPositioning')}}
         </div>
         <div class="imgcoordinate_main">
             <div class="imgcoordinate_A_top">
-                <el-button @click="Goback" type="primary" size='small' icon="arrow-left">返回上一级</el-button>
+                <el-button @click="Goback" type="primary" size='small' icon="arrow-left">{{$t('equipmentLocation.ReturnToTheNextLevel')}}</el-button>
             </div>
             <div class="imgcoordinate_A_bottom">
                 <div class="imgcoordinate">
@@ -28,12 +28,12 @@
                         </template>
                     </template>
                     <div class="contextmenu" :style="styleObject" v-if="opction">
-                        <el-button @click="addWIFI" type="primary" size="small" icon="plus">添加设备</el-button>
-                        <el-button @click="cancel" type="primary" size="small" icon="circle-cross">取消</el-button>
+                        <el-button @click="addWIFI" type="primary" size="small" icon="plus">{{$t('equipmentLocation.AddDevice')}}</el-button>
+                        <el-button @click="cancel" type="primary" size="small" icon="circle-cross">{{$t('equipmentLocation.Cancel')}}</el-button>
                     </div>
                     <div class="contextmenu" :style="styleObjecttwo" v-if="opctiontwo">
-                        <el-button @click="addWIFItwo" type="primary" size="small" icon="plus">删除设备</el-button>
-                        <el-button @click="canceltwo" type="primary" size="small" icon="circle-cross">取消</el-button>
+                        <el-button @click="addWIFItwo" type="primary" size="small" icon="plus">{{$t('equipmentLocation.DeletingEquipment')}}</el-button>
+                        <el-button @click="canceltwo" type="primary" size="small" icon="circle-cross">{{$t('equipmentLocation.Cancel')}}</el-button>
                     </div>
                     <!-- 模态框（Modal） -->
                     <div class="modal fade" id="myModalWIFI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -41,7 +41,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="myModalLabel">添加设备</h4>
+                                    <h4 class="modal-title" id="myModalLabel">{{$t('equipmentLocation.AddDevice')}}</h4>
                                 </div>
                                 <div class="modal-body">
                                     <!-- <i class="iconfont icon-wodeweizhi" style="font-size:18px;color:#1986F2;margin-right:20px;">tsbc</i>
@@ -71,7 +71,7 @@
                                             </el-table-column>
                                             <el-table-column
                                             align='center'
-                                            label="设备名称"
+                                            :label="$t('equipmentLocation.DeviceName')"
                                             width="160">
                                                 <template scope="scope">
                                                     <span v-if="scope.row.nickname==''">{{scope.row.MAC}}</span>
@@ -86,7 +86,7 @@
                                             </el-table-column>
                                             <el-table-column
                                             prop="model"
-                                            label="硬件型号"
+                                            :label="$t('equipmentLocation.HardwareModel')"
                                             align='center'
                                             show-overflow-tooltip>
                                             </el-table-column>
@@ -105,8 +105,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" @click="ZBsubmit" class="btn btn-primary">保存</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentLocation.Close')}}</button>
+                                    <button type="button" @click="ZBsubmit" class="btn btn-primary">{{$t('equipmentLocation.Save')}}</button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div>
@@ -203,12 +203,12 @@
                 if(localStorage.Deleteequipments=='false'){
                     that.$message({
                         type: 'error',
-                        message: '您无此权限'
+                        message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority')
                     });
                 }else{
-                    this.$confirm('此操作将删除该设备, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                    this.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                    confirmButtonText: that.$t('FalseHints.yes'),
+                    cancelButtonText: that.$t('FalseHints.no'),
                     type: 'warning'
                     }).then(() => {
                         $.ajax({
@@ -225,7 +225,7 @@
                                 if(data.errorCode=='0'){
                                     that.$message({
                                         type: 'success',
-                                        message: '删除成功!'
+                                        message: that.$t('FalseHints.DeleteSuccess'),
                                     });
                                     that.opctiontwo = false;
                                     that.ready()
@@ -237,7 +237,7 @@
                     }).catch(() => {
                         this.$message({
                             type: 'info',
-                            message: '已取消删除'
+                            message: that.$t('FalseHints.Undelete'),
                         });          
                     });
                 }
@@ -292,7 +292,7 @@
                 if(localStorage.addequipments == 'false'){
                     that.$message({
                         type: 'error',
-                        message: '您无此权限'
+                        message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority'),
                     });
                 }else{
                     $('#myModalWIFI').modal('show')
@@ -305,7 +305,7 @@
                 var that = this;
                 if(this.handleCurrent.length>=2||this.handleCurrent.length==0){
                     that.$message({
-                        message: '请选择一个设备进行保存',
+                        message: that.$t('equipmentLocation.PleaseSelectADeviceToAave'),
                         type:'error',
                         showClose: true,
                     });
@@ -327,7 +327,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '添加成功',
+                                message: that.$t('FalseHints.AddSuccess'),
                                 type:'success',
                                 showClose: true,
                             });
@@ -365,20 +365,6 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.imgdata = data.result
-                            // var coord=[];
-                            // for(var i=0;i<data.result.length;i++){
-                            //     coord = []
-                            //     coord = data.result[i].coord.split(',')
-                            //     if(data.result[i].equipmentType=='0'){
-                            //         $('<i class="iconfont icon-wodeweizhi" style="position: absolute;font-size: 20px;color:#F4EA2A;left:'+coord[0]+"px"+';top:'+coord[1]+"px"+'" @click.native="upliftTwo('+i+')"></i>').appendTo('.imgcoordinate')
-                            //     }
-                            //     if(data.result[i].equipmentType=='1'){
-                            //         $('<i class="iconfont icon-wodeweizhi" style="position: absolute;font-size: 20px;color:#1986F2;left:'+coord[0]+"px"+';top:'+coord[1]+"px"+'" @click.native="upliftTwo('+i+')"></i>').appendTo('.imgcoordinate')
-                            //     }
-                            //     if(data.result[i].equipmentType=='2'){
-                            //         $('<i class="iconfont icon-wodeweizhi" style="position: absolute;font-size: 20px;color:#1AFA29;left:'+coord[0]+"px"+';top:'+coord[1]+"px"+'" @click.native="upliftTwo('+i+')"></i>').appendTo('.imgcoordinate')
-                            //     }
-                            // }
                         }else{
                             that.errorCode(data)
                         }

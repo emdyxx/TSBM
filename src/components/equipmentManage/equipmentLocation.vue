@@ -1,53 +1,23 @@
 <template>
     <div class="equipmentLocation">
-        <div class="equipmentLocation_nav">
-            设备管理<i class="iconfont icon-icon"></i>设备定位
-            <el-select v-if='selected=="true"' v-model.lazy="selectedOptions" @change="handleChange" placeholder="请选择">
-                <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-                </el-option>
-            </el-select>
-            <el-button v-if="uploading" type="primary" style="position:absolute;right:15px;" @click="uploadingimg">上传厂区图片</el-button>
-            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">上传厂区图片</h4>
-                        </div>
-                        <div class="modal-body images">
-                            <label for="img1">
-                                <img :src=imageUrl>
-                                <input type="file" ref="img1" id="img1" @change="images">
-                                <i class="el-icon-plus avatar-uploader-icon"></i>
-                            </label>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" @click='imageSubmit' class="btn btn-primary imageSubmit">上传</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div>
-            </div><!-- /.modal -->
-        </div>
+        <!-- <div class="equipmentLocation_nav">
+            {{$t('equipmentLocation.DeviceManagement')}}<i class="iconfont icon-icon"></i>{{$t('equipmentLocation.EquipmentPositioning')}}
+            
+        </div> -->
         <div class="equipmentLocation_main">
             <el-tabs v-model.lazy="activeName" type="card" @tab-click="handleClick">
-                <el-tab-pane label="厂区定位" name='1' style="height:100%;overflow: auto;">
+                <el-tab-pane :label="$t('equipmentLocation.FactoryLocation')" name='1' style="height:100%;border: 1px solid #c4c4c4;border-top: none;overflow: auto;">
                     <ul class="equipmentLocation_ul">
                         <li class="flex-item" v-for='(site,key) in sites' :key="site.id">
                             <img :src=serverurl+site.imgUrl @click="imgrouter(key)">
                             <div class="img_bottom">
-                                <span v-if="deletetype" @click="imgdelete(key)">删除</span>
-                                <span v-if="revamp" @click="imgamend(key)">修改</span>
+                                <span v-if="deletetype" @click="imgdelete(key)">{{$t('equipmentLocation.delete')}}</span>
+                                <span v-if="revamp" @click="imgamend(key)">{{$t('equipmentLocation.modify')}}</span>
                             </div>
                         </li>
                     </ul>
                 </el-tab-pane>
-                <el-tab-pane label="地图定位" name='2' style="height:100%;">
+                <el-tab-pane :label="$t('equipmentLocation.MapLocation')" name='2' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div id="allmap">
 
                     </div>
@@ -58,7 +28,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">添加WIFI设备</h4>
+                                <h4 class="modal-title" id="myModalLabel">{{$t('equipmentLocation.AddDevice')}}</h4>
                             </div>
                             <div class="modal-body">
                                 <div>
@@ -91,7 +61,7 @@
                                         </el-table-column>
                                         <el-table-column
                                         align='center'
-                                        label="设备名称"
+                                        :label="$t('equipmentLocation.DeviceName')"
                                         width="160">
                                             <template scope="scope">
                                                 <span v-if="scope.row.nickname==''">{{scope.row.MAC}}</span>
@@ -106,7 +76,7 @@
                                         </el-table-column>
                                         <el-table-column
                                         prop="model"
-                                        label="硬件型号"
+                                        :label="$t('equipmentLocation.HardwareModel')"
                                         align='center'
                                         show-overflow-tooltip>
                                         </el-table-column>
@@ -125,13 +95,53 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                <button type="button" @click="ZBsubmitMap" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentLocation.Close')}}</button>
+                                <button type="button" @click="ZBsubmitMap" class="btn btn-primary">{{$t('equipmentLocation.Save')}}</button>
                             </div>
                         </div><!-- /.modal-content -->
                     </div>
                 </div><!-- /.modal -->
-            </el-tabs>            
+            </el-tabs>      
+            <div class="search_div">
+                <el-select v-if='selected=="true"' v-model.lazy="selectedOptions" @change="handleChange">
+                    <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+                <el-select v-if='selected=="true"' v-model.lazy="selectedOptionsMAC" @change="handleChangeMAC" clearable>
+                    <el-option
+                    v-for="item in optionsMAC"
+                    :key="item.MAC"
+                    :label="item.MAC"
+                    :value="item.MAC">
+                    </el-option>
+                </el-select>
+                <el-button v-if="uploading&&activeName=='1'" type="primary" @click="uploadingimg">{{$t('equipmentLocation.UploadPicturesOfFactoryArea')}}</el-button>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">{{$t('equipmentLocation.UploadPicturesOfFactoryArea')}}</h4>
+                            </div>
+                            <div class="modal-body images">
+                                <label for="img1">
+                                    <img :src=imageUrl>
+                                    <input type="file" ref="img1" id="img1" @change="images">
+                                    <i class="el-icon-plus avatar-uploader-icon"></i>
+                                </label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentLocation.Cancel')}}</button>
+                                <button type="button" @click='imageSubmit' class="btn btn-primary imageSubmit">{{$t('equipmentLocation.Upload')}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
         </div>
     </div>
 </template>  
@@ -151,6 +161,8 @@
                 sites:[],
                 options:[],
                 selectedOptions:'',
+                optionsMAC:[],
+                selectedOptionsMAC:'',
                 selected:false,
                 imgkeyid:'',
                 type:'1',
@@ -223,7 +235,7 @@
                     if(sessionStorage.departmentId=='1'){
                         if(this.selectedOptions==''){
                             this.$message({
-                                message: '温馨提示:管理员需要选择查看的厂区查看图片',
+                                message: that.$t('equipmentLocation.Tips'),
                                 showClose: true,
                             });
                         }
@@ -257,6 +269,36 @@
                 if(that.tabname=='2'){
                     that.readytwo()
                 }
+                that.dataMac()
+            },
+            //获取第二个搜索框数据
+            dataMac(){
+                var that = this
+                var data = {}
+                if(sessionStorage.departmentId=='1'){
+                    data.departmentId = that.selectedOptions
+                }else{
+                    data.departmentId = sessionStorage.departmentId
+                }
+                $.ajax({
+                    type:'get',
+                    async:true,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/getEquipmentByDepartmentId',
+                    data:data,
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.optionsMAC = data.result
+                        }else{
+                            that.errorCode(data)
+                        }
+                    }
+                })
+            },
+            //选择MAC跳转到设备
+            handleChangeMAC(val){
+                this.readytwo()
             },
             // 图片转base64位
             imgPreview (file) {
@@ -283,7 +325,7 @@
                     this.imgPreview(this.$refs.img1.files[0])   
                 }else{
                     this.$message({
-                        message: '图片格式错误',
+                        message: that.$t('equipmentLocation.WrongPictureFormat'),
                         type:'error',
                         showClose: true,
                     });
@@ -323,7 +365,7 @@
                 }).done(function(res) {
                     if(res.errorCode=='0'){
                         that.$message({
-                            message: '上传成功',
+                            message:that.$t('equipmentLocation.UploadSuccess'),
                             type:'success',
                             showClose: true,
                         });
@@ -344,7 +386,7 @@
                 if(sessionStorage.departmentId=='1'){
                     if(this.selectedOptions==''){
                         this.$message({
-                            message: '温馨提示:管理员需要选择查看的厂区查看图片',
+                            message: that.$t('equipmentLocation.Tips'),
                             showClose: true,
                         });
                     }
@@ -384,9 +426,9 @@
             imgdelete(key){
                 var that = this;
                 this.imgkeyid = this.sites[key].id;
-                that.$confirm('确认删除此张图片', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                that.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                    confirmButtonText: that.$t('FalseHints.yes'),
+                    cancelButtonText: that.$t('FalseHints.no'),
                     type: 'warning'
                 }).then(() => {
                     $.ajax({
@@ -401,7 +443,7 @@
                         success:function(data){
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '删除成功',
+                                    message: that.$t('FalseHints.DeleteSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });
@@ -414,7 +456,7 @@
                 }).catch(() => {
                     that.$message({
                         type: 'info',
-                        message: '已取消删除'
+                        message: that.$t('FalseHints.Undelete'),
                     });          
                 });
             },
@@ -439,6 +481,7 @@
                             map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
                         },500)
                     }else{
+                        
                         $.ajax({
                             type:'get',
                             async:false,
@@ -449,117 +492,121 @@
                                 departmentId:that.selectedOptions
                             },
                             success:function(data){
+                                
                                 that.mapcoordinate = data.result
                                 setTimeout(function(){
-                                        // 百度地图API功能  
-                                        var map = new BMap.Map("allmap");    // 创建Map实例
-                                        map.centerAndZoom(new BMap.Point(that.getlng,that.getlat), that.getZoom);  // 初始化地图,设置中心点坐标和地图级别
-                                        map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
-                                        map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
-                                        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-                                        //添加鼠标右键事件
-                                        var menu = new BMap.ContextMenu();
-                                        var txtMenuItem = [
-                                            {
-                                                text:'添加设备',
-                                                callback:function(e){
-                                                    if(sessionStorage.departmentId=='1'){
-                                                        if(this.selectedOptions==''){
-                                                            this.$message({
-                                                                message: '请选择厂区进行添加',
-                                                                showClose: true,
-                                                            });
-                                                        }else{
-                                                            that.mapcood = e
-                                                            if(localStorage.addequipments=='false'){
-                                                                that.$message({
-                                                                    message: '您无此权限',
-                                                                    showClose: true,
-                                                                });
-                                                            }else{
-                                                                $('#myModalWIFIMap').modal('show')
-                                                                that.getZoom = map.getZoom()
-                                                                that.getlng = that.mapcood.lng
-                                                                that.getlat = that.mapcood.lat
-                                                                that.selectedmap()
-                                                            }
-                                                        } 
+                                    // 百度地图API功能  
+                                    var map = new BMap.Map("allmap");    // 创建Map实例
+                                    map.centerAndZoom(new BMap.Point(that.getlng,that.getlat), that.getZoom);  // 初始化地图,设置中心点坐标和地图级别
+                                    map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+                                    map.setCurrentCity("杭州");          // 设置地图显示的城市 此项是必须设置的
+                                    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+                                    //添加鼠标右键事件
+                                    var menu = new BMap.ContextMenu();
+                                    var txtMenuItem = [
+                                        {
+                                            text:that.$t('equipmentLocation.AddDevice'),
+                                            callback:function(e){
+                                                if(sessionStorage.departmentId=='1'){
+                                                    if(this.selectedOptions==''){
+                                                        this.$message({
+                                                            message: that.$t('equipmentLocation.PleaseChooseFactoryAreaToAdd'),
+                                                            showClose: true,
+                                                        });
                                                     }else{
                                                         that.mapcood = e
                                                         if(localStorage.addequipments=='false'){
                                                             that.$message({
-                                                                message: '您无此权限',
+                                                                message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority'),
                                                                 showClose: true,
                                                             });
                                                         }else{
                                                             $('#myModalWIFIMap').modal('show')
+                                                            that.getZoom = map.getZoom()
+                                                            that.getlng = that.mapcood.lng
+                                                            that.getlat = that.mapcood.lat
                                                             that.selectedmap()
                                                         }
                                                     } 
-                                                }
+                                                }else{
+                                                    that.mapcood = e
+                                                    if(localStorage.addequipments=='false'){
+                                                        that.$message({
+                                                            message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority'),
+                                                            showClose: true,
+                                                        });
+                                                    }else{
+                                                        $('#myModalWIFIMap').modal('show')
+                                                        that.selectedmap()
+                                                    }
+                                                } 
                                             }
-                                        ];
-                                        for(var i=0; i < txtMenuItem.length; i++){
-                                            menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
                                         }
-                                        map.addContextMenu(menu);
+                                    ];
+                                    for(var i=0; i < txtMenuItem.length; i++){
+                                        menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+                                    }
+                                    map.addContextMenu(menu);
 
-                                        var greenA = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var greenC = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var greenG = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenA = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenC = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var greenG = new BMap.Icon(localStorage.serverurl+"img/mapimg/greenG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
 
-                                        var offlineA = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var offlineC = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var offlineG = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineA = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineC = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var offlineG = new BMap.Icon(localStorage.serverurl+"img/mapimg/offlineG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
 
-                                        var redA = new BMap.Icon(localStorage.serverurl+"img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var redC = new BMap.Icon(localStorage.serverurl+"img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var redG = new BMap.Icon(localStorage.serverurl+"img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
-                                        var marker = new Array();
-                                        for(var i=0;i<that.mapcoordinate.length;i++){
-                                            var point = new BMap.Point(that.mapcoordinate[i].coord.split(",")[0],that.mapcoordinate[i].coord.split(",")[1]);
-                                            if(that.mapcoordinate[i].equipmentType=='0'){ 
-                                                if(that.mapcoordinate[i].online=='0'){
-                                                    marker[i] = new BMap.Marker(point,{icon:offlineG});
-                                                }
-                                                if(that.mapcoordinate[i].online=='1'){
-                                                    marker[i]  = new BMap.Marker(point,{icon:greenG});
-                                                }
-                                                if(that.mapcoordinate[i].online=='2'){
-                                                    marker[i]  = new BMap.Marker(point,{icon:redG});
-                                                }
+                                    var redA = new BMap.Icon(localStorage.serverurl+"img/mapimg/redA.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redC = new BMap.Icon(localStorage.serverurl+"img/mapimg/redC.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var redG = new BMap.Icon(localStorage.serverurl+"img/mapimg/redG.png", new BMap.Size(25,30),{anchor: new BMap.Size(10, 30),imageOffset: new BMap.Size(0, 0)});
+                                    var marker = new Array();
+                                    
+                                    for(var i=0;i<that.mapcoordinate.length;i++){
+                                        var point = new BMap.Point(that.mapcoordinate[i].coord.split(",")[0],that.mapcoordinate[i].coord.split(",")[1]);
+                                        if(that.mapcoordinate[i].equipmentType=='0'){ 
+                                            if(that.mapcoordinate[i].online=='0'){
+                                                marker[i] = new BMap.Marker(point,{icon:offlineG});
                                             }
-                                            if(that.mapcoordinate[i].equipmentType=='1'){
-                                                if(that.mapcoordinate[i].online=='0'){
-                                                    marker[i]  = new BMap.Marker(point,{icon:offlineC});
-                                                }
-                                                if(that.mapcoordinate[i].online=='1'){
-                                                    marker[i]  = new BMap.Marker(point,{icon:greenC});
-                                                }
-                                                if(that.mapcoordinate[i].online=='2'){
-                                                    marker[i]  = new BMap.Marker(point,{icon:redC});
-                                                }
+                                            if(that.mapcoordinate[i].online=='1'){
+                                                marker[i]  = new BMap.Marker(point,{icon:greenG});
                                             }
-                                            if(that.mapcoordinate[i].equipmentType=='2'){
-                                                if(that.mapcoordinate[i].online=='0'){
-                                                    marker[i] = new BMap.Marker(point,{icon:offlineA});
-                                                }
-                                                if(that.mapcoordinate[i].online=='1'){
-                                                    marker[i] = new BMap.Marker(point,{icon:greenA});
-                                                }
-                                                if(that.mapcoordinate[i].online=='2'){
-                                                    marker[i] = new BMap.Marker(point,{icon:redA});
-                                                }
+                                            if(that.mapcoordinate[i].online=='2'){
+                                                marker[i]  = new BMap.Marker(point,{icon:redG});
                                             }
-                                            
-                                            var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(25,5)});
-                                            label.setStyle({display:"none"});//对label 样式隐藏
-                                            marker[i].setLabel(label);  //把label设置到maker上  
-                                            marker[i].setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
-                                            marker[i].id=that.mapcoordinate[i].id
-                                            map.addOverlay(marker[i]); 
-                                            that.Listener(marker[i]);
                                         }
+                                        if(that.mapcoordinate[i].equipmentType=='1'){
+                                            if(that.mapcoordinate[i].online=='0'){
+                                                marker[i]  = new BMap.Marker(point,{icon:offlineC});
+                                            }
+                                            if(that.mapcoordinate[i].online=='1'){
+                                                marker[i]  = new BMap.Marker(point,{icon:greenC});
+                                            }
+                                            if(that.mapcoordinate[i].online=='2'){
+                                                marker[i]  = new BMap.Marker(point,{icon:redC});
+                                            }
+                                        }
+                                        if(that.mapcoordinate[i].equipmentType=='2'){
+                                            if(that.mapcoordinate[i].online=='0'){
+                                                marker[i] = new BMap.Marker(point,{icon:offlineA});
+                                            }
+                                            if(that.mapcoordinate[i].online=='1'){
+                                                marker[i] = new BMap.Marker(point,{icon:greenA});
+                                            }
+                                            if(that.mapcoordinate[i].online=='2'){
+                                                marker[i] = new BMap.Marker(point,{icon:redA});
+                                            }
+                                        }
+                                        var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(25,5)});
+                                        label.setStyle({display:"none"});//对label 样式隐藏
+                                        marker[i].setLabel(label);  //把label设置到maker上  
+                                        marker[i].setTitle(that.mapcoordinate[i].MAC); //这里设置maker的title 
+                                        marker[i].id=that.mapcoordinate[i].id
+                                        map.addOverlay(marker[i]);
+                                        if(that.mapcoordinate[i].MAC==that.selectedOptionsMAC){
+                                            marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                                        } 
+                                        that.Listener(marker[i]);
+                                    }
                                 },500)
                             }
                         })
@@ -576,6 +623,7 @@
                         },
                         success:function(data){
                             that.mapcoordinate = data.result
+                            
                             setTimeout(function(){
                                     // 百度地图API功能
                                     var map = new BMap.Map("allmap");    // 创建Map实例
@@ -587,19 +635,19 @@
                                     var menu = new BMap.ContextMenu();
                                     var txtMenuItem = [
                                         {
-                                            text:'添加设备',
+                                            text:that.$t('equipmentLocation.AddDevice'),
                                             callback:function(e){
                                                 if(sessionStorage.departmentId=='1'){
                                                     if(this.selectedOptions==''){
                                                         this.$message({
-                                                            message: '请选择厂区进行添加',
+                                                            message: that.$t('equipmentLocation.PleaseChooseFactoryAreaToAdd'),
                                                             showClose: true,
                                                         });
                                                     }else{
                                                         that.mapcood = e
                                                         if(localStorage.addequipments=='false'){
                                                             that.$message({
-                                                                message: '您无此权限',
+                                                                message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority'),
                                                                 showClose: true,
                                                             });
                                                         }else{
@@ -611,7 +659,7 @@
                                                     that.mapcood = e
                                                     if(localStorage.addequipments=='false'){
                                                         that.$message({
-                                                            message: '您无此权限',
+                                                            message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority'),
                                                             showClose: true,
                                                         });
                                                     }else{
@@ -654,6 +702,7 @@
                                             if(that.mapcoordinate[i].online=='2'){
                                                  marker[i]  = new BMap.Marker(point,{icon:redG});
                                             }
+                                            
                                         }
                                         if(that.mapcoordinate[i].equipmentType=='1'){
                                             if(that.mapcoordinate[i].online=='0'){
@@ -678,6 +727,7 @@
                                             }
                                         }
                                         
+                                        marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
                                         var label = new BMap.Label(that.mapcoordinate[i].equipmentType,{offset:new BMap.Size(25,5)});
                                         label.setStyle({display:"none"});//对label 样式隐藏
                                         marker[i].setLabel(label);  //把label设置到maker上  
@@ -697,23 +747,23 @@
                     var id = e.target.id
                     var type = e.target.getLabel().content
                     var menuTwo = new BMap.ContextMenu();
-                    menuTwo.addItem(new BMap.MenuItem('删除设备',function(e){
+                    menuTwo.addItem(new BMap.MenuItem(that.$t('FalseHints.confirmDeletion'),function(e){
                         if(localStorage.Deleteequipments == 'false'){
                             that.$message({
-                                message: '您无此权限',
+                                message: that.$t('equipmentLocation.YouDoNotHaveThisAuthority'),
                                 showClose: true,
                             });
                         }else{
-                            that.$confirm('此操作将删除该设备, 是否继续?', '提示', {
-                                confirmButtonText: '确定',
-                                cancelButtonText: '取消',
+                            that.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                                confirmButtonText: that.$t('FalseHints.yes'),
+                                cancelButtonText: that.$t('FalseHints.no'),
                                 type: 'warning'
                             }).then(() => {
                                 that.remove(id,type)
                             }).catch(() => {
                                 that.$message({
                                     type: 'info',
-                                    message: '已取消删除'
+                                    message: that.$t('FalseHints.Undelete'),
                                 });  
                             })
                         }
@@ -736,7 +786,7 @@
                         if(data.errorCode=='0'){
                             that.$message({
                                 type: 'success',
-                                message: '删除成功!'
+                                message: that.$t('FalseHints.DeleteSuccess'),
                             });
                             that.readytwo()
                         }else{
@@ -810,7 +860,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '添加成功',
+                                message: that.$t('FalseHints.AddSuccess'),
                                 type:'success',
                                 showClose: true,
                             });
@@ -857,6 +907,9 @@
                 that.selected = false
                 this.ready()
             }
+            setTimeout(function(){
+                that.dataMac()
+            },200)
         }
     }
 </script>
@@ -864,7 +917,7 @@
 .equipmentLocation{width: 100%;height: 100%;padding: 15px;position: relative;}
 .equipmentLocation_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .equipmentLocation_nav>i{font-size: 23px;}
-.equipmentLocation_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.equipmentLocation_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border-radius: 4px;}
 .flex-item{ padding: 5px;width: 25%;height: 250px;position: relative;}
 .flex-item>img{width: 100%;height: 100%;}
 .images{text-align: center;}
@@ -878,4 +931,5 @@
 #allmap{width: 100%;height: 100%;}
 
 .equipmentLocation_ul{display: flex;list-style: none;flex-direction: row;flex-wrap: wrap;}
+.search_div{position: absolute;top: 0;left: 200px;height: 42px;line-height: 42px;}
 </style> 

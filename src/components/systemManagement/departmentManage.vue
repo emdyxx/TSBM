@@ -1,13 +1,23 @@
 <template>
     <div class="departmentManage">
-        <div class="departmentManage_nav">
-            系统管理<i class="iconfont icon-icon"></i>组织管理
-        </div>
+        <!-- <div class="departmentManage_nav">
+            {{$t('departmentManage.SystemManagement')}}<i class="iconfont icon-icon"></i>{{$t('departmentManage.OrganizationAndManagement')}}
+        </div> -->
         <div class="departmentManage_main">
             <div class="departmentManage_top">
-                <el-button v-if="add" type="primary" icon="plus" size="small" @click="departmentManageAdd">添加</el-button>
-                <el-button v-if="remove" type="primary" icon="edit" size="small" @click="departmentManageRevamp">修改</el-button>
-                <el-button v-if="delate" type="primary" icon="delete" size="small" @click="departmentManageDelete">删除</el-button>
+                <el-button v-if="add" type="primary" icon="plus" size="small" @click="departmentManageAdd">{{$t('departmentManage.AddTo')}}</el-button>
+                <el-button v-if="remove" type="primary" icon="edit" size="small" @click="departmentManageRevamp">{{$t('departmentManage.Modify')}}</el-button>
+                <el-button v-if="delate" type="primary" icon="delete" size="small" @click="departmentManageDelete">{{$t('departmentManage.Delete')}}</el-button>
+                <div class="departmentManage_top_div">
+                    <el-input
+                        icon="search"
+                        size='small'
+                        :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                        v-model="keyword"
+                        @change="tissueSearch"
+                        style="width:150px;">
+                    </el-input>
+                </div>
             </div>
             <!-- 添加修改模态框 -->
             <div class="modal fade" id="departmentManageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -15,52 +25,48 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title departmentManageLabel" id="myModalLabel" style="text-align:left;">添加</h4>
+                            <h4 v-if="option=='1'" class="modal-title" id="myModalLabel" style="text-align:left;">{{$t('departmentManage.AddOrganization')}}</h4>
+                            <h4 v-if="option=='2'" class="modal-title" id="myModalLabel" style="text-align:left;">{{$t('departmentManage.AmendingOrganization')}}</h4>
                         </div>
                         <div class="modal-body">
-                            <!-- <div class="departmentManage_form">
-                                <span style="width:74px;"><i class="required">*</i>所属部门:</span>
-                                <div>
-                                    <el-cascader
-                                        :options="options"
-                                        @change="handleChange"
-                                        change-on-select
-                                        v-model.lazy="selectedOptions3"
-                                        size='small'>
-                                    </el-cascader>
-                                </div>
-                            </div> -->
-                            <!-- <div class="departmentManage_form">
-                                <span>组织代码:</span>
-                                <input type="text" v-model.lazy='departmentManageCode' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织代码">
-                            </div> -->
                             <div class="departmentManage_form">
-                                <span><i class="required">*</i>组织名称:</span>
-                                <input type="text" v-model.lazy='departmentManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
+                                <span><i class="required">*</i>{{$t('departmentManage.OrganizationName')}}:</span>
+                                <input type="text" v-model.lazy='departmentManageName' class="form-control" maxlength="20" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('departmentManage.PleaseEnterTheNameOfTheOrganization')">
                             </div>
                             <div class="departmentManage_form">
-                                <span><i class="required">*</i>地址:</span>
-                                <input type="text" v-model.lazy='departmentManageAddress' class="form-control" maxlength="50" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入地址">
+                                <span><i class="required">*</i>{{$t('departmentManage.Address')}}:</span>
+                                <input type="text" v-model.lazy='departmentManageAddress' class="form-control" maxlength="50" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('departmentManage.PleaseEnterTheAddress')">
                             </div>
                             <div class="departmentManage_form">
-                                <span><i class="required">*</i>联系电话:</span>
-                                <input type="text" v-model.lazy='departmentManagePhone' class="form-control" maxlength="25" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
+                                <span><i class="required">*</i>{{$t('departmentManage.ContactNumber')}}:</span>
+                                <input type="text" v-model.lazy='departmentManagePhone' class="form-control" maxlength="25" minlength="5" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('departmentManage.PleaseEnterTheContactNumber')">
                             </div>
                             <div class="departmentManage_form">
-                                <span><i class="required">*</i>负责人:</span>
-                                <input type="text" v-model.lazy='departmentManagePrincipal' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入负责人">
+                                <span><i class="required">*</i>{{$t('departmentManage.PersonInCharge')}}:</span>
+                                <input type="text" v-model.lazy='departmentManagePrincipal' class="form-control" maxlength="30" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('departmentManage.PleaseEnterTheResponsiblePerson')">
                             </div>
                             <div class="departmentManage_form">
-                                <span><i class="required">*</i>邮箱:</span>
-                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="150" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
+                                <span><i class="required">*</i>{{$t('departmentManage.Mailbox')}}:</span>
+                                <input type="text" v-model.lazy='departmentManageEmail' class="form-control" maxlength="150" minlength="3" onkeyup="this.value=this.value.replace(/\s+/g,'')" :placeholder="$t('departmentManage.PleaseEnterTheMailbox')">
+                            </div>
+                            <div class="departmentManage_form">
+                                <span><i class="required">*</i>{{$t('departmentManage.scene')}}:</span>
+                                <el-select v-model="value" size='small' style="width:200px">
+                                    <el-option
+                                    v-for="item in options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
                             </div>
                             <div class="departmentManage_form" style="justify-content: center;">
-                                <el-checkbox v-model="checked">是否使用云平台</el-checkbox>
+                                <el-checkbox v-model="checked">{{$t('departmentManage.WhetherOrNotToUseTheCloudPlatform')}}</el-checkbox>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary addbutton" @click="departmentManageSubmit">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('departmentManage.Close')}}</button>
+                            <button type="button" class="btn btn-primary addbutton" @click="departmentManageSubmit">{{$t('departmentManage.Submission')}}</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -68,29 +74,13 @@
             <div class="departmentManage_bottom"
             v-loading.body='loading'
             element-loading-text="拼命加载中">
-                <div class="departmentManage_bottom_top">
-                    <!-- <div class="departmentManage_formtwo">
-                        <span>编号:</span>
-                        <input type="text" v-model.lazy="code"  maxlength="10" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                    </div> -->
-                    <div class="departmentManage_formtwo">
-                        <span>组织名称:</span>
-                        <input type="text" v-model.lazy="departmentName"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入组织名称">
-                    </div>
-                    <!-- <div class="departmentManage_formtwo">
-                        <span>地址:</span>
-                        <input type="text" v-model.lazy="address"  maxlength="25" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                    </div> -->
-                    <div class="departmentManage_formtwo">
-                        <span>联系电话:</span>
-                        <input type="text" v-model.lazy="phone"  maxlength="25" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入联系电话">
-                    </div>
-                    <el-button type="primary" icon="search" @click="tissueSearch" style="height:30px;" size='small'>搜索</el-button>
-                </div>
                 <div class="departmentManage_bottom_bottom">
                     <el-table
+                        @row-click="clickRow"
                         ref="multipleTable"
                         :data="tableData4"
+                        :default-sort = "{prop: 'date', order: 'descending'}"
+                        @sort-change='sortChange'
                         border
                         stripe
                         tooltip-effect="dark"
@@ -101,44 +91,54 @@
                         align='center'
                         width="55">
                         </el-table-column>
-                        <!-- <el-table-column
-                        prop="code"
-                        align='center'
-                        label="组织代号"
-                        width="100">
-                        </el-table-column> -->
                         <el-table-column
                         prop="departmentName"
-                        label="组织名称"
+                        sortable='custom'
+                        :label="$t('departmentManage.OrganizationName')"
                         align='center'
-                        width="160">
+                        min-width="140">
                         </el-table-column>
                         <el-table-column
                         prop="address"
-                        label="地址"
+                        sortable='custom'
+                        :label="$t('departmentManage.Address')"
                         align='center'
-                        width="260">
+                        width="220">
                         </el-table-column>
                         <el-table-column
                         prop="phone"
-                        label="联系电话"
+                        sortable='custom'
+                        :label="$t('departmentManage.ContactNumber')"
                         align='center'
-                        width="130">
+                        min-width="110">
                         </el-table-column>
                         <el-table-column
-                        label="是否使用云平台"
+                        prop='isCloud'
+                        sortable='custom'
+                        :label="$t('departmentManage.WhetherOrNotToUseTheCloudPlatform')"
                         align='center'
-                        width="140">
+                        min-width="100">
                             <template scope="scope">
-                                <span v-if="scope.row.isCloud=='0'">否</span>
-                                <span v-if="scope.row.isCloud=='1'">是</span>    
+                                <span v-if="scope.row.isCloud=='0'">{{$t('FalseHints.yes')}}</span>
+                                <span v-if="scope.row.isCloud=='1'">{{$t('FalseHints.no')}}</span>    
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                        prop='scenne'
+                        sortable='custom'
+                        :label="$t('departmentManage.scene')"
+                        align='center'
+                        min-width="100">
+                            <template scope="scope">
+                                <span v-if="scope.row.scenne=='0'">{{$t('departmentManage.outdoor')}}</span>
+                                <span v-if="scope.row.scenne=='1'">{{$t('departmentManage.factory')}}</span>    
                             </template>
                         </el-table-column>
                         <el-table-column
                         prop="email"
-                        label="邮箱"
-                        align='center'
-                        show-overflow-tooltip>
+                        sortable='custom'
+                        :label="$t('departmentManage.Mailbox')"
+                        align='center'>
                         </el-table-column>
                     </el-table>
                     <div class="block">
@@ -154,15 +154,15 @@
                     </div>
                 </div>
             </div>
-            <el-dialog title="删除组织" :visible.sync="dialogFormVisible" style="width:700px;margin: 0 auto;text-align: left;">
+            <el-dialog :title="$t('departmentManage.DeleteOrganization')" :visible.sync="dialogFormVisible" style="width:700px;margin: 0 auto;text-align: left;">
                 <el-form>
-                    <el-form-item label="请输入密码" :label-width="formLabelWidth">
-                        <el-input v-model="password" style="width:186px" type='password' auto-complete="off" placeholder="请输入密码"></el-input>
+                    <el-form-item :label="$t('departmentManage.PleaseInputAPassword')" :label-width="formLabelWidth">
+                        <el-input v-model="password" style="width:186px" type='password' auto-complete="off" :placeholder="$t('departmentManage.PleaseInputAPassword')"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogFormVisibleSubmit">确 定</el-button>
+                    <el-button @click="dialogFormVisible = false">{{$t('departmentManage.Cancel')}}</el-button>
+                    <el-button type="primary" @click="dialogFormVisibleSubmit">{{$t('departmentManage.Determine')}}</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -173,10 +173,7 @@
         name: 'departmentManage',
         data () {
             return {
-                // code:'',
-                departmentName:'',
-                // address:'',
-                phone:'',
+                keyword:'',
                 serverurl:localStorage.serverurl,
                 dialogFormVisible:false,// 删除分组显示与否
                 formLabelWidth: '100px',
@@ -193,6 +190,7 @@
                 loading:false,
                 option:'',
                 options:[],
+                value:'0',
                 selectedOptions3:[],
                 departmentManageCode:'',
                 departmentManageName:'',
@@ -201,6 +199,8 @@
                 departmentManagePrincipal:'',
                 departmentManageEmail:'',
                 checked:false,
+                props:'',//排序字段
+                orders:'',
             }
         },
         mounted(){
@@ -237,6 +237,14 @@
             },200)
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.ready()
+            },
+            clickRow(row){
+                this.$refs.multipleTable.toggleRowSelection(row)
+            }, 
             //搜索
             tissueSearch(){
                 this.ready()
@@ -244,7 +252,6 @@
             //添加
             departmentManageAdd(){
                 $('#departmentManageModal').modal('show')
-                $('.departmentManageLabel').text('添加组织')
                 this.departmentManageCode=''
                 this.departmentManageName=''
                 this.departmentManageAddress=''
@@ -254,21 +261,19 @@
                 this.checked = false
                 this.option = '1'
                 this.selectedOptions3=[];
-                // this.branchTree()
             },
             //修改
             departmentManageRevamp(){
                 var that = this
                 if(that.sites.length==0||that.sites.length>=2){
                     that.$message({
-                        message: '请选择一条数据进行修改',
+                        message: that.$t('FalseHints.PleaseSelectADataToModify'),
                         type: 'error',
                         showClose: true,
                     });
                     return;
                 }
                 $('#departmentManageModal').modal('show')
-                $('.departmentManageLabel').text('修改组织')
                 this.departmentManageCode=that.sites[0].code
                 this.departmentManageName=that.sites[0].departmentName
                 this.departmentManageAddress=that.sites[0].address
@@ -276,33 +281,13 @@
                 this.departmentManagePrincipal=that.sites[0].principal
                 this.departmentManageEmail=that.sites[0].email
                 this.option = '2'
+                this.value=String(that.sites[0].scenne)
                 if(that.sites[0].isCloud=='0'){
                     this.checked = false
                 }
                 if(that.sites[0].isCloud=='1'){
                     this.checked = true
                 }
-                // this.branchTree()
-            },
-            //获取所属部门的tree树列表
-            branchTree(){
-                // var that = this
-                // $.ajax({
-                //     type:'get',
-                //     async:true,
-                //     dataType:'json',
-                //     xhrFields:{withCredentials:true},
-                //     url:that.serverurl+'department/getDepartmentTree',
-                //     data:{},
-                //     success:function(data){
-                //         delete data.result[0].children
-                //         that.options = data.result
-                //         if(that.option == '2'){
-                //             that.selectedOptions3=[];
-                //             that.selectedOptions3.push('1')
-                //         }
-                //     }
-                // })
             },
             //所属部门chang事件
             handleChange(value){
@@ -317,7 +302,7 @@
                 var email = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
                 if(this.departmentManageName==''||this.departmentManageAddress==''||this.departmentManagePhone==''||this.departmentManagePrincipal==''||this.departmentManageEmail==''){
                     that.$message({
-                        message: '字段不能为空',
+                        message: that.$t('FalseHints.RequiredFieldsCanNotBeEmpty'),
                         type: 'error',
                         showClose: true,
                     });
@@ -325,7 +310,7 @@
                 }
                 if(!phone.test(this.departmentManagePhone)){
                     that.$message({
-                        message: '电话不符合格式',
+                        message: that.$t('FalseHints.TelephoneFormatError'),
                         type: 'error',
                         showClose: true,
                     });
@@ -333,7 +318,7 @@
                 }
                 if(!email.test(this.departmentManageEmail)){
                     that.$message({
-                        message: '邮箱不符合格式',
+                        message: that.$t('FalseHints.ErrorInMailboxFormat'),
                         type: 'error',
                         showClose: true,
                     });
@@ -357,18 +342,18 @@
                         data:{
                             parentId:1,
                             departmentName:that.departmentManageName,
-                            // code:that.departmentManageCode,
                             phone:that.departmentManagePhone,
                             email: that.departmentManageEmail,
                             address:that.departmentManageAddress,
                             principal:that.departmentManagePrincipal,
-                            isCloud:isCloud
+                            isCloud:isCloud,
+                            scenne:that.value
                         },
                         success:function(data){
                             $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '添加成功',
+                                    message: that.$t('FalseHints.AddSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });
@@ -391,12 +376,12 @@
                             id:that.sites[0].id,
                             parentId:1,
                             departmentName:that.departmentManageName,
-                            // code:that.departmentManageCode,
                             phone:that.departmentManagePhone,
                             email: that.departmentManageEmail,
                             address:that.departmentManageAddress,
                             principal:that.departmentManagePrincipal,
-                            isCloud:isCloud
+                            isCloud:isCloud,
+                            scenne:that.value
                         },
                         success:function(data){
                             $('.addbutton').attr('disabled',false)
@@ -420,7 +405,7 @@
                 var that= this;
                 if(that.sites.length==0||that.sites.length>=2){
                     that.$message({
-                        message: '请选择一条数据进行删除',
+                        message: that.$t('FalseHints.SelectAdataToDelete'),
                         type: 'error',
                         showClose: true,
                     });
@@ -447,7 +432,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '删除成功',
+                                message: that.$t('FalseHints.DeleteSuccess'),
                                 type: 'success',
                                 showClose: true,
                             });
@@ -501,10 +486,13 @@
                     data:{
                         pageIndex:pageIndex,
                         pageSize:pageSize,
+                        keyword:that.keyword,
+                        order:that.props,
+                        orderBy:that.orders
                         // code:that.code,
-                        departmentName:that.departmentName,
+                        // departmentName:that.departmentName,
                         // address:that.address,
-                        phone:that.phone
+                        // phone:that.phone
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -520,6 +508,11 @@
             },
         },
         created(){
+            if(localStorage.locale=='en'){
+                this.options = [{value:'0',label:'outdoor'},{value:'1',label:'factory'}]
+            }else{
+                this.options = [{value:'0',label:'室外'},{value:'1',label:'工厂'}]
+            }
             this.ready()
         }
     }
@@ -530,17 +523,15 @@
 .departmentManage_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .departmentManage_nav>i{font-size: 23px;}
 
-.departmentManage_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
-.departmentManage_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
+.departmentManage_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.departmentManage_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;display: flex;align-items: center;}
+.departmentManage_top_div{height: 29px;margin-left: 20px;display: flex}
+.departmentManage_top_div>span{line-height: 29px;font-size: 16px}
 .departmentManage_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 
-.departmentManage_form{display: flex;width: 270px;margin: 0 auto 10px;}
-.departmentManage_form>span{width: 100px;line-height: 34px;font-size: 15px;}
-.departmentManage_form>input{height: 31px;}
-/* 1111 */
-.departmentManage_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}
+.departmentManage_form{display: flex;width: 340px;margin: 0 auto 10px;}
+.departmentManage_form>span{width: 140px;line-height: 34px;font-size: 15px;text-align: right;}
+.departmentManage_form>input{height: 31px;width:200px;}
+
 .departmentManage_bottom_bottom{height:80%;}
-.departmentManage_formtwo{display: flex;margin:0 10px;}
-.departmentManage_formtwo>span{line-height: 30px;font-size: 15px;}
-.departmentManage_formtwo>input{width: 126px;height: 30px;}
 </style>

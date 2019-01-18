@@ -1,21 +1,12 @@
 <template>
     <div class="dataStatistics">
-        <div class="dataStatistics_nav">
-            统计信息<i class="iconfont icon-icon"></i>统计数据
-            <!-- 管理员登录显示部门 -->
-            <el-select v-if="selected" v-model.lazy="value2" @change="detaparmentchange" placeholder="请选择">
-                <el-option
-                v-for="item in options2"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-                </el-option>
-            </el-select>
-        </div>
+        <!-- <div class="dataStatistics_nav">
+            {{$t('dataStatistics.Statisticalinformation')}}<i class="iconfont icon-icon"></i>{{$t('dataStatistics.Statisticaldata')}}
+        </div> -->
         <div class="dataStatistics_main">
             <template>
                 <el-tabs v-model.lazy="activeName2" type="card" @tab-click="handleClick">
-                    <el-tab-pane label="总览" name="0">
+                    <el-tab-pane :label="$t('dataStatistics.Pandect')" name="0" style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                         <div class="dataStatistics_top">
                             
                         </div>
@@ -29,13 +20,15 @@
                                     :value="item.value">
                                     </el-option>
                                 </el-select>
-                                <span>总数: {{totalSum}}</span>
-                                <span>在线: {{onlineSum}}</span>
-                                <span>离线: {{totalSum - onlineSum}}</span>
+                                <span>{{$t('dataStatistics.Total')}}: {{totalSum}}</span>
+                                <span>{{$t('dataStatistics.Online')}}: {{onlineSum}}</span>
+                                <span>{{$t('dataStatistics.Offline')}}: {{totalSum - onlineSum}}</span>
                             </div>
                             <div class="dataStatistics_bottom_center"></div>
                             <div class="dataStatistics_bottom_bottom">
                                 <el-table
+                                    :default-sort = "{prop: 'date', order: 'descending'}"
+                                    @sort-change='sortChange'
                                     ref="multipleTable"
                                     :data="dataStatisticsData"
                                     border
@@ -44,46 +37,52 @@
                                     tooltip-effect="dark"
                                     style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
                                     <el-table-column
+                                    sortable='custom'
                                     prop="MAC"
                                     align='center'
                                     label="MAC"
                                     width="180">
                                     </el-table-column>  
                                     <el-table-column
+                                    sortable='custom'
                                     prop="wifi2SendByte"
-                                    label="2.4G发送字节"
+                                    :label="$t('dataStatistics.sendingbytes2G')"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="wifi2ReceiveByte"
-                                    label="2.4G接收字节"
+                                    :label="$t('dataStatistics.receivingbytes2G')"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="wifi5SendByte"
-                                    label="5.8G发送字节"
+                                    :label="$t('dataStatistics.sendingbytes5G')"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="wifi5ReceiveByte"
-                                    label="5.8G接收字节"
+                                    :label="$t('dataStatistics.receivebytes5G')"
                                     align='center'
                                     show-overflow-tooltip>
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="online"
-                                    label="状态"
+                                    :label="$t('dataStatistics.status')"
                                     align='center'
                                     show-overflow-tooltip>
                                         <template scope="scope">
                                             <span v-if="scope.row.online=='0'">
-                                                离线
+                                                {{$t('dataStatistics.Offline')}}
                                             </span>
                                             <span v-else>
-                                                在线
+                                                {{$t('dataStatistics.Online')}}
                                             </span>
                                         </template> 
                                     </el-table-column>
@@ -102,78 +101,55 @@
                             </div>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="查询" name="1">
-                        <div class="inquire_top">
-                            <div class="inquire_top_main">
-                                <div class="inquire_formtwo">
-                                    <span>MAC:</span>
-                                    <input v-model.lazy="MAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入MAC">
-                                </div>
-                                <div class="inquire_formtwo">
-                                    <span>型号:</span>
-                                    <input v-model.lazy="type" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入型号">
-                                </div>
-                                <div class="inquire_formtwo">
-                                    <span>请选择时间范围:</span>
-                                    <el-date-picker
-                                        v-model.lazy="time"
-                                        type="datetimerange"
-                                        @change="times"
-                                        size='small'
-                                        placeholder="选择时间范围"
-                                        range-separator='~'
-                                        style="width:320px;">
-                                    </el-date-picker>
-                                </div>
-                                <el-button @click="tableDataSG" type="primary" style="height:30px;margin-top:6px;margin-left:5px;" size="small">搜索</el-button>
-                                <div class="inquire_top_type">
-                                    <span @click='Active("0")' :class="isActive=='0' ? 'nativeone' : 'nativetwo'">列表显示</span>
-                                    <span>/</span>
-                                    <span @click="Active('1')" :class="isActive=='1' ? 'nativeone' : 'nativetwo'">图形展示</span>
-                                </div>
-                            </div>
-                        </div>
+                    <el-tab-pane :label="$t('dataStatistics.Inquiry')" name="1" style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                         <div class="inquire_bottom">
-                            <div v-if="isActive=='0'" style="width: 100%;height:100%;">
+                            <div v-if="isActive=='0'">
                                 <el-table
+                                    :default-sort = "{prop: 'date', order: 'descending'}"
+                                    @sort-change='sortChange2'
                                     ref="multipleTable"
                                     :data="tableData"
                                     border
                                     stripe
                                     tooltip-effect="dark"
-                                    style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
+                                    style="height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
                                     <el-table-column
                                     type="selection"
                                     align='center'
                                     width="55">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="equipmentMAC"
                                     align='center'
-                                    label="设备MAC"
-                                    width="180">
+                                    :label="$t('dataStatistics.EquipmentMAC')"
+                                    width="170">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="model"
-                                    label="设备型号"
+                                    :label="$t('dataStatistics.UnitType')"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="currentTnw"
-                                    label="当前接口"
+                                    :label="$t('dataStatistics.Currentinterface')"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="originalTnw"
-                                    label="原始接口"
+                                    :label="$t('dataStatistics.Originalinterface')"
                                     align='center'
                                     width="180">
                                     </el-table-column>
                                     <el-table-column
+                                    sortable='custom'
                                     prop="ts"
-                                    label="切换时间"
+                                    :label="$t('dataStatistics.Switchingtime')"
                                     align='center'
                                     show-overflow-tooltip>
                                     </el-table-column>
@@ -198,6 +174,40 @@
                     </el-tab-pane>
                 </el-tabs>
             </template>
+            <div style="position:absolute;left:130px;top:6px;width:140px;">
+                <el-select v-if="selected" v-model.lazy="value2" @change="detaparmentchange" size='small'>
+                    <el-option
+                    v-for="item in options2"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div v-if="activeName2=='1'" class="dataStatistics_main_div"> 
+                <el-input
+                    icon="search"
+                    size='small'
+                    :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                    v-model="keyword"
+                    @change="tableDataSG"
+                    style="width:165px;">
+                </el-input>
+                <span style="margin-left:10px;">{{$t('dataStatistics.timeframe')}}:</span>
+                <el-date-picker
+                    v-model.lazy="time"
+                    type="datetimerange"
+                    @change="times"
+                    size='small'
+                    range-separator='~'
+                    style="width:320px;">
+                </el-date-picker>
+                <div class="inquire_top_type">
+                    <span @click='Active("0")' :class="isActive=='0' ? 'nativeone' : 'nativetwo'">{{$t('dataStatistics.Listdisplay')}}</span>
+                    <span>/</span>
+                    <span @click="Active('1')" :class="isActive=='1' ? 'nativeone' : 'nativetwo'">{{$t('dataStatistics.Chartdisplay')}}</span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -206,6 +216,7 @@
         name: 'echarts',
         data () {
             return {
+                keyword:'',
                 serverurl:localStorage.serverurl, 
                 activeName2: '0',
                 options2:[],
@@ -222,8 +233,6 @@
                 total:10,
                 
                 //查询页面 参数
-                MAC:'',
-                type:'',
                 time:'',
                 startTime:'',
                 endTime:"",
@@ -232,12 +241,26 @@
                 pageIndex2:1,
                 pageSize2:10,
                 total2:10,
+                props:'',//排序字段
+                orders:'',
+                props2:'',//排序字段
+                orders2:'',
             }
         },
         mounted(){
             
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.bottomData()
+            },
+            sortChange2(column, prop, order){
+                this.props2 = column.prop
+                this.orders2 = column.order
+                this.readytwo()
+            },
             //判断选中标签页
             handleClick(tab){
                 var that = this
@@ -273,7 +296,9 @@
                         pageIndex:that.pageIndex,
                         pageSize:that.pageSize,
                         type:that.value,
-                        departmentId:that.value2
+                        departmentId:that.value2,
+                        order:that.props,
+                        orderBy:that.orders
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -297,7 +322,7 @@
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'statistics/getAllTsbgStatus',
                     data:{
-                        departmentId:that.value2
+                        departmentId:that.value2,
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -312,7 +337,7 @@
                                 ECdata.setOption({
                                     title : {
                                         text: data.result[i].nickname,
-                                        subtext: '设备昵称',
+                                        subtext: that.$t('dataStatistics.Devicenickname'),
                                         x:'left',
                                         textStyle: {fontSize:14,fontWeight:'bold'}
                                     },
@@ -324,11 +349,11 @@
                                         orient: 'vertical',
                                         x: 'left',
                                         y: 'bottom',
-                                        data:['cpu使用率','cpu剩余率']
+                                        data:[that.$t('dataStatistics.Cpuusagerate'),that.$t('dataStatistics.Cpuresidualrate')]
                                     },
                                     series: [
                                         {
-                                            name:'访问来源',
+                                            name:that.$t('dataStatistics.Accesssource'),
                                             type:'pie',
                                             radius: ['50%', '67%'],
                                             avoidLabelOverlap: false,
@@ -351,8 +376,8 @@
                                                 }
                                             },
                                             data:[
-                                                {value:one, name:'cpu使用率'},
-                                                {value:two, name:'cpu剩余率'}
+                                                {value:one, name:that.$t('dataStatistics.Cpuusagerate')},
+                                                {value:two, name:that.$t('dataStatistics.Cpuresidualrate')}
                                             ]
                                         }
                                     ]
@@ -361,9 +386,9 @@
                             for(var i=0;i<data.result.length;i++){
                                 $('#EC'+i).append('<div style="position:absolute;left:5px;top:42px;">'
                                 +"<ul style='list-style:none;width:100%;text-align: left;font-size:14px;color: #B4B4B4;padding:0;'>"
-                                +"<li>设备MAC"+data.result[i].MAC+"</li>"+"<li>CPU:"+data.result[i].cpuUsageRate+"%</li>"
-                                +"<li>内存:"+data.result[i].memoryUsageRate+"%</li>"+"<li>负载:"+data.result[i].load+"</li>"
-                                +"<li>用户:"+data.result[i].ueSum+"</li>"+"</ul>"+'</div>')
+                                +"<li>"+that.$t('dataStatistics.EquipmentMAC')+":"+data.result[i].MAC+"</li>"+"<li>CPU:"+data.result[i].cpuUsageRate+"%</li>"
+                                +"<li>"+that.$t('dataStatistics.Internalstorage')+":"+data.result[i].memoryUsageRate+"%</li>"+"<li>"+that.$t('dataStatistics.Load')+":"+data.result[i].load+"</li>"
+                                +"<li>"+that.$t('dataStatistics.user')+":"+data.result[i].ueSum+"</li>"+"</ul>"+'</div>')
                             }
                         }else{
                             that.errorCode(data)
@@ -386,6 +411,7 @@
                 var type = val.split('~')
                 this.startTime = type[0]
                 this.endTime = type[1]
+                this.readytwo()
             },
             //改变现实类别
             Active(val){
@@ -398,7 +424,7 @@
                     //必须指定时间段和MAC
                     if(this.MAC==''||this.startTime==''||this.endTime==''){
                         this.$message({
-                            message: '图形展示必须指定MAC以及时间段!',
+                            message: that.$t('dataStatistics.Graphicsegment'),
                             type: 'error',
                             showClose: true,
                         });
@@ -431,11 +457,12 @@
                         data:{
                             pageIndex:that.pageIndex2,
                             pageSize:that.pageSize2,
+                            keyword:that.keyword,
                             departmentId:that.value2,
-                            MAC:that.MAC,
-                            model:that.type,
                             startTime:that.startTime,
-                            endTime:that.endTime
+                            endTime:that.endTime,
+                            order:that.props2,
+                            orderBy:that.orders2
                         },
                         success:function(data){
                             if(data.errorCode=='0'){
@@ -467,8 +494,7 @@
                         url:that.serverurl+'statistics/getAllTnwList',
                         data:{
                             departmentId:that.value2,
-                            MAC:that.MAC,
-                            model:that.type,
+                            keyword:that.keyword,
                             startTime:that.startTime,
                             endTime:that.endTime
                         },
@@ -485,7 +511,6 @@
                                         }
                                     }
                                 }
-                                console.log(one,two,array)
                                 $('#query').css('width',width).css('height',height);
                                 var query = that.$echarts.init(document.getElementById('query'));
                                 $('#query>div').css('display','')
@@ -495,7 +520,7 @@
                                             trigger: 'axis'
                                         },
                                         legend: {
-                                            data:['接口使用']
+                                            data:[that.$t('dataStatistics.Interfaceuse')]
                                         },
                                         grid: {
                                             left: '3%',
@@ -510,7 +535,7 @@
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            name:'时间',
+                                            name:that.$t('dataStatistics.time'),
                                             data: one //时间
                                         },
                                         axisLabel:{
@@ -541,13 +566,13 @@
                                         yAxis : [
                                             {
                                                 type : 'category',
-                                                name:'接口',
+                                                name:that.$t('dataStatistics.Interface'),
                                                 data: array
                                             }
                                         ],
                                         series: [
                                             {
-                                                name:'接口使用',
+                                                name:that.$t('dataStatistics.Interfaceuse'),
                                                 type:'line',
                                                 step: 'start',
                                                 data:two
@@ -596,22 +621,25 @@
 .dataStatistics{width: 100%;height: 100%;padding:5px;}
 .dataStatistics_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;padding-left: 10px;}
 .dataStatistics_nav>i{font-size: 23px;}
-.dataStatistics_main{position:absolute;top:55px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;background-color: #FFFFFF;border: 1px solid #c4c4c4;border-radius: 0 0 4px 4px;}
+.dataStatistics_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border-radius: 0 0 4px 4px;}
+.dataStatistics_main_div{position: absolute;top: 0;left: 270px;height: 42px;line-height: 42px;display: flex;}
+.dataStatistics_main_div>div{margin-left: 10px;}
+
 .dataStatistics_top{width: 100%;height: 195px;display: flex;flex-wrap:wrap;margin-top: 5px;justify-content: center;overflow: auto;}
 .dataStatistics_bottom{width: 100%;height: auto;position: absolute;top:195px;bottom: 0;}
 .dataStatistics_bottom_top{margin-bottom:5px;text-align: left;padding-left:10px;}
 .dataStatistics_bottom_top>span{display: inline-block;margin-left:20px; }
 .dataStatistics_bottom_center{position:absolute;left:0;right:12px;height:1px;background: black;}
-.dataStatistics_bottom_bottom{position: absolute;top:43px;left:0;right:12px;bottom:0;}
+.dataStatistics_bottom_bottom{position: absolute;top:43px;left:5px;right:5px;bottom:0;}
 .inquire_top{width:100%;height:40px;overflow: hidden;}
-.inquire_bottom{width:100%;height: auto;position: absolute;top:40px;bottom:3px;left:0;right:10px;overflow: auto;}
-/* .inquire_bottom>div{width: 100%;height:100%;} */
+.inquire_bottom{width:100%;height: auto;position: absolute;top:0;bottom:3px;left:0;right:0;overflow: auto;padding: 5px;}
+/* .inquire_bottom>div{padding: 5px;} */
 .inquire_top_main{width: 100%;height: 40px;display: flex;justify-content: center;overflow: hidden;}
 .inquire_formtwo{display: flex;margin-top: 6px;}
 .inquire_formtwo>span{width: 30%;line-height: 30px;}
 .inquire_formtwo>input{height: 30px;width: 130px;}
 .inquire_formtwo>div{height: 30px;width: 140px;}
-.inquire_top_type{margin-top:10px;margin-left:10px;cursor: pointer;font-size: 15px;}
+.inquire_top_type{margin-left:10px;cursor: pointer;font-size: 15px;}
 .nativeone{color: #8391a5;}
 .nativetwo{color: #555555;}
 #query{width: 100%;height: 100%;}

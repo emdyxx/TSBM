@@ -1,13 +1,32 @@
 <template>
     <div class="equipmentUpgrade">
-        <div class="equipmentUpgrade_nav">
-            设备管理<i class="iconfont icon-icon"></i>设备升级包
-        </div>
+        <!-- <div class="equipmentUpgrade_nav">
+            {{$t('equipmentUpgrade.DeviceManagement')}}<i class="iconfont icon-icon"></i>{{$t('equipmentUpgrade.EquipmentUpgradePackage')}}
+        </div> -->
         <div class="equipmentUpgrade_main">
             <div class="equipmentUpgrade_top">
-                <el-button v-if="uploading" type="primary" icon="upload2" size="small" @click="upload">升级包上传</el-button>
-                <el-button v-if="revamp" type="primary" icon='edit' size="small" @click="upgradepatchamend">升级包分组修改</el-button>
-                <el-button v-if="remove" type="primary" icon='delete2' size="small" @click="upgradepatchdelete">删除升级包</el-button>
+                <el-button v-if="uploading" type="primary" icon="upload2" size="small" @click="upload">{{$t('equipmentUpgrade.UpgradePackageUpload')}}</el-button>
+                <el-button v-if="revamp" type="primary" icon='edit' size="small" @click="upgradepatchamend">{{$t('equipmentUpgrade.UpgradePackageGroupingModification')}}</el-button>
+                <el-button v-if="remove" type="primary" icon='delete2' size="small" @click="upgradepatchdelete">{{$t('equipmentUpgrade.DeleteUpgradePackage')}}</el-button>
+                <div class="equipmentUpgrade_top_div">
+                    <el-input
+                        icon="search"
+                        size='small'
+                        :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                        v-model="keyword"
+                        @change="search"
+                        style="width:150px;">
+                    </el-input>
+                    <span style="display:inline-block;width:75px;margin-left:10px;">{{$t('equipmentUpgrade.UpgradePackageStatus')}}:</span>
+                    <el-select @change="search" v-model.lazy="value4" style="width:96px;" size='small' clearable>
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
+                </div>
             </div>
             <!--上传模态框-->
             <div class="modal fade" id="upgrademyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -15,12 +34,13 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel" style="text-align:left;">上传升级包</h4>
+                            <h4 v-if="opctions=='0'" class="modal-title" id="myModalLabel" style="text-align:left;">{{$t('equipmentUpgrade.UpgradePackageUpload')}}</h4>
+                            <h4 v-if="opctions=='1'" class="modal-title" id="myModalLabel" style="text-align:left;">{{$t('equipmentUpgrade.EditUpgradePackage')}}</h4>
                         </div>
                         <div class="modal-body">
                             <div class="upload_div" v-if="uploadtype==false">
                                 <div v-if='selected'>
-                                    <span>选择分组:</span>
+                                    <span>{{$t('equipmentUpgrade.SelectionGrouping')}}:</span>
                                     <el-cascader
                                         :options="optionsvalue"
                                         v-model.lazy="selectedOptions"
@@ -29,25 +49,25 @@
                                     </el-cascader>
                                 </div> 
                                 <div>
-                                    <span>升级包名称:</span>
+                                    <span>{{$t('equipmentUpgrade.Upgradepackagename')}}:</span>
                                     <input type="file" ref="imgs" name="file" id="file_name">
                                 </div> 
                                 <div v-if="percentageType" style="padding-left:30px">
-                                    <span style="width: 40px;margin-top: -6px;">进度:</span>
+                                    <span style="width: 40px;margin-top: -6px;">{{$t('equipmentUpgrade.SpeedOfProgress')}}:</span>
                                     <el-progress :percentage='percentage'></el-progress>
                                 </div>
                             </div>
                             <div class="upload_div" v-if="uploadtype">
                                 <div>
-                                    <span>升级包名称:</span>
+                                    <span>{{$t('equipmentUpgrade.Upgradepackagename')}}:</span>
                                     <input type="text" v-model.lazy="fileName" disabled>
                                 </div> 
                                 <div>
-                                    <span>软件版本号:</span>
+                                    <span>{{$t('equipmentUpgrade.SoftwareVersionNumber')}}:</span>
                                     <input type="text" v-model.lazy="softwareVer" disabled>
                                 </div> 
                                 <div>
-                                    <span>软件型号:</span>
+                                    <span>{{$t('equipmentUpgrade.SoftwareModel')}}:</span>
                                     <input type="text" v-model.lazy="hardwareVer" disabled>
                                 </div> 
                                 <div>
@@ -55,12 +75,12 @@
                                     <input type="text" v-model.lazy="md5" disabled>
                                 </div> 
                                 <div>
-                                    <span>升级包类型:</span>
+                                    <span>{{$t('equipmentUpgrade.UpgradePackageType')}}:</span>
                                     <input type="text" v-model.lazy="upgradeType" disabled>
                                 </div> 
                                 <div>
-                                    <span>适用范围</span>
-                                    <el-select size="small" style="width:150px;" v-model="typetwo" @change="uploadscope" placeholder="请选择">
+                                    <span>{{$t('equipmentUpgrade.ScopeofApplication')}}:</span>
+                                    <el-select size="small" style="width:150px;" v-model="typetwo" @change="uploadscope">
                                         <el-option
                                         v-for="item in optionsthree"
                                         :key="item.value"
@@ -71,7 +91,8 @@
                                 </div>
                                 <div v-if="typedata=='0'" style="flex-direction: column;">
                                     <el-table
-                                        ref="multipleTable"
+                                        @row-click="clickRow"
+                                        ref="moviesTable"
                                         :data="tableData5"
                                         border
                                         style="width:450px;"
@@ -84,7 +105,7 @@
                                         <el-table-column
                                         prop="nickname"
                                         align='center'
-                                        label="设备昵称"
+                                        :label="$t('equipmentUpgrade.DeviceNickname')"
                                         width="100">
                                         </el-table-column>
                                         <el-table-column
@@ -95,7 +116,7 @@
                                         </el-table-column>
                                         <el-table-column
                                         prop="hardwareVersion"
-                                        label="硬件版本"
+                                        :label="$t('equipmentUpgrade.HardwareVersion')"
                                         align='center'>
                                         </el-table-column>
                                     </el-table>
@@ -113,7 +134,8 @@
                                 </div>
                                 <div v-if="typedata=='1'">
                                     <el-table
-                                        ref="multipleTable"
+                                        @row-click="clickRow2"
+                                        ref="moviesTable2"
                                         :data="tableData6"
                                         border
                                         style="width:450px;"
@@ -126,19 +148,19 @@
                                         <el-table-column
                                         prop="groupName"
                                         align='center'
-                                        label="分组名称"
+                                        :label="$t('equipmentUpgrade.GroupName')"
                                         width="140">
                                         </el-table-column>
                                         <el-table-column
                                         prop="model"
-                                        label="硬件版本"
+                                        :label="$t('equipmentUpgrade.HardwareVersion')"
                                         align='center'>
                                         </el-table-column>
                                     </el-table>
                                 </div>
                                 <div>
-                                    <span>升级包状态:</span>
-                                    <el-select size="small" v-model.lazy="value" style="width:150px;" placeholder="请选择">
+                                    <span>{{$t('equipmentUpgrade.UpgradePackageStatus')}}:</span>
+                                    <el-select size="small" v-model.lazy="value" style="width:150px;">
                                         <el-option
                                         v-for="item in options"
                                         :key="item.value"
@@ -148,19 +170,18 @@
                                     </el-select>
                                 </div>
                                 <div>
-                                    <span>描述:</span>
+                                    <span>{{$t('equipmentUpgrade.Describe')}}:</span>
                                     <el-input
                                     type="textarea"
                                     :rows="2"
-                                    placeholder="请输入描述内容"
                                     v-model.lazy="textarea">
                                     </el-input>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button v-if="uploadtype===false" @click="nextstep" type="button" class="btn btn-primary nextsteps">下一步</button>
-                            <button v-if="uploadtype" @click="uploadsave" type="button" class="btn btn-primary uploadsaves">保存</button>
+                            <button v-if="uploadtype===false" @click="nextstep" type="button" class="btn btn-primary nextsteps">{{$t('equipmentUpgrade.Nextstep')}}</button>
+                            <button v-if="uploadtype" @click="uploadsave" type="button" class="btn btn-primary uploadsaves">{{$t('equipmentUpgrade.Save')}}</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -168,35 +189,12 @@
             <div class="equipmentUpgrade_bottom"
             v-loading.body='loading'
             element-loading-text="拼命加载中">
-                <div class="equipmentUpgrade_bottom_top">
-                    <div class="equipmentUpgrade_formtwo">
-                        <span>升级包名称:</span>
-                        <input type="text" v-model.lazy="searchfilename" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入升级包名称">
-                    </div>
-                    <div class="equipmentUpgrade_formtwo">
-                        <span>软件版本号:</span>
-                        <input type="text" v-model.lazy="softwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入软件版本号">
-                    </div>
-                    <!-- <div class="equipmentUpgrade_formtwo">
-                        <span>软件型号:</span>
-                        <input type="text" v-model.lazy="hardwareversion" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入软件型号">
-                    </div> -->
-                    <div class="equipmentUpgrade_formtwo">
-                        <span>升级包状态:</span>
-                        <el-select v-model.lazy="value4" size='small' clearable placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </div>
-                    <el-button type="primary" @click="search" icon='search' size="mini" style="margin:4px 5px;height:29px;font-size:15px;">搜索</el-button>
-                </div>
                 <div class="equipmentUpgrade_bottom_bottom">
                     <el-table
-                        ref="multipleTable"
+                        :default-sort = "{prop: 'date', order: 'descending'}"
+                        @sort-change='sortChange'
+                        @row-click="clickRow3"
+                        ref="moviesTable3"
                         :data="tableData4"
                         border
                         stripe
@@ -210,61 +208,69 @@
                         width="55">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="fileName"
                         align='center'
-                        label="升级包名称"
+                        :label="$t('equipmentUpgrade.Upgradepackagename')"
                         width="230">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="softwareVer"
-                        label="软件版本号"
+                        :label="$t('equipmentUpgrade.SoftwareVersionNumber')"
                         align='center'
                         width="210">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="departmentName"
-                        label="组织"
+                        :label="$t('equipmentUpgrade.Organization')"
                         align='center'
                         width="140">
                         </el-table-column>
                         <el-table-column
-                        label="适用范围"
+                        sortable='custom'
+                        prop="upgradeOrder"
+                        :label="$t('equipmentUpgrade.ScopeofApplication')"
                         align='center'
-                        width="120">
+                        width="180">
                             <template scope="scope">
-                                <span v-if="scope.row.upgradeOrder=='0'">指定设备</span>
-                                <span v-if="scope.row.upgradeOrder=='1'">指定分组</span>
-                                <span v-if="scope.row.upgradeOrder=='2'">指定型号</span>      
+                                <span v-if="scope.row.upgradeOrder=='0'">{{$t('equipmentUpgrade.defineEquipment')}}</span>
+                                <span v-if="scope.row.upgradeOrder=='1'">{{$t('equipmentUpgrade.DesignatedGrouping')}}</span>
+                                <span v-if="scope.row.upgradeOrder=='2'">{{$t('equipmentUpgrade.SpecifiedModel')}}</span>      
                             </template>  
                         </el-table-column>
                         <el-table-column
-                        label="状态"
+                        sortable='custom'
+                        prop="status"
+                        :label="$t('equipmentUpgrade.Status')"
                         align='center'
                         width="120">
                             <template scope="scope">
-                                <span v-if="scope.row.status==0" style="color:#20A0FF">已启用</span>
-                                <span v-if="scope.row.status==1" style="color:#FF4949">已禁用</span>
+                                <span v-if="scope.row.status==0" style="color:#20A0FF">{{$t('equipmentUpgrade.Enabled')}}</span>
+                                <span v-if="scope.row.status==1" style="color:#FF4949">{{$t('equipmentUpgrade.disabled')}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="summary"
-                        label="描述"
+                        :label="$t('equipmentUpgrade.Describe')"
                         align='center'>
                         </el-table-column>
                         <el-table-column
-                        label="操作"
+                        :label="$t('equipmentUpgrade.Operate')"
                         align='center'
-                        width="160"
+                        width="190"
                         v-if="operationtype==true">
                             <template scope="scope">
                                 <span v-if="scope.row.status==0">
-                                    <el-button type="danger" @click="forbidden(scope.row)" size="small">禁用</el-button>
+                                    <el-button type="danger" @click="forbidden(scope.row)" size="small">{{$t('equipmentUpgrade.disabled')}}</el-button>
                                 </span>
                                 <span v-if="scope.row.status==1">
-                                    <el-button type="primary" @click="startusing(scope.row)" size="small">启用</el-button>
+                                    <el-button type="primary" @click="startusing(scope.row)" size="small">{{$t('equipmentUpgrade.Enabled')}}</el-button>
                                 </span>   
                                 <span v-if="setUpgradeBatch">
-                                    <el-button @click="LowerHair(scope.row)" type="primary" size='small'>批量下发</el-button>
+                                    <el-button @click="LowerHair(scope.row)" type="primary" size='small'>{{$t('equipmentUpgrade.LowerHair')}}</el-button>
                                 </span>
                             </template>
                         </el-table-column>
@@ -289,14 +295,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">升级包批量下发</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{$t('equipmentUpgrade.UpgradeIssuedInBatches')}}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="BatchUpgrades">
                             <div>
                                 <!-- 指定设备,指定型号 -->
                                 <el-table
-                                    ref="multipleTable"
+                                    @row-click="clickRow4"
+                                    ref="moviesTable4"
                                     :data="BatchUpgradesData"
                                     border
                                     style="width:100%;"
@@ -309,7 +316,7 @@
                                     </el-table-column>
                                     <el-table-column
                                     align='center'
-                                    label="设备昵称"
+                                    :label="$t('equipmentUpgrade.DeviceNickname')"
                                     width="155">
                                         <template scope="scope">
                                             <span v-if="scope.row.nickname==''">
@@ -328,7 +335,7 @@
                                     </el-table-column>
                                     <el-table-column
                                     prop="model"
-                                    label="型号"
+                                    :label="$t('equipmentUpgrade.Model')"
                                     align='center'>
                                     </el-table-column>
                                 </el-table>
@@ -347,8 +354,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentUpgrade.Close')}}</button>
+                        <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">{{$t('equipmentUpgrade.confirm')}}</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -359,13 +366,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">升级包批量下发</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{$t('equipmentUpgrade.UpgradeIssuedInBatches')}}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="BatchUpgrades">
                             <div>
                                 <el-table
-                                    ref="multipleTable"
+                                    @row-click="clickRow5"
+                                    ref="moviesTable5"
                                     :data="tableData2"
                                     border
                                     style="width:100%;"
@@ -378,7 +386,7 @@
                                     </el-table-column>
                                     <el-table-column
                                     align='center'
-                                    label="设备昵称"
+                                    :label="$t('equipmentUpgrade.DeviceNickname')"
                                     width="155">
                                         <template scope="scope">
                                             <span v-if="scope.row.nickname==''">
@@ -397,7 +405,7 @@
                                     </el-table-column>
                                     <el-table-column
                                     prop="model"
-                                    label="型号"
+                                    :label="$t('equipmentUpgrade.Model')"
                                     align='center'>
                                     </el-table-column>
                                 </el-table>
@@ -416,8 +424,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentUpgrade.Close')}}</button>
+                        <button @click="BatchUpgradesSubmit" type="button" class="btn btn-primary">{{$t('equipmentUpgrade.confirm')}}</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -429,6 +437,7 @@
         name: 'equipmentUpgrade',
         data () {
             return {
+                
                 //按钮权限
                 uploading:false,
                 revamp:false,
@@ -443,11 +452,11 @@
                 currentPage4:1,
                 total:100,
                 input:'',
-                options:[{value:1,label:'禁用'},{value:0,label:'启用'}],
+                options:[],
                 value:0,
                 optionstwo:[{value:'0',label:'tsbg'},{value:'1',label:'tsbc'},{value:'2',label:'tsba'}],
                 valuetwo:'',
-                optionsthree:[{value:0,label:'指定设备'},{value:1,label:'指定分组'},{value:2,label:'指定型号'}],
+                optionsthree:[],
                 tableData5:[],
                 sitesTwo:[],
                 pageSize:'',
@@ -473,9 +482,7 @@
                 filePath:'',  //文件存放路径
                 fileUrl:'',  //文件下载url
                 departmentId:'',
-                searchfilename:'', //检索条件
-                softwareversion:'',
-                hardwareversion:'',
+                keyword:'',//检索条件
                 value4:'',
                 tableData6:[],
                 sitesthr:[],
@@ -495,6 +502,8 @@
                 BatchUpgradesVal:'',
                 dataSize1:[],
                 dataSize2:[],
+                props:'',//排序字段
+                orders:'',
             }
         },
         mounted(){
@@ -537,12 +546,32 @@
             },200)
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.ready()
+            },
+            clickRow(row){
+                this.$refs.moviesTable.toggleRowSelection(row)
+            },
+            clickRow2(row){
+                this.$refs.moviesTable2.toggleRowSelection(row)
+            },
+            clickRow3(row){
+                this.$refs.moviesTable3.toggleRowSelection(row)
+            },
+            clickRow4(row){
+                this.$refs.moviesTable4.toggleRowSelection(row)
+            },
+            clickRow5(row){
+                this.$refs.moviesTable5.toggleRowSelection(row)
+            },
             //点击批量下发按钮
             LowerHair(val){
                 var that = this;
                 if(val.status=='1'){
                     that.$message({
-                        message: '升级包禁用状态下不可升级!',
+                        message: that.$t('equipmentUpgrade.UpgradePackageForbiddenDtate'),
                         type: 'error',
                         showClose: true,
                     });
@@ -556,13 +585,12 @@
                     $('#LowerHairModal2').modal('show')
                 }else{
                     that.$message({
-                        message: '没有指定使用范围,不可批量升级!',
+                        message: that.$t('equipmentUpgrade.NoSpecifiedBatchUpgrade'),
                         type: 'error',
                         showClose: true,
                     });
                     return;
                 }
-                console.log(this.typeData)
                 that.BatchUpgradesVal = val
                 that.BatchUpgradesReady(val)
             },
@@ -675,7 +703,7 @@
                             $('#LowerHairModal').modal('hide')
                             $('#LowerHairModal2').modal('hide')
                             that.$message({
-                                message: '批量下发成功!',
+                                message: that.$t('equipmentUpgrade.Successes'),
                                 type: 'success',
                                 showClose: true,
                             });
@@ -704,7 +732,7 @@
             handleSelectionChangethree(val){
                 if(val.length>=2){
                     this.$message({
-                        message:'只能选取一个分组',
+                        message:that.$t('equipmentUpgrade.OnlyCanBeSelected'),
                         type:'error'
                     })
                     return;
@@ -894,7 +922,7 @@
                     if(data.errorCode=='0'){
                         that.percentage = 100  //进度条
                         that.$message({
-                            message: '上传成功',
+                            message:that.$t('equipmentUpgrade.UploadSuccess'),
                             type:'success',
                             showClose: true,
                         });
@@ -976,7 +1004,7 @@
                             $('.uploadsaves').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '保存成功',
+                                    message: that.$t('equipmentUpgrade.SaveSuccess'),
                                     type:'success',
                                 })
                                 $('#upgrademyModal').modal('hide');
@@ -1005,7 +1033,7 @@
                             $('.uploadsaves').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '保存成功',
+                                    message:that.$t('equipmentUpgrade.SaveSuccess'),
                                     type:'success',
                                 })
                                 $('#upgrademyModal').modal('hide');
@@ -1020,16 +1048,9 @@
             //点击升级包分组修改
             upgradepatchamend(){
                 var that = this
-                if(this.sites.length=='0'){
+                if(this.sites.length=='0'||this.sites.length>1){
                     that.$message({
-                        message: '请选择升级包进行修改',
-                        type:'error',
-                    })
-                    return;
-                }
-                if(this.sites.length>1){
-                    that.$message({
-                        message: '请选择单个升级包进行修改',
+                        message: that.$t('equipmentUpgrade.PleaseSelectModification'),
                         type:'error',
                     })
                     return;
@@ -1060,25 +1081,17 @@
             //删除升级包
             upgradepatchdelete(){
                 var that = this
-                if(this.sites.length=='0'){
+                if(this.sites.length=='0'||this.sites.length>1){
                     that.$message({
-                        message: '请选择升级包进行删除',
-                        type:'error',
-                    })
-                    return;
-                }
-                if(this.sites.length>1){
-                    that.$message({
-                        message: '请选择单个升级包进行删除',
+                        message: that.$t('equipmentUpgrade.PleaseToDelete'),
                         type:'error',
                     })
                     return;
                 }
                 if(this.sites.length=='1'){
-                    that.$confirm('此操作将删除升级包信息, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
+                    that.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                    confirmButtonText: that.$t('FalseHints.yes'),
+                    cancelButtonText: that.$t('FalseHints.no'),
                     }).then(() => {
                         $.ajax({
                             type:'post',
@@ -1092,7 +1105,7 @@
                             success:function(data){
                                 if(data.errorCode=='0'){
                                     that.$message({
-                                        message:'删除成功',
+                                        message:that.$t('FalseHints.DeleteSuccess'),
                                         type:'success'
                                     })
                                     that.ready()
@@ -1104,7 +1117,7 @@
                     }).catch(() => {
                         that.$message({
                             type: 'info',
-                            message: '已取消删除'
+                            message: that.$t('FalseHints.Undelete'),
                         });          
                     });
                     
@@ -1116,7 +1129,7 @@
                 var that = this
                 if(that.operationtype==false){
                     that.$message({
-                        message: '您暂无此权限',
+                        message:that.$t('FalseHints.YouDoNotHaveThisAuthority'),
                         type:'error',
                         showClose: true,
                     });
@@ -1136,7 +1149,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '升级包启用成功',
+                                message: that.$t('FalseHints.UpgradeLaunched'),
                                 type:'success',
                                 showClose: true,
                             });
@@ -1151,7 +1164,7 @@
                 var that = this
                 if(that.operationtype==false){
                     that.$message({
-                        message: '您暂无此权限',
+                        message: that.$t('FalseHints.YouDoNotHaveThisAuthority'),
                         type:'error',
                         showClose: true,
                     });
@@ -1171,7 +1184,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '升级包禁用成功',
+                                message:that.$t('FalseHints.UpgradePackageDisabled'),
                                 type:'success',
                                 showClose: true,
                             });
@@ -1194,10 +1207,10 @@
                     data:{
                         pageIndex:sessionStorage.pageIndex,
                         pageSize:sessionStorage.pageSize,
-                        fileName:that.searchfilename,
-                        softwareVer:that.softwareversion,
-                        // modalVer:that.hardwareversion,
-                        status:that.value4
+                        keyword:that.keyword,
+                        status:that.value4,
+                        order:that.props,
+                        orderBy:that.orders
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -1219,6 +1232,13 @@
             sessionStorage.pageIndex = 1
             sessionStorage.pageSize = 10
             this.ready();
+            if(localStorage.locale=='en'){
+                this.optionsthree = [{value:0,label:'define equipment'},{value:1,label:'Designated grouping'},{value:2,label:'Specified model'}]
+                this.options = [{value:1,label:'Disable'},{value:0,label:'Enabled'}]
+            }else{
+                this.optionsthree = [{value:0,label:'指定设备'},{value:1,label:'指定分组'},{value:2,label:'指定型号'}]
+                this.options = [{value:1,label:'禁用'},{value:0,label:'启用'}]
+            }
         }
     }
 </script>
@@ -1226,18 +1246,22 @@
 .equipmentUpgrade{width: 100%;height: 100%;padding: 15px;position: relative;}
 .equipmentUpgrade_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .equipmentUpgrade_nav>i{font-size: 23px;}
-.equipmentUpgrade_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
-.equipmentUpgrade_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
+.equipmentUpgrade_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.equipmentUpgrade_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;display: flex;align-items: center;}
+.equipmentUpgrade_top_div{height: 29px;margin-left: 20px;display: flex}
+.equipmentUpgrade_top_div>span{line-height: 29px;font-size: 16px}
+
+
 .equipmentUpgrade_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;border-radius: 0 0 4px 4px;}
 .equipmentUpgrade_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}
 .equipmentUpgrade_bottom_top>div{display: flex;margin-top: 4px;}
-.equipmentUpgrade_bottom_top>div>span{width: 40%;line-height: 30px;}
-.equipmentUpgrade_bottom_top>div>input{height: 30px;width: 121px;}
+.equipmentUpgrade_bottom_top>div>span{width: 170px;line-height: 30px;}
+.equipmentUpgrade_bottom_top>div>input{height: 30px;width: 161px;}
 .equipmentUpgrade_bottom_top>div>div{height: 30px;width: 140px;}
-.equipmentUpgrade_bottom_bottom{position: absolute;top:40px;bottom: 0;width: 100%;padding: 5px;overflow: auto;}
+.equipmentUpgrade_bottom_bottom{position: absolute;top:0;bottom: 0;width: 100%;padding: 5px;overflow: auto;}
 .upload_div{width: 450px;margin:0 auto;}
 .upload_div>div{display: flex;margin-bottom: 5px;}
-.upload_div>div>span{display:inline-block;line-height: 30px;width:35%;}
+.upload_div>div>span{display:inline-block;line-height: 30px;width:40%;text-align: right;}
 .upload_div>div>div{width: 75%;}
 .upload_div>div>input{height: 26px;}
 .BatchUpgrades{width: 100%;height:auto;max-height:350px;position: relative;}

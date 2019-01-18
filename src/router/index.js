@@ -27,6 +27,7 @@ import alarm from '@/components/eventManage/alarm'  //事件管理-->告警信�
 import event from '@/components/eventManage/event'  //事件管理-->事件信息
 import equipmentStatistics from '@/components/statisticsmessage/equipmentStatistics'  //统计信息-->设备概览
 import factory from '@/components/type/factory'  //统计信息-->工厂
+import onlineTime from '@/components/statisticsmessage/onlineTime'  //统计信息-->在线时长
 
 import windLightFileList from '@/components/iotDataCenter/windLightFileList'  //物联网数据-->应用固件
 import windLightData from '@/components/iotDataCenter/windLightData'  //物联网数据-->内嵌页面
@@ -39,21 +40,15 @@ Vue.prototype.$echarts = echartss
 //请求错误码封装
 Vue.prototype.errorCode = function(data){
     if(data.errorCode=='1001'){
-      var msg = ''
-      if(localStorage.locale=='en'){
-        msg=data.errorMessage
-      }else{
-        msg='未知错误'
-      }
       this.$message({
-          message: msg,
+          message: this.$t('Falsehints.unknownerror'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='1002'){
       this.$message({
-          message: '会话超时,重新登录',
+          message: this.$t('Falsehints.sessiontimeout'),
           type: 'error',
           showClose: true,
       });
@@ -61,7 +56,7 @@ Vue.prototype.errorCode = function(data){
     }
     if(data.errorCode=='1003'){
       this.$message({
-          message: '数据库错误',
+          message: this.$t('Falsehints.databaseerror'),
           type: 'error',
           showClose: true,
       });
@@ -69,338 +64,343 @@ Vue.prototype.errorCode = function(data){
     }
     if(data.errorCode=='1004'){
       this.$message({
-          message: '未找到数据',
+          message: this.$t('Falsehints.datanotfound'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='1005'){
       this.$message({
-          message: '参数错误',
+          message: this.$t('Falsehints.parametererror'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='1006'){
       this.$message({
-          message: '保存失败',
+          message: this.$t('Falsehints.datasavefailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='1007'){
       this.$message({
-          message: '修改失败',
+          message: this.$t('Falsehints.dataeditfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='1008'){
       this.$message({
-          message: '删除失败',
+          message: this.$t('Falsehints.DeleteFailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='1009'){
       this.$message({
-          message: '无权限',
+          message: this.$t('Falsehints.permissiondenied'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2001'){
       this.$message({
-          message: '验证码错误',
+          message: this.$t('Falsehints.verifycodefailed'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2002'){
       this.$message({
-          message: '原始密码错误',
+          message: this.$t('Falsehints.originalpasswordmistake'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2003'){
       this.$message({
-          message: '用户名存在',
+          message:  this.$t('Falsehints.usernameexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2004'){
       this.$message({
-          message: '用户认证失败，用户名或密码错误',
+          message: this.$t('Falsehints.userverifyfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2005'){
       this.$message({
-          message: '用户被禁用，无法登陆',
+          message: this.$t('Falsehints.userbedisabled'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2006'){
       this.$message({
-          message: '部门名称重复',
+          message: this.$t('Falsehints.departmentexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2007'){
       this.$message({
-          message: '角色名称重复',
+          message: this.$t('Falsehints.roleexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2008'){
       this.$message({
-          message: '用户id为空',
+          message: this.$t('Falsehints.useridisempty'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2009'){
       this.$message({
-          message: '发送信息为空',
+          message: this.$t('Falsehints.sendmessageisempty'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2010'){
       this.$message({
-          message: '信息发送失败',
+          message: this.$t('Falsehints.messagesendfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2011'){
       this.$message({
-          message: '文件型式错误',
+          message: this.$t('Falsehints.filetypeerror'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2012'){
       this.$message({
-          message: '文件类型为空',
+          message: this.$t('Falsehints.filetypeisnull'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2013'){
       this.$message({
-          message: '没有找到相对应的文件',
+          message: this.$t('Falsehints.filenotfound'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2014'){
       this.$message({
-          message: '图片存在',
+          message: this.$t('Falsehints.imgexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2015'){
       this.$message({
-          message: '升级文件错误',
+          message: this.$t('Falsehints.upgradefileerror'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2016'){
       this.$message({
-          message: '升级文件MD5校验失败',
+          message: this.$t('Falsehints.upgradefilemd5verifyfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2017'){
       this.$message({
-          message: '升级文件上传失败',
+          message: this.$t('Falsehints.errorfileuploadfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2018'){
       this.$message({
-          message: '升级文件已经存在',
+          message: this.$t('Falsehints.fileexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2019'){
       this.$message({
-          message: '设置升级文件状态失败',
+          message: this.$t('Falsehints.setupgradefilestatusfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2020'){
       this.$message({
-          message: '未查询到升级包信息',
+          message: this.$t('Falsehints.notfoundupgradefileinfo'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2021'){
       this.$message({
-          message: '升级包信息修改失败',
+          message: this.$t('Falsehints.upgradefileinfoeditfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2022'){
       this.$message({
-          message: '删除失败，升级包不存在或无权限',
+          message: this.$t('Falsehints.upgradefiledeletedfailure'),
           type: 'error',
           showClose: true,
       });
     }
-
     if(data.errorCode=='2023'){
       this.$message({
-          message: '未查询到模板信息',
+          message: this.$t('Falsehints.notfoundtemplateinfo'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2024'){
       this.$message({
-          message: '设置模板状态失败',
+          message: this.$t('Falsehints.settemplatestatusfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2025'){
       this.$message({
-          message: '保存模板配置信息失败',
+          message: this.$t('Falsehints.saveconfiginfofailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2026'){
       this.$message({
-          message: '生成模板失败',
+          message: this.$t('Falsehints.generatetemplatefailure'),
           type: 'error',
           showClose: true,
       });
     }
-
     if(data.errorCode=='2027'){
       this.$message({
-          message: '设备不是同一型号',
+          message: this.$t('Falsehints.Theequipmentisnotthesametype'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2028'){
       this.$message({
-          message: '设备型号与分组不一致',
+          message: this.$t('Falsehints.equipmentmodelisdifferentfromgroup'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2029'){
       this.$message({
-          message: '未获取到设备组',
+          message: this.$t('Falsehints.notfoundequipmentgroup'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2030'){
       this.$message({
-          message: '设备分组名称存在',
+          message: this.$t('Falsehints.equipmentgroupnameexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2031'){
       this.$message({
-          message: '设备不存在自己的模板',
+          message: this.$t('Falsehints.owntemplatedoesnotexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2032'){
       this.$message({
-          message: 'ue（用户）不存在或无权限',
+          message: this.$t('Falsehints.uenotexistorpermissiondenied'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2033'){
       this.$message({
-          message: 'ue（用户）存在',
+          message: this.$t('Falsehints.ueexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2034'){
       this.$message({
-          message: 'ue（用户）认证失败',
+          message: this.$t('Falsehints.ueauthfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2035'){
       this.$message({
-          message: '设备不存在或无权限',
+          message: this.$t('Falsehints.equipmentnotexistorpermissiondenied'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2036'){
       this.$message({
-          message: '移除设备分组失败',
+          message: this.$t('Falsehints.removegroupfromequipmentfailure'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2037'){
       this.$message({
-          message: '设备不是同一部门（用户组）',
+          message: this.$t('Falsehints.Equipmentisnotthesamedepartment'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2038'){
       this.$message({
-          message: '未查询到设备或升级包',
+          message: this.$t('Falsehints.notfindequipmentupgradefile'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2039'){
       this.$message({
-          message: '设备与平面图不在同一部门',
+          message: this.$t('Falsehints.equipmentdepartmentisdifferentfromplan'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2040'){
       this.$message({
-          message: '密码错误',
+          message: this.$t('Falsehints.passwordauthfaild'),
+          type: 'error',
+          showClose: true,
+      });
+    }
+    if(data.errorCode=='2041'){
+      this.$message({
+          message: this.$t('Falsehints.Differentorganizations'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='2042'){
       this.$message({
-          message: 'ueIp已存在',
+          message: this.$t('Falsehints.ueIPexist'),
           type: 'error',
           showClose: true,
       });
     }
     if(data.errorCode=='3001'){
       this.$message({
-          message: '发送配置失败',
+          message: this.$t('Falsehints.generatetemplatefailure'),
           type: 'error',
           showClose: true,
       });
@@ -515,10 +515,15 @@ export default new Router({
           name: 'event',
           component: event,
         },
-        {//事件管理-->统计数据
+        {//统计信息-->统计数据
           path: '/dataStatistics',
           name: 'dataStatistics',
           component: dataStatistics,
+        },
+        {//统计信息-->在线时长
+          path: '/onlineTime',
+          name: 'onlineTime',
+          component: onlineTime,
         },
         {//物联网数据-->应用固件
           path: '/windLightFileList',

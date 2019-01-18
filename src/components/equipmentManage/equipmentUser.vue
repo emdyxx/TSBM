@@ -1,36 +1,17 @@
 <template>
     <div class="equipmentUser">
-        <div class="equipmentUser_nav">
-            终端管理<i class="iconfont icon-icon"></i>终端用户
-        </div>
+        <!-- <div class="equipmentUser_nav">
+            {{$t('equipmentUser.TerminalManagement')}}<i class="iconfont icon-icon"></i>{{$t('equipmentUser.TerminalUser')}}
+        </div> -->
         <div class="equipmentUser_main">
-            <el-tabs type="border-card" v-model.lazy="activeName" v-loading="loading" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
-                <el-tab-pane label="所有" name='1'>
-                    <div class="equipmentUser_top">
-                        <div class="equipmentUser_formtwo">
-                            <span>链接设备MAC:</span>
-                            <input v-model.lazy="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入链接设备MAC">
-                        </div>
-                        <div class="equipmentUser_formtwo">
-                            <span>用户设备MAC:</span>
-                            <input v-model.lazy="search.terminalMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入用户设备MAC">
-                        </div>
-                        <div class="equipmentUser_formtwo">
-                            <span>在线状态:</span>
-                            <el-select v-model.lazy="onlinevalue" size='small' clearable placeholder="请选择">
-                                <el-option
-                                v-for="item in onlineoptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>  
-                        </div>
-                        <el-button @click="searchs" type="primary" size='small' style="height:30px;margin-top:3px;margin-left:5px;">搜索</el-button>
-                    </div>
+            <el-tabs type="border-card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
+                <el-tab-pane :label="$t('equipmentUser.Own')" name='1' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div class="equipmentUser_bottom">
                         <el-table
-                            ref="multipleTable"
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange'
+                            @row-click="clickRow"
+                            ref="moviesTable"
                             :data="tableData"
                             border
                             stripe
@@ -43,8 +24,11 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
+                            prop="nickname"
+                            fixed
                             align='center'
-                            label="用户昵称"
+                            :label="$t('equipmentUser.nickname')"
                             width="170">
                                 <template scope="scope">
                                     <span v-if="scope.row.nickname==''">
@@ -56,57 +40,67 @@
                                 </template>  
                             </el-table-column>  
                             <el-table-column
+                            sortable='custom'
                             prop="terminalMAC"
-                            label="用户设备MAC"
+                            :label="$t('equipmentUser.EquipmentMAC')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            label="状态"
+                            sortable='custom'
+                            prop="online"
+                            :label="$t('equipmentUser.Onlinestate')"
                             align='center'
-                            width='80'>
+                            width='130'>
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                        在线
+                                        {{$t('equipmentUser.OnLine')}}
                                     </span>
                                     <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                        离线
+                                        {{$t('equipmentUser.OffLine')}}
                                     </span>
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="terminalType"
-                            label="终端类型"
+                            :label="$t('equipmentUser.Terminaltype')"
                             align='center'
-                            width="100">
+                            width="135">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
+                            prop="equipmentMAC"
+                            :label="$t('equipmentUser.LinkdeviceMAC')"
+                            align='center'
+                            width="180">
+                            </el-table-column>
+                            <el-table-column
+                            sortable='custom'
+                            prop="senderMAC"
+                            :label="$t('equipmentUser.TSBGequipment')"
+                            align='center'
+                            width="180">
+                            </el-table-column>
+                            <el-table-column
+                            sortable='custom'
                             prop="updateTime"
-                            label="更新时间"
+                            :label="$t('equipmentUser.Refreshtime')"
                             align='center'
                             width="200">
                             </el-table-column>
                             <el-table-column
-                            prop="senderMAC"
-                            label="TSBG设备"
-                            align='center'
-                            width="180">
-                            </el-table-column>
-                            <el-table-column
-                            prop="equipmentMAC"
-                            label="链接设备MAC"
-                            align='center'
-                            width="180">
-                            </el-table-column>
-                            <el-table-column
+                            sortable='custom'
                             prop="departmentName"
                             align='center'
-                            label="归属组织"
-                            width="120">
+                            :label="$t('equipmentUser.Belongingorganization')"
+                            width="200">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
+                            fixed="right"
                             prop="remark"
-                            label="备注"
+                            :label="$t('equipmentUser.Remarks')"
                             align='center'
                             show-overflow-tooltip>
                             </el-table-column>
@@ -124,47 +118,13 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="认证用户" name='2'>
-                    <div class="equipmentUser_top">
-                        <div class="equipmentUser_formtwo">
-                            <span>链接设备MAC:</span>
-                            <input v-model.lazy="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入链接设备MAC">
-                        </div>
-                        <div class="equipmentUser_formtwo">
-                            <span>用户设备MAC:</span>
-                            <input v-model.lazy="search.ueMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入用户设备MAC">
-                        </div>
-                        <div class="equipmentUser_formtwo">
-                            <span>在线状态:</span>
-                            <el-select v-model.lazy="onlinevalue" size='small' clearable placeholder="请选择">
-                                <el-option
-                                v-for="item in onlineoptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>  
-                        </div>
-                        <div class="equipmentUser_formtwo">
-                            <span>认证状态:</span>
-                            <el-select v-model.lazy="Authenticationvalue" size='small' clearable placeholder="请选择">
-                                <el-option
-                                v-for="item in Authenticationoptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>  
-                        </div>
-                        <el-button @click="searchs" type="primary" size='small' style="height:30px;margin-top:3px;margin-left:5px;">搜索</el-button>
-                        <el-button v-if="addtype" @click="approve" type="primary" size='small' style="height:30px;margin-top:3px;">新增用户</el-button>
-                        <el-button v-if="deletetype" @click="deleterove" type="primary" size='small' style="height:30px;margin-top:3px;">修改用户</el-button>
-                        <el-button v-if="approvetype" @click="renzheng" type="primary" size='small' style="height:30px;margin-top:3px;">导入</el-button>
-                        <el-button v-if="batchAuthUe" @click="cloudEnd" type="primary" size='small' style="height:30px;margin-top:3px;">认证UE</el-button>
-                    </div>
+                <el-tab-pane :label="$t('equipmentUser.AuthenticatedUser')" name='2' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div class="equipmentUser_bottom">
                         <el-table
-                            ref="multipleTable"
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange'
+                            @row-click="clickRow2"
+                            ref="moviesTable2"
                             :data="tableData2"
                             border
                             stripe
@@ -178,8 +138,11 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
+                            prop="nickname"
+                            fixed
                             align='center'
-                            label="用户昵称"
+                            :label="$t('equipmentUser.nickname')"
                             width="170">
                                 <template scope="scope">
                                     <span v-if="scope.row.nickname==''">
@@ -191,98 +154,109 @@
                                 </template>  
                             </el-table-column>  
                             <el-table-column
-                            prop="ueIP"
-                            label="IP地址"
-                            align='center'
-                            width="150">
-                            </el-table-column>
-                            <el-table-column
+                            sortable='custom'
                             prop="ueMAC"
-                            label="用户设备MAC"
+                            :label="$t('equipmentUser.EquipmentMAC')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            label="在线状态"
+                            sortable='custom'
+                            prop="ueIP"
+                            :label="$t('equipmentUser.IPAddress')"
                             align='center'
-                            width='100'>
+                            width="140">
+                                <template scope="scope">
+                                    <p style="margin:0">{{scope.row.ueIP}}</p>
+                                    <p v-if="scope.row.currentUeIP!=''" style="margin:0">{{scope.row.currentUeIP}}</p>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                            sortable='custom'
+                            prop="online"
+                            :label="$t('equipmentUser.Onlinestate')"
+                            align='center'
+                            width='120'>
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                        在线
+                                        {{$t('equipmentUser.OnLine')}}
                                     </span>
                                     <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                        离线
+                                        {{$t('equipmentUser.OffLine')}}
                                     </span>
                                 </template>  
                             </el-table-column>
                             <el-table-column
-                            label="认证状态"
+                            sortable='custom'
+                            prop="authStatus"
+                            :label="$t('equipmentUser.Authenticationstatus')"
                             align='center'
-                            width='100'>
+                            width='185'>
                                 <template scope="scope">
                                     <span v-if="scope.row.authStatus=='1'" style='color:#00CC00;'>
-                                        已认证
+                                        {{$t('equipmentUser.Certified')}}
                                     </span>
                                     <span v-else-if="scope.row.authStatus=='0'" style='color:#FF0000;'>
-                                        未认证
+                                        {{$t('equipmentUser.Uncertified')}}
                                     </span>
                                 </template>  
                             </el-table-column>
                             <el-table-column
-                            prop="updateTime"
-                            label="更新时间"
-                            align='center'
-                            width="200">
-                            </el-table-column>
-                            <el-table-column
-                            prop="senderMAC"
-                            label="TSBG设备"
-                            align='center'
-                            width="180">
-                            </el-table-column>
-                            <el-table-column
+                            sortable='custom'
                             prop="equipmentMAC"
-                            label="链接设备MAC"
+                            :label="$t('equipmentUser.LinkdeviceMAC')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            prop="bandwidth"
-                            label="带宽"
+                            sortable='custom'
+                            prop="senderMAC"
+                            :label="$t('equipmentUser.TSBGequipment')"
                             align='center'
-                            width="80">
+                            width="180">
                             </el-table-column>
                             <el-table-column
-                            prop="allowTime"
-                            label="有效时间"
+                            sortable='custom'
+                            prop="tsbgBind"
+                            :label="$t('equipmentUser.BindingtsbgMAC')"
+                            align='center'
+                            width="180">
+                            </el-table-column>
+                            <el-table-column
+                            sortable='custom'
+                            prop="updateTime"
+                            :label="$t('equipmentUser.Refreshtime')"
                             align='center'
                             width="200">
                             </el-table-column>
                             <el-table-column
-                            prop="departmentName"
+                            sortable='custom'
+                            prop="allowTime"
+                            :label="$t('equipmentUser.Activetime')"
                             align='center'
-                            label="归属组织"
+                            width="200">
+                            </el-table-column>
+                            <el-table-column
+                            sortable='custom'
+                            prop="bandwidth"
+                            :label="$t('equipmentUser.Tapewidth')"
+                            align='center'
                             width="120">
                             </el-table-column>
                             <el-table-column
-                            prop="tsbgBind"
-                            label="绑定tsbgMAC"
+                            sortable='custom'
+                            prop="departmentName"
                             align='center'
-                            width="180">
+                            :label="$t('equipmentUser.Belongingorganization')"
+                            width="200">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
+                            fixed="right"
                             prop="remark"
-                            label="备注"
+                            :label="$t('equipmentUser.Remarks')"
+                            width="110"
                             align='center'>
-                            <!-- show-overflow-tooltip -->
-                            </el-table-column>
-                            <el-table-column
-                            label="操作"
-                            align='center'
-                            width="80">
-                                <template scope="scope">
-                                    <el-button @click="deleteUser(scope.row)" type="primary" size="small">删除</el-button>
-                                </template>
                             </el-table-column>
                         </el-table>
                         <div class="block">
@@ -298,39 +272,19 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="注册用户" name='3'>
-                    <div class="equipmentUser_top">
-                        <div class="equipmentUser_top">
-                            <div class="equipmentUser_formtwo">
-                                <span>链接设备MAC:</span>
-                                <input v-model.lazy="search.equipmentMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入链接设备MAC">
-                            </div>
-                            <div class="equipmentUser_formtwo">
-                                <span>用户设备MAC:</span>
-                                <input v-model.lazy="search.staMAC" type="text" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入用户设备MAC">
-                            </div>
-                            <div class="equipmentUser_formtwo">
-                                <span>在线状态:</span>
-                                <el-select v-model.lazy="onlinevalue" size='small' clearable placeholder="请选择">
-                                    <el-option
-                                    v-for="item in onlineoptions"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
-                                </el-select>  
-                            </div>
-                            <el-button @click="searchs" type="primary" size='small' style="height:30px;margin-top:3px;margin-left:5px;">搜索</el-button>
-                        </div>
-                    </div>
+                <el-tab-pane :label="$t('equipmentUser.RegisteredUser')" name='3' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div class="equipmentUser_bottom">
                         <el-table
-                            ref="multipleTable"
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange'
+                            @row-click="clickRow3"
+                            ref="moviesTable3"
                             :data="tableData3"
                             border
                             stripe
                             max-height='530'
                             tooltip-effect="dark"
+                            @selection-change="handleSelectionChange"
                             style="width: 100%;margin-bottom:10px;">
                             <el-table-column
                             type="selection"
@@ -338,34 +292,33 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="staMAC"
-                            label="设备MAC"
+                            :label="$t('equipmentUser.EquipmentMAC')"
                             align='center'
                             width="180">
                             </el-table-column>
-                            <!-- <el-table-column
-                            prop="tsbgBind"
-                            label="绑定tsbgMAC"
-                            align='center'
-                            width="180">
-                            </el-table-column> -->
                             <el-table-column
-                            label="在线状态"
+                            sortable='custom'
+                            prop="online"
+                            :label="$t('equipmentUser.Onlinestate')"
                             align='center'
-                            width='100'>
+                            width='130'>
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                        在线
+                                        {{$t('equipmentUser.OnLine')}}
                                     </span>
                                     <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                        离线
+                                        {{$t('equipmentUser.OffLine')}}
                                     </span>
                                 </template>  
                             </el-table-column>
                             <el-table-column
-                            label="wifi类型"
+                            sortable='custom'
+                            prop="wifiType"
+                            :label="$t('equipmentUser.WiFitype')"
                             align='center'
-                            width="100">
+                            width="120">
                                 <template scope="scope">
                                     <span v-if="scope.row.wifiType=='0'">
                                         2.4G
@@ -374,37 +327,33 @@
                                         5G
                                     </span>
                                 </template>  
-                            </el-table-column>
+                            </el-table-column>                            
                             <el-table-column
-                            prop="updateTime"
-                            label="更新时间"
-                            align='center'
-                            width="200">
-                            </el-table-column>
-                            <el-table-column
+                            sortable='custom'
                             prop="senderMAC"
-                            label="TSBG设备MAC"
+                            :label="$t('equipmentUser.BindingtsbgMAC')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="equipmentMAC"
-                            label="链接设备MAC"
+                            :label="$t('equipmentUser.LinkdeviceMAC')"
                             align='center'>
                             </el-table-column>
                             <el-table-column
-                            prop="departmentName"
+                            sortable='custom'
+                            prop="updateTime"
+                            :label="$t('equipmentUser.Refreshtime')"
                             align='center'
-                            label="归属组织"
-                            width="120">
+                            width="200">
                             </el-table-column>
                             <el-table-column
-                            label="操作"
+                            sortable='custom'
+                            prop="departmentName"
                             align='center'
-                            width="80">
-                                <template scope="scope">
-                                    <el-button @click="deleteUser(scope.row)" type="primary" size="small">删除</el-button>
-                                </template>
+                            :label="$t('equipmentUser.Belongingorganization')"
+                            width="200">
                             </el-table-column>
                         </el-table>
                         <div class="block">
@@ -421,18 +370,57 @@
                     </div>
                 </el-tab-pane> 
             </el-tabs>
+            <div class="equipmentUser_main_div">
+                <el-input
+                    icon="search"
+                    size='small'
+                    :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                    v-model="keyword"
+                    @change="searchs"
+                    style="width:165px;">
+                </el-input>
+                <span style="display:inline-block;width:60px;margin-left:10px;">{{$t('equipmentUser.OnlineState')}}:</span>
+                <el-select @change="searchs" v-model.lazy="onlinevalue" style="width:96px;" size='small' clearable>
+                    <el-option
+                    v-for="item in onlineoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+                <div v-if="activeName=='2'">
+                    <span>{{$t('equipmentUser.AuthenticationStatus')}}:</span>
+                    <el-select @change="searchs" v-model.lazy="Authenticationvalue" style="width:96px;" size='small' clearable>
+                        <el-option
+                        v-for="item in Authenticationoptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-button v-if="addtype" @click="approve" type="primary" size='small' style="height:30px;margin-top:3px;">{{$t('equipmentUser.NewUsers')}}</el-button>
+                    <el-button v-if="deletetype" @click="deleterove" type="primary" size='small' style="height:30px;margin-top:3px;">{{$t('equipmentUser.ModifyUser')}}</el-button>
+                    <el-button v-if="approvetype" @click="renzheng" type="primary" size='small' style="height:30px;margin-top:3px;">{{$t('equipmentUser.TheImport')}}</el-button>
+                    <el-button v-if="batchAuthUe" @click="cloudEnd" type="primary" size='small' style="height:30px;margin-top:3px;">{{$t('equipmentUser.CertifiedUE')}}</el-button>
+                    <el-button @click="deleteUser" type="primary" size="small" style="height:30px;margin-top:3px;">{{$t('equipmentUser.delete')}}</el-button> 
+                </div>
+                <div v-if="activeName=='3'">
+                    <el-button @click="deleteUser" type="primary" size="small" style="height:30px;margin-top:3px;margin-left:5px;">{{$t('equipmentUser.delete')}}</el-button>
+                </div>
+            </div>
             <!-- 认证用户模态框 -->
             <div class="modal fade" id="approvemyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog" style="width:450px;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title myModalLabel">新增用户</h4>
+                            <h4 v-if="statustype=='0'" class="modal-title myModalLabel" style="text-align:left">{{$t('equipmentUser.Newusers')}}</h4>
+                            <h4 v-if="statustype=='1'" class="modal-title myModalLabel" style="text-align:left">{{$t('equipmentUser.Modifytheuser')}}</h4>
                         </div>
                         <div class="modal-body">
                             <div v-if="selected" class="equipmentUser_form">
-                                <span><i class="required">*</i>归属部门:</span>
-                                <el-select v-model.lazy="add.departmentId" placeholder="请选择">
+                                <span><i class="required">*</i>{{$t('equipmentUser.Attributiondepartment')}}:</span>
+                                <el-select v-model.lazy="add.departmentId">
                                     <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -442,70 +430,67 @@
                                 </el-select>
                             </div>
                             <div class="equipmentUser_form">
-                                <span><i class="required">*</i>用户设备MAC:</span>
-                                <input v-model.lazy="add.ueMAC" id="ueMAC" type="text" maxlength="17" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入用户设备MAC">
+                                <span><i class="required" >*</i>{{$t('equipmentUser.UEdeviceMAC')}}:</span>
+                                <input v-model="add.ueMAC" id="ueMAC" type="text" maxlength="17" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" :placeholder="$t('equipmentUser.PleaseenteruedeviceMAC')">
                             </div>
                             <div class="equipmentUser_form">
-                                <el-checkbox v-model.lazy="checked" @change='Autopassword' style="margin-left:20px;color: #555555;">使用默认密码</el-checkbox>
+                                <el-checkbox v-model="checked" @change='Autopassword' style="margin-left:110px;color: #555555;">{{$t('equipmentUser.Usingthedefaultpassword')}}</el-checkbox>
                             </div>
                             <div class="equipmentUser_form">
-                                <span style="width: 105px;">链接tsbgMAC:</span>
-                                <input v-model.lazy="add.tsbgBind" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入绑定tsbgMAC">
+                                <span><i class="required">*</i>{{$t('equipmentUser.Authenticationpassword')}}:</span>
+                                <input v-model="add.authPwd" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentUser.Pleasepassword')">
                             </div>
                             <div class="equipmentUser_form">
-                                <span><i class="required">*</i>认证密码:</span>
-                                <input v-model.lazy="add.authPwd" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入认证密码">
-                            </div>
-                            <div class="equipmentUser_form">
-                                <span style="width: 105px;"></span>
-                                <el-select v-model="tsbgBindvalue" @change="tsbgBindChange" placeholder="请选择">
+                                <span>{{$t('equipmentUser.BindingtsbgMAC')}}:</span>
+                                <el-select v-model="tsbgBindvalue" @change="tsbgBindChange" size='small'>
                                     <el-option
                                     v-for="item in tsbgBindoptions"
                                     :key="item.MAC"
-                                    :label="item.MAC"
+                                    :label="item.nickname"
                                     :value="item.MAC">
                                     </el-option>
                                 </el-select>
                             </div>
                             <div class="equipmentUser_form">
-                                <span>带宽:</span>
-                                <el-input-number v-model="add.bandwidth" :min="0" :max="10000" label="描述文字"></el-input-number>
-                                <!-- <input v-model.lazy="add.tsbgBind" type="number" maxlength="50" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入带宽"> -->
+                                <span>{{$t('equipmentUser.Tapewidth')}}:</span>
+                                <input v-model="add.bandwidth" id="authPwd" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentUser.Thebandwidthisindicatingunlimited')">
+                                <!-- <el-input-number v-model="add.bandwidth" :min="0" :max="10000" :title="$t('equipmentUser.Thebandwidthisindicatingunlimited')"></el-input-number> -->
                             </div>
                             <div class="equipmentUser_form">
-                                <span>有效时间:</span>
+                                <span>{{$t('equipmentUser.Activetime')}}:</span>
                                 <el-date-picker
                                 v-model="add.allowTime"
                                 type="datetime"
-                                @change="times"
-                                placeholder="选择日期时间"
+                                size='small'
+                                :placeholder="$t('equipmentUser.Timeisalwaysvalidempty')"
+                                value-format="yyyy-MM-dd HH:mm:ss"
                                 range-separator='~'>
                                 </el-date-picker>
                             </div>
                             <div class="equipmentUser_form">
-                                <span>用户昵称:</span>
-                                <input v-model.lazy="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户昵称">
+                                <span>{{$t('equipmentUser.Devicename')}}:</span>
+                                <input v-model="add.nickname" type="text" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentUser.Pleasedevicename')">
                             </div>
                             <div class="equipmentUser_form">
-                                <el-checkbox v-model.lazy="checkedtwo" @change='AutoIP' style="margin-left:20px;color: #555555;">自动获取IP</el-checkbox>
+                                <el-checkbox v-model="checkedtwo" @change='AutoIP' style="margin-left:110px;color: #555555;">{{$t('equipmentUser.AutomaticcquisitionofIP')}}</el-checkbox>
                             </div>
                             <div class="equipmentUser_form">
-                                <span><i class="required">*</i>ueIP:</span>
-                                <input v-model.lazy="add.ueIP" id="ueIP" type="text" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入ueIP">
+                                <span><i class="required">*</i>{{$t('equipmentUser.IPAddress')}}:</span>
+                                <input v-model="add.ueIP" id="ueIP" type="text" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentUser.PleaseenterIP')">
                             </div>
                             <div class="equipmentUser_form">
-                                <span>备注信息:</span>
+                                <span>{{$t('equipmentUser.Remarkinformation')}}:</span>
                                 <el-input
                                 type="textarea"
                                 style="height:75px;"
-                                placeholder="请输入备注信息"
+                                :placeholder="$t('equipmentUser.Pleaseinformation')"
                                 v-model.lazy="add.remark">
                                 </el-input>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" @click="addUser" class="btn btn-primary addUsers">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentUser.Close')}}</button>
+                            <button type="button" @click="addUser" class="btn btn-primary addUsers">{{$t('equipmentUser.Save')}}</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -516,7 +501,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title myModalLabel">网关操作</h4>
+                            <h4 class="modal-title myModalLabel" style="text-align:left">网关操作</h4>
                         </div>
                         <div class="modal-body">
                             <div class="equipmentUser_form" style="justify-content: center;">
@@ -538,6 +523,7 @@
         name: 'index',
         data (){
             return {
+                keyword:'',
                 //按钮权限
                 addtype:false,
                 deletetype:false,
@@ -562,16 +548,10 @@
                 total3:10,
 
                 //搜索条件
-                onlineoptions:[{value: '1',label: '在线'},{value: '0',label: '离线'}], //在线状态
+                onlineoptions:[], //在线状态
                 onlinevalue:'',
                 Authenticationoptions:[{value: '1',label: '已认证'},{value: '0',label: '未认证'}], //认证状态
                 Authenticationvalue:'',
-                search:{
-                    equipmentMAC:'',
-                    terminalMAC:'',
-                    ueMAC:'',
-                    staMAC:'',
-                },
 
                 checked:false,
                 checkedtwo:false,
@@ -596,7 +576,9 @@
                 tsbgBindvalue:'',
                 statustype:'0',
                 SelectionChange:[], //认证用户选取的数据
-                loading:false
+                loading:false,
+                props:'',//排序字段
+                orders:'',
             }
         },
         mounted(){
@@ -639,46 +621,54 @@
             },200)
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.handleClick()
+            },
+            clickRow(row){
+                this.$refs.moviesTable.toggleRowSelection(row)
+            },
+            clickRow2(row){
+                this.$refs.moviesTable2.toggleRowSelection(row)
+            },
+            clickRow3(row){
+                this.$refs.moviesTable3.toggleRowSelection(row)
+            },
             handleClick(val){
                 if(val!='ST'){
                     this.onlinevalue = '';
-                    this.search.equipmentMAC = '';
-                    this.search.terminalMAC = '';
-                    this.search.ueMAC = '';
-                    this.search.staMAC = '';
                 }
                 var that = this;
                 var authStatus = '';
                 var pageIndex = '';
                 var pageSize = '';
                 var url = '';
+                this.SelectionChange= []
                 var data = {}
                 that.loading = true
                 if(that.activeName=='1'){
                     pageIndex=that.pageIndex;
                     pageSize=that.pageSize;
                     url='terminal/getAllTerminalList';
-                    data.equipmentMAC=that.search.equipmentMAC
-                    data.terminalMAC=that.search.terminalMAC
                 }
                 if(that.activeName=='2'){
                     pageIndex=that.pageIndex2;
                     pageSize=that.pageSize2;
                     url='terminal/getUeList';
-                    data.equipmentMAC=that.search.equipmentMAC
                     data.authStatus = that.Authenticationvalue
-                    data.ueMAC=that.search.ueMAC
                 }
                 if(that.activeName=='3'){
                     pageIndex=that.pageIndex3;
                     pageSize=that.pageSize3;
                     url='terminal/getStaList'
-                    data.equipmentMAC=that.search.equipmentMAC
-                    data.staMAC=that.search.staMAC
                 }
                 data.online = that.onlinevalue
                 data.pageIndex = pageIndex
                 data.pageSize = pageSize
+                data.keyword = that.keyword
+                data.order = that.props
+                data.orderBy = that.orders
                 $.ajax({
                     type:'get',
                     async:true,
@@ -729,7 +719,6 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.tsbgBindoptions = data.result
-                            // taht.tsbgBindvalue = ''
                         }else{
                             that.errorCode(data)
                         }
@@ -743,7 +732,7 @@
             approve(){
                 var that = this;
                 $('#approvemyModal').modal('show')
-                $('.myModalLabel').text('新增用户')
+                // $('.myModalLabel').text('新增用户')
                 this.statustype = '0'
                 this.checked = false
                 this.checkedtwo = false
@@ -792,9 +781,7 @@
                     });
                     return;
                 }
-                this.tsbgBindvalue = ''
                 $('#approvemyModal').modal('show')
-                $('.myModalLabel').text('修改用户')
                 this.statustype = '1'
                 if(sessionStorage.departmentId=='1'){
                     that.selected = true
@@ -829,6 +816,7 @@
                 this.add.bandwidth = Number(this.SelectionChange[0].bandwidth)
                 this.add.allowTime = this.SelectionChange[0].allowTime
                 this.tsbgMac()
+                this.tsbgBindvalue = this.SelectionChange[0].tsbgBind
                 if(this.SelectionChange[0].pwdType=='0'){
                     that.checked = false
                 }else{
@@ -852,10 +840,6 @@
                 }
                 $('#ueMAC').attr('disabled',true)
             },
-            times(val){
-                var type = val.split('~')
-                this.add.allowTime = type[0]
-            },
             //认证用户保存
             addUser(){
                 var that = this;
@@ -866,26 +850,18 @@
                 var data = {};
                 if(that.add.ueMAC==''){
                     that.$message({
-                        message: '温馨提示:必填数据不能为空',
+                        message: that.$t('FalseHints.RequiredFieldsCanNotBeEmpty'),
                         type: 'error',
                         showClose: true,
                     })
                     return;
                 }
-                if(that.add.tsbgBind==''){
+                if(that.add.ueMAC.length==12){
 
                 }
-                else if(!reg_name.test(that.add.tsbgBind)){
-                    that.$message({
-                        message: '温馨提示:请输入正确的MAC地址',
-                        type: 'error',
-                        showClose: true,
-                    })
-                    return;
-                }
-                if(!reg_name.test(that.add.ueMAC)){
+                else if(!reg_name.test(that.add.ueMAC)){
                     this.$message({
-                        message: '请输入正确的MAC地址',
+                        message: that.$t('FalseHints.PleaseinputTheCorrectMACAddress'),
                         type: 'error',
                         showClose: true,
                     });
@@ -893,7 +869,7 @@
                 }
                 if(result.test(that.add.authPwd)){
                     this.$message({
-                        message: '认证密码不能有中文字符!',
+                        message:  that.$t('FalseHints.TheChinesecharacters'),
                         type: 'error',
                         showClose: true,
                     });
@@ -903,7 +879,7 @@
                     data.pwdType = '0'
                     if(that.add.authPwd==''){
                         that.$message({
-                            message: '温馨提示:认证密码不能为空',
+                            message: that.$t('FalseHints.Authenticationbeempty'),
                             type: 'error',
                             showClose: true,
                         })
@@ -916,7 +892,7 @@
                     data.autoIP = '0'
                     if(that.add.ueIP==''){
                         that.$message({
-                            message: '温馨提示:ueIP不能为空',
+                            message: that.$t('FalseHints.IPcannotbeempty'),
                             type: 'error',
                             showClose: true,
                         })
@@ -930,6 +906,12 @@
                     url = 'terminal/editUe';
                     data.id = that.SelectionChange[0].id
                 }
+                if(this.add.allowTime==''||this.add.allowTime==undefined||this.add.allowTime==null){
+                    var dataTime=''
+                }else{
+                   var d = new Date(this.add.allowTime);  
+                    var dataTime=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(); 
+                }
                 data.departmentId=that.add.departmentId
                 data.ueMAC=that.add.ueMAC
                 data.authPwd=that.add.authPwd
@@ -938,7 +920,7 @@
                 data.remark=that.add.remark
                 data.ueIP=that.add.ueIP
                 data.bandwidth=this.add.bandwidth
-                data.allowTime=this.add.allowTime
+                data.allowTime=dataTime
                 $('.addUsers').attr('disabled',true)
                 $.ajax({
                     type:'post',
@@ -952,14 +934,14 @@
                         if(data.errorCode=='0'){
                             if(that.statustype == '0'){
                                 that.$message({
-                                    message: '保存成功',
+                                    message: that.$t('FalseHints.SaveSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 })
                             }
                             if(that.statustype == '1'){
                                 that.$message({
-                                    message: '修改成功',
+                                    message: that.$t('FalseHints.AmendTheSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 })
@@ -982,7 +964,7 @@
                 var array = [];
                 if(this.SelectionChange.length=='0'){
                     that.$message({
-                        message: '请选取数据进行认证',
+                        message: that.$t('equipmentUser.Pleaseselectauthenticate'),
                         type: 'error',
                         showClose: true,
                     })
@@ -1003,7 +985,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '认证成功',
+                                message: that.$t('equipmentUser.CertificationSuccess'),
                                 type: 'success',
                                 showClose: true,
                             });
@@ -1035,7 +1017,7 @@
                 var that = this;
                 if(this.SelectionChange.length==0){
                     this.$message({
-                        message: '请选择数据进行认证UE',
+                        message:that.$t('equipmentUser.PleaseauthenticateUE'),
                         type: 'error',
                         showClose: true,
                     });
@@ -1068,7 +1050,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '保存成功',
+                                message: that.$t('FalseHints.SaveSuccess'),
                                 type: 'success',
                                 showClose: true,
                             })
@@ -1085,7 +1067,7 @@
                 this.handleClick(data)
             },
             //通用删除按钮
-            deleteUser(val){
+            deleteUser(){
                 var that = this;
                 var url = ''
                 var data = {}
@@ -1097,11 +1079,23 @@
                     })
                     return;
                 }
-                if(that.activeName == '2'){url='terminal/delUe';data.ueIds = val.id}
-                if(that.activeName == '3'){url='terminal/delSta';data.staIds = val.id}
-                that.$confirm('此操作将删除改用户', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                if(this.SelectionChange.length==0){
+                    this.$message({
+                        message: '请选择数据进行删除',
+                        type: 'error',
+                        showClose: true,
+                    });
+                    return;
+                }
+                var array=[]
+                for(var i=0;i<this.SelectionChange.length;i++){
+                    array.push(this.SelectionChange[i].id)
+                }
+                if(that.activeName == '2'){url='terminal/delUe';data.ueIds = array.join(',')}
+                if(that.activeName == '3'){url='terminal/delSta';data.staIds = array.join(',')}
+                that.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                    confirmButtonText: that.$t('FalseHints.yes'),
+                    cancelButtonText: that.$t('FalseHints.no'),
                     type: 'warning'
                 }).then(() => {
                     $.ajax({
@@ -1114,7 +1108,7 @@
                         success:function(data){
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '删除成功',
+                                    message: that.$t('FalseHints.DeleteSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 })
@@ -1127,7 +1121,7 @@
                 }).catch(() => {
                     that.$message({
                         type: 'info',
-                        message: '已取消删除'
+                        message: that.$t('FalseHints.Undelete'),
                     });  
                 })
                 
@@ -1135,6 +1129,13 @@
         },
         created(){
             var that = this;
+            if(localStorage.locale=='en'){
+                this.onlineoptions = [{value:'0',label:'Off-line'},{value:'1',label:'On-line'}]
+                this.Authenticationoptions = [{value: '1',label: 'Certified'},{value: '0',label: 'Uncertified'}]
+            }else{
+                this.onlineoptions = [{value:'0',label:'离线'},{value:'1',label:'在线'}]
+                this.Authenticationoptions = [{value: '1',label: '已认证'},{value: '0',label: '未认证'}]
+            }
             this.handleClick()
         }
     }
@@ -1144,17 +1145,21 @@
 .equipmentUser{width: 100%;height: 100%;padding: 15px;position: relative;}
 .equipmentUser_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .equipmentUser_nav>i{font-size: 23px;}
-.equipmentUser_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
-.equipmentUser_top{width: 100%;height: 40px;display: flex;justify-content: center;overflow: auto;}
-.equipmentUser_bottom{width: 100%;height:auto;position: absolute;top:35px;bottom:10px;}
+.equipmentUser_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border-radius: 4px;}
+.equipmentUser_main_div{position: absolute;top: 0;left: 245px;height: 42px;line-height: 42px;display: flex;}
+.equipmentUser_main_div>div{margin-left: 10px;}
 
-.equipmentUser_form{display: flex;width: 270px;margin: 0 auto 10px;}
-.equipmentUser_form>span{display:inline-block;width: 105px;line-height: 34px;font-size: 15px;}
-.equipmentUser_form>input{height: 31px;width:69%;}
-.equipmentUser_form>div{height: 31px;width:69%;}
+
+.equipmentUser_top{width: 100%;height: 40px;display: flex;justify-content: center;overflow: auto;}
+.equipmentUser_bottom{width: 100%;height:auto;position: absolute;top:0;bottom:10px;padding: 5px;}
+
+.equipmentUser_form{display: flex;width: 340px;margin: 0 auto 10px;}
+.equipmentUser_form>span{display:inline-block;width: 180px;line-height: 34px;font-size: 15px;text-align: right;}
+.equipmentUser_form>input{height: 31px;width:160px;}
+.equipmentUser_form>div{height: 31px;width:160px;}
 
 .equipmentUser_formtwo{display: flex;margin-left:5px;}
 .equipmentUser_formtwo>span{line-height: 30px;width:95px;}
-.equipmentUser_formtwo>input{height: 30px;width: 150px;}
+.equipmentUser_formtwo>input{height: 30px;width: 155px;}
 .equipmentUser_formtwo>div{height: 30px;width: 140px;}
 </style>

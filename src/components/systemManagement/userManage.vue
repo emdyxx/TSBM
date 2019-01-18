@@ -1,13 +1,33 @@
 <template>
     <div class="userManage">
-        <div class="userManage_nav">
-            系统管理<i class="iconfont icon-icon"></i>用户管理
-        </div>
+        <!-- <div class="userManage_nav">
+            {{$t('userManage.SystemManagement')}}<i class="iconfont icon-icon"></i>{{$t('userManage.UserManagement')}}
+        </div> -->
         <div class="userManage_main">
             <div class="userManage_top">
-                <el-button v-if='add' type="primary" icon="plus " size="small" @click="userManageAdd">添加</el-button>
-                <el-button v-if='remove' type="primary" icon="edit" size="small" @click="userManageRevamp">修改</el-button>
-                <el-button v-if='delate' type="primary" icon="delete" size="small" @click="userManageDelete">删除</el-button>
+                <el-button v-if='add' type="primary" icon="plus " size="small" @click="userManageAdd">{{$t('userManage.Addto')}}</el-button>
+                <el-button v-if='remove' type="primary" icon="edit" size="small" @click="userManageRevamp">{{$t('userManage.Modify')}}</el-button>
+                <el-button v-if='delate' type="primary" icon="delete" size="small" @click="userManageDelete">{{$t('userManage.Delete')}}</el-button>
+                <div class="userManage_top_div">
+                    <el-input
+                        icon="search"
+                        size='small'
+                        :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                        v-model="keyword"
+                        @change="userSearch"
+                        style="width:150px;">
+                    </el-input>
+                    <span style="display:inline-block;width:45px;margin-left:10px;">{{$t('userManage.organization')}}:</span>
+                    <el-cascader
+                        :options="optionssearch"
+                        @change="searchChange"
+                        :show-all-levels="false"
+                        change-on-select
+                        size='small'
+                        clearable
+                        style="height:30px;width:145px;">
+                    </el-cascader>
+                </div>
             </div>
             <!-- 模态框（Modal） -->
             <div class="modal fade" id="userManageAddRevamp" style="text-align: left;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -15,39 +35,39 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="userManagemyModalLabel">添加用户</h4>
+                            <h4 v-if="opinion=='1'" class="modal-title">{{$t('userManage.AddUsers')}}</h4>
+                            <h4 v-if="opinion=='2'" class="modal-title">{{$t('userManage.ModifyTheUser')}}</h4>
                         </div>
                         <div class="modal-body">
                             <div class="userManage_form">
-                                <span><i class="required">*</i>用户名:</span>
-                                <input type="text" v-model.lazy="userManageUsername" id="userManageUsername" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'').replace(.replace(/^[\u4E00-\u9FA5]{1,10}$/,''),'')" placeholder="请输入用户名">
+                                <span><i class="required">*</i>{{$t('userManage.UserName')}}:</span>
+                                <input type="text" v-model.lazy="userManageUsername" id="userManageUsername" maxlength="30" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'').replace(.replace(/^[\u4E00-\u9FA5]{1,10}$/,''),'')" :placeholder="$t('userManage.EnterOneUserName')">
                             </div>
                             <div class="userManage_form">
-                                <span><i class="required">*</i>密码:</span>
-                                <input type="text" v-model.lazy="userManagePassword" id="userManagePasswordture" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入密码">
+                                <span><i class="required">*</i>{{$t('userManage.Password')}}:</span>
+                                <input type="text" v-model.lazy="userManagePassword" id="userManagePasswordture" maxlength="20" minlength="3" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('userManage.PleaseInputAPassword')">
                             </div>
                             <div class="userManage_form">
-                                <span><i class="required">*</i>姓名:</span>
-                                <input type="text" v-model.lazy="userManageName" maxlength="20" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入姓名">
+                                <span><i class="required">*</i>{{$t('userManage.FullName')}}:</span>
+                                <input type="text" v-model.lazy="userManageName" maxlength="20" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('userManage.PleaseInputYouName')">
                             </div>
                             <div class="userManage_form">
-                                <span><i class="required">*</i>性别:</span>
+                                <span style="width:110px;"><i class="required">*</i>{{$t('userManage.Sex')}}:</span>
                                 <el-radio-group v-model.lazy="radios">
-                                    <el-radio class="radio" :label="0" style="width:30%;">男</el-radio>
-                                    <el-radio class="radio" :label="1" style="margin-top:10px;width:30%;">女</el-radio>
+                                    <el-radio class="radio" :label="0" style="width:30%;">{{$t('userManage.male')}}</el-radio>
+                                    <el-radio class="radio" :label="1" style="margin-top:10px;width:30%;">{{$t('userManage.female')}}</el-radio>
                                 </el-radio-group>
                             </div>
                             <div class="userManage_form">
-                                <span><i class="required">*</i>电话:</span>
-                                <input type="text" v-model.lazy="userManagePhone" maxlength="25" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入电话">
+                                <span><i class="required">*</i>{{$t('userManage.Telephone')}}:</span>
+                                <input type="text" v-model.lazy="userManagePhone" maxlength="25" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('userManage.PleaseInputTheTelephone')">
                             </div>
                             <div class="userManage_form">
-                                <span><i class="required">*</i>邮箱:</span>
-                                <input type="text" v-model.lazy="userManageEmail" maxlength="150" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" placeholder="请输入邮箱">
+                                <span><i class="required">*</i>{{$t('userManage.Mailbox')}}:</span>
+                                <input type="text" v-model.lazy="userManageEmail" maxlength="150" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'')" :placeholder="$t('userManage.PleaseInputTheMailbox')">
                             </div>
                             <div class="userManage_form">
-                                <span style="width:56px;"><i class="required">*</i>组织:</span>
-                                <!-- v-model.lazy="userManageGrouping" -->
+                                <span style="width:95px;"><i class="required">*</i>{{$t('userManage.organization')}}:</span>
                                 <div>
                                     <el-cascader
                                         :options="options"
@@ -55,32 +75,22 @@
                                         change-on-select
                                         v-model.lazy="selectedOptions3"
                                         :disabled='disabledcascader'
-                                        size='small'>
+                                        size='small'
+                                        style="width:156px;margin-left:3px;">
                                     </el-cascader>
                                 </div>
                             </div>
                             <div class="userManage_form">
-                                <!-- <span style="width:56px;">角色</span>
-                                <div>
-                                    <el-cascader
-                                        :options="optionstwo"
-                                        :props = 'props'
-                                        @change="handletwoChange"
-                                        change-on-select
-                                        v-model.lazy="selectedOptions4"
-                                        size='small'>
-                                    </el-cascader>
-                                </div> -->
-                                <span style="width:56px;"><i class="required">*</i>权限</span>
+                                <span style="width:75px;"><i class="required">*</i>{{$t('userManage.Permissions')}}</span>
                                 <el-radio-group v-model.lazy="radio2" :disabled='disabledradio'>
-                                    <el-radio class="radio" :label="0">全部权限</el-radio>
-                                    <el-radio class="radio" :label="1">只读权限</el-radio>
+                                    <el-radio class="radio" :label="0">{{$t('userManage.AllPermissions')}}</el-radio>
+                                    <el-radio class="radio" :label="1">{{$t('userManage.readonlyAccess')}}</el-radio>
                                 </el-radio-group>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary addbutton" @click="addRelaSubmit">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('userManage.Close')}}</button>
+                            <button type="button" class="btn btn-primary addbutton" @click="addRelaSubmit">{{$t('userManage.Submission')}}</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -88,31 +98,13 @@
             <div class="userManage_bottom"
             v-loading.body='loading'
             element-loading-text="拼命加载中">
-                <div class="userManage_bottom_top">
-                    <div class="userManage_formtwo">
-                        <span>用户名:</span>
-                        <input type="text" v-model.lazy="username" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                    </div>
-                    <div class="userManage_formtwo">
-                        <span>姓名:</span>
-                        <input type="text" v-model.lazy="fullName"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户姓名">
-                    </div>
-                    <div class="userManage_formtwo">
-                        <span>组织:</span>
-                        <el-cascader
-                            :options="optionssearch"
-                            @change="searchChange"
-                            change-on-select
-                            size='small'
-                            clearable
-                            style="height:30px;width:126px;">
-                        </el-cascader>
-                    </div>
-                    <el-button type="primary" icon="search" @click="userSearch" style="height:30px;" size='small'>搜索</el-button>
-                </div> 
                 <div class="userManage_bottom_bottom">
                     <el-table
                         :data="tableData3"
+                        :default-sort = "{prop: 'date', order: 'descending'}"
+                        @sort-change='sortChange'
+                        ref="moviesTable"
+                        @row-click="clickRow"
                         border
                         stripe
                         tooltip-effect="dark"
@@ -124,32 +116,37 @@
                         width="55">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="username"
                         align='center'
-                        label="用户名"
+                        :label="$t('userManage.UserName')"
                         width="180">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="fullName"
-                        label="姓名"
+                        :label="$t('userManage.FullName')"
                         align='center'
                         width="180">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="departmentName"
-                        label="组织"
+                        :label="$t('userManage.organization')"
                         align='center'
                         width="180">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="mobile"
-                        label="电话"
+                        :label="$t('userManage.Telephone')"
                         align='center'
                         width="200">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="email"
-                        label="邮箱"
+                        :label="$t('userManage.Mailbox')"
                         align='center'
                         show-overflow-tooltip>
                         </el-table-column>
@@ -175,8 +172,7 @@
         name: 'index',
         data () {
             return {
-                username:'',
-                fullName:'',
+                keyword:'',
                 departmentId:'',
                 roleId:'',
                 loading:false,
@@ -207,7 +203,9 @@
                     label:'roleName'
                 },
                 disabledcascader:false,
-                disabledradio:false
+                disabledradio:false,
+                props:'',//排序字段
+                orders:'',
             }
         },
         mounted(){
@@ -245,6 +243,14 @@
             },200)  
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.ready()
+            },
+            clickRow(row){
+                this.$refs.moviesTable.toggleRowSelection(row)
+            }, 
             //搜索
             userSearch(){
                 this.ready()
@@ -263,6 +269,7 @@
                 if(val.length==3){
                     this.departmentId = val[2]
                 }
+                this.ready()
             },
             //选中行的change事件
             handleSelectionChange(val){
@@ -305,10 +312,11 @@
                     data:{
                         pageIndex:pageIndex,
                         pageSize:pageSize,
-                        username:that.username,
-                        fullName:that.fullName,
+                        keyword:that.keyword,
                         departmentId:that.departmentId,
-                        roleId:that.roleId
+                        roleId:that.roleId,
+                        order:that.props,
+                        orderBy:that.orders
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -354,7 +362,6 @@
             userManageAdd(){
                 var that= this;
                 $('#userManageAddRevamp').modal('show');
-                $('#userManagemyModalLabel').text('添加用户');
                 $('#userManagePasswordture').val()
                 $('#userManageUsername').attr('disabled',false)
                 $('#userManagePasswordture').attr('disabled',false)
@@ -381,7 +388,7 @@
                 var departmentId = '';
                 if(this.userManageUsername==''||this.userManagePassword==''||this.userManageName==''||this.userManagePhone==''||this.userManageEmail==''){
                     that.$message({
-                        message: '必填字段不能为空',
+                        message: that.$t('userManage.RequiredFieldsCanNotBeEmpty'),
                         type: 'error',
                         showClose: true,
                     });
@@ -389,7 +396,7 @@
                 }
                 if(result.test(this.userManagePassword)){
                     that.$message({
-                        message: '密码字段不能有中文',
+                        message: that.$t('userManage.ThePasswordFieldCannotBeInChinese'),
                         type: 'error',
                         showClose: true,
                     });
@@ -405,7 +412,7 @@
                 }
                 if(!phone.test(this.userManagePhone)){
                     that.$message({
-                        message: '电话不符合格式',
+                        message: that.$t('userManage.TelephoneFormatError'),
                         type: 'error',
                         showClose: true,
                     });
@@ -413,7 +420,7 @@
                 }
                 if(!email.test(this.userManageEmail)){
                     that.$message({
-                        message: '邮箱不符合格式',
+                        message: that.$t('userManage.ErrorInMailboxFormat'),
                         type: 'error',
                         showClose: true,
                     });
@@ -422,7 +429,7 @@
                 
                 if(that.selectedOptions3.length==0){
                     that.$message({
-                        message: '请选择分组',
+                        message: that.$t('userManage.PleaseSelectTheGrouping'),
                         type: 'error',
                         showClose: true,
                     });
@@ -461,7 +468,7 @@
                             $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '添加成功',
+                                    message:that.$t('userManage.AddSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });
@@ -517,13 +524,12 @@
                 var that= this;
                 if(that.sites.length==0||that.sites.length>=2){
                     that.$message({
-                        message: '请选择一条数据进行修改',
+                        message: that.$t('FalseHints.PleaseSelectADataToModify'),
                         type: 'error',
                         showClose: true,
                     });
                     return;
                 }
-
                 if(sessionStorage.id==that.sites[0].id){
                     //自己改自己
                     that.disabledradio = true
@@ -536,7 +542,7 @@
                     }else if(sessionStorage.departmentId==that.sites[0].departmentId){
                         //管理员 普通用户 同改同 
                         that.$message({
-                            message: '您不能修改同级数据!',
+                            message: that.$t('userManage.NoModify'),
                             type: 'error',
                             showClose: true,
                         });
@@ -549,7 +555,6 @@
                 }
                 
                 $('#userManageAddRevamp').modal('show');
-                $('#userManagemyModalLabel').text('修改用户')
                 this.opinion = '2'   
                 this.userManageUsername=that.sites[0].username
                 this.userManagePassword='******'
@@ -567,7 +572,7 @@
                 var that= this;
                 if(that.sites.length==0){
                     that.$message({
-                        message: '请选择至少一条数据进行删除',
+                        message: that.$t('FalseHints.SelectAdataToDelete'),
                         type: 'error',
                         showClose: true,
                     });
@@ -577,9 +582,9 @@
                 for(var i=0;i<that.sites.length;i++){
                     userIds.push(that.sites[i].id)
                 }
-                that.$confirm('确认删除', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                that.$confirm(that.$t('userManage.ConfirmDeletion'), that.$t('userManage.Tips'), {
+                    confirmButtonText: that.$t('userManage.Determine'),
+                    cancelButtonText: that.$t('userManage.Cancel'),
                     type: 'warning'
                 }).then(() => {
                     $.ajax({
@@ -594,7 +599,7 @@
                         success:function(data){
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '删除成功',
+                                    message: that.$t('userManage.DeleteSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });
@@ -608,7 +613,7 @@
                 }).catch(() => {
                     that.$message({
                         type: 'info',
-                        message: '已取消删除'
+                        message: that.$t('userManage.Undelete')
                     });          
                 });
             },
@@ -626,22 +631,6 @@
                 if(value.length=='3'){
                     data = {departmentId:value[2]};                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    a = {departmentId:value[2]}
                 }
-                //角色请求
-                // $.ajax({
-                //     type:'get',
-                //     async:true,
-                //     dataType:'json',
-                //     xhrFields:{withCredentials:true},
-                //     url:that.serverurl+'role/getRoleByDepartmnet',
-                //     data:data,
-                //     success:function(data){
-                //         if(data.errorCode=='0'){
-                //             that.optionstwo = data.result
-                //         }else{
-                //             that.errorCode(data)
-                //         }
-                //     }
-                // })
             },
         },
         created(){
@@ -666,17 +655,15 @@
 .userManage{width: 100%;height: 100%;padding: 15px;position: relative;}
 .userManage_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .userManage_nav>i{font-size: 23px;}
-.userManage_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
-.userManage_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
+.userManage_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.userManage_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;display: flex;align-items: center;}
+.userManage_top_div{height: 29px;margin-left: 20px;display: flex}
+.userManage_top_div>span{line-height: 29px;font-size: 16px}
 
 .userManage_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 .userManage_form{display: flex;width: 250px;margin: 0 auto 10px;}
-.userManage_form>span{width: 75px;line-height: 34px;font-size: 15px;}
+.userManage_form>span{width: 160px;line-height: 34px;font-size: 15px;text-align: left;}
 .userManage_form>input{height: 31px;}
 
-.userManage_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}
-.userManage_bottom_bottom{height:80%;}
-.userManage_formtwo{display: flex;margin:0 10px;}
-.userManage_formtwo>span{line-height: 30px;font-size: 15px;}
-.userManage_formtwo>input{width: 126px;height: 30px;}
+.userManage_bottom_bottom{height:95%;}
 </style>

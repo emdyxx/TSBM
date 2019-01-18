@@ -1,70 +1,65 @@
 <template>
     <div class="logManage">
-        <div class="logManage_nav">
-            系统管理<i class="iconfont icon-icon"></i>日志管理
-        </div>
+        <!-- <div class="logManage_nav">
+            {{$t('logManage.SystemManagement')}}<i class="iconfont icon-icon"></i>{{$t('logManage.LogManagement')}}
+        </div> -->
         <div class="logManage_main" 
         v-loading.body='loading'
         element-loading-text="拼命加载中">
-            <el-tabs type="border-card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
-                <el-tab-pane label="登录日志" name='1'>
-                    <div class="logManage_main_top">
-                        <div class="logManage_form">
-                            <span>用户名:</span>
-                            <input type="text" v-model.lazy="username"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                        </div>
-                        <div class="logManage_form">
-                            <span>用户登录IP:</span>
-                            <input type="text" v-model.lazy="ipAddress" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户登录IP">
-                        </div>
-                        <div class="logManage_form">
-                            <span>登录状态:</span>
-                            <el-select v-model.lazy="status" size='small' style="width:126px;" clearable placeholder="请选择">
-                                <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <el-button type="primary" icon="search" @click="LoginSearch" style="height:30px;" size='small'>搜索</el-button>
-                    </div>
+            <el-tabs type="card" v-model.lazy="activeName" @tab-click="handleClick" style="width:100%;height:100%;position:absolute;">
+                <el-tab-pane :label="$t('logManage.LogonLog')" name='1' style="border: 1px solid #c4c4c4;border-top: none;">
                     <div class="logManage_main_bottom">
                         <el-table
                             ref="multipleTable"
                             :data="logManagetableData"
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange'
                             border
                             stripe
                             tooltip-effect="dark"
                             style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
                             <el-table-column
+                            sortable='custom'
                             prop="username"
                             align='center'
-                            label="用户名"
+                            :label="$t('logManage.UserName')"
                             width="180">
                             </el-table-column>  
                             <el-table-column
+                            sortable='custom'
                             prop="ipAddress"
-                            label="登录ip"
+                            :label="$t('logManage.UserLoginIP')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="remark"
-                            label="认证"
+                            :label="$t('logManage.Authentication')"
                             align='center'
                             width="180">
+                                <template scope="scope">
+                                    <span v-if="scope.row.remark=='登录成功'">{{$t('logManage.LoginSuccess')}}</span>
+                                    <span v-if="scope.row.remark=='登录失败'">{{$t('logManage.LoginFailure')}}</span>
+                                    <span v-if="scope.row.remark=='认证成功'">{{$t('logManage.CertificationSuccess')}}</span>
+                                    <span v-if="scope.row.remark=='认证失败'">{{$t('logManage.AuthenticationFailure')}}</span>
+                                </template>
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="status"
-                            label="登录状态"
+                            :label="$t('logManage.LoginStatus')"
                             align='center'
                             width="180">
+                                <template scope="scope">
+                                    <span v-if="scope.row.status=='0'">{{$t('logManage.Success')}}</span>
+                                    <span v-if="scope.row.status=='1'">{{$t('logManage.beDefeated')}}</span>
+                                </template>
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="ts"
-                            label="登录时间"
+                            :label="$t('logManage.LoginTime')"
                             align='center'
                             show-overflow-tooltip>
                             </el-table-column>
@@ -82,40 +77,13 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="操作日志" name='2'>
-                    <div class="logManage_main_top">
-                        <div class="logManage_form">
-                            <span>用户名:</span>
-                            <input type="text" v-model.lazy="usernametwo"  maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入用户名">
-                        </div>
-                        <div class="logManage_form">
-                            <span>日志类型:</span>
-                            <el-select v-model.lazy="statustwo" size='small' style="width:126px;" clearable placeholder="请选择">
-                                <el-option
-                                v-for="item in optionstwo"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <div class="logManage_form">
-                            <span>操作类型:</span>
-                            <el-select v-model.lazy="statusthree" size='small' style="width:126px;" clearable placeholder="请选择">
-                                <el-option
-                                v-for="item in optionsthree"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </div>
-                        <el-button type="primary" @click="operation" icon="search" style="height:30px;" size='small'>搜索</el-button>
-                    </div>
+                <el-tab-pane :label="$t('logManage.OperationLog')" name='2' style="border: 1px solid #c4c4c4;border-top: none;">
                     <div class="logManage_main_bottom">
                         <el-table
                             ref="multipleTable"
                             :data="logManagetableDatatwo"
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange2'
                             border
                             stripe
                             empty-text='暂无数据'
@@ -123,39 +91,42 @@
                             tooltip-effect="dark"
                             style="width: 100%;height:auto;max-height:85%;overflow:auto;margin-bottom:10px;">
                             <el-table-column
+                            sortable='custom'
                             prop="logTypeValue"
                             align='center'
-                            label="操作模块"
+                            :label="$t('logManage.OperationModule')"
                             width="180">
                             </el-table-column>  
                             <el-table-column
-                            prop="operationTypeValue"
-                            label="操作"
+                            sortable='custom'
+                            prop="operationType"
+                            :label="$t('logManage.Operate')"
                             align='center'
                             width="180">
+                                <template scope="scope">
+                                    <span v-if="scope.row.operationType=='0'">{{$t('logManage.NewlyIncreased')}}</span>
+                                    <span v-if="scope.row.operationType=='1'">{{$t('logManage.Edit')}}</span>
+                                    <span v-if="scope.row.operationType=='2'">{{$t('logManage.Delete')}}</span>
+                                </template>
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="userName"
-                            label="操作人员"
+                            :label="$t('logManage.OperatingUser')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="dataId"
-                            label="操作数据ID"
+                            :label="$t('logManage.OperationDataID')"
                             align='center'
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            prop="remarke"
-                            label="备注"
-                            slot="empty"
-                            align='center'
-                            width="180">
-                            </el-table-column>
-                            <el-table-column
+                            sortable='custom'
                             prop="ts"
-                            label="操作时间"
+                            :label="$t('logManage.OperateTime')"
                             align='center'
                             show-overflow-tooltip>
                             </el-table-column>
@@ -174,6 +145,53 @@
                     </div>
                 </el-tab-pane>
             </el-tabs>
+            <div v-if="activeName=='1'" class="logManage_main_div" style="left:200px;">
+                <el-input
+                    icon="search"
+                    size='small'
+                    :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                    v-model="keyword"
+                    @change="LoginSearch"
+                    style="width:150px;">
+                </el-input>
+                <span style="margin-left:20px;">{{$t('logManage.LoginStatus')}}:</span>
+                <el-select v-model.lazy="status" @change="LoginSearch" size='small' style="width:126px;" clearable>
+                    <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
+            <div v-if="activeName=='2'" class="logManage_main_div" style="left:200px;">
+                <el-input
+                    icon="search"
+                    size='small'
+                    :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                    v-model="keyword2"
+                    @change="operation"
+                    style="width:150px;">
+                </el-input>
+                <span style="margin-left:20px;">{{$t('logManage.LogType')}}:</span>
+                <el-select v-model.lazy="statustwo" @change="operation" size='small' style="width:126px;" clearable>
+                    <el-option
+                    v-for="item in optionstwo"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+                <span style="margin-left:20px;">{{$t('logManage.OperationType')}}:</span>
+                <el-select v-model.lazy="statusthree" @change="operation" size='small' style="width:126px;" clearable>
+                    <el-option
+                    v-for="item in optionsthree"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    </el-option>
+                </el-select>
+            </div>
         </div>
     </div>
 </template>
@@ -185,39 +203,17 @@
                 activeName:'1',
                 loading:false,
                 serverurl:localStorage.serverurl,
-                username:'',
-                ipAddress:'',
+                keyword:'',
                 status:"",
-                options:[{
-                    value:'0',
-                    label:'成功'
-                },{
-                    value:'1',
-                    label:'失败'
-                }],
+                options:[],
                 logManagetableData:[],
                 currentPage4:1,
                 total:100,
                 pageSize:10,
                 pageIndex:1,
-                optionstwo:[{
-                    value:'0',
-                    label:'用户'
-                },{
-                    value:'1',
-                    label:'组织'
-                }],
-                optionsthree:[{
-                    value:'0',
-                    label:'新增'
-                },{
-                    value:'1',
-                    label:'编辑'
-                },{
-                    value:'2',
-                    label:'删除'
-                }],
-                usernametwo:'',
+                optionstwo:[],
+                optionsthree:[],
+                keyword2:'',
                 statustwo:'',
                 statusthree:'',
                 logManagetableDatatwo:[],
@@ -225,9 +221,23 @@
                 totaltwo:100,
                 pageSizetwo:10,
                 pageIndextwo:1,
+                props:'',//排序字段
+                orders:'',
+                props2:'',//排序字段
+                orders2:'',
            }
        },
        methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.ready()
+            },
+            sortChange2(column, prop, order){
+                this.props2 = column.prop
+                this.orders2 = column.order
+                this.readytwo()
+            },
            //登录日志页面数据渲染
            ready(){
                var that = this;
@@ -241,20 +251,23 @@
                     data:{
                         pageIndex:that.pageIndex,
                         pageSize:that.pageSize,
-                        username:that.username,
-                        ipAddress:that.ipAddress,
+                        keyword:that.keyword,
+                        // username:that.username,
+                        // ipAddress:that.ipAddress,
                         status:that.status,
-                        remark:'',
+                        order:that.props,
+                        orderBy:that.orders
+                        // remark:'',
                     },
                     success:function(data){
                         if(data.errorCode=='0'){ 
-                            for(var i=0;i<data.rows.length;i++){
-                                if(data.rows[i].status=='0'){
-                                    data.rows[i].status='成功'
-                                }else{
-                                    data.rows[i].status='失败'  
-                                }
-                            }
+                            // for(var i=0;i<data.rows.length;i++){
+                            //     if(data.rows[i].status=='0'){
+                            //         data.rows[i].status='成功'
+                            //     }else{
+                            //         data.rows[i].status='失败'  
+                            //     }
+                            // }
                             that.logManagetableData = data.rows
                             that.total = data.total
                             that.loading = false
@@ -294,19 +307,14 @@
                     data:{
                         pageIndex:that.pageIndextwo,
                         pageSize:that.pageSizetwo,
-                        username:that.usernametwo,
+                        keyword:that.keyword2,
                         logType:that.statustwo,
                         operationType:that.statusthree,
+                        order:that.props2,
+                        orderBy:that.orders2
                     },
                     success:function(data){
                         if(data.errorCode=='0'){ 
-                            for(var i=0;i<data.rows.length;i++){
-                                if(data.rows[i].status=='0'){
-                                    data.rows[i].status='成功'
-                                }else{
-                                    data.rows[i].status='失败'  
-                                }
-                            }
                             that.logManagetableDatatwo = data.rows
                             that.totaltwo = data.total
                             that.loading = false
@@ -331,7 +339,6 @@
                this.pageIndextwo = val
                this.readytwo()
            },
-
            //判断选中标签页
            handleClick(tab){
                var that = this
@@ -345,6 +352,15 @@
         },
         created(){
             this.ready()
+            if(localStorage.locale=='en'){
+                this.options = [{value:'0',label:'Success'},{value:'1',label:'beDefeated'}]
+                this.optionstwo = [{value:'0',label:'User'},{value:'1',label:'Organization'}]
+                this.optionsthree = [{value:'0',label:'NewlyIncreased'},{value:'1',label:'Edit'},{value:'2',label:'Delete'}]
+            }else{
+                this.options = [{value:'0',label:'成功'},{value:'1',label:'失败'}]
+                this.optionstwo = [{value:'0',label:'用户'},{value:'1',label:'组织'}]
+                this.optionsthree = [{value:'0',label:'新增'},{value:'1',label:'编辑'},{value:'2',label:'删除'}]
+            }
         }
     } 
 </script>
@@ -352,11 +368,16 @@
 .logManage{width: 100%;height: 100%;padding: 15px;position: relative;}
 .logManage_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .logManage_nav>i{font-size: 23px;}
-.logManage_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+/* border: 1px solid #c4c4c4; */
+.logManage_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border-radius: 4px;}
 .logManage_main_top{width: 100%;height: 40px;display: flex;justify-content: center;}
 .logManage_main_input{width: 126px;height: 30px;}
 .logManage_form{display: flex;margin:0 10px;}
 .logManage_form>span{line-height: 30px;font-size: 15px;}
-.logManage_main_bottom{width: 100%;height:auto;position: absolute;top:39px;bottom:10px;}
+.logManage_main_bottom{width: 100%;height:auto;position: absolute;top:0;bottom:10px;padding: 5px;}
 .el-tab-pane{height: 100%;position: relative;}
+
+.logManage_main_div{position: absolute;height: 29px;top:3px;display: flex}
+.logManage_main_div>span{line-height: 29px;font-size: 16px}
+
 </style>

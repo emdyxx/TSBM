@@ -1,13 +1,13 @@
 <template>
     <div class="equipmentArea">
-        <div class="equipmentArea_nav">
-            设备管理<i class="iconfont icon-icon"></i>区域管理
-        </div>
+        <!-- <div class="equipmentArea_nav">
+            {{$t('equipmentArea.DeviceManagement')}}<i class="iconfont icon-icon"></i>{{$t('equipmentArea.DistrictManagement')}}
+        </div> -->
         <div class='equipmentArea_main'>
             <div class="equipmentArea_top">
-                <el-button v-if="saveArea" @click="add(0)" type="primary" icon="plus " size="small">添加区域</el-button>
-                <el-button v-if="editArea" @click="add(1)" type="primary" icon="edit" size="small">修改区域</el-button>
-                <el-button v-if="deleteArea" @click="add(2)" type="primary" icon="delete" size="small">删除区域</el-button>
+                <el-button v-if="saveArea" @click="add(0)" type="primary" icon="plus " size="small">{{$t('equipmentArea.AdditionRegion')}}</el-button>
+                <el-button v-if="editArea" @click="add(1)" type="primary" icon="edit" size="small">{{$t('equipmentArea.ModifierArea')}}</el-button>
+                <el-button v-if="deleteArea" @click="add(2)" type="primary" icon="delete" size="small">{{$t('equipmentArea.DeleteArea')}}</el-button>
             </div>
             <div class="equipmentArea_bottom">
                 <div class="equipmentArea_bottom_left">
@@ -21,10 +21,20 @@
                 </div>
                 <div class="equipmentArea_bottom_right">
                     <div class="equipmentArea_bottom_right_left">
-                        <p style="margin: 0;">已划分区域设备</p>
-                        <el-input v-model="leftMAC" :maxlength=MAClength size='mini' placeholder="请输入MAC" style='width:165px;'></el-input>
-                        <el-button @click="leftSearch" size='mini' type="success">搜索</el-button>
+                        <p style="margin: 0;">{{$t('equipmentArea.PartitionedAreaEquipment')}}</p>
+                        <el-input
+                            icon="search"
+                            size='mini'
+                            :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                            v-model="keyword"
+                            @change="leftSearch"
+                            style="width:150px;">
+                        </el-input>
                         <el-table
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange2'
+                            @row-click="clickRow"
+                            ref="moviesTable"
                             :data="dataleft"
                             border
                             tooltip-effect="dark"
@@ -35,7 +45,8 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
-                            label="设备名称"
+                            sortable='custom'
+                            :label="$t('equipmentArea.deviceName')"
                             align='center'
                             width="160">
                                 <template scope="scope">
@@ -48,15 +59,17 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="MAC"
                             label="MAC"
                             align='center'
                             width="160">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="model"
                             align='center'
-                            label="产品型号"
+                            :label="$t('equipmentArea.productModel')"
                             show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
@@ -73,15 +86,25 @@
                         </div>
                     </div>
                     <div class="equipmentArea_bottom_right_center">
-                        <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">加入组</el-button></div>
-                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>移出组<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
-                        <div v-if="setEquipmentArea" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>保存</el-button></div>
+                        <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">{{$t('equipmentArea.JoinGroup')}}</el-button></div>
+                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>{{$t('equipmentArea.RemovalGroup')}}<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
+                        <div v-if="setEquipmentArea" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>{{$t('equipmentArea.Save')}}</el-button></div>
                     </div>
                     <div class="equipmentArea_bottom_right_right">
-                        <p style="margin: 0;">未划分区域设备</p>
-                        <el-input v-model="rightMAC" :maxlength=MAClength size='mini' placeholder="请输入MAC" style='width:165px;'></el-input>
-                        <el-button @click="rightSearch" size='mini' type="success">搜索</el-button>
+                        <p style="margin: 0;">{{$t('equipmentArea.UndividedAreaEquipment')}}</p>
+                        <el-input
+                            icon="search"
+                            size='mini'
+                            :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                            v-model="keyword2"
+                            @change="rightSearch"
+                            style="width:150px;">
+                        </el-input>
                         <el-table
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange'
+                            @row-click="clickRow2"
+                            ref="moviesTable2"
                             :data="dataright"
                             border
                             tooltip-effect="dark"
@@ -92,7 +115,9 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
-                            label="设备名称"
+                            sortable='custom'
+                            prop="nickname"
+                            :label="$t('equipmentArea.deviceName')"
                             align='center'
                             width="160">
                                 <template scope="scope">
@@ -105,15 +130,17 @@
                                 </template>  
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="MAC"
                             label="MAC"
                             align='center'
                             width="160">
                             </el-table-column>
                             <el-table-column
+                            sortable='custom'
                             prop="model"
                             align='center'
-                            label="产品型号"
+                            :label="$t('equipmentArea.productModel')"
                             show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
@@ -138,21 +165,22 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabels" style="text-align:left;">添加区域</h4>
+                        <h4 v-if="addType=='0'" class="modal-title" id="myModalLabels" style="text-align:left;">{{$t('equipmentArea.AdditionRegion')}}</h4>
+                        <h4 v-if="addType=='1'" class="modal-title" id="myModalLabels" style="text-align:left;">{{$t('equipmentArea.ModifierArea')}}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="equipmentArea_form">
-                            <span><i class="required">*</i>区域名称:</span>
-                            <input v-model="areaName" type="text" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入区域名称">
+                            <span><i class="required">*</i>{{$t('equipmentArea.RegionName')}}:</span>
+                            <input v-model.lazy="areaName" type="text" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentArea.PleaseEnterTheRegionName')">
                         </div>
                         <div class="equipmentArea_form">
-                            <span>备注:</span>
-                            <input type="text" v-model.lazy="remark" maxlength="50" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入备注">
+                            <span>{{$t('equipmentArea.Remarks')}}:</span>
+                            <input type="text" v-model.lazy="remark" maxlength="50" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentArea.PleaseEnterNotes')">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" @click="addSubmit" class="btn btn-primary">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentArea.close')}}</button>
+                        <button type="button" @click="addSubmit" class="btn btn-primary">{{$t('equipmentArea.Save')}}</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -185,16 +213,20 @@
                 LeftPageIndex:1,
                 leftPageSize:10,
                 leftTotal:10,
-                leftMAC:'',
+                keyword:'',
 
                 dataright:[],//右侧基本数据
                 rightchangedata:[],//右侧选中数据
                 rightPageIndex:1,
                 rightPageSize:10,
                 rightTotal:10,
-                rightMAC:'',
+                keyword2:'',
                 leftdata:[],//往左侧移动数据id
                 rightdata:[],//往右侧移动数据id
+                props:'',//排序字段
+                orders:'',
+                props2:'',//排序字段
+                orders2:'',
             }
         },
         mounted(){
@@ -235,6 +267,22 @@
             },200)
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.rightdatas()
+            },
+            sortChange2(column, prop, order){
+                this.props2 = column.prop
+                this.orders2 = column.order
+                this.leftdatas()
+            },
+            clickRow(row){
+                this.$refs.moviesTable.toggleRowSelection(row)
+            },
+            clickRow2(row){
+                this.$refs.moviesTable2.toggleRowSelection(row)
+            },
             //初始化左侧树
             ready(){
                 var that = this;
@@ -264,7 +312,7 @@
                 var that = this;
                 if(that.leftTreeChange.length==0){
                     that.$message({
-                        message: '请选择区域进行操作!',
+                        message: that.$t('equipmentArea.SelectAreaToOperate'),
                         type: 'error',
                         showClose: true,
                     });
@@ -274,14 +322,14 @@
                     //添加
                     if(that.leftTreeChange.level=='5'){
                         that.$message({
-                            message: '最多添加五级区域!',
+                            message: that.$t('equipmentArea.AddfiveLevels'),
                             type: 'error',
                             showClose: true,
                         });
                         return;
                     }
                     $('#myModal').modal('show')
-                    $('#myModalLabels').text('添加区域')
+                    // $('#myModalLabels').text('添加区域')
                     that.addType = '0'
                     that.areaName = ''
                     that.remark = ''
@@ -289,7 +337,7 @@
                 if(val=='1'){
                     if(that.leftTreeChange.type=='0'){
                         that.$message({
-                            message: '组织节点不可操作!',
+                            message: that.$t('equipmentArea.Theoperational'),
                             type: 'error',
                             showClose: true,
                         });
@@ -297,16 +345,16 @@
                     }
                     //修改
                     $('#myModal').modal('show')
-                    $('#myModalLabels').text('修改区域')
+                    // $('#myModalLabels').text('修改区域')
                     that.addType = '1'
                     that.areaName = that.leftTreeChange.areaName
                     that.remark = that.leftTreeChange.remark
                 }
                 if(val=='2'){
                     //删除
-                    that.$confirm('删除区域将删除此区域下所有设备,是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                    that.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                    confirmButtonText: that.$t('FalseHints.yes'),
+                    cancelButtonText: that.$t('FalseHints.no'),
                     type: 'warning'
                     }).then(() => {
                         $.ajax({
@@ -322,7 +370,7 @@
                                 if(data.errorCode=='0'){
                                     that.$message({
                                         type: 'success',
-                                        message: '删除成功'
+                                        message:that.$t('FalseHints.DeleteSuccess'),
                                     });  
                                     that.ready();
                                 }else{
@@ -333,7 +381,7 @@
                     }).catch(() => {
                         that.$message({
                             type: 'info',
-                            message: '已取消删除'
+                            message: that.$t('FalseHints.Undelete'),
                         });          
                     });
                 }
@@ -347,7 +395,7 @@
                 if(that.areaName==''){
                     that.$message({
                         type: 'error',
-                        message: '必填字段不能为空'
+                        message: that.$t('FalseHints.RequiredFieldsCanNotBeEmpty'),
                     });  
                     return;
                 }
@@ -384,7 +432,7 @@
                             that.ready()
                             $('#myModal').modal('hide')
                             that.$message({
-                                message: '操作成功!',
+                                message: that.$t('FalseHints.SaveSuccess'),
                                 type: 'success',
                                 showClose: true,
                             });
@@ -411,9 +459,11 @@
                     data:{
                         areaId:that.leftTreeChange.areaId,
                         departmentId:that.leftTreeChange.departmentId,
-                        MAC:that.leftMAC,
                         pageIndex:that.LeftPageIndex,
-                        pageSize:that.leftPageSize
+                        pageSize:that.leftPageSize,
+                        keyword:that.keyword,
+                        order:that.props2,
+                        orderBy:that.orders2
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -437,9 +487,11 @@
                     data:{
                         areaId:that.leftTreeChange.areaId,
                         departmentId:that.leftTreeChange.departmentId,
-                        MAC:that.rightMAC,
                         pageIndex:that.rightPageIndex,
-                        pageSize:that.rightPageSize
+                        pageSize:that.rightPageSize,
+                        keyword:that.keyword2,
+                        order:that.props,
+                        orderBy:that.orders
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -534,7 +586,6 @@
             //保存
             savedata(){
                 var that = this;
-                console.log(this.leftdata.join(','),this.rightdata.join(','))
                 $.ajax({
                     type:'post',
                     async:false,
@@ -549,7 +600,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '保存成功',
+                                message: that.$t('FalseHints.SaveSuccess'),
                                 type: 'success',
                                 showClose: true,
                             });
@@ -574,7 +625,7 @@
 .equipmentArea{width: 100%;height: 100%;padding: 15px;position: relative;}
 .equipmentArea_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .equipmentArea_nav>i{font-size: 23px;}
-.equipmentArea_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.equipmentArea_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
 .equipmentArea_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
 .equipmentArea_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 .equipmentArea_bottom_left{width: 200px;height: 100%;border-right: 1px solid #c4c4c4;}

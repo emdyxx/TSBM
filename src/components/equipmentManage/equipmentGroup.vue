@@ -1,13 +1,13 @@
 <template>
     <div class="equipmentGroup">
-        <div class="equipmentGroup_nav">
-            设备管理<i class="iconfont icon-icon"></i>分组管理
-        </div>
+        <!-- <div class="equipmentGroup_nav">
+            {{$t('equipmentGroup.deviceManagement')}}<i class="iconfont icon-icon"></i>{{$t('equipmentGroup.GroupManagement')}}
+        </div> -->
         <div class='equipmentGroup_main'>
             <div class='equipmentGroup_top'>
-                <el-button v-if="addgrouping" @click="addGroup" type="primary" icon="plus " size="small">添加分组</el-button>
-                <el-button v-if="deletegrouping" @click="deleteGroup" type="primary" icon="edit" size="small">修改分组</el-button>
-                <el-button v-if="removegrouping" @click="removeGroup" type="primary" icon="delete" size="small">删除分组</el-button>
+                <el-button v-if="addgrouping" @click="addGroup" type="primary" icon="plus " size="small">{{$t('equipmentGroup.AddGrouping')}}</el-button>
+                <el-button v-if="deletegrouping" @click="deleteGroup" type="primary" icon="edit" size="small">{{$t('equipmentGroup.ModifyGrouping')}}</el-button>
+                <el-button v-if="removegrouping" @click="removeGroup" type="primary" icon="delete" size="small">{{$t('equipmentGroup.DeleteGrouping')}}</el-button>
             </div>
             <div class='equipmentGroup_bottom'>
                 <div class="equipmentGroup_bottom_left">
@@ -15,8 +15,10 @@
                 </div>
                 <div class="equipmentGroup_bottom_right">
                     <div class="equipmentGroup_bottom_right_left">
-                        <p style="margin: 0;">已分组设备</p>
+                        <p style="margin: 0;">{{$t('equipmentGroup.GroupedEquipment')}}</p>
                         <el-table
+                            @row-click="clickRow"
+                            ref="moviesTable"
                             :data="dataleft"
                             border
                             tooltip-effect="dark"
@@ -27,7 +29,8 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
-                            label="设备名称"
+                            prop="nickname"
+                            :label="$t('equipmentGroup.DeviceName')"
                             align='center'
                             width="160">
                                 <template scope="scope">
@@ -48,19 +51,23 @@
                             <el-table-column
                             prop="model"
                             align='center'
-                            label="产品型号"
+                            :label="$t('equipmentGroup.ProductModel')"
                             show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
                     </div>
                     <div class="equipmentGroup_bottom_right_center">
-                        <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">加入组</el-button></div>
-                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>移出组<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
-                        <div v-if="savegrouping" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>保存</el-button></div>
+                        <div style="margin-top:40px;"><el-button @click="theleft" type="primary" size='small' icon="arrow-left">{{$t('equipmentGroup.JoinGoup')}}</el-button></div>
+                        <div style="margin-top:20px;"><el-button @click="theright" type="primary" size='small'>{{$t('equipmentGroup.RemovalGroup')}}<i class="el-icon-arrow-right el-icon--right"></i></el-button></div>
+                        <div v-if="savegrouping" style="margin-top:20px;"><el-button @click="savedata" type="primary" style='' size='small'>{{$t('equipmentGroup.Save')}}</el-button></div>
                     </div>
                     <div class="equipmentGroup_bottom_right_right">
-                        <p style="margin: 0;">未分组设备</p>
+                        <p style="margin: 0;">{{$t('equipmentGroup.UngroupedEquipment')}}</p>
                         <el-table
+                            :default-sort = "{prop: 'date', order: 'descending'}"
+                            @sort-change='sortChange2'
+                            @row-click="clickRow2"
+                            ref="moviesTable2"
                             :data="dataright"
                             border
                             tooltip-effect="dark"
@@ -71,7 +78,8 @@
                             width="55">
                             </el-table-column>
                             <el-table-column
-                            label="设备名称"
+                            prop="nickname"
+                            :label="$t('equipmentGroup.DeviceName')"
                             align='center'
                             width="160">
                                 <template scope="scope">
@@ -92,7 +100,7 @@
                             <el-table-column
                             prop="model"
                             align='center'
-                            label="产品型号"
+                            :label="$t('equipmentGroup.ProductModel')"
                             show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
@@ -106,19 +114,19 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h4 class="modal-title" id="myModalLabel" style="text-align:left;">
-                                <span v-if="typemodel=='1'">添加分组</span>
-                                <span v-if="typemodel=='2'">修改分组</span>
+                                <span v-if="typemodel=='1'">{{$t('equipmentGroup.AddGrouping')}}</span>
+                                <span v-if="typemodel=='2'">{{$t('equipmentGroup.ModifyGrouping')}}</span>
                             </h4>
                         </div>
                         <div class="modal-body">
                             <div class="userManage_form">
-                                <span><i class="required">*</i>分组名称:</span>
-                                <input type="text" v-model.lazy="groupName" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入分组名称">
+                                <span><i class="required">*</i>{{$t('equipmentGroup.GroupName')}}:</span>
+                                <input type="text" v-model.lazy="groupName" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentGroup.PleaseEnterTheGroupName')">
                             </div>
                             <div class="userManage_form">
-                                <span><i class="required">*</i>硬件版本:</span>
+                                <span><i class="required">*</i>{{$t('equipmentGroup.HardwareVersion')}}:</span>
                                 <!-- <input type="text" v-model.lazy="model" maxlength="15" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入硬件版本"> -->
-                                <el-select v-model.lazy="modelval" placeholder="请选择硬件版本">
+                                <el-select v-model.lazy="modelval">
                                     <el-option
                                     v-for="item in model"
                                     :key="item.value"
@@ -128,13 +136,13 @@
                                 </el-select>
                             </div>
                             <div class="userManage_form">
-                                <span>备注:</span>
-                                <input type="text" v-model.lazy="remark" maxlength="50" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入备注">
+                                <span>{{$t('equipmentGroup.Remarks')}}:</span>
+                                <input type="text" v-model.lazy="remark" maxlength="50" minlength="2" class="form-control" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" :placeholder="$t('equipmentGroup.Remarks')">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" @click="saveGroup" class="btn btn-primary saveGroups">保存</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('equipmentGroup.Close')}}</button>
+                            <button type="button" @click="saveGroup" class="btn btn-primary saveGroups">{{$t('equipmentGroup.Save')}}</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div>
@@ -178,6 +186,10 @@
                 model:[],//所有硬件版本号
                 modelval:0, //选中的硬件版本号
                 modellink:'',//左侧树选中的硬件版本
+                props1:'',//排序字段
+                orders1:'',
+                props2:'',//排序字段
+                orders2:'',
             }
         },
         mounted(){
@@ -216,6 +228,36 @@
             },200)
         },
         methods:{
+            sortChange2(column, prop, order){
+                var that = this
+                this.props2 = column.prop
+                this.orders2 = column.order
+                $.ajax({
+                    type:'get',
+                    async:false,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/getCanGroupedEquipment',
+                    data:{
+                        groupId:that.groupId,
+                        order:that.props2,
+                        orderBy:that.orders2
+                    },
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.dataright = data.result
+                        }else{
+                            that.errorCode(data)
+                        }
+                    }
+                })
+            },
+            clickRow(row){
+                this.$refs.moviesTable.toggleRowSelection(row)
+            }, 
+            clickRow2(row){
+                this.$refs.moviesTable2.toggleRowSelection(row)
+            }, 
             //最左侧树行列表点击事件
             handleNodeClick(data){
                 if(data.departmentId==''||data.departmentId==undefined){
@@ -262,9 +304,10 @@
             },
             //添加分组
             addGroup(){
+                var that = this
                 if(this.level==''||this.level==undefined){
                     this.$message({
-                        message: '请选择组织添加分组',
+                        message: that.$t('equipmentGroup.PleaseSelectOrganizationAddGroups'),
                         type: 'error',
                         showClose: true,
                     });
@@ -280,7 +323,7 @@
             deleteGroup(){
                 if(this.level=='1'||this.level=='2'){
                     this.$message({
-                        message: '请选择分组进行修改',
+                        message: that.$t('equipmentGroup.PleaseSelectGroupsForModification'),
                         type: 'error',
                         showClose: true,
                     });
@@ -306,9 +349,9 @@
                     });
                     return;
                 }
-                this.$confirm('此操作删除该分组, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                this.$confirm(that.$t('equipmentGroup.DeleteGrouping'), that.$t('equipmentGroup.Tips'), {
+                    confirmButtonText: that.$t('equipmentGroup.yes'),
+                    cancelButtonText: that.$t('equipmentGroup.cancel'),
                     type: 'warning'
                 }).then(() => {
                     $.ajax({
@@ -321,7 +364,7 @@
                         success:function(data){
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '删除成功',
+                                    message: that.$t('FalseHints.DeleteSuccess'),
                                     type: 'error',
                                     showClose: true,
                                 });
@@ -334,7 +377,7 @@
                 }).catch(() => {
                     this.$message({
                         type: 'info',
-                        message: '已取消删除'
+                        message: that.$t('FalseHints.Undelete'),
                     });          
                 });
             },
@@ -377,14 +420,14 @@
                         if(data.errorCode=='0'){
                             if(that.typemodel=='1'){
                                 that.$message({
-                                    message: '添加成功',
+                                    message: that.$t('FalseHints.AddSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });
                             }
                             if(that.typemodel=='2'){
                                 that.$message({
-                                    message: '修改成功',
+                                    message: that.$t('FalseHints.AmendTheSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });
@@ -476,7 +519,7 @@
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.$message({
-                                message: '保存成功',
+                                message: that.$t('FalseHints.SaveSuccess'),
                                 type: 'success',
                                 showClose: true,
                             });
@@ -500,7 +543,11 @@
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'equipment/getEquipmentByGroup',
-                    data:{groupId:val},
+                    data:{
+                        groupId:val,
+                        order:that.props1,
+                        orderBy:that.orders1
+                    },
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.dataleft = data.result
@@ -515,7 +562,11 @@
                     dataType:'json',
                     xhrFields:{withCredentials:true},
                     url:that.serverurl+'equipment/getCanGroupedEquipment',
-                    data:{groupId:val},
+                    data:{
+                        groupId:val,
+                        order:that.props2,
+                        orderBy:that.orders2
+                    },
                     success:function(data){
                         if(data.errorCode=='0'){
                             that.dataright = data.result
@@ -551,20 +602,20 @@
             this.regions = []
             setTimeout(function(){
                 $.ajax({
-                type:'get',
-                async:false,
-                dataType:'json',
-                xhrFields:{withCredentials:true},
-                url:that.serverurl+'equipment/getGroupTree',
-                data:{},
-                success:function(data){
-                    if(data.errorCode=='0'){
-                        that.regions = data.result
-                    }else{
-                        that.errorCode(data)
+                    type:'get',
+                    async:false,
+                    dataType:'json',
+                    xhrFields:{withCredentials:true},
+                    url:that.serverurl+'equipment/getGroupTree',
+                    data:{},
+                    success:function(data){
+                        if(data.errorCode=='0'){
+                            that.regions = data.result
+                        }else{
+                            that.errorCode(data)
+                        }
                     }
-                }
-            })
+                })
             },200)
         }
     }
@@ -573,7 +624,7 @@
 .equipmentGroup{width: 100%;height: 100%;padding: 15px;position: relative;}
 .equipmentGroup_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .equipmentGroup_nav>i{font-size: 23px;}
-.equipmentGroup_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.equipmentGroup_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
 .equipmentGroup_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
 .equipmentGroup_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 .equipmentGroup_bottom_left{width: 200px;height: 100%;border-right: 1px solid #c4c4c4;}

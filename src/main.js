@@ -9,6 +9,9 @@ import en from 'element-ui/lib/locale/lang/en'
 import zh from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
 
+import en2 from './assets/lang/en'
+import zh2 from './assets/lang/zh'
+
 Vue.use(VueI18n)
 Vue.config.productionTip = false
 
@@ -16,8 +19,8 @@ Vue.config.productionTip = false
 const i18n = new VueI18n({
   locale: localStorage.locale,  // 语言标识，后面会用做切换和将用户习惯存储到本地浏览器
   messages: {
-    'zh': require('./assets/lang/zh'),
-    'en': require('./assets/lang/en')
+    'zh': zh2,
+    'en': en2
   }
 })
 locale.i18n((key, value) => i18n.t(key, value))

@@ -1,28 +1,31 @@
 <template>
     <div class="windLightFileList">
-        <div class="windLightFileList_nav">
-            物联网数据<i class="iconfont icon-icon"></i>应用固件
-        </div>
+        <!-- <div class="windLightFileList_nav">
+            {{$t('windLightFileList.Internetofthingsdata')}}<i class="iconfont icon-icon"></i>{{$t('windLightFileList.Applicationfirmware')}}
+        </div> -->
         <div class="windLightFileList_main">
             <div class="windLightFileList_top">
-                <el-button v-if="uploadWindLightfile" @click="addwindLightFileList(0)" type="primary" icon="plus " size="small">添加</el-button>
-                <el-button v-if="editWindLightfileInfo" @click="addwindLightFileList(1)" type="primary" icon="edit" size="small">修改</el-button>
-                <el-button v-if="delWindLightfile" @click="removewindLightFileList" type="primary" icon="delete" size="small">删除</el-button>
+                <el-button v-if="uploadWindLightfile" @click="addwindLightFileList(0)" type="primary" icon="plus " size="small">{{$t('windLightFileList.Addto')}}</el-button>
+                <el-button v-if="editWindLightfileInfo" @click="addwindLightFileList(1)" type="primary" icon="edit" size="small">{{$t('windLightFileList.modify')}}</el-button>
+                <el-button v-if="delWindLightfile" @click="removewindLightFileList" type="primary" icon="delete" size="small">{{$t('windLightFileList.delete')}}</el-button>
+                <div class="windLightFileList_top_div">
+                    <el-input
+                        icon="search"
+                        size='small'
+                        :placeholder="$t('FalseHints.Pleaseenterthesearchfield')"
+                        v-model="keyword"
+                        @change="search"
+                        style="width:150px;">
+                    </el-input>
+                </div>
             </div>
             <div class="windLightFileList_bottom">
-                <div class="windLightFileList_bottom_top">
-                    <div class="userManage_formtwo">
-                        <span>应用名称:</span>
-                        <input type="text" v-model="fileName" maxlength="40" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入应用名称">
-                    </div>
-                    <div class="userManage_formtwo">
-                        <span>版本号:</span>
-                        <input type="text" v-model="version" maxlength="30" minlength="3" class="form-control logManage_main_input" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/[^\u4e00-\u9fa5\w\.\*\-]/g,'')" placeholder="请输入版本号">
-                    </div>
-                    <el-button @click="search" type="primary" icon="search" style="height:30px;" size='small'>搜索</el-button>
-                </div>
                 <div class="windLightFileList_bottom_bottom">
                     <el-table
+                        :default-sort = "{prop: 'date', order: 'descending'}"
+                        @sort-change='sortChange'
+                        @row-click="clickRow"
+                        ref="moviesTable"
                         :data="tableData"
                         border
                         stripe
@@ -35,32 +38,37 @@
                         width="55">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="fileName"
                         align='center'
-                        label="应用名称"
-                        width="160">
+                        :label="$t('windLightFileList.applyname')"
+                        width="220">
                         </el-table-column>
                         <el-table-column
-                        prop="md5FileName"
+                        sortable='custom'
+                        prop="md5"
                         align='center'
-                        label="md5文件"
-                        width="160">
+                        label="md5"
+                        width="280">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="version"
                         align='center'
-                        label="版本号"
-                        width="190">
+                        :label="$t('windLightFileList.versionnumber')"
+                        width="220">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="updateTime"
                         align='center'
-                        label="更新时间"
+                        :label="$t('windLightFileList.Updatetime')"
                         width="180">
                         </el-table-column>
                         <el-table-column
+                        sortable='custom'
                         prop="summary"
-                        label="备注"
+                        :label="$t('windLightFileList.Remarks')"
                         align='center'
                         show-overflow-tooltip>
                         </el-table-column>
@@ -85,31 +93,30 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 v-if="addType=='0'" class="modal-title" id="userManagemyModalLabel">添加固件</h4>
-                        <h4 v-if="addType=='1'" class="modal-title" id="userManagemyModalLabel">修改固件</h4>
+                        <h4 v-if="addType=='0'" class="modal-title" id="userManagemyModalLabel">{{$t('windLightFileList.Addingfirmware')}}</h4>
+                        <h4 v-if="addType=='1'" class="modal-title" id="userManagemyModalLabel">{{$t('windLightFileList.Modifiedfirmware')}}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="userManage_form" v-if="addType=='0'">
-                            <span><i class="required">*</i>应用文件:</span>
-                            <input type="file" ref="img1" id="img1">
+                            <span><i class="required">*</i>{{$t('windLightFileList.Applicationfile')}}:</span>
+                            <input type="file" ref="img1" id="img1" @change="fileChange">
                         </div>
                         <div class="userManage_form" v-if="addType=='0'">
-                            <span><i class="required">*</i>md5文件:</span>
+                            <span><i class="required">*</i>{{$t('windLightFileList.MD5file')}}:</span>
                             <input type="file" ref="img2" id="img2">
                         </div>
                         <div class="userManage_form">
-                            <span>备注信息:</span>
+                            <span>{{$t('windLightFileList.Noteinformation')}}:</span>
                             <el-input
                             type="textarea"
                             style="height:75px;"
-                            placeholder="请输入备注信息"
                             v-model.lazy="remark">
                             </el-input>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" @click="addSubmit" class="btn btn-primary addbutton">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{$t('windLightFileList.Close')}}</button>
+                        <button type="button" @click="addSubmit" class="btn btn-primary addbutton">{{$t('windLightFileList.Preservation')}}</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -130,10 +137,11 @@
                 pageIndex:1,
                 pageSize:10,
                 total:10,
-                fileName:'',
-                version:'',
+                keyword:'',
                 remark:'',
                 addType:'0',
+                props:'',//排序字段
+                orders:'',
             }
         },
         mounted(){
@@ -171,6 +179,14 @@
             },200)  
         },
         methods:{
+            sortChange(column, prop, order){
+                this.props = column.prop
+                this.orders = column.order
+                this.ready()
+            },
+            clickRow(row){
+                this.$refs.moviesTable.toggleRowSelection(row)
+            }, 
             SelectionChange(val){this.site = val;},
             SizeChange(val){this.pageIndex=val;this.ready();},
             CurrentChange(val){this.pageSize=val;this.ready();},
@@ -184,7 +200,7 @@
                 if(val=='1'){
                     if(this.site.length=='0'||this.site.length>=2){
                         this.$message({
-                            message: '请选取数据进行修改',
+                            message: that.$t('windLightFileList.Pleaseselectdataformodification'),
                             type: 'error',
                             showClose: true,
                         })
@@ -194,6 +210,11 @@
                     this.remark = this.site[0].summary
                     $('#windLightFileListModal').modal('show')
                 }
+            },
+            //应用文件change事件
+            fileChange(){
+                console.log(this.$refs.img1.files)
+                
             },
             //添加/编辑提交
             addSubmit(){
@@ -226,9 +247,9 @@
                         }else{
                             if(data.errorCode=='2018'){
                                 formdate.append("flag", 1)
-                                that.$confirm('文件重复,是否进行覆盖', '提示', {
-                                    confirmButtonText: '确定',
-                                    cancelButtonText: '取消',
+                                that.$confirm(that.$t('windLightFileList.Duplicatefilesdotheycover'), that.$t('FalseHints.title'), {
+                                    confirmButtonText: that.$t('FalseHints.yes'),
+                                    cancelButtonText: that.$t('FalseHints.no'),
                                     type: 'warning'
                                 }).then(() => {
                                     $.ajax({
@@ -242,7 +263,7 @@
                                     }).done(function(data){
                                         if(data.errorCode=='0'){
                                             that.$message({
-                                                message: '保存成功',
+                                                message: that.$t('FalseHints.SaveSuccess'),
                                                 type:'success',
                                                 showClose: true,
                                             });
@@ -255,7 +276,7 @@
                                 }).catch(() => {
                                     that.$message({
                                         type: 'info',
-                                        message: '已取消'
+                                        message: that.$t('windLightFileList.Havebeencancelled')
                                     });          
                                 });
                             }else{
@@ -309,9 +330,9 @@
                 for(var i=0;i<this.site.length;i++){
                     arr.push(this.site[i].id)
                 }
-                that.$confirm('是否进行删除!', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                that.$confirm(that.$t('FalseHints.confirmDeletion'), that.$t('FalseHints.title'), {
+                    confirmButtonText: that.$t('FalseHints.yes'),
+                    cancelButtonText: that.$t('FalseHints.no'),
                     type: 'warning'
                 }).then(() => {
                     $.ajax({
@@ -326,7 +347,7 @@
                         success:function(data){
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '删除成功',
+                                    message: that.$t('FalseHints.DeleteSuccess'),
                                     type:'success',
                                     showClose: true,
                                 });
@@ -339,7 +360,7 @@
                 }).catch(() => {
                     that.$message({
                         type: 'info',
-                        message: '已取消'
+                        message: that.$t('FalseHints.Undelete'),
                     });          
                 });
             },
@@ -358,8 +379,9 @@
                     data:{
                         pageIndex:that.pageIndex,
                         pageSize:that.pageSize,
-                        fileName:that.fileName,
-                        version:that.version,
+                        keyword:that.keyword,
+                        order:that.props,
+                        orderBy:that.orders
                     },
                     success:function(data){
                         if(data.errorCode=='0'){
@@ -382,11 +404,13 @@
 .windLightFileList{width: 100%;height: 100%;padding: 15px;position: relative;}
 .windLightFileList_nav{width: 100%;height: 40px;line-height: 40px;font-size: 23px;text-align: left;}
 .windLightFileList_nav>i{font-size: 23px;}
-.windLightFileList_main{position:absolute;top:65px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
-.windLightFileList_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;}
+.windLightFileList_main{position:absolute;top:10px;bottom:15px;right: 15px;left: 15px;width: auto;height: auto;border: 1px solid #c4c4c4;border-radius: 4px;}
+.windLightFileList_top{padding: 5px 10px 5px;border-bottom: 1px solid #c4c4c4;min-height: 30px;text-align: left;display: flex;align-items: center;}
+.windLightFileList_top_div{height: 29px;margin-left: 20px;display: flex}
+.windLightFileList_top_div>span{line-height: 29px;font-size: 16px}
 .windLightFileList_bottom{width:100%;height:auto;position:absolute;top:40px;bottom:0;padding: 10px;background-color: #FFFFFF;border-radius: 0 0 4px 4px;display: flex;flex-direction: column;}
 .windLightFileList_bottom_top{width: 100%;height: 40px;display: flex;justify-content: center;}
-.windLightFileList_bottom_bottom{height:80%;}
+.windLightFileList_bottom_bottom{height:95%;}
 
 .userManage_form{display: flex;margin: 0 auto 5px;}
 .userManage_form>span{width: 90px;line-height: 34px;font-size: 15px;}
