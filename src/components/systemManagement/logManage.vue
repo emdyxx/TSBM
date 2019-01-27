@@ -96,6 +96,21 @@
                             align='center'
                             :label="$t('logManage.OperationModule')"
                             width="180">
+                                <template scope="scope">
+                                    <span v-if="scope.row.logType=='0'">{{$t('logManage.usermanagement')}}</span>
+                                    <span v-if="scope.row.logType=='1'">{{$t('logManage.Organizationandmanagement')}}</span>
+                                    <span v-if="scope.row.logType=='4'">{{$t('logManage.TSBmanagement')}}</span>
+                                    <span v-if="scope.row.logType=='5'">{{$t('logManage.Groupmanagement')}}</span>
+                                    <span v-if="scope.row.logType=='6'">{{$t('logManage.Equipmentlocation')}}</span>
+                                    <span v-if="scope.row.logType=='7'">{{$t('logManage.Templatemanagement')}}</span>
+                                    <span v-if="scope.row.logType=='8'">{{$t('logManage.EquipmentUpgradePackage')}}</span>
+                                    <span v-if="scope.row.logType=='9'">{{$t('logManage.Regionalmanagement')}}</span>
+                                    <span v-if="scope.row.logType=='10'">{{$t('logManage.Authenticateduser')}}</span>
+                                    <span v-if="scope.row.logType=='11'">{{$t('logManage.Registeredusers')}}</span>
+                                    <span v-if="scope.row.logType=='12'">{{$t('logManage.Alarminformation')}}</span>
+                                    <span v-if="scope.row.logType=='13'">{{$t('logManage.Eventinformation')}}</span>
+                                    <span v-if="scope.row.logType=='14'">{{$t('logManage.Applicationfirmware')}}</span>
+                                </template>
                             </el-table-column>  
                             <el-table-column
                             sortable='custom'
@@ -107,6 +122,19 @@
                                     <span v-if="scope.row.operationType=='0'">{{$t('logManage.NewlyIncreased')}}</span>
                                     <span v-if="scope.row.operationType=='1'">{{$t('logManage.Edit')}}</span>
                                     <span v-if="scope.row.operationType=='2'">{{$t('logManage.Delete')}}</span>
+                                    <span v-if="scope.row.operationType=='3'">{{$t('logManage.Toconfigure')}}</span>
+                                    <span v-if="scope.row.operationType=='4'">{{$t('logManage.Grouping')}}</span>
+                                    <span v-if="scope.row.operationType=='5'">{{$t('logManage.upgrade')}}</span>
+                                    <span v-if="scope.row.operationType=='6'">{{$t('logManage.restart')}}</span>
+                                    <span v-if="scope.row.operationType=='7'">{{$t('logManage.Reset')}}</span>
+                                    <span v-if="scope.row.operationType=='8'">{{$t('logManage.Enable')}}</span>
+                                    <span v-if="scope.row.operationType=='9'">{{$t('logManage.Prohibit')}}</span>
+                                    <span v-if="scope.row.operationType=='10'">{{$t('logManage.upload')}}</span>
+                                    <span v-if="scope.row.operationType=='11'">{{$t('logManage.join')}}</span>
+                                    <span v-if="scope.row.operationType=='12'">{{$t('logManage.remove')}}</span>
+                                    <span v-if="scope.row.operationType=='13'">{{$t('logManage.sign')}}</span>
+                                    <span v-if="scope.row.operationType=='14'">{{$t('logManage.Import')}}</span>
+                                    <span v-if="scope.row.operationType=='15'">{{$t('logManage.Authentication')}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column
@@ -118,10 +146,10 @@
                             </el-table-column>
                             <el-table-column
                             sortable='custom'
-                            prop="dataId"
-                            :label="$t('logManage.OperationDataID')"
+                            prop="summary"
+                            :label="$t('logManage.Operationcontent')"
                             align='center'
-                            width="180">
+                            min-width="250">
                             </el-table-column>
                             <el-table-column
                             sortable='custom'

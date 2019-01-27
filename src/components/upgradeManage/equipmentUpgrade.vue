@@ -201,9 +201,10 @@
                         tooltip-effect="dark"
                         max-height='530'
                         style="width: 100%;"
+                        highlight-current-row
                         @selection-change="handleSelectionChange">
                         <el-table-column
-                        type="selection"
+                        type="index"
                         align='center'
                         width="55">
                         </el-table-column>
@@ -437,7 +438,6 @@
         name: 'equipmentUpgrade',
         data () {
             return {
-                
                 //按钮权限
                 uploading:false,
                 revamp:false,

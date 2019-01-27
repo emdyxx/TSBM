@@ -505,7 +505,7 @@
                             $('.addbutton').attr('disabled',false)
                             if(data.errorCode=='0'){
                                 that.$message({
-                                    message: '修改成功',
+                                    message: that.$t('userManage.AmendTheSuccess'),
                                     type: 'success',
                                     showClose: true,
                                 });

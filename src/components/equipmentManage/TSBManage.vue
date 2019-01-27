@@ -74,10 +74,10 @@
                             width="100">
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                        在线
+                                        {{$t('TSBManage.OnLine')}}
                                     </span>
                                     <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                        离线
+                                        {{$t('TSBManage.OffLine')}}
                                     </span>
                                 </template>    
                             </el-table-column>
@@ -213,10 +213,10 @@
                             width="100">
                                 <template scope="scope">
                                     <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                        在线
+                                        {{$t('TSBManage.OnLine')}}
                                     </span>
                                     <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                        离线
+                                        {{$t('TSBManage.OffLine')}}
                                     </span>
                                 </template>    
                             </el-table-column>
@@ -376,10 +376,10 @@
                             width="100">
                             <template scope="scope">
                                 <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                    在线
+                                    {{$t('TSBManage.OnLine')}}
                                 </span>
                                 <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                    离线
+                                    {{$t('TSBManage.OffLine')}}
                                 </span>
                             </template>    
                             </el-table-column>
@@ -531,10 +531,10 @@
                             width="120">
                             <template scope="scope">
                                 <span v-if="scope.row.online=='1'" style='color:#00CC00;'>
-                                    在线
+                                    {{$t('TSBManage.OnLine')}}
                                 </span>
                                 <span v-else-if="scope.row.online=='0'" style='color:#FF0000;'>
-                                    离线
+                                    {{$t('TSBManage.OffLine')}}
                                 </span>
                             </template>    
                             </el-table-column>

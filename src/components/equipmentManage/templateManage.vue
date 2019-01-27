@@ -816,6 +816,7 @@
                         border
                         stripe
                         tooltip-effect="dark"
+                        highlight-current-row
                         style="width: 100%;height:auto;maxlength-height:85%;overflow:auto;margin-bottom:10px;">
                         <el-table-column
                         fixed
@@ -2787,14 +2788,15 @@
                         if(data.errorCode=='0'){
                             if(val.status=='0'){
                                 that.$message({
-                                    message: that.$t('FalseHints.DisableSuccess'),
+
+                                    message: that.$t('templateManage.DisableSuccess'),
                                     type:'success',
                                     showClose: true,
                                 });
                             }
                             if(val.status=='1'){
                                 that.$message({
-                                    message: that.$t('FalseHints.EnableSuccess'),
+                                    message: that.$t('templateManage.EnableSuccess'),
                                     type:'success',
                                     showClose: true,
                                 });
