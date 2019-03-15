@@ -149,7 +149,7 @@ export default{
     Search:'搜索',
     Authentication:'认证',
     LoginTime:'登录时间',
-    LogType:'日志类型',
+    LogType:'操作模块',
     User:'用户',
     Organization:'组织',
     OperationModule:'操作模块',

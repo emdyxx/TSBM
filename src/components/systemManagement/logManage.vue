@@ -266,128 +266,133 @@
                 this.orders2 = column.order
                 this.readytwo()
             },
-           //登录日志页面数据渲染
-           ready(){
-               var that = this;
-               this.loading = true
-               $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'log/getLoginLogList',
-                    data:{
-                        pageIndex:that.pageIndex,
-                        pageSize:that.pageSize,
-                        keyword:that.keyword,
-                        // username:that.username,
-                        // ipAddress:that.ipAddress,
-                        status:that.status,
-                        order:that.props,
-                        orderBy:that.orders
-                        // remark:'',
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){ 
-                            // for(var i=0;i<data.rows.length;i++){
-                            //     if(data.rows[i].status=='0'){
-                            //         data.rows[i].status='成功'
-                            //     }else{
-                            //         data.rows[i].status='失败'  
-                            //     }
-                            // }
-                            that.logManagetableData = data.rows
-                            that.total = data.total
-                            that.loading = false
-                        }else{
-                            that.errorCode(data)
-                            that.loading = false
+            //登录日志页面数据渲染
+            ready(){
+                var that = this;
+                this.loading = true
+                $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'log/getLoginLogList',
+                        data:{
+                            pageIndex:that.pageIndex,
+                            pageSize:that.pageSize,
+                            keyword:that.keyword,
+                            // username:that.username,
+                            // ipAddress:that.ipAddress,
+                            status:that.status,
+                            order:that.props,
+                            orderBy:that.orders
+                            // remark:'',
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){ 
+                                // for(var i=0;i<data.rows.length;i++){
+                                //     if(data.rows[i].status=='0'){
+                                //         data.rows[i].status='成功'
+                                //     }else{
+                                //         data.rows[i].status='失败'  
+                                //     }
+                                // }
+                                that.logManagetableData = data.rows
+                                that.total = data.total
+                                that.loading = false
+                            }else{
+                                that.errorCode(data)
+                                that.loading = false
+                            }
                         }
-                    }
-               })
-           },
-           //登录日志搜索
-           LoginSearch(){
-               this.pageIndex = 1
-               this.ready();
-           },
-           //登录日志选择条数事件
-           handleSizeChange(val){
-               this.pageSize = val
-               this.ready()
-           },
-           //登录日志选择页数事件
-           handleCurrentChange(val){
-               this.pageIndex = val
-               this.ready()
-           },
-
-           //操作日志页面数据渲染
-           readytwo(){
-               var that = this;
-               this.loading = true
-               $.ajax({
-                    type:'get',
-                    async:true,
-                    dataType:'json',
-                    xhrFields:{withCredentials:true},
-                    url:that.serverurl+'log/getSystemLogList',
-                    data:{
-                        pageIndex:that.pageIndextwo,
-                        pageSize:that.pageSizetwo,
-                        keyword:that.keyword2,
-                        logType:that.statustwo,
-                        operationType:that.statusthree,
-                        order:that.props2,
-                        orderBy:that.orders2
-                    },
-                    success:function(data){
-                        if(data.errorCode=='0'){ 
-                            that.logManagetableDatatwo = data.rows
-                            that.totaltwo = data.total
-                            that.loading = false
-                        }else{
-                            that.errorCode(data)
+                })
+            },
+            //登录日志搜索
+            LoginSearch(){
+                this.pageIndex = 1
+                this.ready();
+            },
+            //登录日志选择条数事件
+            handleSizeChange(val){
+                this.pageSize = val
+                this.ready()
+            },
+            //登录日志选择页数事件
+            handleCurrentChange(val){
+                this.pageIndex = val
+                this.ready()
+            },
+            //操作日志页面数据渲染
+            readytwo(){
+                var that = this;
+                this.loading = true
+                $.ajax({
+                        type:'get',
+                        async:true,
+                        dataType:'json',
+                        xhrFields:{withCredentials:true},
+                        url:that.serverurl+'log/getSystemLogList',
+                        data:{
+                            pageIndex:that.pageIndextwo,
+                            pageSize:that.pageSizetwo,
+                            keyword:that.keyword2,
+                            logType:that.statustwo,
+                            operationType:that.statusthree,
+                            order:that.props2,
+                            orderBy:that.orders2
+                        },
+                        success:function(data){
+                            if(data.errorCode=='0'){ 
+                                that.logManagetableDatatwo = data.rows
+                                that.totaltwo = data.total
+                                that.loading = false
+                            }else{
+                                that.errorCode(data)
+                            }
                         }
-                    }
-               })
-           },
-           //操作日志搜索
-           operation(){
-               this.pageIndextwo = 1
-               this.readytwo();
-           },
-           //操作日志选择条数事件
-           handleSizeChangetwo(val){
-               this.pageSizetwo = val
-               this.readytwo()
-           },
-           //操作日志选择页数事件
-           handleCurrentChangetwo(val){
-               this.pageIndextwo = val
-               this.readytwo()
-           },
-           //判断选中标签页
-           handleClick(tab){
-               var that = this
-               if(tab.name=='1'){
-                   this.ready()
-               }
-               if(tab.name=='2'){
-                   this.readytwo()
-               }
-           },
+                })
+            },
+            //操作日志搜索
+            operation(){
+                this.pageIndextwo = 1
+                this.readytwo();
+            },
+            //操作日志选择条数事件
+            handleSizeChangetwo(val){
+                this.pageSizetwo = val
+                this.readytwo()
+            },
+            //操作日志选择页数事件
+            handleCurrentChangetwo(val){
+                this.pageIndextwo = val
+                this.readytwo()
+            },
+            //判断选中标签页
+            handleClick(tab){
+                var that = this
+                if(tab.name=='1'){
+                    this.ready()
+                }
+                if(tab.name=='2'){
+                    this.readytwo()
+                }
+            },
         },
         created(){
             this.ready()
             if(localStorage.locale=='en'){
                 this.options = [{value:'0',label:'Success'},{value:'1',label:'beDefeated'}]
-                this.optionstwo = [{value:'0',label:'User'},{value:'1',label:'Organization'}]
-                this.optionsthree = [{value:'0',label:'NewlyIncreased'},{value:'1',label:'Edit'},{value:'2',label:'Delete'}]
+                this.optionstwo = [{value:'0',label:'User'},{value:'1',label:'Organization'},{value:'4',label:'TSB management'},{value:'5',label:'Group management'},{value:'6',label:'Equipment location'},{value:'7',label:'Template management'},{value:'8',label:'Equipment Upgrade Package'},
+                {value:'9',label:'Regional management'},{value:'10',label:'Authenticated user'},{value:'11',label:'Registered users'},{value:'12',label:'Alarm information'},{value:'13',label:'Event information'},{value:'14',label:'Application firmware'}]
+                this.optionsthree = [{value:'0',label:'NewlyIncreased'},{value:'1',label:'Edit'},{value:'2',label:'Delete'},{value:'3',label:'To configure'},{value:'4',label:'Grouping'},{value:'5',label:'upgrade'},
+                {value:'6',label:'restart'},{value:'7',label:'Reset'},{value:'8',label:'Enable'},{value:'9',label:'Prohibit'},{value:'10',label:'upload'},
+                {value:'11',label:'join'},{value:'12',label:'remove'},{value:'13',label:'sign'},{value:'14',label:'Import'},{value:'15',label:'Authentication'}]
             }else{
                 this.options = [{value:'0',label:'成功'},{value:'1',label:'失败'}]
-                this.optionstwo = [{value:'0',label:'用户'},{value:'1',label:'组织'}]
-                this.optionsthree = [{value:'0',label:'新增'},{value:'1',label:'编辑'},{value:'2',label:'删除'}]
+                this.optionstwo = [{value:'0',label:'用户管理'},{value:'1',label:'组织管理'},{value:'4',label:'TSB管理'},{value:'5',label:'分组管理'},{value:'6',label:'设备定位'},{value:'7',label:'模板管理'},{value:'8',label:'设备升级包'},
+                {value:'9',label:'区域管理'},{value:'10',label:'认证用户'},{value:'11',label:'注册用户'},{value:'12',label:'告警信息'},{value:'13',label:'事件信息'},{value:'14',label:'应用固件'}]
+                this.optionsthree = [{value:'0',label:'新增'},{value:'1',label:'编辑'},{value:'2',label:'删除'},{value:'3',label:'配置'},{value:'4',label:'分组'},{value:'5',label:'升级'},
+                {value:'6',label:'重启'},{value:'7',label:'重置'},{value:'8',label:'启用'},{value:'9',label:'禁用'},{value:'10',label:'上传'},
+                {value:'11',label:'加入'},{value:'12',label:'移除'},{value:'13',label:'标记'},{value:'14',label:'导入'},{value:'15',label:'认证'}]
             }
         }
     } 

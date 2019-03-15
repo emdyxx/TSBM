@@ -8,7 +8,6 @@
                 <el-tab-pane :label="$t('TSBManage.own')" name='1' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div class="TSBManage_main_bottom"> 
                         <el-table
-                            @row-click="clickRow"
                             :default-sort = "{prop: 'date', order: 'descending'}"
                             @sort-change='sortChange'
                             ref="moviesTable"
@@ -146,7 +145,6 @@
                     <!-- 设备列表 -->
                     <div class="TSBManage_main_bottom">
                         <el-table
-                            @row-click="clickRow2"
                             :default-sort = "{prop: 'date', order: 'descending'}"
                             @sort-change='sortChange'
                             ref="moviesTable2"
@@ -309,7 +307,6 @@
                 <el-tab-pane label="TSBC" name='3' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div class="TSBManage_main_bottom">
                         <el-table
-                            @row-click="clickRow3"
                             :default-sort = "{prop: 'date', order: 'descending'}"
                             @sort-change='sortChange'
                             ref="moviesTable3"
@@ -464,7 +461,6 @@
                 <el-tab-pane label="TSBA" name='4' style="height:100%;border: 1px solid #c4c4c4;border-top: none;">
                     <div class="TSBManage_main_bottom">
                         <el-table
-                            @row-click="clickRow4"
                             :default-sort = "{prop: 'date', order: 'descending'}"
                             @sort-change='sortChange'
                             ref="moviesTable4"
@@ -888,9 +884,9 @@
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.NumberOfPackages')}}:</td>
-                                                <td>{{lookdata.downloadPackage}}/{{lookdata.downloadByte}}</td>
+                                                <td>{{lookdata.downloadPackage}}(B)/{{lookdata.downloadByte}}(MB)</td>
                                                 <td>{{$t('TSBManage.NumberOfPackets')}}:</td>
-                                                <td>{{lookdata.uploadPackage}}/{{lookdata.uploadByte}}</td>
+                                                <td>{{lookdata.uploadPackage}}(B)/{{lookdata.uploadByte}}(MB)</td>
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.UploadRate')}}:</td>
@@ -969,9 +965,9 @@
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.NumberOfPacketsSent')}}:</td>
-                                                <td>{{lookdata.wifi2SendPackage}}/{{lookdata.wifi2SendByte}}</td>
+                                                <td>{{lookdata.wifi2SendPackage}}(B)/{{lookdata.wifi2SendByte}}(MB)</td>
                                                 <td>{{$t('TSBManage.NumberOfPacketsReceived')}}:</td>
-                                                <td>{{lookdata.wifi2ReceivePackage}}/{{lookdata.wifi2ReceiveByte}} </td>
+                                                <td>{{lookdata.wifi2ReceivePackage}}(B)/{{lookdata.wifi2ReceiveByte}}(MB)</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1006,9 +1002,9 @@
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.NumberOfPacketsSent')}}:</td>
-                                                <td>{{lookdata.wifi5SendPackage}}/{{lookdata.wifi5SendByte}} </td>
+                                                <td>{{lookdata.wifi5SendPackage}}(B)/{{lookdata.wifi5SendByte}}(MB)</td>
                                                 <td>{{$t('TSBManage.NumberOfPacketsReceived')}}:</td>
-                                                <td>{{lookdata.wifi5ReceivePackage}}/{{lookdata.wifi5ReceiveByte}} </td>
+                                                <td>{{lookdata.wifi5ReceivePackage}}(B)/{{lookdata.wifi5ReceiveByte}}(MB)</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1100,9 +1096,9 @@
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.NumberOfPackages')}}:</td>
-                                                <td>{{lookdata.downloadPackage}}/{{lookdata.downloadByte}} </td>
+                                                <td>{{lookdata.downloadPackage}}(B)/{{lookdata.downloadByte}}(MB)</td>
                                                 <td>{{$t('TSBManage.NumberOfPackets')}}:</td>
-                                                <td>{{lookdata.uploadPackage}}/{{lookdata.uploadByte}} </td>
+                                                <td>{{lookdata.uploadPackage}}(B)/{{lookdata.uploadByte}}(MB)</td>
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.RealTimeRate')}}:</td>
@@ -1135,15 +1131,15 @@
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.NumberOfPacketsSent')}}:</td>
-                                                <td>{{lookdata.wifi2SendPackage}}/{{lookdata.wifi2SendByte}}  </td>
+                                                <td>{{lookdata.wifi2SendPackage}}(B)/{{lookdata.wifi2SendByte}}(MB)</td>
                                                 <td>{{$t('TSBManage.NumberOfPacketsReceived')}}:</td>
-                                                <td>{{lookdata.wifi2ReceivePackage}}/{{lookdata.wifi2ReceiveByte}}  </td>
+                                                <td>{{lookdata.wifi2ReceivePackage}}(B)/{{lookdata.wifi2ReceiveByte}}(MB)</td>
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.SendRetransmission')}}:</td>
-                                                <td>{{lookdata.wifi2SendRepeat}}/{{lookdata.wifi2SendPackageLoss}} </td>
+                                                <td>{{lookdata.wifi2SendRepeat}}(B)/{{lookdata.wifi2SendPackageLoss}}(MB)</td>
                                                 <td>{{$t('TSBManage.ReceiveRetransmission')}}:</td>
-                                                <td>{{lookdata.wifi2ReceiveRepeat}}/{{lookdata.wifi2ReceivePackageLoss}}  </td>
+                                                <td>{{lookdata.wifi2ReceiveRepeat}}(B)/{{lookdata.wifi2ReceivePackageLoss}}(MB)</td>
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.ConnectingUser')}}:</td>
@@ -1176,15 +1172,15 @@
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.NumberOfPacketsSent')}}:</td>
-                                                <td>{{lookdata.wifi5SendPackage}}/{{lookdata.wifi5SendByte}}  </td>
+                                                <td>{{lookdata.wifi5SendPackage}}(B)/{{lookdata.wifi5SendByte}}(MB)</td>
                                                 <td>{{$t('TSBManage.NumberOfPacketsReceived')}}:</td>
-                                                <td>{{lookdata.wifi5ReceivePackage}}/{{lookdata.wifi5ReceiveByte}}  </td>
+                                                <td>{{lookdata.wifi5ReceivePackage}}(B)/{{lookdata.wifi5ReceiveByte}}(MB)</td>
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.SendRetransmission')}}:</td>
-                                                <td>{{lookdata.wifi5SendRepeat}}/{{lookdata.wifi5SendPackageLoss}} </td>
+                                                <td>{{lookdata.wifi5SendRepeat}}(B)/{{lookdata.wifi5SendPackageLoss}}(MB)</td>
                                                 <td>{{$t('TSBManage.ReceiveRetransmission')}}:</td>
-                                                <td>{{lookdata.wifi5ReceiveRepeat}}/{{lookdata.wifi5ReceivePackageLoss}}  </td>
+                                                <td>{{lookdata.wifi5ReceiveRepeat}}(B)/{{lookdata.wifi5ReceivePackageLoss}}(MB)</td>
                                             </tr>
                                             <tr>
                                                 <td>{{$t('TSBManage.ConnectingUser')}}:</td>
@@ -1435,7 +1431,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" class="tsbc2GselectAP" style="width:110px;height:29px;">
@@ -1500,7 +1496,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi2StaEncryptionMode" class="tsbc2GselectSta" style="width:110px;height:29px;">
@@ -1538,7 +1534,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
@@ -1599,7 +1595,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi5StaEncryptionMode" class="tsbc5GselectSta" style="width:110px;height:29px;">
@@ -1680,7 +1676,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" class="tsba2Gselect" style="width:110px;height:29px;">
@@ -1754,7 +1750,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
@@ -1820,7 +1816,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.doubleWifi2EncryptionMode" class="tsba2Gselect" style="width:110px;height:29px;">
@@ -1843,7 +1839,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.doubleWifi5EncryptionMode" class="tsba5Gselect" style="width:110px;height:29px;">
@@ -2290,18 +2286,6 @@
                 this.orders = column.order
                 this.ready()
             },
-            clickRow(row){
-                this.$refs.moviesTable.toggleRowSelection(row)
-            }, 
-            clickRow2(row){
-                this.$refs.moviesTable2.toggleRowSelection(row)
-            }, 
-            clickRow3(row){
-                this.$refs.moviesTable3.toggleRowSelection(row)
-            }, 
-            clickRow4(row){
-                this.$refs.moviesTable4.toggleRowSelection(row)
-            }, 
             clickRow5(row){
                 this.$refs.moviesTable5.toggleRowSelection(row)
             }, 

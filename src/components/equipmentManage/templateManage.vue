@@ -206,7 +206,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2ApSSID" type="text" class="tsbc2GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi2ApBandwidth" class="tsbc2GselectAP" style="width:110px;height:29px;">
@@ -271,7 +271,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi2StaSSID" type="text" class="tsbc2GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi2StaEncryptionMode" class="tsbc2GselectSta" style="width:110px;height:29px;">
@@ -309,7 +309,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID:</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5ApSSID" type="text" class="tsbc5GinputAP inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi5ApBandwidth" class="tsbc5GselectAP" style="width:110px;height:29px;" name="" id="">
@@ -370,7 +370,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>SSID</td>
-                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input v-model.lazy="tsbccollcate.wifi5StaSSID" type="text" class="tsbc5GinputSta inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}</td>
                                                         <td>
                                                             <select v-model.lazy="tsbccollcate.wifi5StaEncryptionMode" class="tsbc5GselectSta" style="width:110px;height:29px;">
@@ -452,7 +452,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.wifi2Bandwidth" class="tsba2Gselect" style="width:110px;height:29px;">
@@ -527,7 +527,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model.lazy="tsbacaollcate.wifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" minlength="1" maxlength="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.ChannelBandwidth')}}:</td>
                                                         <td>
                                                             <select v-model="tsbacaollcate.wifi5Bandwidth" class="tsba5Gselect" style="width:110px;height:29px;">
@@ -593,7 +593,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi2SSID" class="tsba2Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.doubleWifi2EncryptionMode" class="tsba2Gselect" style="width:110px;height:29px;">
@@ -616,7 +616,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td><i class="required">*</i>ssid:</td>
-                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'').replace(/^[\u4E00-\u9FA5]{1,10}$/,'')"></td>
+                                                        <td><input type="text" v-model="tsbacaollcate.doubleWifi5SSID" class="tsba5Ginput inputType form-control logManage_main_input" :placeholder="$t('TSBManage.PleaseEnterSSID')" min="1" max="32" onkeyup="this.value=this.value.replace(/\s+/g,'')"></td>
                                                         <td><i class="required">*</i>{{$t('TSBManage.WayOfEncryption')}}:</td>
                                                         <td>
                                                             <select v-model.lazy="tsbacaollcate.doubleWifi5EncryptionMode" class="tsba5Gselect" style="width:110px;height:29px;">

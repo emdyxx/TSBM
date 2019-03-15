@@ -150,7 +150,7 @@ export default{
     Search:'Search',
     Authentication:'Attestation',
     LoginTime:'Login time',
-    LogType:'Log type',
+    LogType:'Operation module',
     User:'User',
     Organization:'Organization',
     
